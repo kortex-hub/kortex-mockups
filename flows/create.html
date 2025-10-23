@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Create Flow</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+</head>
+<body class="flow-create-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Flow Create UI -->
+        <main class="main-content">
+            <div class="flow-create-layout">
+                <!-- Header with breadcrumb -->
+                <div class="flow-create-header">
+                    <div class="flow-breadcrumb">
+                        <a href="../chat/index.html" class="flow-breadcrumb-link">Chat</a>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        <span class="flow-breadcrumb-current">Create</span>
+                    </div>
+                    <button class="flow-close-btn" onclick="window.location.href='../chat/index.html'" title="Close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Flow Create Content -->
+                <div class="flow-create-content">
+                    <div class="flow-create-container">
+                        <h1 class="flow-create-title">Flow Create</h1>
+                        
+                        <p class="flow-create-description">Create a flow by selecting a model, tools (from MCP servers), and specifying instructions. Flows can also be created by exporting a chat session—all information will be auto-filled.</p>
+                        
+                        <form class="flow-form" id="flowForm">
+                            <div class="flow-form-group">
+                                <label class="flow-form-label">Flow Name</label>
+                                <input type="text" class="flow-form-input" id="flowName" placeholder="filter-github-issues-by-community-member" required>
+                            </div>
+                            
+                            <div class="flow-form-group">
+                                <label class="flow-form-label">Description</label>
+                                <input type="text" class="flow-form-input" id="flowDescription" placeholder="Filters the last 5 GitHub issues of 'podman-desktop/podman-desktop' to include only those created by users who are not listed in the repository's MAINTAINERS.md file">
+                            </div>
+                            
+                            <div class="flow-form-row">
+                                <div class="flow-form-group">
+                                    <label class="flow-form-label">Model</label>
+                                    <select class="flow-form-select" id="flowModel">
+                                        <option value="gemini-flash-latest">gemini-flash-latest</option>
+                                        <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+                                        <option value="gpt-4">gpt-4</option>
+                                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                                        <option value="claude-3-opus">claude-3-opus</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flow-form-group">
+                                    <label class="flow-form-label">Tools</label>
+                                    <select class="flow-form-select" id="flowTools">
+                                        <option value="1">1 selected</option>
+                                        <option value="2">2 selected</option>
+                                        <option value="3">3 selected</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="flow-form-group">
+                                <label class="flow-form-label">Prompt</label>
+                                <div class="prompt-editor-container">
+                                    <textarea class="flow-form-textarea large" id="flowPrompt" rows="4" placeholder="List the last 5 issues of GitHub repository podman-desktop/podman-desktop. Then, retrieve the content of the MAINTAINERS.md file from the same repository. Use the list of usernames in MAINTAINERS.md to filter the issues, showing only the issues authored by users whose GitHub login is not present in the maintainers list."></textarea>
+                                    <div class="autocomplete-dropdown" id="autocompleteDropdown" style="display: none;">
+                                        <!-- Autocomplete suggestions will appear here -->
+                                    </div>
+                                    <div class="selection-field-menu" id="selectionFieldMenu" style="display: none;">
+                                        <button type="button" class="selection-menu-btn create-new" onclick="event.stopPropagation(); createFieldFromSelection()">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                            </svg>
+                                            <span>Create New Field</span>
+                                        </button>
+                                        <div class="selection-menu-divider" id="selectionMenuDivider" style="display: none;"></div>
+                                        <div class="selection-menu-fields" id="selectionMenuFields">
+                                            <!-- Existing fields will be listed here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Input Fields Section -->
+                            <div class="flow-form-group">
+                                <div class="input-fields-header">
+                                    <label class="flow-form-label">Input Fields</label>
+                                    <div class="input-fields-actions">
+                                        <button type="button" class="detect-input-fields-btn" onclick="detectInputFields()" title="Detect input fields from prompt">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M15 4V2"/>
+                                                <path d="M15 16v-2"/>
+                                                <path d="M8 9h2"/>
+                                                <path d="M20 9h2"/>
+                                                <path d="M17.8 11.8 19 13"/>
+                                                <path d="M15 9h0"/>
+                                                <path d="M17.8 6.2 19 5"/>
+                                                <path d="m3 21 9-9"/>
+                                                <path d="M12.2 6.2 11 5"/>
+                                            </svg>
+                                            Detect Fields
+                                        </button>
+                                        <button type="button" class="add-input-field-btn" onclick="openInputFieldModal()">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            Add Input Field
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-fields-info">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                    </svg>
+                                    <span>Use <code>{{field_name}}</code> in your prompt to reference input fields. Example: "Take the last 5 issues from <code>{{repository_url}}</code>"</span>
+                                </div>
+                                
+                                <div class="input-fields-table-container compact" id="inputFieldsTableContainer" style="display: none;">
+                                    <table class="input-fields-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Default Value</th>
+                                                <th>Type</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="inputFieldsTableBody">
+                                            <!-- Input fields will be added here dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="input-fields-empty compact" id="inputFieldsEmpty">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="9" y1="9" x2="15" y2="9"></line>
+                                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                                    </svg>
+                                    <p>No input fields defined yet</p>
+                                    <p class="input-fields-empty-hint">Click "Add Input Field" to create parameterized inputs for your flow</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flow-form-group">
+                                <label class="flow-form-label">Instruction</label>
+                                <textarea class="flow-form-textarea" id="flowInstruction" rows="2" placeholder="You are a helpful assistant."></textarea>
+                            </div>
+                        </form>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flow-create-actions">
+                            <button class="flow-btn flow-btn-secondary" onclick="window.location.href='../chat/index.html'">Cancel</button>
+                            <button class="flow-btn flow-btn-primary" onclick="generateFlow()">Generate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Input Field Modal -->
+    <div class="input-field-modal-overlay" id="inputFieldModalOverlay">
+        <div class="input-field-modal">
+            <div class="input-field-modal-header">
+                <h3 class="input-field-modal-title" id="inputFieldModalTitle">Add Input Field</h3>
+                <button class="input-field-modal-close" onclick="closeInputFieldModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="input-field-modal-body">
+                <form class="input-field-form" id="inputFieldForm">
+                    <div class="input-field-form-group">
+                        <label class="input-field-form-label">Field Name <span class="required">*</span></label>
+                        <input type="text" class="input-field-form-input" id="fieldName" placeholder="repository_url" required>
+                        <span class="input-field-form-hint">Use lowercase with underscores. This will be used as {{field_name}} in your prompt.</span>
+                    </div>
+                    
+                    <div class="input-field-form-group">
+                        <label class="input-field-form-label">Description <span class="required">*</span></label>
+                        <textarea class="input-field-form-textarea" id="fieldDescription" rows="2" placeholder="GitHub repository URL (e.g., owner/repo)" required></textarea>
+                    </div>
+                    
+                    <div class="input-field-form-group">
+                        <label class="input-field-form-label">Type <span class="required">*</span></label>
+                        <div class="field-type-tiles" id="fieldTypeTiles">
+                            <button type="button" class="field-type-tile active" data-type="text" onclick="selectFieldType('text')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+                                </svg>
+                                <span>Text</span>
+                            </button>
+                            <button type="button" class="field-type-tile" data-type="number" onclick="selectFieldType('number')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M8 10h8M8 14h8"/>
+                                </svg>
+                                <span>Number</span>
+                            </button>
+                            <button type="button" class="field-type-tile" data-type="boolean" onclick="selectFieldType('boolean')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M9 12l2 2 4-4"/>
+                                </svg>
+                                <span>Boolean</span>
+                            </button>
+                            <button type="button" class="field-type-tile" data-type="enum" onclick="selectFieldType('enum')">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="8" y1="6" x2="21" y2="6"/>
+                                    <line x1="8" y1="12" x2="21" y2="12"/>
+                                    <line x1="8" y1="18" x2="21" y2="18"/>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"/>
+                                </svg>
+                                <span>Enum</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="fieldType" value="text">
+                    </div>
+                    
+                    <div class="input-field-form-group" id="enumValuesGroup" style="display: none;">
+                        <label class="input-field-form-label">Enum Values <span class="required">*</span></label>
+                        <input type="text" class="input-field-form-input" id="fieldEnumValues" placeholder="value1, value2, value3">
+                        <span class="input-field-form-hint">Comma-separated list of allowed values</span>
+                    </div>
+                    
+                    <div class="input-field-form-group">
+                        <label class="input-field-form-label">Default Value</label>
+                        <input type="text" class="input-field-form-input" id="fieldDefaultValue" placeholder="Optional default value">
+                    </div>
+                    
+                    <div class="input-field-form-group">
+                        <label class="input-field-checkbox-wrapper">
+                            <input type="checkbox" class="input-field-form-checkbox" id="fieldRequired">
+                            <span>Required field</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="input-field-modal-footer">
+                <button class="flow-btn flow-btn-secondary" onclick="closeInputFieldModal()">Cancel</button>
+                <button class="flow-btn flow-btn-primary" onclick="saveInputField()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Input Fields Management
+        let inputFields = [];
+        let editingFieldIndex = -1;
+        let selectedText = '';
+        let selectionStart = 0;
+        let selectionEnd = 0;
+        let shouldReplaceSelection = false;
+
+        // Load data from URL parameters (for export from chat)
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('name')) {
+                document.getElementById('flowName').value = urlParams.get('name');
+            }
+            if (urlParams.has('description')) {
+                document.getElementById('flowDescription').value = urlParams.get('description');
+            }
+            if (urlParams.has('prompt')) {
+                document.getElementById('flowPrompt').value = urlParams.get('prompt');
+            }
+            
+            // Initialize prompt editor features
+            initializePromptEditor();
+        });
+
+        function initializePromptEditor() {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            
+            // Handle text selection
+            promptTextarea.addEventListener('mouseup', handleTextSelection);
+            promptTextarea.addEventListener('keyup', handleTextSelection);
+            
+            // Handle autocomplete
+            promptTextarea.addEventListener('input', handleAutocomplete);
+            promptTextarea.addEventListener('keydown', handleAutocompleteKeydown);
+            
+            // Close autocomplete and selection menu on scroll
+            promptTextarea.addEventListener('scroll', function() {
+                autocompleteDropdown.style.display = 'none';
+                document.getElementById('selectionFieldMenu').style.display = 'none';
+            });
+            
+            // Close autocomplete and selection menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const selectionFieldMenu = document.getElementById('selectionFieldMenu');
+                
+                if (!promptTextarea.contains(event.target) && !autocompleteDropdown.contains(event.target)) {
+                    autocompleteDropdown.style.display = 'none';
+                }
+                
+                if (!promptTextarea.contains(event.target) && !selectionFieldMenu.contains(event.target)) {
+                    selectionFieldMenu.style.display = 'none';
+                }
+            });
+        }
+
+        function handleTextSelection(event) {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const selectionFieldMenu = document.getElementById('selectionFieldMenu');
+            
+            // Store selection immediately
+            const currentSelectionStart = promptTextarea.selectionStart;
+            const currentSelectionEnd = promptTextarea.selectionEnd;
+            const currentSelectedText = promptTextarea.value.substring(currentSelectionStart, currentSelectionEnd);
+            
+            if (currentSelectedText.length > 0) {
+                // Update global selection variables
+                selectionStart = currentSelectionStart;
+                selectionEnd = currentSelectionEnd;
+                selectedText = currentSelectedText;
+                
+                console.log('Selection stored:', { 
+                    start: selectionStart, 
+                    end: selectionEnd, 
+                    text: selectedText 
+                });
+                
+                // Populate the menu with existing fields
+                populateSelectionFieldMenu();
+                
+                // Get the position of the selection start
+                const coords = getCursorCoordinates(promptTextarea, selectionStart);
+                const textareaRect = promptTextarea.getBoundingClientRect();
+                
+                // Position the menu above the selection
+                selectionFieldMenu.style.display = 'block';
+                selectionFieldMenu.style.top = (textareaRect.top + coords.top - promptTextarea.scrollTop - 50) + window.scrollY + 'px';
+                selectionFieldMenu.style.left = (textareaRect.left + coords.left + 10) + 'px';
+            } else {
+                selectionFieldMenu.style.display = 'none';
+            }
+        }
+        
+        function populateSelectionFieldMenu() {
+            const selectionMenuFields = document.getElementById('selectionMenuFields');
+            const selectionMenuDivider = document.getElementById('selectionMenuDivider');
+            
+            if (inputFields.length === 0) {
+                selectionMenuFields.innerHTML = '';
+                selectionMenuDivider.style.display = 'none';
+            } else {
+                selectionMenuDivider.style.display = 'block';
+                selectionMenuFields.innerHTML = inputFields.map(field => `
+                    <button type="button" class="selection-menu-btn field-item" onclick="event.stopPropagation(); insertExistingField('${field.name}')">
+                        <div class="selection-field-icon" data-type="${field.type}">
+                            ${getTypeIcon(field.type)}
+                        </div>
+                        <div class="selection-field-info">
+                            <span class="selection-field-name">{{${field.name}}}</span>
+                            <span class="selection-field-desc">${field.description}</span>
+                        </div>
+                    </button>
+                `).join('');
+            }
+        }
+        
+        function insertExistingField(fieldName) {
+            console.log('insertExistingField called with:', fieldName);
+            console.log('Current selection state:', {
+                start: selectionStart,
+                end: selectionEnd,
+                text: selectedText
+            });
+            
+            const promptTextarea = document.getElementById('flowPrompt');
+            
+            // Validate selection positions
+            if (selectionStart === undefined || selectionEnd === undefined || selectionStart === selectionEnd) {
+                console.warn('Invalid selection positions, cannot insert field');
+                document.getElementById('selectionFieldMenu').style.display = 'none';
+                return;
+            }
+            
+            const textBefore = promptTextarea.value.substring(0, selectionStart);
+            const textAfter = promptTextarea.value.substring(selectionEnd);
+            
+            console.log('Replacing text:', {
+                before: textBefore,
+                selected: promptTextarea.value.substring(selectionStart, selectionEnd),
+                after: textAfter
+            });
+            
+            // Replace selected text with {{fieldName}}
+            const fieldReference = `{{${fieldName}}}`;
+            promptTextarea.value = textBefore + fieldReference + textAfter;
+            
+            console.log('Text replaced successfully');
+            
+            // Set cursor position after the inserted field
+            const newCursorPosition = textBefore.length + fieldReference.length;
+            promptTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
+            promptTextarea.focus();
+            
+            // Reset selection
+            selectedText = '';
+            selectionStart = 0;
+            selectionEnd = 0;
+            
+            // Hide the menu
+            document.getElementById('selectionFieldMenu').style.display = 'none';
+        }
+
+        function createFieldFromSelection() {
+            if (!selectedText) return;
+            
+            // Hide the menu
+            document.getElementById('selectionFieldMenu').style.display = 'none';
+            
+            // Generate a field name from the selected text
+            const suggestedName = selectedText
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '_')
+                .substring(0, 30);
+            
+            // Open the input field modal with pre-filled data
+            openInputFieldModal(-1, {
+                name: suggestedName,
+                description: selectedText,
+                replaceText: true
+            });
+        }
+
+        let autocompleteSelectedIndex = -1;
+
+        function handleAutocomplete(event) {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            const cursorPosition = promptTextarea.selectionStart;
+            const textBeforeCursor = promptTextarea.value.substring(0, cursorPosition);
+            
+            // Check if we just typed {{
+            const lastTwoChars = textBeforeCursor.slice(-2);
+            
+            if (lastTwoChars === '{{') {
+                // Show autocomplete with all input fields
+                showAutocomplete(cursorPosition);
+            } else {
+                // Check if we're inside {{ }}
+                const lastOpenBrace = textBeforeCursor.lastIndexOf('{{');
+                const lastCloseBrace = textBeforeCursor.lastIndexOf('}}');
+                
+                if (lastOpenBrace > lastCloseBrace && lastOpenBrace !== -1) {
+                    // We're typing inside {{ }}
+                    const searchTerm = textBeforeCursor.substring(lastOpenBrace + 2);
+                    filterAutocomplete(searchTerm, cursorPosition);
+                } else {
+                    autocompleteDropdown.style.display = 'none';
+                }
+            }
+        }
+
+        function getCursorCoordinates(textarea, position) {
+            const text = textarea.value.substring(0, position);
+            const lines = text.split('\n');
+            const currentLine = lines.length - 1;
+            const currentColumn = lines[lines.length - 1].length;
+            
+            // Calculate approximate position based on line height and character width
+            const style = getComputedStyle(textarea);
+            const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.5;
+            const fontSize = parseFloat(style.fontSize);
+            const paddingTop = parseFloat(style.paddingTop);
+            const paddingLeft = parseFloat(style.paddingLeft);
+            
+            // Approximate character width (monospace-ish)
+            const charWidth = fontSize * 0.6;
+            
+            return {
+                top: (currentLine * lineHeight) + paddingTop,
+                left: (currentColumn * charWidth) + paddingLeft
+            };
+        }
+
+        function positionAutocomplete(cursorPosition) {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            
+            // Get cursor coordinates within the textarea
+            const coords = getCursorCoordinates(promptTextarea, cursorPosition);
+            
+            // Account for textarea scroll
+            const top = coords.top - promptTextarea.scrollTop + 24;
+            const left = coords.left;
+            
+            autocompleteDropdown.style.top = top + 'px';
+            autocompleteDropdown.style.left = left + 'px';
+            
+            // Make sure it doesn't go off the textarea bounds
+            const textareaWidth = promptTextarea.offsetWidth;
+            const dropdownWidth = 300;
+            
+            if (left + dropdownWidth > textareaWidth) {
+                autocompleteDropdown.style.left = Math.max(10, textareaWidth - dropdownWidth - 10) + 'px';
+            }
+        }
+
+        function showAutocomplete(cursorPosition) {
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            
+            if (inputFields.length === 0) {
+                autocompleteDropdown.innerHTML = '<div class="autocomplete-empty">No input fields defined yet</div>';
+                autocompleteDropdown.style.display = 'block';
+                positionAutocomplete(cursorPosition);
+                return;
+            }
+            
+            renderAutocompleteItems(inputFields, cursorPosition);
+        }
+
+        function filterAutocomplete(searchTerm, cursorPosition) {
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            
+            if (inputFields.length === 0) {
+                autocompleteDropdown.style.display = 'none';
+                return;
+            }
+            
+            const filtered = inputFields.filter(field => 
+                field.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filtered.length === 0) {
+                autocompleteDropdown.style.display = 'none';
+                return;
+            }
+            
+            renderAutocompleteItems(filtered, cursorPosition);
+        }
+
+        function renderAutocompleteItems(fields, cursorPosition) {
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            autocompleteSelectedIndex = -1;
+            
+            autocompleteDropdown.innerHTML = fields.map((field, index) => `
+                <div class="autocomplete-item" data-index="${index}" data-field-name="${field.name}">
+                    <div class="autocomplete-item-header">
+                        <span class="autocomplete-field-name">{{${field.name}}}</span>
+                        <span class="autocomplete-field-type" data-type="${field.type}">${field.type}</span>
+                    </div>
+                    <div class="autocomplete-field-desc">${field.description}</div>
+                </div>
+            `).join('');
+            
+            autocompleteDropdown.style.display = 'block';
+            
+            // Position the dropdown at cursor
+            positionAutocomplete(cursorPosition);
+            
+            // Add click handlers
+            autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    insertFieldReference(item.dataset.fieldName);
+                });
+                
+                item.addEventListener('mouseenter', function() {
+                    autocompleteSelectedIndex = index;
+                    updateAutocompleteSelection();
+                });
+            });
+        }
+
+        function handleAutocompleteKeydown(event) {
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            
+            if (autocompleteDropdown.style.display === 'none') return;
+            
+            const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+            
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                autocompleteSelectedIndex = Math.min(autocompleteSelectedIndex + 1, items.length - 1);
+                updateAutocompleteSelection();
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                autocompleteSelectedIndex = Math.max(autocompleteSelectedIndex - 1, 0);
+                updateAutocompleteSelection();
+            } else if (event.key === 'Enter' && autocompleteSelectedIndex >= 0) {
+                event.preventDefault();
+                const selectedItem = items[autocompleteSelectedIndex];
+                if (selectedItem) {
+                    insertFieldReference(selectedItem.dataset.fieldName);
+                }
+            } else if (event.key === 'Escape') {
+                autocompleteDropdown.style.display = 'none';
+            }
+        }
+
+        function updateAutocompleteSelection() {
+            const items = document.querySelectorAll('.autocomplete-item');
+            items.forEach((item, index) => {
+                if (index === autocompleteSelectedIndex) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
+        function insertFieldReference(fieldName) {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+            const cursorPosition = promptTextarea.selectionStart;
+            const textBeforeCursor = promptTextarea.value.substring(0, cursorPosition);
+            const textAfterCursor = promptTextarea.value.substring(cursorPosition);
+            
+            // Find where {{ starts
+            const lastOpenBrace = textBeforeCursor.lastIndexOf('{{');
+            
+            // Replace from {{ to cursor position with {{fieldName}}
+            const newText = textBeforeCursor.substring(0, lastOpenBrace) + 
+                           `{{${fieldName}}}` + 
+                           textAfterCursor;
+            
+            promptTextarea.value = newText;
+            
+            // Set cursor position after the inserted field
+            const newCursorPosition = lastOpenBrace + fieldName.length + 4; // +4 for {{}}
+            promptTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
+            promptTextarea.focus();
+            
+            // Hide autocomplete
+            autocompleteDropdown.style.display = 'none';
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                text: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>',
+                number: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10h8M8 14h8"/></svg>',
+                boolean: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>',
+                enum: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>'
+            };
+            return icons[type] || icons.text;
+        }
+
+        function renderInputFieldsTable() {
+            const tableContainer = document.getElementById('inputFieldsTableContainer');
+            const emptyState = document.getElementById('inputFieldsEmpty');
+            const tableBody = document.getElementById('inputFieldsTableBody');
+            
+            if (inputFields.length === 0) {
+                tableContainer.style.display = 'none';
+                emptyState.style.display = 'flex';
+                return;
+            }
+            
+            tableContainer.style.display = 'block';
+            emptyState.style.display = 'none';
+            
+            tableBody.innerHTML = inputFields.map((field, index) => `
+                <tr>
+                    <td>
+                        <div class="input-field-description">
+                            <strong>{{${field.name}}}</strong>
+                            <span>${field.description}</span>
+                            ${field.required ? '<span class="input-field-required-badge">Required</span>' : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="input-field-default-value">${field.defaultValue || '-'}</span>
+                    </td>
+                    <td>
+                        <div class="input-field-type-badge" data-type="${field.type}">
+                            ${getTypeIcon(field.type)}
+                            <span>${field.type}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-field-actions">
+                            <button type="button" class="input-field-action-btn edit" onclick="editInputField(${index})" title="Edit">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="input-field-action-btn delete" onclick="deleteInputField(${index})" title="Delete">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openInputFieldModal(index = -1, prefillData = null) {
+            const modal = document.getElementById('inputFieldModalOverlay');
+            const modalTitle = document.getElementById('inputFieldModalTitle');
+            
+            editingFieldIndex = index;
+            
+            if (index >= 0) {
+                // Editing existing field
+                shouldReplaceSelection = false;
+                modalTitle.textContent = 'Edit Input Field';
+                const field = inputFields[index];
+                
+                console.log('Editing field:', field);
+                
+                // Populate form fields
+                document.getElementById('fieldName').value = field.name;
+                document.getElementById('fieldDescription').value = field.description;
+                document.getElementById('fieldDefaultValue').value = field.defaultValue || '';
+                document.getElementById('fieldRequired').checked = field.required;
+                
+                // Set enum values before selecting type (so it's available when enum is selected)
+                if (field.type === 'enum' && field.enumValues) {
+                    document.getElementById('fieldEnumValues').value = field.enumValues;
+                }
+                
+                // Set the field type using the tile selector (this will show/hide enum group)
+                selectFieldType(field.type);
+            } else {
+                // Adding new field
+                shouldReplaceSelection = prefillData?.replaceText || false;
+                modalTitle.textContent = prefillData?.replaceText ? 'Create Input Field' : 'Add Input Field';
+                
+                // Clear form fields individually
+                document.getElementById('fieldName').value = '';
+                document.getElementById('fieldDescription').value = '';
+                document.getElementById('fieldDefaultValue').value = '';
+                document.getElementById('fieldRequired').checked = false;
+                document.getElementById('fieldEnumValues').value = '';
+                
+                // Reset to default type (text)
+                selectFieldType('text');
+                
+                // Pre-fill if data provided
+                if (prefillData) {
+                    if (prefillData.name) {
+                        document.getElementById('fieldName').value = prefillData.name;
+                    }
+                    if (prefillData.description) {
+                        document.getElementById('fieldDescription').value = prefillData.description;
+                    }
+                }
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function closeInputFieldModal() {
+            const modal = document.getElementById('inputFieldModalOverlay');
+            modal.classList.remove('show');
+            editingFieldIndex = -1;
+            shouldReplaceSelection = false;
+            
+            // Reset selection variables
+            selectedText = '';
+            selectionStart = 0;
+            selectionEnd = 0;
+        }
+
+        function selectFieldType(type) {
+            // Update hidden input
+            document.getElementById('fieldType').value = type;
+            
+            // Update active state on tiles
+            document.querySelectorAll('.field-type-tile').forEach(tile => {
+                if (tile.dataset.type === type) {
+                    tile.classList.add('active');
+                } else {
+                    tile.classList.remove('active');
+                }
+            });
+            
+            // Show/hide enum values field
+            const enumValuesGroup = document.getElementById('enumValuesGroup');
+            if (type === 'enum') {
+                enumValuesGroup.style.display = 'block';
+            } else {
+                enumValuesGroup.style.display = 'none';
+            }
+        }
+
+        function handleFieldTypeChange() {
+            const type = document.getElementById('fieldType').value;
+            selectFieldType(type);
+        }
+
+        function saveInputField() {
+            const name = document.getElementById('fieldName').value.trim();
+            const description = document.getElementById('fieldDescription').value.trim();
+            const type = document.getElementById('fieldType').value;
+            const defaultValue = document.getElementById('fieldDefaultValue').value.trim();
+            const required = document.getElementById('fieldRequired').checked;
+            const enumValues = document.getElementById('fieldEnumValues').value.trim();
+            
+            if (!name || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Validate field name format
+            if (!/^[a-z0-9_]+$/.test(name)) {
+                alert('Field name must contain only lowercase letters, numbers, and underscores');
+                return;
+            }
+            
+            // Check for duplicate names (except when editing the same field)
+            const duplicateIndex = inputFields.findIndex(f => f.name === name);
+            if (duplicateIndex >= 0 && duplicateIndex !== editingFieldIndex) {
+                alert('A field with this name already exists');
+                return;
+            }
+            
+            // Validate enum values
+            if (type === 'enum' && !enumValues) {
+                alert('Please provide enum values');
+                return;
+            }
+            
+            const field = {
+                name,
+                description,
+                type,
+                defaultValue,
+                required,
+                enumValues: type === 'enum' ? enumValues : null
+            };
+            
+            console.log('Saving field:', field);
+            console.log('Editing index:', editingFieldIndex);
+            
+            if (editingFieldIndex >= 0) {
+                // Update existing field
+                console.log('Updating existing field at index:', editingFieldIndex);
+                inputFields[editingFieldIndex] = field;
+            } else {
+                // Add new field
+                console.log('Adding new field');
+                inputFields.push(field);
+                
+                // If this field was created from a selection, replace the selected text
+                if (shouldReplaceSelection) {
+                    replaceSelectionWithField(name);
+                }
+            }
+            
+            console.log('Updated inputFields:', inputFields);
+            
+            renderInputFieldsTable();
+            closeInputFieldModal();
+            
+            // Reset the flag
+            shouldReplaceSelection = false;
+        }
+
+        function replaceSelectionWithField(fieldName) {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const textBefore = promptTextarea.value.substring(0, selectionStart);
+            const textAfter = promptTextarea.value.substring(selectionEnd);
+            
+            // Replace selected text with {{fieldName}}
+            const fieldReference = `{{${fieldName}}}`;
+            promptTextarea.value = textBefore + fieldReference + textAfter;
+            
+            // Set cursor position after the inserted field
+            const newCursorPosition = textBefore.length + fieldReference.length;
+            promptTextarea.setSelectionRange(newCursorPosition, newCursorPosition);
+            promptTextarea.focus();
+            
+            // Reset selection
+            selectedText = '';
+            selectionStart = 0;
+            selectionEnd = 0;
+            
+            // Hide the selection field menu
+            const selectionFieldMenu = document.getElementById('selectionFieldMenu');
+            selectionFieldMenu.style.display = 'none';
+        }
+
+        function editInputField(index) {
+            console.log('editInputField called with index:', index);
+            console.log('Field to edit:', inputFields[index]);
+            openInputFieldModal(index);
+        }
+
+        function deleteInputField(index) {
+            if (confirm('Are you sure you want to delete this input field?')) {
+                inputFields.splice(index, 1);
+                renderInputFieldsTable();
+            }
+        }
+
+        function detectInputFields() {
+            const promptTextarea = document.getElementById('flowPrompt');
+            const promptText = promptTextarea.value;
+            
+            // Find all {{field_name}} patterns in the prompt
+            const fieldPattern = /\{\{([a-z0-9_]+)\}\}/g;
+            const matches = [...promptText.matchAll(fieldPattern)];
+            
+            if (matches.length === 0) {
+                alert('No input field references found in the prompt. Use {{field_name}} syntax to define fields.');
+                return;
+            }
+            
+            // Extract unique field names
+            const detectedFieldNames = [...new Set(matches.map(match => match[1]))];
+            
+            // Filter out fields that already exist
+            const existingFieldNames = inputFields.map(f => f.name);
+            const newFieldNames = detectedFieldNames.filter(name => !existingFieldNames.includes(name));
+            
+            if (newFieldNames.length === 0) {
+                alert('All detected fields are already defined.');
+                return;
+            }
+            
+            // Add new fields with default values
+            let addedCount = 0;
+            newFieldNames.forEach(fieldName => {
+                inputFields.push({
+                    name: fieldName,
+                    description: `Auto-detected field: ${fieldName}`,
+                    type: 'text',
+                    defaultValue: '',
+                    required: false,
+                    enumValues: null
+                });
+                addedCount++;
+            });
+            
+            renderInputFieldsTable();
+            
+            // Show success message
+            const message = addedCount === 1 
+                ? `1 new field detected and added: ${newFieldNames[0]}` 
+                : `${addedCount} new fields detected and added: ${newFieldNames.join(', ')}`;
+            alert(message);
+            
+            console.log('Detected and added fields:', newFieldNames);
+        }
+
+        function generateFlow() {
+            const flowName = document.getElementById('flowName').value;
+            const flowDescription = document.getElementById('flowDescription').value;
+            const flowModel = document.getElementById('flowModel').value;
+            const flowTools = document.getElementById('flowTools').value;
+            const flowPrompt = document.getElementById('flowPrompt').value;
+            const flowInstruction = document.getElementById('flowInstruction').value;
+            
+            if (!flowName) {
+                alert('Please enter a flow name');
+                return;
+            }
+            
+            // Create flow data structure
+            const flowData = {
+                name: flowName,
+                description: flowDescription,
+                model: flowModel,
+                tools: flowTools,
+                prompt: flowPrompt,
+                instruction: flowInstruction,
+                inputFields: inputFields,
+                created: new Date().toISOString()
+            };
+            
+            // Create and download JSON file
+            const dataStr = JSON.stringify(flowData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `flow-${flowName}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            console.log('Generated flow:', flowData);
+            
+            // Show success message
+            alert('Flow generated successfully!');
+            
+            // Redirect to flows page
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        // Close input field modal when clicking outside
+        document.getElementById('inputFieldModalOverlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeInputFieldModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

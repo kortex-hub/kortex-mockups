@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Flows</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+</head>
+<body class="flows-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Flows UI -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Flows</h1>
+            </header>
+            
+            <div class="content">
+                <!-- Flows Content -->
+                <div class="rag-header">
+                    <h2 class="rag-title">Flows</h2>
+                    <button class="create-button" onclick="window.location.href='create.html'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Create
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search flows..." id="flowSearch" oninput="filterFlows()">
+                    </div>
+                </div>
+
+                <!-- Flows Table -->
+                <table class="rag-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th class="status-cell"></th>
+                            <th>FLOW</th>
+                            <th class="sources-cell">INPUT FIELDS</th>
+                            <th class="actions-cell">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="flowsTableBody">
+                        <tr onclick="window.location.href='details.html?flow=get-community-issues-from-podman-desktop'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                </svg>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <span class="env-name">get-community-issues-from-podman-desktop</span>
+                                    <span style="font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 12px; color: #6b7280;">/Users/slemeur/config/goose/recipes/get-community-issues-from-podman-desktop.yaml</span>
+                                </div>
+                            </td>
+                            <td class="sources-cell">
+                                <span class="sources-count">3</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <button class="action-button" title="Run" onclick="runFlow('get-community-issues-from-podman-desktop')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5,3 19,12 5,21"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-button delete" title="Delete" onclick="deleteFlow('get-community-issues-from-podman-desktop')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr onclick="window.location.href='details.html?flow=github-issue-summary'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                </svg>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <span class="env-name">github-issue-summary</span>
+                                    <span style="font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 12px; color: #6b7280;">/Users/slemeur/config/goose/recipes/github-issue-summary.yaml</span>
+                                </div>
+                            </td>
+                            <td class="sources-cell">
+                                <span class="sources-count">0</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <button class="action-button" title="Run" onclick="runFlow('github-issue-summary')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5,3 19,12 5,21"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-button delete" title="Delete" onclick="deleteFlow('github-issue-summary')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr onclick="window.location.href='details.html?flow=filter-github-issues-by-community-member'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                </svg>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <span class="env-name">filter-github-issues-by-community-member</span>
+                                    <span style="font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 12px; color: #6b7280;">/Users/slemeur/config/goose/recipes/filter-github-issues-by-community-member.yaml</span>
+                                </div>
+                            </td>
+                            <td class="sources-cell">
+                                <span class="sources-count">2</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <button class="action-button" title="Run" onclick="runFlow('filter-github-issues-by-community-member')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5,3 19,12 5,21"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-button delete" title="Delete" onclick="deleteFlow('filter-github-issues-by-community-member')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr onclick="window.location.href='details.html?flow=filter-github-issues-by-community-members-pro'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                </svg>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <span class="env-name">filter-github-issues-by-community-members-pro</span>
+                                    <span style="font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 12px; color: #6b7280;">/Users/slemeur/config/goose/recipes/filter-github-issues-by-community-members-pro.yaml</span>
+                                </div>
+                            </td>
+                            <td class="sources-cell">
+                                <span class="sources-count">4</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <button class="action-button" title="Run" onclick="runFlow('filter-github-issues-by-community-members-pro')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5,3 19,12 5,21"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-button delete" title="Delete" onclick="deleteFlow('filter-github-issues-by-community-members-pro')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr onclick="window.location.href='details.html?flow=find-community-created-github-issues'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                </svg>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <span class="env-name">find-community-created-github-issues</span>
+                                    <span style="font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 12px; color: #6b7280;">/Users/slemeur/config/goose/recipes/find-community-created-github-issues.yaml</span>
+                                </div>
+                            </td>
+                            <td class="sources-cell">
+                                <span class="sources-count">0</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <button class="action-button" title="Run" onclick="runFlow('find-community-created-github-issues')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5,3 19,12 5,21"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-button delete" title="Delete" onclick="deleteFlow('find-community-created-github-issues')">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Run Flow Modal -->
+    <div class="run-flow-modal-overlay" id="runFlowModalOverlay">
+        <div class="run-flow-modal">
+            <div class="run-flow-modal-header">
+                <h3 class="run-flow-modal-title" id="runFlowModalTitle">Run Flow</h3>
+                <button class="run-flow-modal-close" onclick="closeRunFlowModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="run-flow-modal-body">
+                <p class="run-flow-modal-description" id="runFlowDescription"></p>
+                <form class="run-flow-form" id="runFlowForm">
+                    <div id="runFlowInputFields">
+                        <!-- Input fields will be dynamically added here -->
+                    </div>
+                </form>
+            </div>
+            
+            <div class="run-flow-modal-footer">
+                <button type="button" class="flow-btn flow-btn-secondary" onclick="closeRunFlowModal()">Cancel</button>
+                <button type="button" class="flow-btn flow-btn-primary" onclick="executeFlow()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                    Run Flow
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Sample flow data with input fields
+        const flowsData = {
+            'get-community-issues-from-podman-desktop': {
+                name: 'get-community-issues-from-podman-desktop',
+                description: 'Get community issues from Podman Desktop repository',
+                inputFields: [
+                    { name: 'repository_url', description: 'GitHub repository URL', type: 'text', required: true, defaultValue: 'podman-desktop/podman-desktop' },
+                    { name: 'issue_count', description: 'Number of issues to fetch', type: 'number', required: true, defaultValue: '5' },
+                    { name: 'include_closed', description: 'Include closed issues', type: 'boolean', required: false, defaultValue: false }
+                ]
+            },
+            'filter-github-issues-by-community-member': {
+                name: 'filter-github-issues-by-community-member',
+                description: 'Filter GitHub issues by community members',
+                inputFields: [
+                    { name: 'repository', description: 'Repository name', type: 'text', required: true, defaultValue: 'podman-desktop/podman-desktop' },
+                    { name: 'max_results', description: 'Maximum results', type: 'number', required: false, defaultValue: '10' }
+                ]
+            },
+            'filter-github-issues-by-community-members-pro': {
+                name: 'filter-github-issues-by-community-members-pro',
+                description: 'Advanced filter for GitHub issues',
+                inputFields: [
+                    { name: 'repo_owner', description: 'Repository owner', type: 'text', required: true, defaultValue: '' },
+                    { name: 'repo_name', description: 'Repository name', type: 'text', required: true, defaultValue: '' },
+                    { name: 'issue_state', description: 'Issue state', type: 'enum', required: true, defaultValue: 'open', enumValues: 'open, closed, all' },
+                    { name: 'days_back', description: 'Days to look back', type: 'number', required: false, defaultValue: '30' }
+                ]
+            }
+        };
+
+        let currentFlowName = '';
+
+        // Flows-specific functions
+        function runFlow(flowName) {
+            console.log('Running flow:', flowName);
+            currentFlowName = flowName;
+            
+            const flowData = flowsData[flowName];
+            
+            // If flow has input fields, show modal
+            if (flowData && flowData.inputFields && flowData.inputFields.length > 0) {
+                showRunFlowModal(flowData);
+            } else {
+                // No input fields, run directly
+                executeFlowDirectly(flowName);
+            }
+        }
+
+        function showRunFlowModal(flowData) {
+            const modal = document.getElementById('runFlowModalOverlay');
+            const title = document.getElementById('runFlowModalTitle');
+            const description = document.getElementById('runFlowDescription');
+            const inputFieldsContainer = document.getElementById('runFlowInputFields');
+            
+            title.textContent = `Run: ${flowData.name}`;
+            description.textContent = flowData.description || 'Provide values for the input fields below.';
+            
+            // Generate input fields
+            inputFieldsContainer.innerHTML = flowData.inputFields.map(field => {
+                return generateInputFieldHTML(field);
+            }).join('');
+            
+            modal.classList.add('show');
+        }
+
+        function generateInputFieldHTML(field) {
+            const requiredBadge = field.required ? '<span class="required-badge">Required</span>' : '';
+            
+            let inputHTML = '';
+            
+            switch (field.type) {
+                case 'text':
+                    inputHTML = `<input type="text" class="run-flow-input" id="field_${field.name}" placeholder="${field.description}" value="${field.defaultValue || ''}" ${field.required ? 'required' : ''}>`;
+                    break;
+                case 'number':
+                    inputHTML = `<input type="number" class="run-flow-input" id="field_${field.name}" placeholder="${field.description}" value="${field.defaultValue || ''}" ${field.required ? 'required' : ''}>`;
+                    break;
+                case 'boolean':
+                    const checked = field.defaultValue ? 'checked' : '';
+                    inputHTML = `
+                        <label class="run-flow-checkbox-wrapper">
+                            <input type="checkbox" class="run-flow-checkbox" id="field_${field.name}" ${checked}>
+                            <span>${field.description}</span>
+                        </label>
+                    `;
+                    break;
+                case 'enum':
+                    const options = field.enumValues.split(',').map(v => v.trim());
+                    inputHTML = `
+                        <select class="run-flow-select" id="field_${field.name}" ${field.required ? 'required' : ''}>
+                            ${options.map(opt => `<option value="${opt}" ${opt === field.defaultValue ? 'selected' : ''}>${opt}</option>`).join('')}
+                        </select>
+                    `;
+                    break;
+                default:
+                    inputHTML = `<input type="text" class="run-flow-input" id="field_${field.name}" placeholder="${field.description}" value="${field.defaultValue || ''}">`;
+            }
+            
+            return `
+                <div class="run-flow-field-group">
+                    <label class="run-flow-label">
+                        ${field.description}
+                        ${requiredBadge}
+                    </label>
+                    ${inputHTML}
+                </div>
+            `;
+        }
+
+        function closeRunFlowModal() {
+            const modal = document.getElementById('runFlowModalOverlay');
+            modal.classList.remove('show');
+            currentFlowName = '';
+        }
+
+        function executeFlow() {
+            const flowData = flowsData[currentFlowName];
+            
+            if (!flowData) {
+                executeFlowDirectly(currentFlowName);
+                return;
+            }
+            
+            // Collect input values
+            const inputValues = {};
+            let hasErrors = false;
+            
+            flowData.inputFields.forEach(field => {
+                const element = document.getElementById(`field_${field.name}`);
+                
+                if (field.type === 'boolean') {
+                    inputValues[field.name] = element.checked;
+                } else if (field.type === 'number') {
+                    inputValues[field.name] = element.value ? Number(element.value) : null;
+                } else {
+                    inputValues[field.name] = element.value;
+                }
+                
+                // Validate required fields
+                if (field.required && !inputValues[field.name] && inputValues[field.name] !== false && inputValues[field.name] !== 0) {
+                    hasErrors = true;
+                    element.classList.add('error');
+                } else {
+                    element.classList.remove('error');
+                }
+            });
+            
+            if (hasErrors) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            console.log('Executing flow with inputs:', inputValues);
+            
+            // Close modal
+            closeRunFlowModal();
+            
+            // Show success message
+            alert(`Flow "${currentFlowName}" started with inputs:\n${JSON.stringify(inputValues, null, 2)}`);
+        }
+
+        function executeFlowDirectly(flowName) {
+            console.log('Executing flow directly:', flowName);
+            alert(`Starting flow: ${flowName} (no input fields)`);
+        }
+
+        function deleteFlow(flowName) {
+            if (confirm(`Are you sure you want to delete the flow: ${flowName}?`)) {
+                console.log('Deleting flow:', flowName);
+                // Add deletion logic here
+            }
+        }
+
+        function refreshFlows() {
+            console.log('Refreshing flows...');
+            window.location.reload();
+        }
+
+        function filterFlows() {
+            const searchInput = document.getElementById('flowSearch');
+            const filter = searchInput.value.toLowerCase();
+            const table = document.getElementById('flowsTableBody');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const flowPath = rows[i].getElementsByClassName('env-name')[0];
+                if (flowPath) {
+                    const textValue = flowPath.textContent || flowPath.innerText;
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('runFlowModalOverlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeRunFlowModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

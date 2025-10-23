@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Flow Details</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Flow Details Specific Styles */
+        .details-view {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .details-header {
+            margin-bottom: 0;
+            padding: 16px 24px;
+            border-bottom: 1px solid #3d3e4f;
+            background-color: #252631;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            background-color: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            color: #e5e7eb;
+            background-color: #374151;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .breadcrumb-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb-link:hover {
+            color: #a78bfa;
+        }
+
+        .breadcrumb-separator {
+            color: #6b7280;
+        }
+
+        .breadcrumb-current {
+            color: #e5e7eb;
+        }
+
+        .flow-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .flow-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .flow-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .flow-path {
+            font-size: 12px;
+            font-weight: 400;
+            color: #6b7280;
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .flow-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            background-color: #374151;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .header-action-button:hover {
+            background-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .header-action-button.primary {
+            background-color: #8b5cf6;
+            color: #ffffff;
+        }
+
+        .header-action-button.primary:hover {
+            background-color: #7c3aed;
+        }
+
+        .header-action-button.danger:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .details-tabs {
+            display: flex;
+            border-bottom: 1px solid #3d3e4f;
+            margin-bottom: 0;
+            padding: 0 24px;
+        }
+
+        .details-tab {
+            padding: 12px 16px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .details-tab:hover {
+            color: #e5e7eb;
+        }
+
+        .details-tab.active {
+            color: #ffffff;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 0;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-viewer {
+            background-color: #1e1f29;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: flex;
+            min-height: 20px;
+            padding: 0 24px 0 0;
+        }
+
+        .code-line:hover {
+            background-color: rgba(139, 92, 246, 0.05);
+        }
+
+        .line-number {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+            color: #6b7280;
+            user-select: none;
+            padding: 0 16px;
+            background-color: #252631;
+            border-right: 1px solid #3d3e4f;
+        }
+
+        .line-content {
+            flex: 1;
+            padding-left: 16px;
+            padding-right: 24px;
+            color: #e5e7eb;
+            white-space: pre;
+            overflow-x: auto;
+            max-width: calc(100vw - 350px);
+        }
+
+        /* Syntax Highlighting */
+        .yaml-key {
+            color: #60a5fa;
+        }
+
+        .yaml-value {
+            color: #34d399;
+        }
+
+        .yaml-string {
+            color: #fbbf24;
+        }
+
+        .yaml-comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .yaml-symbol {
+            color: #9ca3af;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 24px;
+        }
+
+        .info-card {
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        /* Input Fields Styles */
+        .input-fields-container {
+            padding: 24px;
+        }
+
+        .input-fields-table-container {
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .input-fields-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .input-fields-table thead {
+            background-color: #1e1f29;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .input-fields-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-fields-table tbody tr {
+            border-bottom: 1px solid #3d3e4f;
+            transition: background-color 0.2s ease;
+        }
+
+        .input-fields-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .input-fields-table tbody tr:hover {
+            background-color: #2d2e3f;
+        }
+
+        .input-fields-table td {
+            padding: 16px;
+            font-size: 14px;
+            color: #e5e7eb;
+        }
+
+        .input-field-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background-color: #374151;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .input-field-type-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .input-field-description {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-field-description strong {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            color: #60a5fa;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .input-field-description span {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .input-field-required-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .input-field-default-value {
+            color: #9ca3af;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .input-fields-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        .input-fields-empty svg {
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .input-fields-empty p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .input-fields-empty p:first-of-type {
+            font-weight: 500;
+            color: #e5e7eb;
+            font-size: 16px;
+        }
+
+        .input-fields-empty-hint {
+            color: #6b7280;
+            font-size: 13px !important;
+        }
+
+        /* Schedule Tab Styles */
+        .schedules-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .schedule-card {
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .schedule-card:hover {
+            border-color: #4b5563;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .schedule-card.active-schedule {
+            border-left: 4px solid #10b981;
+        }
+
+        .schedule-card.inactive-schedule {
+            border-left: 4px solid #6b7280;
+            opacity: 0.85;
+        }
+
+        .schedule-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .schedule-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .schedule-status-indicator.active {
+            background-color: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+        }
+
+        .schedule-status-indicator.inactive {
+            background-color: #6b7280;
+        }
+
+        .schedule-card-title-section {
+            flex: 1;
+        }
+
+        .schedule-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .schedule-card-description {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        .schedule-toggle-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .schedule-toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .schedule-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .schedule-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4b5563;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .schedule-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .schedule-toggle input:checked + .schedule-toggle-slider {
+            background-color: #8b5cf6;
+        }
+
+        .schedule-toggle input:checked + .schedule-toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        .schedule-card-body {
+            padding: 20px;
+        }
+
+        .schedule-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .schedule-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .schedule-info-item svg {
+            flex-shrink: 0;
+            color: #8b5cf6;
+            margin-top: 2px;
+        }
+
+        .schedule-info-item > div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .schedule-info-label {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .schedule-info-value {
+            font-size: 14px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .schedule-card-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid #3d3e4f;
+        }
+
+        .schedule-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: #374151;
+            border: none;
+            border-radius: 6px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .schedule-action-btn:hover {
+            background-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .schedule-action-btn.edit:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .schedule-action-btn.delete:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        /* Schedule Modal Styles */
+        .schedule-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .schedule-modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .schedule-modal {
+            background-color: #252631;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .schedule-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .schedule-modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .schedule-modal-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .schedule-modal-close:hover {
+            color: #e5e7eb;
+        }
+
+        .schedule-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .schedule-form-section {
+            margin-bottom: 24px;
+        }
+
+        .schedule-form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .schedule-form-input,
+        .schedule-form-select {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .schedule-form-input:focus,
+        .schedule-form-select:focus {
+            border-color: #8b5cf6;
+        }
+
+        .schedule-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .schedule-form-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 6px;
+        }
+
+        .schedule-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #3d3e4f;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .schedule-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .schedule-btn-secondary {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        .schedule-btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .schedule-btn-primary {
+            background-color: #8b5cf6;
+            color: #ffffff;
+        }
+
+        .schedule-btn-primary:hover {
+            background-color: #7c3aed;
+        }
+    </style>
+</head>
+<body class="flows-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Flow Details View -->
+        <main class="main-content details-view">
+            <header class="header">
+                <h1>Flows</h1>
+            </header>
+            
+            <div class="content">
+                <!-- Details Header -->
+                <div class="details-header">
+                    <!-- Close Button -->
+                    <button class="close-button" onclick="window.location.href='index.html'" title="Close">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Breadcrumb Navigation -->
+                    <div class="breadcrumb-nav">
+                        <a href="index.html" class="breadcrumb-link">Flows</a>
+                        <span class="breadcrumb-separator">></span>
+                        <span class="breadcrumb-current">Flow Details</span>
+                    </div>
+                    
+                    <!-- Flow Header -->
+                    <div class="flow-header">
+                        <div class="flow-info">
+                            <h2 class="flow-name" id="flowName">get-community-issues-from-podman-desktop</h2>
+                            <p class="flow-path" id="flowPath">/Users/slemeur/config/goose/recipes/get-community-issues-from-podman-desktop.yaml</p>
+                        </div>
+                        
+                        <div class="flow-actions">
+                            <button class="header-action-button primary" title="Run">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="5,3 19,12 5,21"/>
+                                </svg>
+                            </button>
+                            <button class="header-action-button danger" title="Delete">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3,6 5,6 21,6"/>
+                                    <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="details-tabs">
+                    <a href="#" class="details-tab" onclick="showTab('summary'); return false;">Summary</a>
+                    <a href="#" class="details-tab active" onclick="showTab('source'); return false;">Source</a>
+                    <a href="#" class="details-tab" onclick="showTab('kubernetes'); return false;">Kubernetes</a>
+                    <a href="#" class="details-tab" onclick="showTab('schedule'); return false;">Schedule</a>
+                </div>
+
+                <!-- Tab Content: Summary -->
+                <div id="summaryTab" class="tab-content">
+                    <div class="summary-grid">
+                        <div class="info-card">
+                            <h3 class="info-card-title">General Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Name</span>
+                                <span class="info-value" id="summaryName">get-community-issues-from-podman-desktop</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Title</span>
+                                <span class="info-value">Get Community Issues from Podman Desktop</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Created</span>
+                                <span class="info-value">5 days ago</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Last Modified</span>
+                                <span class="info-value">2 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3 class="info-card-title">Configuration</h3>
+                            <div class="info-row">
+                                <span class="info-label">Input Fields</span>
+                                <span class="info-value">3</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Extensions</span>
+                                <span class="info-value">1</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Provider</span>
+                                <span class="info-value">Google</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Model</span>
+                                <span class="info-value">gemini-2.5-flash</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div class="info-card" style="margin: 0 24px 24px 24px;">
+                        <h3 class="info-card-title">Description</h3>
+                        <p style="color: #e5e7eb; font-size: 14px; line-height: 1.6; margin: 0;">
+                            This flow identifies issues created by individuals who are not listed as maintainers in the Podman Desktop project's MAINTAINERS.md file, effectively listing 'community issues'.
+                        </p>
+                    </div>
+
+                    <!-- Prompt Section -->
+                    <div class="info-card" style="margin: 0 24px 24px 24px;">
+                        <h3 class="info-card-title">Prompt</h3>
+                        <p style="color: #e5e7eb; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Monaco', 'Menlo', 'Courier New', monospace; white-space: pre-wrap;">First, retrieve the content of the 'MAINTAINERS.md' file from the 'podman-desktop/podman-desktop' GitHub repository. Parse this file to extract all GitHub usernames listed under the 'GitHub'</p>
+                    </div>
+
+                    <!-- Instructions Section -->
+                    <div class="info-card" style="margin: 0 24px 24px 24px;">
+                        <h3 class="info-card-title">Instructions</h3>
+                        <p style="color: #e5e7eb; font-size: 14px; line-height: 1.6; margin: 0;">
+                            You are a helpful assistant.
+                        </p>
+                    </div>
+
+                    <!-- Input Fields Section -->
+                    <div class="input-fields-container">
+                        <h3 class="info-card-title" style="margin-bottom: 16px; padding-left: 0;">Input Fields</h3>
+                        <div class="input-fields-table-container">
+                            <table class="input-fields-table">
+                                <thead>
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Default Value</th>
+                                        <th>Type</th>
+                                        <th style="width: 100px; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="input-field-description">
+                                                <strong>{{repository_owner}}</strong>
+                                                <span>The owner of the GitHub repository</span>
+                                                <span class="input-field-required-badge">Required</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="input-field-default-value">podman-desktop</span>
+                                        </td>
+                                        <td>
+                                            <div class="input-field-type-badge">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+                                                </svg>
+                                                <span>text</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="actions-row">
+                                                <button class="action-button" title="Edit">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="action-button delete" title="Delete">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"/>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-field-description">
+                                                <strong>{{repository_name}}</strong>
+                                                <span>The name of the GitHub repository</span>
+                                                <span class="input-field-required-badge">Required</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="input-field-default-value">podman-desktop</span>
+                                        </td>
+                                        <td>
+                                            <div class="input-field-type-badge">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+                                                </svg>
+                                                <span>text</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="actions-row">
+                                                <button class="action-button" title="Edit">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="action-button delete" title="Delete">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"/>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-field-description">
+                                                <strong>{{max_issues}}</strong>
+                                                <span>Maximum number of issues to retrieve</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="input-field-default-value">5</span>
+                                        </td>
+                                        <td>
+                                            <div class="input-field-type-badge">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                    <path d="M8 10h8M8 14h8"/>
+                                                </svg>
+                                                <span>number</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="actions-row">
+                                                <button class="action-button" title="Edit">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="action-button delete" title="Delete">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"/>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Source -->
+                <div id="sourceTab" class="tab-content active">
+                    <div class="code-viewer">
+                        <div class="code-line"><span class="line-number">1</span><span class="line-content"><span class="yaml-key">title:</span> <span class="yaml-string">get-community-issues-from-podman-desktop</span></span></div>
+                        <div class="code-line"><span class="line-number">2</span><span class="line-content"><span class="yaml-key">name:</span> <span class="yaml-string">get-community-issues-from-podman-desktop</span></span></div>
+                        <div class="code-line"><span class="line-number">3</span><span class="line-content"><span class="yaml-key">description:</span> <span class="yaml-symbol">|</span></span></div>
+                        <div class="code-line"><span class="line-number">4</span><span class="line-content">  This flow identifies issues created by individuals who are not listed as maintainers in the Podman Desktop project's MAINTAINERS.md file, effectively listing 'community issues'.</span></div>
+                        <div class="code-line"><span class="line-number">5</span><span class="line-content"></span></div>
+                        <div class="code-line"><span class="line-number">6</span><span class="line-content"><span class="yaml-comment"># Required for headless mode</span></span></div>
+                        <div class="code-line"><span class="line-number">7</span><span class="line-content"><span class="yaml-key">prompt:</span> <span class="yaml-symbol">|</span></span></div>
+                        <div class="code-line"><span class="line-number">8</span><span class="line-content">  First, retrieve the content of the 'MAINTAINERS.md' file from the 'podman-desktop/podman-desktop' GitHub repository. Parse this file to extract all GitHub usernames listed under the 'GitHub'</span></div>
+                        <div class="code-line"><span class="line-number">9</span><span class="line-content"></span></div>
+                        <div class="code-line"><span class="line-number">10</span><span class="line-content"><span class="yaml-key">instructions:</span> <span class="yaml-symbol">|</span></span></div>
+                        <div class="code-line"><span class="line-number">11</span><span class="line-content">  You are a helpful assistant.</span></div>
+                        <div class="code-line"><span class="line-number">12</span><span class="line-content"></span></div>
+                        <div class="code-line"><span class="line-number">13</span><span class="line-content"><span class="yaml-key">extensions:</span></span></div>
+                        <div class="code-line"><span class="line-number">14</span><span class="line-content">  <span class="yaml-symbol">-</span> <span class="yaml-key">name:</span> <span class="yaml-string">"com.github.mcp"</span></span></div>
+                        <div class="code-line"><span class="line-number">15</span><span class="line-content">    <span class="yaml-key">type:</span> <span class="yaml-string">"streamable_http"</span></span></div>
+                        <div class="code-line"><span class="line-number">16</span><span class="line-content">    <span class="yaml-key">url:</span> <span class="yaml-string">"https://api.githubcopilot.com/mcp"</span></span></div>
+                        <div class="code-line"><span class="line-number">17</span><span class="line-content">    <span class="yaml-key">headers:</span></span></div>
+                        <div class="code-line"><span class="line-number">18</span><span class="line-content">      <span class="yaml-key">Authorization:</span> <span class="yaml-string">"Bearer ***"</span></span></div>
+                        <div class="code-line"><span class="line-number">19</span><span class="line-content"></span></div>
+                        <div class="code-line"><span class="line-number">20</span><span class="line-content"></span></div>
+                        <div class="code-line"><span class="line-number">21</span><span class="line-content"><span class="yaml-key">settings:</span></span></div>
+                        <div class="code-line"><span class="line-number">22</span><span class="line-content">  <span class="yaml-key">goose_provider:</span> <span class="yaml-string">google</span></span></div>
+                        <div class="code-line"><span class="line-number">23</span><span class="line-content">  <span class="yaml-key">goose_model:</span> <span class="yaml-string">gemini-2.5-flash</span></span></div>
+                        <div class="code-line"><span class="line-number">24</span><span class="line-content"></span></div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Kubernetes -->
+                <div id="kubernetesTab" class="tab-content">
+                    <div class="summary-grid">
+                        <div class="info-card">
+                            <h3 class="info-card-title">Kubernetes Configuration</h3>
+                            <div class="info-row">
+                                <span class="info-label">Status</span>
+                                <span class="info-value">Not Deployed</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Namespace</span>
+                                <span class="info-value">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Deployment</span>
+                                <span class="info-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Schedule -->
+                <div id="scheduleTab" class="tab-content">
+                    <div style="padding: 24px;">
+                        <!-- Schedule Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div>
+                                <h3 style="font-size: 18px; font-weight: 600; color: #e5e7eb; margin: 0 0 8px 0;">Flow Scheduling</h3>
+                                <p style="font-size: 14px; color: #9ca3af; margin: 0;">Automate flow execution with scheduled runs</p>
+                            </div>
+                            <button class="create-button" onclick="openCreateScheduleModal()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"/>
+                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                Create Schedule
+                            </button>
+                        </div>
+
+                        <!-- Schedules List -->
+                        <div class="schedules-container">
+                            <!-- Active Schedules -->
+                            <div class="schedule-card active-schedule">
+                                <div class="schedule-card-header">
+                                    <div class="schedule-status-indicator active"></div>
+                                    <div class="schedule-card-title-section">
+                                        <h4 class="schedule-card-title">Daily Report Generation</h4>
+                                        <p class="schedule-card-description">Runs every day at 9:00 AM</p>
+                                    </div>
+                                    <div class="schedule-toggle-wrapper">
+                                        <label class="schedule-toggle">
+                                            <input type="checkbox" checked onchange="toggleSchedule(this, 'daily-report')">
+                                            <span class="schedule-toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="schedule-card-body">
+                                    <div class="schedule-info-grid">
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Frequency</span>
+                                                <span class="schedule-info-value">Daily</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Next Run</span>
+                                                <span class="schedule-info-value">Tomorrow at 9:00 AM</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/>
+                                                <path d="M12 6v6l4 2"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Timezone</span>
+                                                <span class="schedule-info-value">UTC-5 (EST)</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Last Run</span>
+                                                <span class="schedule-info-value">Today at 9:00 AM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-card-actions">
+                                        <button class="schedule-action-btn edit" title="Edit Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="schedule-action-btn delete" title="Delete Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Paused Schedule -->
+                            <div class="schedule-card inactive-schedule">
+                                <div class="schedule-card-header">
+                                    <div class="schedule-status-indicator inactive"></div>
+                                    <div class="schedule-card-title-section">
+                                        <h4 class="schedule-card-title">Weekly Data Backup</h4>
+                                        <p class="schedule-card-description">Runs every Sunday at 2:00 AM</p>
+                                    </div>
+                                    <div class="schedule-toggle-wrapper">
+                                        <label class="schedule-toggle">
+                                            <input type="checkbox" onchange="toggleSchedule(this, 'weekly-backup')">
+                                            <span class="schedule-toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="schedule-card-body">
+                                    <div class="schedule-info-grid">
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Frequency</span>
+                                                <span class="schedule-info-value">Weekly (Sunday)</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Next Run</span>
+                                                <span class="schedule-info-value">Paused</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/>
+                                                <path d="M12 6v6l4 2"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Timezone</span>
+                                                <span class="schedule-info-value">UTC-5 (EST)</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Last Run</span>
+                                                <span class="schedule-info-value">5 days ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-card-actions">
+                                        <button class="schedule-action-btn edit" title="Edit Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="schedule-action-btn delete" title="Delete Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monthly Schedule -->
+                            <div class="schedule-card active-schedule">
+                                <div class="schedule-card-header">
+                                    <div class="schedule-status-indicator active"></div>
+                                    <div class="schedule-card-title-section">
+                                        <h4 class="schedule-card-title">Monthly Analytics Report</h4>
+                                        <p class="schedule-card-description">Runs on the 1st of each month at 8:00 AM</p>
+                                    </div>
+                                    <div class="schedule-toggle-wrapper">
+                                        <label class="schedule-toggle">
+                                            <input type="checkbox" checked onchange="toggleSchedule(this, 'monthly-analytics')">
+                                            <span class="schedule-toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="schedule-card-body">
+                                    <div class="schedule-info-grid">
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <polyline points="12 6 12 12 16 14"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Frequency</span>
+                                                <span class="schedule-info-value">Monthly (1st)</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                                <line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Next Run</span>
+                                                <span class="schedule-info-value">Dec 1 at 8:00 AM</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/>
+                                                <path d="M12 6v6l4 2"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Timezone</span>
+                                                <span class="schedule-info-value">UTC-5 (EST)</span>
+                                            </div>
+                                        </div>
+                                        <div class="schedule-info-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                            </svg>
+                                            <div>
+                                                <span class="schedule-info-label">Last Run</span>
+                                                <span class="schedule-info-value">Nov 1 at 8:00 AM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-card-actions">
+                                        <button class="schedule-action-btn edit" title="Edit Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="schedule-action-btn delete" title="Delete Schedule">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="schedule-modal-overlay">
+        <div class="schedule-modal">
+            <div class="schedule-modal-header">
+                <h2 class="schedule-modal-title">Create Schedule</h2>
+                <button class="schedule-modal-close" onclick="closeScheduleModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="schedule-modal-body">
+                <div class="schedule-form-section">
+                    <label class="schedule-form-label">Schedule Name</label>
+                    <input type="text" class="schedule-form-input" placeholder="e.g., Daily Report Generation">
+                </div>
+
+                <div class="schedule-form-section">
+                    <label class="schedule-form-label">Description</label>
+                    <input type="text" class="schedule-form-input" placeholder="Brief description of this schedule">
+                </div>
+
+                <div class="schedule-form-section">
+                    <label class="schedule-form-label">Frequency</label>
+                    <select class="schedule-form-select" id="frequencySelect" onchange="updateScheduleFields()">
+                        <option value="once">One-time</option>
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="custom">Custom (Cron)</option>
+                    </select>
+                </div>
+
+                <div id="weeklyOptions" class="schedule-form-section" style="display: none;">
+                    <label class="schedule-form-label">Day of Week</label>
+                    <select class="schedule-form-select">
+                        <option value="0">Sunday</option>
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                    </select>
+                </div>
+
+                <div id="monthlyOptions" class="schedule-form-section" style="display: none;">
+                    <label class="schedule-form-label">Day of Month</label>
+                    <select class="schedule-form-select">
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                        <option value="5">5th</option>
+                        <option value="15">15th</option>
+                        <option value="last">Last day of month</option>
+                    </select>
+                </div>
+
+                <div id="customCronOptions" class="schedule-form-section" style="display: none;">
+                    <label class="schedule-form-label">Cron Expression</label>
+                    <input type="text" class="schedule-form-input" placeholder="0 0 * * *">
+                    <p class="schedule-form-hint">Enter a valid cron expression (e.g., "0 9 * * *" for daily at 9:00 AM)</p>
+                </div>
+
+                <div class="schedule-form-row">
+                    <div class="schedule-form-section">
+                        <label class="schedule-form-label">Start Date</label>
+                        <input type="date" class="schedule-form-input">
+                    </div>
+                    <div class="schedule-form-section">
+                        <label class="schedule-form-label">Time</label>
+                        <input type="time" class="schedule-form-input" value="09:00">
+                    </div>
+                </div>
+
+                <div class="schedule-form-section">
+                    <label class="schedule-form-label">Timezone</label>
+                    <select class="schedule-form-select">
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York" selected>America/New_York (EST)</option>
+                        <option value="America/Chicago">America/Chicago (CST)</option>
+                        <option value="America/Denver">America/Denver (MST)</option>
+                        <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
+                        <option value="Europe/London">Europe/London (GMT)</option>
+                        <option value="Europe/Paris">Europe/Paris (CET)</option>
+                        <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                    </select>
+                </div>
+
+                <div class="schedule-form-section">
+                    <label class="schedule-form-label">End Date (Optional)</label>
+                    <input type="date" class="schedule-form-input">
+                    <p class="schedule-form-hint">Leave blank for no end date</p>
+                </div>
+            </div>
+            <div class="schedule-modal-footer">
+                <button class="schedule-btn schedule-btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+                <button class="schedule-btn schedule-btn-primary" onclick="saveSchedule()">Create Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Remove active from all tabs and content
+            document.querySelectorAll('.details-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active to selected tab and content
+            const targetTab = document.querySelector(`.details-tab[onclick*="${tabName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            const targetContent = document.getElementById(tabName + 'Tab');
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+
+        // Get flow name from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const flowName = urlParams.get('flow') || 'get-community-issues-from-podman-desktop';
+        
+        // You can add logic here to load specific flow data based on flowName
+        console.log('Loading flow:', flowName);
+
+        // Schedule modal functions
+        function openCreateScheduleModal() {
+            const modal = document.getElementById('scheduleModal');
+            modal.classList.add('show');
+        }
+
+        function closeScheduleModal() {
+            const modal = document.getElementById('scheduleModal');
+            modal.classList.remove('show');
+        }
+
+        function updateScheduleFields() {
+            const frequency = document.getElementById('frequencySelect').value;
+            
+            // Hide all conditional fields
+            document.getElementById('weeklyOptions').style.display = 'none';
+            document.getElementById('monthlyOptions').style.display = 'none';
+            document.getElementById('customCronOptions').style.display = 'none';
+            
+            // Show relevant fields based on frequency
+            if (frequency === 'weekly') {
+                document.getElementById('weeklyOptions').style.display = 'block';
+            } else if (frequency === 'monthly') {
+                document.getElementById('monthlyOptions').style.display = 'block';
+            } else if (frequency === 'custom') {
+                document.getElementById('customCronOptions').style.display = 'block';
+            }
+        }
+
+        function saveSchedule() {
+            // Here you would save the schedule data
+            console.log('Saving schedule...');
+            closeScheduleModal();
+            
+            // Show success message (you can implement this)
+            alert('Schedule created successfully!');
+        }
+
+        function toggleSchedule(checkbox, scheduleId) {
+            const card = checkbox.closest('.schedule-card');
+            const statusIndicator = card.querySelector('.schedule-status-indicator');
+            const nextRunValue = card.querySelector('.schedule-info-item:nth-child(2) .schedule-info-value');
+            
+            if (checkbox.checked) {
+                card.classList.remove('inactive-schedule');
+                card.classList.add('active-schedule');
+                statusIndicator.classList.remove('inactive');
+                statusIndicator.classList.add('active');
+                // Update next run time (example)
+                if (nextRunValue.textContent === 'Paused') {
+                    nextRunValue.textContent = 'Tomorrow at 2:00 AM';
+                }
+                console.log('Schedule enabled:', scheduleId);
+            } else {
+                card.classList.remove('active-schedule');
+                card.classList.add('inactive-schedule');
+                statusIndicator.classList.remove('active');
+                statusIndicator.classList.add('inactive');
+                nextRunValue.textContent = 'Paused';
+                console.log('Schedule disabled:', scheduleId);
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('scheduleModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeScheduleModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

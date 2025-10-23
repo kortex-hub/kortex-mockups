@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Chat</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+</head>
+<body class="chat-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Chat UI -->
+        <main class="main-content">
+            <div class="chat-layout">
+                <!-- Chat Sidebar -->
+                <div class="chat-sidebar">
+                    <div class="chat-sidebar-header">
+                        <div class="chat-sidebar-header-row">
+                            <h2 class="chat-sidebar-title">Chat</h2>
+                            <button class="new-chat-btn" onclick="startNewChat()" title="New Chat">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="chat-time-filter">Last 7 days</div>
+                    </div>
+                    
+                    <!-- Chat Sessions List -->
+                    <div class="chat-sessions-list">
+                        <div class="chat-session-item active" onclick="loadChat('sf-weather')">
+                            <div class="chat-session-title">San Francisco Weather</div>
+                        </div>
+                        <div class="chat-session-item" data-chat-id="podman-issues" onclick="loadChat('podman-issues')">
+                            <div class="chat-session-title">List 5 latest issues from Podman Desktop repository</div>
+                        </div>
+                        <div class="chat-session-item" onclick="loadChat('podman-overview')">
+                            <div class="chat-session-title">Podman Desktop Overview</div>
+                        </div>
+                        <div class="chat-session-item" onclick="loadChat('dan-walsh')">
+                            <div class="chat-session-title">Dan Walsh and Podman information</div>
+                        </div>
+                        <div class="chat-session-item" onclick="loadChat('about-podman')">
+                            <div class="chat-session-title">About Podman</div>
+                        </div>
+                        <div class="chat-session-item" onclick="loadChat('info-podman')">
+                            <div class="chat-session-title">Information about Podman</div>
+                        </div>
+                        <div class="chat-session-item">
+                            <div class="chat-session-title">Last 30 days</div>
+                        </div>
+                        <div class="chat-session-item" onclick="loadChat('test-conv')">
+                            <div class="chat-session-title">Test Conversation</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="chat-sidebar-footer">
+                        <button class="delete-chats-btn">Delete all chats</button>
+                    </div>
+                </div>
+                
+                <!-- Chat Main Area -->
+                <div class="chat-main">
+                    <!-- Top Header -->
+                    <div class="chat-top-header">
+                        <h1 class="chat-title-main">Chat</h1>
+                        <div class="chat-tools">
+                            <button class="chat-tool-btn" title="Attach">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                </svg>
+                            </button>
+                            <select class="model-selector">
+                                <option>0 selected</option>
+                            </select>
+                            <!-- Knowledge Base Selector -->
+                            <div class="knowledge-selector-wrapper">
+                                <button class="knowledge-selector-button" id="knowledgeSelectorBtn" onclick="toggleKnowledgeSelector()">
+                                    <div class="knowledge-selector-current">
+                                        <svg class="knowledge-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14,2 14,8 20,8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                            <polyline points="10,9 9,9 8,9"/>
+                                        </svg>
+                                        <span id="selectedKnowledgeText">No knowledge base</span>
+                                    </div>
+                                    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                
+                                <!-- Dropdown Panel -->
+                                <div class="knowledge-selector-panel" id="knowledgeSelectorPanel">
+                                    <div class="knowledge-panel-header">
+                                        <h3>Select Knowledge Base</h3>
+                                        <p>Choose a knowledge environment to enhance your chat</p>
+                                    </div>
+                                    
+                                    <div class="knowledge-options">
+                                        <!-- No Knowledge Option -->
+                                        <button class="knowledge-option selected" data-knowledge="" onclick="selectKnowledge(this)">
+                                            <div class="knowledge-option-icon">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            </div>
+                                            <div class="knowledge-option-content">
+                                                <div class="knowledge-option-name">No Knowledge Base</div>
+                                                <div class="knowledge-option-desc">Chat without RAG enhancement</div>
+                                            </div>
+                                            <div class="knowledge-option-check">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- Podman Knowledge -->
+                                        <button class="knowledge-option" data-knowledge="podman-knowledges" data-db="milvus" onclick="selectKnowledge(this)">
+                                            <div class="knowledge-option-icon milvus-icon"></div>
+                                            <div class="knowledge-option-content">
+                                                <div class="knowledge-option-name">Podman Knowledges</div>
+                                                <div class="knowledge-option-desc">
+                                                    <span class="knowledge-badge">Milvus</span>
+                                                    <span class="knowledge-sources">142 sources</span>
+                                                </div>
+                                            </div>
+                                            <div class="knowledge-option-check">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- OpenShift Knowledge -->
+                                        <button class="knowledge-option" data-knowledge="openshift-knowledges" data-db="chroma" onclick="selectKnowledge(this)">
+                                            <div class="knowledge-option-icon chroma-icon"></div>
+                                            <div class="knowledge-option-content">
+                                                <div class="knowledge-option-name">OpenShift Knowledges</div>
+                                                <div class="knowledge-option-desc">
+                                                    <span class="knowledge-badge">ChromaDB</span>
+                                                    <span class="knowledge-sources">89 sources</span>
+                                                </div>
+                                            </div>
+                                            <div class="knowledge-option-check">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- Docker Knowledge -->
+                                        <button class="knowledge-option" data-knowledge="docker-knowledges" data-db="milvus" onclick="selectKnowledge(this)">
+                                            <div class="knowledge-option-icon milvus-icon"></div>
+                                            <div class="knowledge-option-content">
+                                                <div class="knowledge-option-name">Docker Knowledges</div>
+                                                <div class="knowledge-option-desc">
+                                                    <span class="knowledge-badge">Milvus</span>
+                                                    <span class="knowledge-sources">67 sources</span>
+                                                </div>
+                                            </div>
+                                            <div class="knowledge-option-check">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- Kubernetes Knowledge -->
+                                        <button class="knowledge-option" data-knowledge="kubernetes-knowledges" data-db="chroma" onclick="selectKnowledge(this)">
+                                            <div class="knowledge-option-icon chroma-icon"></div>
+                                            <div class="knowledge-option-content">
+                                                <div class="knowledge-option-name">Kubernetes Knowledges</div>
+                                                <div class="knowledge-option-desc">
+                                                    <span class="knowledge-badge">ChromaDB</span>
+                                                    <span class="knowledge-sources">203 sources</span>
+                                                </div>
+                                            </div>
+                                            <div class="knowledge-option-check">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <select class="model-selector">
+                                <option>gemini-2.0-flash</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Content -->
+                    <div class="chat-content">
+                        <!-- Empty State (Hidden when messages exist) -->
+                        <div class="chat-empty-state" id="emptyState">
+                            <svg class="chat-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            
+                            <div class="chat-suggestions">
+                                <button class="chat-suggestion" onclick="useSuggestion(this)">
+                                    <div class="chat-suggestion-title">What are the last 5 issues of Github</div>
+                                    <div class="chat-suggestion-desc">repository podman-desktop/podman-desktop?</div>
+                                </button>
+                                <button class="chat-suggestion" onclick="useSuggestion(this)">
+                                    <div class="chat-suggestion-title">Write code to</div>
+                                    <div class="chat-suggestion-desc">demonstrate dijkstra's algorithm</div>
+                                </button>
+                                <button class="chat-suggestion" onclick="useSuggestion(this)">
+                                    <div class="chat-suggestion-title">Help me write an essay</div>
+                                    <div class="chat-suggestion-desc">about silicon valley</div>
+                                </button>
+                                <button class="chat-suggestion" onclick="useSuggestion(this)">
+                                    <div class="chat-suggestion-title">What is the weather like</div>
+                                    <div class="chat-suggestion-desc">in San Francisco?</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Messages Container -->
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be dynamically added here -->
+                        </div>
+                        
+                        <!-- Export Flow Card -->
+                        <div class="export-flow-card" id="exportFlowCard" style="display: none;">
+                            <div class="export-flow-card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="6" height="6" rx="1"/>
+                                    <rect x="15" y="3" width="6" height="6" rx="1"/>
+                                    <rect x="9" y="15" width="6" height="6" rx="1"/>
+                                    <path d="M6 9v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/>
+                                    <line x1="12" y1="12" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <div class="export-flow-card-content">
+                                <div class="export-flow-card-title">Export as a Flow</div>
+                                <div class="export-flow-card-description">Convert this conversation into a reusable flow</div>
+                            </div>
+                            <button class="export-flow-card-button" onclick="exportAsFlow()">
+                                Export
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="chat-input-area">
+                        <div class="chat-input-container">
+                            <div class="chat-input-wrapper">
+                                <button class="chat-attach-btn" title="Attach file">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                    </svg>
+                                </button>
+                                <textarea 
+                                    class="chat-input-field" 
+                                    id="chatInput"
+                                    placeholder="Send a message..."
+                                    rows="1"
+                                    onkeydown="handleInputKeydown(event)"
+                                    oninput="adjustTextareaHeight(this)"
+                                ></textarea>
+                                <button class="chat-send-btn" onclick="sendMessage()" id="sendButton">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 2L11 13"/>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Chat conversations data
+        const chatConversations = {
+            'podman-issues': [
+                { isUser: true, content: 'What are the last 5 issues of GitHub repository podman-desktop/podman-desktop?' },
+                { 
+                    isUser: false, 
+                    content: 'The last 5 issues for podman-desktop/podman-desktop are:\n\n#14488: Update searchbar colors (Open) - created on 2025-10-21\n#14484: [Dependabot]: Update of @types/node stuck (Open) - created on 2025-10-21\n#14477: Some tooltips still use native tooltips (Open) - created on 2025-10-20\n#14475: Installation via winget with scope machine fails - no applicable installer found (Open) - created on 2025-10-20\n#14471: Fix code for typescript-eslint 8.46.1 (Open) - created on 2025-10-20',
+                    tools: ['list_issues']
+                },
+                { isUser: true, content: 'can you filter the issues created by community members? people who are not listed in the maintainers.md file' },
+                { 
+                    isUser: false, 
+                    content: 'Based on the MAINTAINERS.md file, the following 3 out of the last 5 issues were created by community members (not listed as maintainers):\n\n#14484: [Dependabot]: Update of @types/node stuck (Author: simonrey1)\n#14477: Some tooltips still use native tooltips (Author: vancura)\n#14475: Installation via winget with scope machine fails - no applicable installer found (Author: theq78)\n\nThe issues created by maintainers (gstoner and jeffmaury) were #14488 and #14471.',
+                    tools: ['get_file_contents']
+                }
+            ]
+        };
+
+        // Chat-specific functions
+        function updateSelectedKnowledge() {
+            const selector = document.getElementById('knowledgeSelector');
+            console.log('Selected knowledge base:', selector.value);
+        }
+
+        function loadChat(chatId) {
+            const chatMessages = document.getElementById('chatMessages');
+            const emptyState = document.getElementById('emptyState');
+            const exportFlowCard = document.getElementById('exportFlowCard');
+            
+            // Clear current messages
+            chatMessages.innerHTML = '';
+            
+            // Update active state
+            document.querySelectorAll('.chat-session-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.chat-session-item').classList.add('active');
+            
+            // Load conversation if it exists
+            const conversation = chatConversations[chatId];
+            if (conversation && conversation.length > 0) {
+                emptyState.style.display = 'none';
+                exportFlowCard.style.display = 'flex';
+                
+                conversation.forEach(msg => {
+                    if (msg.isUser) {
+                        addMessage(msg.content, true);
+                    } else {
+                        const messageDiv = addMessage(msg.content, false);
+                        
+                        // Add tool indicators if present
+                        if (msg.tools && msg.tools.length > 0) {
+                            const messageBubble = messageDiv.querySelector('.message-bubble');
+                            const toolsDiv = document.createElement('div');
+                            toolsDiv.className = 'message-tools';
+                            toolsDiv.style.cssText = 'display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;';
+                            
+                            msg.tools.forEach(tool => {
+                                const toolBadge = document.createElement('div');
+                                toolBadge.className = 'tool-badge';
+                                toolBadge.style.cssText = 'display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7);';
+                                toolBadge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg><span>${tool}</span>`;
+                                toolsDiv.appendChild(toolBadge);
+                            });
+                            
+                            messageBubble.appendChild(toolsDiv);
+                        }
+                    }
+                });
+            } else {
+                // Show empty state for chats without messages
+                emptyState.style.display = 'flex';
+                exportFlowCard.style.display = 'none';
+            }
+        }
+
+        function useSuggestion(button) {
+            const title = button.querySelector('.chat-suggestion-title').textContent;
+            const desc = button.querySelector('.chat-suggestion-desc').textContent;
+            const fullPrompt = title + ' ' + desc;
+            
+            document.getElementById('chatInput').value = fullPrompt;
+            document.getElementById('chatInput').focus();
+        }
+
+        function addMessage(content, isUser = true) {
+            const chatMessages = document.getElementById('chatMessages');
+            const emptyState = document.getElementById('emptyState');
+            const exportFlowCard = document.getElementById('exportFlowCard');
+            
+            // Hide empty state
+            emptyState.style.display = 'none';
+            
+            // Show export flow card if there are messages
+            exportFlowCard.style.display = 'flex';
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user-message' : 'assistant-message'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            if (!isUser) {
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>`;
+                messageContent.appendChild(avatar);
+            }
+            
+            const messageBubble = document.createElement('div');
+            messageBubble.className = 'message-bubble';
+            messageBubble.textContent = content;
+            
+            messageContent.appendChild(messageBubble);
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(messageTime);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Smooth scroll to bottom
+            setTimeout(() => {
+                chatMessages.scrollTo({
+                    top: chatMessages.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
+            
+            return messageDiv;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-message assistant-message typing-indicator-message';
+            typingDiv.id = 'typingIndicator';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>`;
+            
+            const typingBubble = document.createElement('div');
+            typingBubble.className = 'message-bubble typing-indicator';
+            typingBubble.innerHTML = '<span></span><span></span><span></span>';
+            
+            messageContent.appendChild(avatar);
+            messageContent.appendChild(typingBubble);
+            typingDiv.appendChild(messageContent);
+            
+            chatMessages.appendChild(typingDiv);
+            
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, true);
+            
+            // Clear input
+            input.value = '';
+            adjustTextareaHeight(input);
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate AI response (replace with actual API call)
+            setTimeout(() => {
+                hideTypingIndicator();
+                addMessage("This is a demo response. In a real application, this would be the AI's response to your message.", false);
+            }, 1500);
+        }
+
+        function handleInputKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        function startNewChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            const emptyState = document.getElementById('emptyState');
+            const exportFlowCard = document.getElementById('exportFlowCard');
+            
+            // Clear all messages
+            chatMessages.innerHTML = '';
+            
+            // Show empty state
+            emptyState.style.display = 'flex';
+            
+            // Hide export flow card
+            exportFlowCard.style.display = 'none';
+            
+            // Clear input
+            const input = document.getElementById('chatInput');
+            input.value = '';
+            adjustTextareaHeight(input);
+            
+            console.log('Started new chat');
+        }
+
+        function exportAsFlow() {
+            const chatMessages = document.getElementById('chatMessages');
+            const messages = chatMessages.querySelectorAll('.chat-message');
+            
+            if (messages.length === 0) {
+                alert('No messages to export. Start a conversation first!');
+                return;
+            }
+            
+            // Extract conversation data
+            let userMessages = [];
+            
+            messages.forEach((messageEl) => {
+                const isUser = messageEl.classList.contains('user-message');
+                const messageBubble = messageEl.querySelector('.message-bubble');
+                
+                if (messageBubble) {
+                    const content = messageBubble.textContent.trim();
+                    if (isUser) {
+                        userMessages.push(content);
+                    }
+                }
+            });
+            
+            // Generate parameters for the create flow page
+            const firstUserMessage = userMessages[0] || '';
+            let params = new URLSearchParams();
+            
+            if (firstUserMessage) {
+                const flowName = firstUserMessage
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .substring(0, 50);
+                params.append('name', flowName);
+                params.append('description', firstUserMessage);
+                params.append('prompt', firstUserMessage);
+            }
+            
+            // Navigate to create flow page
+            window.location.href = `../flows/create.html?${params.toString()}`;
+        }
+
+    </script>
+</body>
+</html>
+
