@@ -27,34 +27,56 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="chat-time-filter">Last 7 days</div>
                     </div>
                     
                     <!-- Chat Sessions List -->
                     <div class="chat-sessions-list">
+                        <div class="chat-section-header">
+                            <span>Recent</span>
+                        </div>
+                        
                         <div class="chat-session-item active" onclick="loadChat('sf-weather')">
-                            <div class="chat-session-title">San Francisco Weather</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">San Francisco Weather</div>
+                                <div class="chat-session-preview">Current weather conditions</div>
+                            </div>
+                            <div class="chat-session-time">2h</div>
                         </div>
-                        <div class="chat-session-item" data-chat-id="podman-issues" onclick="loadChat('podman-issues')">
-                            <div class="chat-session-title">List 5 latest issues from Podman Desktop repository</div>
-                        </div>
-                        <div class="chat-session-item" onclick="loadChat('podman-overview')">
-                            <div class="chat-session-title">Podman Desktop Overview</div>
-                        </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('dan-walsh')">
-                            <div class="chat-session-title">Dan Walsh and Podman information</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Podman Desktop Overview</div>
+                                <div class="chat-session-preview">Understanding features and capabilities</div>
+                            </div>
+                            <div class="chat-session-time">5h</div>
                         </div>
+                        
+                        <div class="chat-session-item" onclick="loadChat('podman-issues')">
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Latest 5 GitHub Issues</div>
+                                <div class="chat-session-preview">podman-desktop repository analysis</div>
+                            </div>
+                            <div class="chat-session-time">1d</div>
+                        </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('about-podman')">
-                            <div class="chat-session-title">About Podman</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">About Podman</div>
+                                <div class="chat-session-preview">Overview and key concepts</div>
+                            </div>
+                            <div class="chat-session-time">2d</div>
                         </div>
-                        <div class="chat-session-item" onclick="loadChat('info-podman')">
-                            <div class="chat-session-title">Information about Podman</div>
+                        
+                        <div class="chat-section-header">
+                            <span>Last 30 days</span>
                         </div>
-                        <div class="chat-session-item">
-                            <div class="chat-session-title">Last 30 days</div>
-                        </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('test-conv')">
-                            <div class="chat-session-title">Test Conversation</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Test Conversation</div>
+                                <div class="chat-session-preview">Example discussion thread</div>
+                            </div>
+                            <div class="chat-session-time">15d</div>
                         </div>
                     </div>
                     
@@ -66,143 +88,53 @@
                 
                 <!-- Chat Main Area -->
                 <div class="chat-main">
-                    <!-- Top Header -->
-                    <div class="chat-top-header">
-                        <h1 class="chat-title-main">Chat</h1>
-                        <div class="chat-tools">
-                            <button class="chat-tool-btn" title="Attach">
+                    
+                    <!-- Conversation Header -->
+                    <div class="conversation-header" id="conversationHeader">
+                        <div class="conversation-title-section">
+                            <h1 class="conversation-title" id="conversationTitle">GitHub Repository Issues</h1>
+                            <p class="conversation-subtitle" id="conversationSubtitle">Discussion about podman-desktop issues</p>
+                        </div>
+                        <div class="conversation-actions">
+                            <button class="conversation-action-btn" title="Export as Flow" onclick="exportAsFlow()">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                    <circle cx="6" cy="6" r="3"/>
+                                    <circle cx="18" cy="6" r="3"/>
+                                    <circle cx="12" cy="18" r="3"/>
+                                    <line x1="8.5" y1="7.5" x2="10.5" y2="16"/>
+                                    <line x1="15.5" y1="7.5" x2="13.5" y2="16"/>
                                 </svg>
                             </button>
-                            <select class="model-selector">
-                                <option>0 selected</option>
-                            </select>
-                            <!-- Knowledge Base Selector -->
-                            <div class="knowledge-selector-wrapper">
-                                <button class="knowledge-selector-button" id="knowledgeSelectorBtn" onclick="toggleKnowledgeSelector()">
-                                    <div class="knowledge-selector-current">
-                                        <svg class="knowledge-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                            <polyline points="14,2 14,8 20,8"/>
-                                            <line x1="16" y1="13" x2="8" y2="13"/>
-                                            <line x1="16" y1="17" x2="8" y2="17"/>
-                                            <polyline points="10,9 9,9 8,9"/>
-                                        </svg>
-                                        <span id="selectedKnowledgeText">No knowledge base</span>
-                                    </div>
-                                    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </button>
-                                
-                                <!-- Dropdown Panel -->
-                                <div class="knowledge-selector-panel" id="knowledgeSelectorPanel">
-                                    <div class="knowledge-panel-header">
-                                        <h3>Select Knowledge Base</h3>
-                                        <p>Choose a knowledge environment to enhance your chat</p>
-                                    </div>
-                                    
-                                    <div class="knowledge-options">
-                                        <!-- No Knowledge Option -->
-                                        <button class="knowledge-option selected" data-knowledge="" onclick="selectKnowledge(this)">
-                                            <div class="knowledge-option-icon">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                                </svg>
-                                            </div>
-                                            <div class="knowledge-option-content">
-                                                <div class="knowledge-option-name">No Knowledge Base</div>
-                                                <div class="knowledge-option-desc">Chat without RAG enhancement</div>
-                                            </div>
-                                            <div class="knowledge-option-check">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                        
-                                        <!-- Podman Knowledge -->
-                                        <button class="knowledge-option" data-knowledge="podman-knowledges" data-db="milvus" onclick="selectKnowledge(this)">
-                                            <div class="knowledge-option-icon milvus-icon"></div>
-                                            <div class="knowledge-option-content">
-                                                <div class="knowledge-option-name">Podman Knowledges</div>
-                                                <div class="knowledge-option-desc">
-                                                    <span class="knowledge-badge">Milvus</span>
-                                                    <span class="knowledge-sources">142 sources</span>
-                                                </div>
-                                            </div>
-                                            <div class="knowledge-option-check">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                        
-                                        <!-- OpenShift Knowledge -->
-                                        <button class="knowledge-option" data-knowledge="openshift-knowledges" data-db="chroma" onclick="selectKnowledge(this)">
-                                            <div class="knowledge-option-icon chroma-icon"></div>
-                                            <div class="knowledge-option-content">
-                                                <div class="knowledge-option-name">OpenShift Knowledges</div>
-                                                <div class="knowledge-option-desc">
-                                                    <span class="knowledge-badge">ChromaDB</span>
-                                                    <span class="knowledge-sources">89 sources</span>
-                                                </div>
-                                            </div>
-                                            <div class="knowledge-option-check">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                        
-                                        <!-- Docker Knowledge -->
-                                        <button class="knowledge-option" data-knowledge="docker-knowledges" data-db="milvus" onclick="selectKnowledge(this)">
-                                            <div class="knowledge-option-icon milvus-icon"></div>
-                                            <div class="knowledge-option-content">
-                                                <div class="knowledge-option-name">Docker Knowledges</div>
-                                                <div class="knowledge-option-desc">
-                                                    <span class="knowledge-badge">Milvus</span>
-                                                    <span class="knowledge-sources">67 sources</span>
-                                                </div>
-                                            </div>
-                                            <div class="knowledge-option-check">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                        
-                                        <!-- Kubernetes Knowledge -->
-                                        <button class="knowledge-option" data-knowledge="kubernetes-knowledges" data-db="chroma" onclick="selectKnowledge(this)">
-                                            <div class="knowledge-option-icon chroma-icon"></div>
-                                            <div class="knowledge-option-content">
-                                                <div class="knowledge-option-name">Kubernetes Knowledges</div>
-                                                <div class="knowledge-option-desc">
-                                                    <span class="knowledge-badge">ChromaDB</span>
-                                                    <span class="knowledge-sources">203 sources</span>
-                                                </div>
-                                            </div>
-                                            <div class="knowledge-option-check">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <select class="model-selector">
-                                <option>gemini-2.0-flash</option>
-                            </select>
+                            <button class="conversation-action-btn" title="Rename conversation">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                            </button>
+                            <button class="conversation-action-btn" title="Share conversation">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="18" cy="5" r="3"/>
+                                    <circle cx="6" cy="12" r="3"/>
+                                    <circle cx="18" cy="19" r="3"/>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                                </svg>
+                            </button>
+                            <button class="conversation-action-btn conversation-delete-btn" title="Delete conversation" onclick="deleteConversation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                    <line x1="10" y1="11" x2="10" y2="17"/>
+                                    <line x1="14" y1="11" x2="14" y2="17"/>
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     
                     <!-- Chat Content -->
                     <div class="chat-content">
                         <!-- Empty State (Hidden when messages exist) -->
-                        <div class="chat-empty-state" id="emptyState">
+                        <div class="chat-empty-state" id="emptyState" style="display: none;">
                             <svg class="chat-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -229,56 +161,550 @@
 
                         <!-- Messages Container -->
                         <div class="chat-messages" id="chatMessages">
-                            <!-- Messages will be dynamically added here -->
-                        </div>
-                        
-                        <!-- Export Flow Card -->
-                        <div class="export-flow-card" id="exportFlowCard" style="display: none;">
-                            <div class="export-flow-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="6" height="6" rx="1"/>
-                                    <rect x="15" y="3" width="6" height="6" rx="1"/>
-                                    <rect x="9" y="15" width="6" height="6" rx="1"/>
-                                    <path d="M6 9v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/>
-                                    <line x1="12" y1="12" x2="12" y2="15"/>
-                                </svg>
+                            <!-- Example conversation showing different states -->
+                            
+                            <!-- User Message -->
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    <div class="message-bubble">
+                                        What are the latest issues from the podman-desktop repository?
+                                    </div>
+                                </div>
+                                <div class="message-time">2:34 PM</div>
                             </div>
-                            <div class="export-flow-card-content">
-                                <div class="export-flow-card-title">Export as a Flow</div>
-                                <div class="export-flow-card-description">Convert this conversation into a reusable flow</div>
+                            
+                            <!-- Assistant Message with Tool Usage -->
+                            <!-- Tool Usage Indicator -->
+                            <div class="chat-message assistant-message">
+                                <div class="message-content">
+                                    <div class="message-avatar">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <circle cx="12" cy="12" r="6"/>
+                                            <circle cx="12" cy="12" r="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="message-bubble">
+                                        <div class="tool-usage-wrapper">
+                                            <div class="tool-usage-indicator" onclick="toggleToolDetails(this)">
+                                                <svg class="tool-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="9 18 15 12 9 6"/>
+                                                </svg>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="3" width="7" height="7"/>
+                                                    <rect x="14" y="3" width="7" height="7"/>
+                                                    <rect x="14" y="14" width="7" height="7"/>
+                                                    <rect x="3" y="14" width="7" height="7"/>
+                                                </svg>
+                                                <span>list_issues</span>
+                                            </div>
+                                            <div class="tool-details-panel">
+                                                <div class="tool-tabs">
+                                                    <button class="tool-tab active" onclick="switchToolTab(event, 'input-1')">INPUT</button>
+                                                    <button class="tool-tab" onclick="switchToolTab(event, 'output-1')">OUTPUT</button>
+                                                </div>
+                                                <div class="tool-tab-content">
+                                                    <div id="input-1" class="tool-tab-pane active">
+                                                        <pre class="tool-detail-code">{
+  "repo": "podman-desktop",
+  "state": "OPEN",
+  "orderBy": "CREATED_AT",
+  "direction": "DESC",
+  "perPage": 5,
+  "owner": "podman-desktop"
+}</pre>
+                                                    </div>
+                                                    <div id="output-1" class="tool-tab-pane">
+                                                        <pre class="tool-detail-code">{
+  "issues": [
+    {
+      "id": 3569247440,
+      "number": 14655,
+      "state": "OPEN",
+      "title": "Replace js-yaml with maintained alternative"
+    }
+  ]
+}</pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <button class="export-flow-card-button" onclick="exportAsFlow()">
-                                Export
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
+                            
+                            <!-- Assistant Response -->
+                            <div class="chat-message assistant-message">
+                                <div class="message-content">
+                                    <div class="message-avatar">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <circle cx="12" cy="12" r="6"/>
+                                            <circle cx="12" cy="12" r="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="message-bubble">
+                                        Here are the latest 5 issues from podman-desktop/podman-desktop:
+                                        
+                                        <div class="message-list">
+                                            <div class="message-list-item">
+                                                <strong>#14488</strong> Update searchbar colors (Open)
+                                                <span class="message-meta">Created Oct 21, 2025</span>
+                                            </div>
+                                            <div class="message-list-item">
+                                                <strong>#14484</strong> [Dependabot]: Update of @types/node stuck (Open)
+                                                <span class="message-meta">Created Oct 21, 2025</span>
+                                            </div>
+                                            <div class="message-list-item">
+                                                <strong>#14477</strong> Some tooltips still use native tooltips (Open)
+                                                <span class="message-meta">Created Oct 20, 2025</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="message-time">2:34 PM</div>
+                            </div>
+                            
+                            <!-- User Follow-up -->
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    <div class="message-bubble">
+                                        Can you filter these to show only community-created issues?
+                                    </div>
+                                </div>
+                                <div class="message-time">2:35 PM</div>
+                            </div>
+                            
+                            <!-- Tool Interaction - get_file_contents (Processing) -->
+                            <div class="chat-message assistant-message">
+                                <div class="message-content">
+                                    <div class="message-bubble">
+                                        <div class="tool-usage-wrapper">
+                                            <div class="tool-usage-indicator processing" onclick="toggleToolDetails(this)">
+                                                <svg class="tool-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="9 18 15 12 9 6"/>
+                                                </svg>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                                </svg>
+                                                <span>get_file_contents</span>
+                                                <div class="loading-dots">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="tool-details-panel">
+                                                <div class="tool-tabs">
+                                                    <button class="tool-tab active" onclick="switchToolTab(event, 'input-2')">INPUT</button>
+                                                    <button class="tool-tab" onclick="switchToolTab(event, 'output-2')">OUTPUT</button>
+                                                </div>
+                                                <div class="tool-tab-content">
+                                                    <div id="input-2" class="tool-tab-pane active">
+                                                        <pre class="tool-detail-code">{
+  "path": "MAINTAINERS.md",
+  "repo": "podman-desktop",
+  "owner": "podman-desktop"
+}</pre>
+                                                    </div>
+                                                    <div id="output-2" class="tool-tab-pane">
+                                                        <pre class="tool-detail-code">{
+  "status": "processing",
+  "message": "Reading file..."
+}</pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Chat Input -->
                     <div class="chat-input-area">
+                        <!-- Floating Attachments Area -->
+                        <div class="chat-attachments-area" id="chatAttachmentsArea">
+                            <!-- Export Flow Attachment -->
+                            <div class="chat-attachment-item" id="exportFlowAttachment" onclick="exportAsFlow()">
+                                <div class="chat-attachment-icon flow-icon">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="6" cy="6" r="3"/>
+                                        <circle cx="18" cy="6" r="3"/>
+                                        <circle cx="12" cy="18" r="3"/>
+                                        <path d="M8 8l3 8"/>
+                                        <path d="M16 8l-3 8"/>
+                                    </svg>
+                                </div>
+                                <div class="chat-attachment-content">
+                                    <div class="chat-attachment-name">Export as Flow</div>
+                                    <div class="chat-attachment-meta">Convert conversation to reusable flow</div>
+                                </div>
+                                <button class="chat-attachment-close" onclick="event.stopPropagation(); closeExportFlow();" title="Close">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
                         <div class="chat-input-container">
                             <div class="chat-input-wrapper">
-                                <button class="chat-attach-btn" title="Attach file">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                                    </svg>
-                                </button>
-                                <textarea 
-                                    class="chat-input-field" 
-                                    id="chatInput"
-                                    placeholder="Send a message..."
-                                    rows="1"
-                                    onkeydown="handleInputKeydown(event)"
-                                    oninput="adjustTextareaHeight(this)"
-                                ></textarea>
-                                <button class="chat-send-btn" onclick="sendMessage()" id="sendButton">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 2L11 13"/>
-                                        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                                    </svg>
-                                </button>
+                                <!-- Main Input Area -->
+                                <div class="chat-input-main">
+                                    <textarea 
+                                        class="chat-input-field" 
+                                        id="chatInput"
+                                        placeholder="Ask anything"
+                                        rows="1"
+                                        onkeydown="handleInputKeydown(event)"
+                                        oninput="adjustTextareaHeight(this)"
+                                    ></textarea>
+                                    
+                                    <!-- Context Metadata (Top Right) -->
+                                    <div class="chat-context-meta">
+                                        <span class="context-size">Context Size</span>
+                                        <div class="context-progress">
+                                            <div class="context-progress-bar" style="width: 26.4%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bottom Controls Row -->
+                                <div class="chat-input-controls">
+                                    <!-- Tools Selector (Left) -->
+                                <div class="input-tools-selector-wrapper">
+                                    <button class="input-tools-selector-btn" id="inputToolsSelectorBtn" onclick="toggleInputToolsSelector()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        <span id="inputToolsText">Tools</span>
+                                        <span class="input-tools-count" id="inputToolsCount">2</span>
+                                    </button>
+                                    
+                                    <!-- Tools Dropdown Panel -->
+                                    <div class="input-tools-panel" id="inputToolsPanel">
+                                        <div class="input-panel-header">
+                                            <h3>Select tools</h3>
+                                            <p>Choose which MCP tools to enable</p>
+                                        </div>
+                                        
+                                        <!-- Auto-select Toggle -->
+                                        <div class="tools-auto-select">
+                                            <label class="auto-select-toggle">
+                                                <input type="checkbox" id="autoSelectTools" onchange="toggleAutoSelect(this)">
+                                                <span class="auto-select-label">Auto-select tools</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <!-- Filter Search -->
+                                        <div class="tools-filter">
+                                            <svg class="filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="11" cy="11" r="8"/>
+                                                <path d="m21 21-4.35-4.35"/>
+                                            </svg>
+                                            <input type="text" class="filter-input" placeholder="Filter tools" id="toolsFilter" oninput="filterTools(this.value)">
+                                        </div>
+                                        
+                                        <div class="input-tools-options">
+                                            <!-- GitHub MCP Server -->
+                                            <div class="mcp-server-group">
+                                                <div class="mcp-server-header">
+                                                    <input type="checkbox" class="mcp-server-checkbox" onchange="toggleServerTools(this)" checked>
+                                                    <div class="mcp-server-main" onclick="toggleMCPServer(this)">
+                                                        <div class="mcp-server-icon">
+                                                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="mcp-server-info">
+                                                            <div class="mcp-server-name">GitHub MCP</div>
+                                                            <div class="mcp-server-desc">2 tools selected</div>
+                                                        </div>
+                                                        <svg class="mcp-server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mcp-server-tools expanded">
+                                                    <button class="input-tool-option selected" data-tool="github-issues" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">list_issues</div>
+                                                            <div class="input-tool-desc">List issues in a repository</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    
+                                                    <button class="input-tool-option selected" data-tool="github-prs" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">list_pull_requests</div>
+                                                            <div class="input-tool-desc">List pull requests in a repository</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    
+                                                    <button class="input-tool-option" data-tool="github-create-issue" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">create_issue</div>
+                                                            <div class="input-tool-desc">Create a new issue</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Filesystem MCP Server -->
+                                            <div class="mcp-server-group">
+                                                <div class="mcp-server-header">
+                                                    <input type="checkbox" class="mcp-server-checkbox" onchange="toggleServerTools(this)">
+                                                    <div class="mcp-server-main" onclick="toggleMCPServer(this)">
+                                                        <div class="mcp-server-icon">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="mcp-server-info">
+                                                            <div class="mcp-server-name">Filesystem MCP</div>
+                                                            <div class="mcp-server-desc">0 tools selected</div>
+                                                        </div>
+                                                        <svg class="mcp-server-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mcp-server-tools">
+                                                    <button class="input-tool-option" data-tool="fs-read" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">read_file</div>
+                                                            <div class="input-tool-desc">Read file contents</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    
+                                                    <button class="input-tool-option" data-tool="fs-write" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">write_file</div>
+                                                            <div class="input-tool-desc">Write to a file</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    
+                                                    <button class="input-tool-option" data-tool="fs-list" onclick="toggleTool(this)">
+                                                        <div class="input-tool-content">
+                                                            <div class="input-tool-name">list_directory</div>
+                                                            <div class="input-tool-desc">List directory contents</div>
+                                                        </div>
+                                                        <div class="input-tool-check">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                    <!-- Knowledge Environment Selector (Middle) -->
+                                    <div class="input-knowledge-selector-wrapper">
+                                        <button class="input-knowledge-selector-btn" id="inputKnowledgeSelectorBtn" onclick="toggleInputKnowledgeSelector()">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                            </svg>
+                                            <span id="inputKnowledgeText">Knowledge</span>
+                                            <span class="input-knowledge-count" id="inputKnowledgeCount">1</span>
+                                        </button>
+                                        
+                                        <!-- Knowledge Dropdown Panel -->
+                                        <div class="input-knowledge-panel" id="inputKnowledgePanel">
+                                            <div class="input-panel-header">
+                                                <h3>Select Knowledge Environments</h3>
+                                                <p>Choose one or more knowledge bases for context</p>
+                                            </div>
+                                            
+                                            <div class="input-knowledge-options">
+                                                <button class="input-knowledge-option selected" data-knowledge="podman-desktop" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Podman Desktop</div>
+                                                        <div class="input-knowledge-desc">Documentation and codebase</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="kubernetes" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Kubernetes</div>
+                                                        <div class="input-knowledge-desc">K8s documentation and best practices</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="docker" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Docker</div>
+                                                        <div class="input-knowledge-desc">Container technology reference</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="red-hat" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Red Hat Enterprise</div>
+                                                        <div class="input-knowledge-desc">RHEL and OpenShift docs</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Model Selector (Right) -->
+                                <div class="input-model-selector-wrapper">
+                                    <button class="input-model-selector-btn" id="inputModelSelectorBtn" onclick="toggleInputModelSelector()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <circle cx="12" cy="12" r="6"/>
+                                            <circle cx="12" cy="12" r="2"/>
+                                        </svg>
+                                        <span id="inputModelText">gpt-4.1</span>
+                                        <svg class="input-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Model Dropdown Panel -->
+                                    <div class="input-model-panel" id="inputModelPanel">
+                                        <div class="input-panel-header">
+                                            <h3>Select Model</h3>
+                                            <p>Choose an AI model for this chat</p>
+                                        </div>
+                                        
+                                        <div class="input-model-options">
+                                            <!-- OpenAI Models -->
+                                            <div class="input-model-group">
+                                                <div class="input-model-group-label">OpenAI</div>
+                                                
+                                                <button class="input-model-option selected" data-model="gpt-4.1" onclick="selectModel(this)">
+                                                    <div class="input-model-info">
+                                                        <div class="input-model-name">gpt-4.1</div>
+                                                        <div class="input-model-desc">Most capable model</div>
+                                                    </div>
+                                                    <div class="input-model-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-model-option" data-model="gpt-4.1-mini" onclick="selectModel(this)">
+                                                    <div class="input-model-info">
+                                                        <div class="input-model-name">gpt-4.1-mini</div>
+                                                        <div class="input-model-desc">Fast and efficient</div>
+                                                    </div>
+                                                    <div class="input-model-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-model-option" data-model="o4-mini" onclick="selectModel(this)">
+                                                    <div class="input-model-info">
+                                                        <div class="input-model-name">o4-mini</div>
+                                                        <div class="input-model-desc">Best for reasoning tasks</div>
+                                                    </div>
+                                                    <div class="input-model-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Google Models -->
+                                            <div class="input-model-group">
+                                                <div class="input-model-group-label">Google</div>
+                                                
+                                                <button class="input-model-option" data-model="gemini-2.0-flash" onclick="selectModel(this)">
+                                                    <div class="input-model-info">
+                                                        <div class="input-model-name">gemini-2.0-flash</div>
+                                                        <div class="input-model-desc">Fast multimodal model</div>
+                                                    </div>
+                                                    <div class="input-model-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-model-option" data-model="gemini-1.5-pro" onclick="selectModel(this)">
+                                                    <div class="input-model-info">
+                                                        <div class="input-model-name">gemini-1.5-pro</div>
+                                                        <div class="input-model-desc">Advanced reasoning</div>
+                                                    </div>
+                                                    <div class="input-model-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                    <button class="chat-send-btn" onclick="sendMessage()" id="sendButton">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 2L11 13"/>
+                                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -291,20 +717,106 @@
     <script>
         // Chat conversations data
         const chatConversations = {
-            'podman-issues': [
-                { isUser: true, content: 'What are the last 5 issues of GitHub repository podman-desktop/podman-desktop?' },
-                { 
-                    isUser: false, 
-                    content: 'The last 5 issues for podman-desktop/podman-desktop are:\n\n#14488: Update searchbar colors (Open) - created on 2025-10-21\n#14484: [Dependabot]: Update of @types/node stuck (Open) - created on 2025-10-21\n#14477: Some tooltips still use native tooltips (Open) - created on 2025-10-20\n#14475: Installation via winget with scope machine fails - no applicable installer found (Open) - created on 2025-10-20\n#14471: Fix code for typescript-eslint 8.46.1 (Open) - created on 2025-10-20',
-                    tools: ['list_issues']
-                },
-                { isUser: true, content: 'can you filter the issues created by community members? people who are not listed in the maintainers.md file' },
-                { 
-                    isUser: false, 
-                    content: 'Based on the MAINTAINERS.md file, the following 3 out of the last 5 issues were created by community members (not listed as maintainers):\n\n#14484: [Dependabot]: Update of @types/node stuck (Author: simonrey1)\n#14477: Some tooltips still use native tooltips (Author: vancura)\n#14475: Installation via winget with scope machine fails - no applicable installer found (Author: theq78)\n\nThe issues created by maintainers (gstoner and jeffmaury) were #14488 and #14471.',
-                    tools: ['get_file_contents']
-                }
-            ]
+            'podman-issues': {
+                title: 'GitHub Repository Issues',
+                subtitle: 'Discussion about podman-desktop issues',
+                messages: [
+                    { isUser: true, content: 'What are the last 5 issues of GitHub repository podman-desktop/podman-desktop?' },
+                    { 
+                        isUser: false, 
+                        content: 'The last 5 issues for podman-desktop/podman-desktop are:\n\n#14488: Update searchbar colors (Open) - created on 2025-10-21\n#14484: [Dependabot]: Update of @types/node stuck (Open) - created on 2025-10-21\n#14477: Some tooltips still use native tooltips (Open) - created on 2025-10-20\n#14475: Installation via winget with scope machine fails - no applicable installer found (Open) - created on 2025-10-20\n#14471: Fix code for typescript-eslint 8.46.1 (Open) - created on 2025-10-20',
+                        tools: ['list_issues'],
+                        toolData: [{
+                            input: {
+                                repo: 'podman-desktop',
+                                state: 'OPEN',
+                                orderBy: 'CREATED_AT',
+                                direction: 'DESC',
+                                perPage: 5,
+                                owner: 'podman-desktop'
+                            },
+                            output: {
+                                issues: [
+                                    { id: 3569247440, number: 14488, state: 'OPEN', title: 'Update searchbar colors' },
+                                    { id: 3569247430, number: 14484, state: 'OPEN', title: '[Dependabot]: Update of @types/node stuck' },
+                                    { id: 3569247420, number: 14477, state: 'OPEN', title: 'Some tooltips still use native tooltips' },
+                                    { id: 3569247410, number: 14475, state: 'OPEN', title: 'Installation via winget with scope machine fails' },
+                                    { id: 3569247400, number: 14471, state: 'OPEN', title: 'Fix code for typescript-eslint 8.46.1' }
+                                ]
+                            }
+                        }]
+                    },
+                    { isUser: true, content: 'can you filter the issues created by community members? people who are not listed in the maintainers.md file' },
+                    { 
+                        isUser: false, 
+                        content: 'Based on the MAINTAINERS.md file, the following 3 out of the last 5 issues were created by community members (not listed as maintainers):\n\n#14484: [Dependabot]: Update of @types/node stuck (Author: simonrey1)\n#14477: Some tooltips still use native tooltips (Author: vancura)\n#14475: Installation via winget with scope machine fails - no applicable installer found (Author: theq78)\n\nThe issues created by maintainers (gstoner and jeffmaury) were #14488 and #14471.',
+                        tools: ['get_file_contents'],
+                        toolData: [{
+                            input: {
+                                path: 'MAINTAINERS.md',
+                                repo: 'podman-desktop',
+                                owner: 'podman-desktop'
+                            },
+                            output: {
+                                content: 'Maintainer list includes: benoitf, gstoner, jeffmaury...',
+                                community_issues: [
+                                    { number: 14484, author: 'simonrey1' },
+                                    { number: 14477, author: 'vancura' },
+                                    { number: 14475, author: 'theq78' }
+                                ]
+                            }
+                        }]
+                    }
+                ]
+            },
+            'dan-walsh': {
+                title: 'Podman Desktop Overview',
+                subtitle: 'Understanding Podman Desktop features and capabilities',
+                messages: [
+                    { isUser: true, content: 'What is Podman Desktop and what are its main features?' },
+                    {
+                        isUser: false,
+                        content: 'Podman Desktop is a graphical user interface for managing containers, pods, and images using Podman. It provides:\n\n• **Container Management**: Create, start, stop, and manage containers through an intuitive UI\n• **Pod Support**: Full support for Kubernetes-style pods\n• **Image Management**: Pull, build, and manage container images\n• **Kubernetes Integration**: Deploy to Kubernetes clusters\n• **Extension System**: Extensible through a plugin architecture\n• **Cross-Platform**: Available on Windows, macOS, and Linux\n\nIt serves as a desktop-friendly alternative to Docker Desktop, built on top of Podman technology.'
+                    },
+                    { isUser: true, content: 'Can you show me what extensions are available?' },
+                    {
+                        isUser: false,
+                        content: 'Here are some popular extensions available for Podman Desktop:\n\n**Kubernetes Extensions:**\n• Kind - Run local Kubernetes clusters\n• Minikube - Local Kubernetes development\n• OpenShift Local - Local OpenShift environment\n\n**Development Tools:**\n• Compose - Docker Compose support\n• Lima - Linux virtual machines on macOS\n• Podman AI Lab - AI/ML workload management\n\n**Container Registries:**\n• Red Hat Quay integration\n• Azure Container Registry support\n\nYou can install these extensions directly from the Extensions page in Podman Desktop.',
+                        tools: ['list_extensions'],
+                        toolData: [{
+                            input: {
+                                category: 'all',
+                                includeInstalled: true
+                            },
+                            output: {
+                                extensions: [
+                                    { name: 'kind', version: '1.2.0', installed: false, category: 'kubernetes' },
+                                    { name: 'minikube', version: '1.32.0', installed: true, category: 'kubernetes' },
+                                    { name: 'compose', version: '1.0.0', installed: true, category: 'tools' },
+                                    { name: 'podman-ai-lab', version: '0.1.0', installed: false, category: 'ai' },
+                                    { name: 'lima', version: '0.19.0', installed: false, category: 'virtualization' }
+                                ]
+                            }
+                        }]
+                    }
+                ]
+            },
+            'about-podman': {
+                title: 'About Podman',
+                subtitle: 'Overview and key concepts',
+                messages: []
+            },
+            'sf-weather': {
+                title: 'San Francisco Weather',
+                subtitle: 'Current weather conditions',
+                messages: [
+                    { isUser: true, content: 'What is the weather like in San Francisco?' },
+                    {
+                        isUser: false,
+                        content: 'The current weather in San Francisco is:\n\n**Temperature**: 62°F (17°C)\n**Conditions**: Partly cloudy with fog patches\n**Humidity**: 75%\n**Wind**: 12 mph from the west\n**Visibility**: 8 miles\n\nThe forecast for today shows:\n• Morning fog clearing by noon\n• Afternoon highs reaching 65°F\n• Evening temperatures dropping to 55°F\n• Light winds throughout the day\n\nTomorrow looks similar with morning fog and afternoon sunshine.'
+                    }
+                ]
+            }
         };
 
         // Chat-specific functions
@@ -316,7 +828,10 @@
         function loadChat(chatId) {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowCard = document.getElementById('exportFlowCard');
+            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
+            const conversationHeader = document.getElementById('conversationHeader');
+            const conversationTitle = document.getElementById('conversationTitle');
+            const conversationSubtitle = document.getElementById('conversationSubtitle');
             
             // Clear current messages
             chatMessages.innerHTML = '';
@@ -329,43 +844,56 @@
             
             // Load conversation if it exists
             const conversation = chatConversations[chatId];
-            if (conversation && conversation.length > 0) {
+            if (conversation && conversation.messages && conversation.messages.length > 0) {
                 emptyState.style.display = 'none';
-                exportFlowCard.style.display = 'flex';
+                if (exportFlowAttachment) {
+                    exportFlowAttachment.style.display = 'flex';
+                }
                 
-                conversation.forEach(msg => {
+                // Show and update conversation header
+                if (conversationHeader) {
+                    conversationHeader.style.display = 'flex';
+                    conversationTitle.textContent = conversation.title;
+                    conversationSubtitle.textContent = conversation.subtitle;
+                }
+                
+                conversation.messages.forEach((msg, index) => {
                     if (msg.isUser) {
                         addMessage(msg.content, true);
                     } else {
-                        const messageDiv = addMessage(msg.content, false);
-                        
-                        // Add tool indicators if present
+                        // Add tool interaction message if tools are present
                         if (msg.tools && msg.tools.length > 0) {
-                            const messageBubble = messageDiv.querySelector('.message-bubble');
-                            const toolsDiv = document.createElement('div');
-                            toolsDiv.className = 'message-tools';
-                            toolsDiv.style.cssText = 'display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;';
-                            
-                            msg.tools.forEach(tool => {
-                                const toolBadge = document.createElement('div');
-                                toolBadge.className = 'tool-badge';
-                                toolBadge.style.cssText = 'display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7);';
-                                toolBadge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
-                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                                    <polyline points="21 15 16 10 5 21"/>
-                                </svg><span>${tool}</span>`;
-                                toolsDiv.appendChild(toolBadge);
+                            msg.tools.forEach((tool, toolIndex) => {
+                                addToolInteraction(tool, msg.toolData ? msg.toolData[toolIndex] : null, `${chatId}-${index}-${toolIndex}`);
                             });
-                            
-                            messageBubble.appendChild(toolsDiv);
                         }
+                        
+                        // Add the actual response message
+                        addMessage(msg.content, false);
                     }
                 });
+            } else if (conversation) {
+                // Conversation exists but has no messages yet
+                emptyState.style.display = 'flex';
+                if (exportFlowAttachment) {
+                    exportFlowAttachment.style.display = 'none';
+                }
+                
+                // Show header with conversation title
+                if (conversationHeader) {
+                    conversationHeader.style.display = 'flex';
+                    conversationTitle.textContent = conversation.title;
+                    conversationSubtitle.textContent = conversation.subtitle;
+                }
             } else {
                 // Show empty state for chats without messages
                 emptyState.style.display = 'flex';
-                exportFlowCard.style.display = 'none';
+                if (exportFlowAttachment) {
+                    exportFlowAttachment.style.display = 'none';
+                }
+                if (conversationHeader) {
+                    conversationHeader.style.display = 'none';
+                }
             }
         }
 
@@ -378,16 +906,94 @@
             document.getElementById('chatInput').focus();
         }
 
+        function renderMarkdown(text) {
+            // Simple markdown renderer for common patterns
+            let html = text;
+            
+            // Bold text **text**
+            html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            
+            // Code blocks ```code```
+            html = html.replace(/```([^`]+)```/g, '<code>$1</code>');
+            
+            // Inline code `code`
+            html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+            
+            // Links [text](url)
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+            
+            return html;
+        }
+
+        function addToolInteraction(toolName, toolData, uniqueId) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message assistant-message';
+            
+            const inputData = toolData && toolData.input ? JSON.stringify(toolData.input, null, 2) : '{\n  "data": "example"\n}';
+            const outputData = toolData && toolData.output ? JSON.stringify(toolData.output, null, 2) : '{\n  "result": "example"\n}';
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
+                    <div class="message-bubble">
+                        <div class="tool-usage-wrapper">
+                            <div class="tool-usage-indicator" onclick="toggleToolDetails(this)">
+                                <svg class="tool-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 18 15 12 9 6"/>
+                                </svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"/>
+                                    <rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/>
+                                    <rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                <span>${toolName}</span>
+                            </div>
+                            <div class="tool-details-panel">
+                                <div class="tool-tabs">
+                                    <button class="tool-tab active" onclick="switchToolTab(event, 'input-${uniqueId}')">INPUT</button>
+                                    <button class="tool-tab" onclick="switchToolTab(event, 'output-${uniqueId}')">OUTPUT</button>
+                                </div>
+                                <div class="tool-tab-content">
+                                    <div id="input-${uniqueId}" class="tool-tab-pane active">
+                                        <pre class="tool-detail-code">${inputData}</pre>
+                                    </div>
+                                    <div id="output-${uniqueId}" class="tool-tab-pane">
+                                        <pre class="tool-detail-code">${outputData}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+        }
+
         function addMessage(content, isUser = true) {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowCard = document.getElementById('exportFlowCard');
+            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
             
             // Hide empty state
             emptyState.style.display = 'none';
             
-            // Show export flow card if there are messages
-            exportFlowCard.style.display = 'flex';
+            // Show export flow attachment if there are messages
+            if (exportFlowAttachment) {
+                exportFlowAttachment.style.display = 'flex';
+            }
             
             // Create message element
             const messageDiv = document.createElement('div');
@@ -400,14 +1006,16 @@
                 const avatar = document.createElement('div');
                 avatar.className = 'message-avatar';
                 avatar.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
                 </svg>`;
                 messageContent.appendChild(avatar);
             }
             
             const messageBubble = document.createElement('div');
             messageBubble.className = 'message-bubble';
-            messageBubble.textContent = content;
+            messageBubble.innerHTML = renderMarkdown(content);
             
             messageContent.appendChild(messageBubble);
             
@@ -444,7 +1052,9 @@
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
             avatar.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="6"/>
+                <circle cx="12" cy="12" r="2"/>
             </svg>`;
             
             const typingBubble = document.createElement('div');
@@ -508,7 +1118,10 @@
         function startNewChat() {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowCard = document.getElementById('exportFlowCard');
+            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
+            const conversationHeader = document.getElementById('conversationHeader');
+            const conversationTitle = document.getElementById('conversationTitle');
+            const conversationSubtitle = document.getElementById('conversationSubtitle');
             
             // Clear all messages
             chatMessages.innerHTML = '';
@@ -516,15 +1129,60 @@
             // Show empty state
             emptyState.style.display = 'flex';
             
-            // Hide export flow card
-            exportFlowCard.style.display = 'none';
+            // Hide export flow attachment
+            if (exportFlowAttachment) {
+                exportFlowAttachment.style.display = 'none';
+            }
+            
+            // Show conversation header with "New discussion" title
+            if (conversationHeader) {
+                conversationHeader.style.display = 'flex';
+                conversationTitle.textContent = 'New Discussion';
+                conversationSubtitle.textContent = 'Start a conversation';
+            }
             
             // Clear input
             const input = document.getElementById('chatInput');
             input.value = '';
             adjustTextareaHeight(input);
-            
+
             console.log('Started new chat');
+        }
+
+        function toggleToolDetails(element) {
+            const indicator = element;
+            const panel = indicator.nextElementSibling;
+            
+            // Toggle expanded class
+            indicator.classList.toggle('expanded');
+            panel.classList.toggle('expanded');
+        }
+
+        function switchToolTab(event, tabId) {
+            event.stopPropagation(); // Prevent triggering the parent onclick
+            
+            const tabButton = event.target;
+            const tabsContainer = tabButton.parentElement;
+            const panel = tabsContainer.parentElement;
+            
+            // Remove active class from all tabs and panes in this panel
+            tabsContainer.querySelectorAll('.tool-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            panel.querySelectorAll('.tool-tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab and corresponding pane
+            tabButton.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function deleteConversation() {
+            if (confirm('Are you sure you want to delete this conversation?')) {
+                startNewChat();
+                console.log('Conversation deleted');
+            }
         }
 
         function exportAsFlow() {
@@ -569,6 +1227,296 @@
             // Navigate to create flow page
             window.location.href = `../flows/create.html?${params.toString()}`;
         }
+
+        function closeExportFlow() {
+            const attachment = document.getElementById('exportFlowAttachment');
+            if (attachment) {
+                attachment.style.display = 'none';
+            }
+        }
+
+        // Tools Selector Functions
+        function toggleInputToolsSelector() {
+            const panel = document.getElementById('inputToolsPanel');
+            const btn = document.getElementById('inputToolsSelectorBtn');
+            const isOpen = panel.classList.contains('open');
+            
+            // Close other selectors if open
+            const modelPanel = document.getElementById('inputModelPanel');
+            modelPanel.classList.remove('open');
+            document.getElementById('inputModelSelectorBtn').classList.remove('open');
+            
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
+            knowledgePanel.classList.remove('open');
+            document.getElementById('inputKnowledgeSelectorBtn').classList.remove('open');
+            
+            if (isOpen) {
+                panel.classList.remove('open');
+                btn.classList.remove('open');
+            } else {
+                panel.classList.add('open');
+                btn.classList.add('open');
+            }
+        }
+
+        function toggleTool(button) {
+            const isSelected = button.classList.contains('selected');
+            
+            if (isSelected) {
+                button.classList.remove('selected');
+            } else {
+                button.classList.add('selected');
+            }
+            
+            // Update server checkbox state
+            const group = button.closest('.mcp-server-group');
+            const allTools = group.querySelectorAll('.input-tool-option');
+            const selectedTools = group.querySelectorAll('.input-tool-option.selected');
+            const checkbox = group.querySelector('.mcp-server-checkbox');
+            
+            // Check if all tools are selected
+            checkbox.checked = allTools.length === selectedTools.length;
+            
+            // Update tool count
+            updateToolCount();
+        }
+
+        function updateToolCount() {
+            const selectedTools = document.querySelectorAll('.input-tool-option.selected');
+            const count = selectedTools.length;
+            document.getElementById('inputToolsCount').textContent = count;
+            
+            // Update server descriptions
+            document.querySelectorAll('.mcp-server-group').forEach(group => {
+                const header = group.querySelector('.mcp-server-header');
+                const desc = header.querySelector('.mcp-server-desc');
+                const tools = group.querySelectorAll('.input-tool-option.selected');
+                desc.textContent = `${tools.length} tool${tools.length !== 1 ? 's' : ''} selected`;
+            });
+        }
+
+        // MCP Server Toggle
+        function toggleMCPServer(element) {
+            const isExpanded = element.classList.contains('expanded');
+            const group = element.closest('.mcp-server-group');
+            const toolsList = group.querySelector('.mcp-server-tools');
+            
+            if (isExpanded) {
+                element.classList.remove('expanded');
+                toolsList.classList.remove('expanded');
+            } else {
+                element.classList.add('expanded');
+                toolsList.classList.add('expanded');
+            }
+        }
+
+        // Toggle all tools in a server
+        function toggleServerTools(checkbox) {
+            const isChecked = checkbox.checked;
+            const group = checkbox.closest('.mcp-server-group');
+            const tools = group.querySelectorAll('.input-tool-option');
+            
+            tools.forEach(tool => {
+                if (isChecked) {
+                    tool.classList.add('selected');
+                } else {
+                    tool.classList.remove('selected');
+                }
+            });
+            
+            updateToolCount();
+        }
+
+        // Filter Tools
+        function filterTools(searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+            const groups = document.querySelectorAll('.mcp-server-group');
+            
+            groups.forEach(group => {
+                const tools = group.querySelectorAll('.input-tool-option');
+                let hasVisibleTools = false;
+                
+                tools.forEach(tool => {
+                    const name = tool.querySelector('.input-tool-name').textContent.toLowerCase();
+                    const desc = tool.querySelector('.input-tool-desc').textContent.toLowerCase();
+                    const matches = name.includes(term) || desc.includes(term);
+                    
+                    tool.style.display = matches ? 'flex' : 'none';
+                    if (matches) hasVisibleTools = true;
+                });
+                
+                // Show/hide entire server group based on matches
+                group.style.display = hasVisibleTools || term === '' ? 'block' : 'none';
+                
+                // Auto-expand if there are matches
+                if (hasVisibleTools && term !== '') {
+                    const header = group.querySelector('.mcp-server-header');
+                    const toolsList = group.querySelector('.mcp-server-tools');
+                    header.classList.add('expanded');
+                    toolsList.classList.add('expanded');
+                }
+            });
+        }
+
+        // Auto-select Tools
+        function toggleAutoSelect(checkbox) {
+            const isChecked = checkbox.checked;
+            
+            if (isChecked) {
+                // Auto-select all tools
+                document.querySelectorAll('.input-tool-option').forEach(tool => {
+                    tool.classList.add('selected');
+                });
+                
+                // Check all server checkboxes
+                document.querySelectorAll('.mcp-server-checkbox').forEach(cb => {
+                    cb.checked = true;
+                });
+                
+                // Disable manual selection
+                document.querySelectorAll('.input-tool-option').forEach(tool => {
+                    tool.style.pointerEvents = 'none';
+                    tool.style.opacity = '0.7';
+                });
+                document.querySelectorAll('.mcp-server-checkbox').forEach(cb => {
+                    cb.disabled = true;
+                });
+            } else {
+                // Enable manual selection
+                document.querySelectorAll('.input-tool-option').forEach(tool => {
+                    tool.style.pointerEvents = 'auto';
+                    tool.style.opacity = '1';
+                });
+                document.querySelectorAll('.mcp-server-checkbox').forEach(cb => {
+                    cb.disabled = false;
+                });
+            }
+            
+            updateToolCount();
+        }
+
+        // Model Selector Functions
+        function toggleInputKnowledgeSelector() {
+            const panel = document.getElementById('inputKnowledgePanel');
+            const btn = document.getElementById('inputKnowledgeSelectorBtn');
+            const isOpen = panel.classList.contains('open');
+            
+            // Close other selectors if open
+            const toolsPanel = document.getElementById('inputToolsPanel');
+            toolsPanel.classList.remove('open');
+            document.getElementById('inputToolsSelectorBtn').classList.remove('open');
+            
+            const modelPanel = document.getElementById('inputModelPanel');
+            modelPanel.classList.remove('open');
+            document.getElementById('inputModelSelectorBtn').classList.remove('open');
+            
+            if (isOpen) {
+                panel.classList.remove('open');
+                btn.classList.remove('open');
+            } else {
+                panel.classList.add('open');
+                btn.classList.add('open');
+            }
+        }
+
+        function selectKnowledge(button) {
+            const isSelected = button.classList.contains('selected');
+            
+            // Toggle selection
+            if (isSelected) {
+                button.classList.remove('selected');
+            } else {
+                button.classList.add('selected');
+            }
+            
+            // Update displayed count
+            updateKnowledgeCount();
+        }
+        
+        function updateKnowledgeCount() {
+            const selectedKnowledge = document.querySelectorAll('.input-knowledge-option.selected');
+            const count = selectedKnowledge.length;
+            const countElement = document.getElementById('inputKnowledgeCount');
+            
+            // Update count display
+            countElement.textContent = count;
+            
+            // Show/hide count badge
+            if (count === 0) {
+                countElement.style.display = 'none';
+            } else {
+                countElement.style.display = 'inline-flex';
+            }
+        }
+
+        function toggleInputModelSelector() {
+            const panel = document.getElementById('inputModelPanel');
+            const btn = document.getElementById('inputModelSelectorBtn');
+            const isOpen = panel.classList.contains('open');
+            
+            // Close other selectors if open
+            const toolsPanel = document.getElementById('inputToolsPanel');
+            toolsPanel.classList.remove('open');
+            document.getElementById('inputToolsSelectorBtn').classList.remove('open');
+            
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
+            knowledgePanel.classList.remove('open');
+            document.getElementById('inputKnowledgeSelectorBtn').classList.remove('open');
+            
+            if (isOpen) {
+                panel.classList.remove('open');
+                btn.classList.remove('open');
+            } else {
+                panel.classList.add('open');
+                btn.classList.add('open');
+            }
+        }
+
+        function selectModel(button) {
+            // Remove selected from all models
+            document.querySelectorAll('.input-model-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected to clicked model
+            button.classList.add('selected');
+            
+            // Update displayed model name
+            const modelName = button.dataset.model;
+            document.getElementById('inputModelText').textContent = modelName;
+            
+            // Close panel
+            document.getElementById('inputModelPanel').classList.remove('open');
+            document.getElementById('inputModelSelectorBtn').classList.remove('open');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const toolsBtn = document.getElementById('inputToolsSelectorBtn');
+            const toolsPanel = document.getElementById('inputToolsPanel');
+            const knowledgeBtn = document.getElementById('inputKnowledgeSelectorBtn');
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
+            const modelBtn = document.getElementById('inputModelSelectorBtn');
+            const modelPanel = document.getElementById('inputModelPanel');
+            
+            // Close tools panel if clicked outside
+            if (!toolsBtn.contains(event.target) && !toolsPanel.contains(event.target)) {
+                toolsPanel.classList.remove('open');
+                toolsBtn.classList.remove('open');
+            }
+            
+            // Close knowledge panel if clicked outside
+            if (!knowledgeBtn.contains(event.target) && !knowledgePanel.contains(event.target)) {
+                knowledgePanel.classList.remove('open');
+                knowledgeBtn.classList.remove('open');
+            }
+            
+            // Close model panel if clicked outside
+            if (!modelBtn.contains(event.target) && !modelPanel.contains(event.target)) {
+                modelPanel.classList.remove('open');
+                modelBtn.classList.remove('open');
+            }
+        });
 
     </script>
 </body>
