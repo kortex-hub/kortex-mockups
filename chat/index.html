@@ -27,28 +27,56 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="chat-time-filter">Last 7 days</div>
                     </div>
                     
                     <!-- Chat Sessions List -->
                     <div class="chat-sessions-list">
+                        <div class="chat-section-header">
+                            <span>Recent</span>
+                        </div>
+                        
                         <div class="chat-session-item active" onclick="loadChat('sf-weather')">
-                            <div class="chat-session-title">San Francisco Weather</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">San Francisco Weather</div>
+                                <div class="chat-session-preview">Current weather conditions</div>
+                            </div>
+                            <div class="chat-session-time">2h</div>
                         </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('dan-walsh')">
-                            <div class="chat-session-title">Podman Desktop Overview</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Podman Desktop Overview</div>
+                                <div class="chat-session-preview">Understanding features and capabilities</div>
+                            </div>
+                            <div class="chat-session-time">5h</div>
                         </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('podman-issues')">
-                            <div class="chat-session-title">Latest 5 GitHub Issues</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Latest 5 GitHub Issues</div>
+                                <div class="chat-session-preview">podman-desktop repository analysis</div>
+                            </div>
+                            <div class="chat-session-time">1d</div>
                         </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('about-podman')">
-                            <div class="chat-session-title">About Podman</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">About Podman</div>
+                                <div class="chat-session-preview">Overview and key concepts</div>
+                            </div>
+                            <div class="chat-session-time">2d</div>
                         </div>
-                        <div class="chat-session-item">
-                            <div class="chat-session-title">Last 30 days</div>
+                        
+                        <div class="chat-section-header">
+                            <span>Last 30 days</span>
                         </div>
+                        
                         <div class="chat-session-item" onclick="loadChat('test-conv')">
-                            <div class="chat-session-title">Test Conversation</div>
+                            <div class="chat-session-content">
+                                <div class="chat-session-title">Test Conversation</div>
+                                <div class="chat-session-preview">Example discussion thread</div>
+                            </div>
+                            <div class="chat-session-time">15d</div>
                         </div>
                     </div>
                     
@@ -247,30 +275,43 @@
                                 <div class="message-time">2:35 PM</div>
                             </div>
                             
-                            <!-- Loading/Thinking State -->
+                            <!-- Tool Interaction - get_file_contents (Processing) -->
                             <div class="chat-message assistant-message">
                                 <div class="message-content">
-                                    <div class="message-avatar">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <circle cx="12" cy="12" r="6"/>
-                                            <circle cx="12" cy="12" r="2"/>
-                                        </svg>
-                                    </div>
-                                    <div class="message-bubble thinking-bubble">
-                                        <div class="tool-execution-bar">
-                                            <div class="tool-execution-icon">
+                                    <div class="message-bubble">
+                                        <div class="tool-usage-wrapper">
+                                            <div class="tool-usage-indicator processing" onclick="toggleToolDetails(this)">
+                                                <svg class="tool-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="9 18 15 12 9 6"/>
+                                                </svg>
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                     <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                                                 </svg>
+                                                <span>get_file_contents</span>
+                                                <div class="loading-dots">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
                                             </div>
-                                            <div class="tool-execution-content">
-                                                <div class="tool-execution-name">Reading MAINTAINERS.md</div>
-                                                <div class="tool-execution-status">
-                                                    <div class="loading-dots">
-                                                        <span></span>
-                                                        <span></span>
-                                                        <span></span>
+                                            <div class="tool-details-panel">
+                                                <div class="tool-tabs">
+                                                    <button class="tool-tab active" onclick="switchToolTab(event, 'input-2')">INPUT</button>
+                                                    <button class="tool-tab" onclick="switchToolTab(event, 'output-2')">OUTPUT</button>
+                                                </div>
+                                                <div class="tool-tab-content">
+                                                    <div id="input-2" class="tool-tab-pane active">
+                                                        <pre class="tool-detail-code">{
+  "path": "MAINTAINERS.md",
+  "repo": "podman-desktop",
+  "owner": "podman-desktop"
+}</pre>
+                                                    </div>
+                                                    <div id="output-2" class="tool-tab-pane">
+                                                        <pre class="tool-detail-code">{
+  "status": "processing",
+  "message": "Reading file..."
+}</pre>
                                                     </div>
                                                 </div>
                                             </div>
