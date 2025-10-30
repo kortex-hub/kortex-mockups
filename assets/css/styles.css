@@ -3842,12 +3842,14 @@ select:focus-visible {
 
 /* Input Tools and Model Selector Styles */
 .input-tools-selector-wrapper,
-.input-model-selector-wrapper {
+.input-model-selector-wrapper,
+.input-knowledge-selector-wrapper {
     position: relative;
 }
 
 .input-tools-selector-btn,
-.input-model-selector-btn {
+.input-model-selector-btn,
+.input-knowledge-selector-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -3864,23 +3866,27 @@ select:focus-visible {
 }
 
 .input-tools-selector-btn:hover,
-.input-model-selector-btn:hover {
+.input-model-selector-btn:hover,
+.input-knowledge-selector-btn:hover {
     background: rgba(139, 92, 246, 0.15);
     border-color: rgba(139, 92, 246, 0.3);
 }
 
 .input-tools-selector-btn.open,
-.input-model-selector-btn.open {
+.input-model-selector-btn.open,
+.input-knowledge-selector-btn.open {
     background: rgba(139, 92, 246, 0.2);
     border-color: #8b5cf6;
 }
 
 .input-tools-selector-btn svg,
-.input-model-selector-btn svg {
+.input-model-selector-btn svg,
+.input-knowledge-selector-btn svg {
     flex-shrink: 0;
 }
 
-.input-tools-count {
+.input-tools-count,
+.input-knowledge-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -3901,13 +3907,15 @@ select:focus-visible {
     transition: transform 0.2s ease;
 }
 
-.input-model-selector-btn.open .input-chevron-icon {
+.input-model-selector-btn.open .input-chevron-icon,
+.input-knowledge-selector-btn.open .input-chevron-icon {
     transform: rotate(180deg);
 }
 
 /* Tools Panel */
 .input-tools-panel,
-.input-model-panel {
+.input-model-panel,
+.input-knowledge-panel {
     position: absolute;
     bottom: calc(100% + 8px);
     left: 0;
@@ -3924,7 +3932,8 @@ select:focus-visible {
 }
 
 .input-tools-panel.open,
-.input-model-panel.open {
+.input-model-panel.open,
+.input-knowledge-panel.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -4101,7 +4110,8 @@ select:focus-visible {
 }
 
 .input-tools-options,
-.input-model-options {
+.input-model-options,
+.input-knowledge-options {
     padding: 0;
     max-height: 450px;
     overflow-y: auto;
@@ -4300,18 +4310,92 @@ select:focus-visible {
     opacity: 1;
 }
 
+/* Knowledge Options */
+.input-knowledge-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 4px 2px;
+    width: calc(100% - 8px);
+    text-align: left;
+}
+
+.input-knowledge-option:hover {
+    background: #f9fafb;
+    border-color: #e5e7eb;
+}
+
+.input-knowledge-option.selected {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border-color: #8b5cf6;
+}
+
+.input-knowledge-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.input-knowledge-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 2px;
+}
+
+.input-knowledge-desc {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.input-knowledge-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.input-knowledge-option.selected .input-knowledge-check {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    border-color: #8b5cf6;
+}
+
+.input-knowledge-check svg {
+    width: 10px;
+    height: 10px;
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.input-knowledge-option.selected .input-knowledge-check svg {
+    opacity: 1;
+}
+
 /* Chat input wrapper uses flex layout with gap defined above */
 
 /* Responsive adjustments for input selectors */
 @media (max-width: 768px) {
     .input-tools-selector-btn,
-    .input-model-selector-btn {
+    .input-model-selector-btn,
+    .input-knowledge-selector-btn {
         padding: 4px 10px;
         font-size: 12px;
     }
     
     .input-tools-panel,
-    .input-model-panel {
+    .input-model-panel,
+    .input-knowledge-panel {
         min-width: 280px;
         max-width: calc(100vw - 40px);
     }

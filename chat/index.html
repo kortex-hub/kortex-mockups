@@ -533,6 +533,76 @@
                                     </div>
                                 </div>
                                     
+                                    <!-- Knowledge Environment Selector (Middle) -->
+                                    <div class="input-knowledge-selector-wrapper">
+                                        <button class="input-knowledge-selector-btn" id="inputKnowledgeSelectorBtn" onclick="toggleInputKnowledgeSelector()">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                            </svg>
+                                            <span id="inputKnowledgeText">Knowledge</span>
+                                            <span class="input-knowledge-count" id="inputKnowledgeCount">1</span>
+                                        </button>
+                                        
+                                        <!-- Knowledge Dropdown Panel -->
+                                        <div class="input-knowledge-panel" id="inputKnowledgePanel">
+                                            <div class="input-panel-header">
+                                                <h3>Select Knowledge Environments</h3>
+                                                <p>Choose one or more knowledge bases for context</p>
+                                            </div>
+                                            
+                                            <div class="input-knowledge-options">
+                                                <button class="input-knowledge-option selected" data-knowledge="podman-desktop" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Podman Desktop</div>
+                                                        <div class="input-knowledge-desc">Documentation and codebase</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="kubernetes" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Kubernetes</div>
+                                                        <div class="input-knowledge-desc">K8s documentation and best practices</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="docker" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Docker</div>
+                                                        <div class="input-knowledge-desc">Container technology reference</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                
+                                                <button class="input-knowledge-option" data-knowledge="red-hat" onclick="selectKnowledge(this)">
+                                                    <div class="input-knowledge-info">
+                                                        <div class="input-knowledge-name">Red Hat Enterprise</div>
+                                                        <div class="input-knowledge-desc">RHEL and OpenShift docs</div>
+                                                    </div>
+                                                    <div class="input-knowledge-check">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <!-- Model Selector (Right) -->
                                 <div class="input-model-selector-wrapper">
                                     <button class="input-model-selector-btn" id="inputModelSelectorBtn" onclick="toggleInputModelSelector()">
@@ -1171,10 +1241,14 @@
             const btn = document.getElementById('inputToolsSelectorBtn');
             const isOpen = panel.classList.contains('open');
             
-            // Close model selector if open
+            // Close other selectors if open
             const modelPanel = document.getElementById('inputModelPanel');
             modelPanel.classList.remove('open');
             document.getElementById('inputModelSelectorBtn').classList.remove('open');
+            
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
+            knowledgePanel.classList.remove('open');
+            document.getElementById('inputKnowledgeSelectorBtn').classList.remove('open');
             
             if (isOpen) {
                 panel.classList.remove('open');
@@ -1322,15 +1396,72 @@
         }
 
         // Model Selector Functions
+        function toggleInputKnowledgeSelector() {
+            const panel = document.getElementById('inputKnowledgePanel');
+            const btn = document.getElementById('inputKnowledgeSelectorBtn');
+            const isOpen = panel.classList.contains('open');
+            
+            // Close other selectors if open
+            const toolsPanel = document.getElementById('inputToolsPanel');
+            toolsPanel.classList.remove('open');
+            document.getElementById('inputToolsSelectorBtn').classList.remove('open');
+            
+            const modelPanel = document.getElementById('inputModelPanel');
+            modelPanel.classList.remove('open');
+            document.getElementById('inputModelSelectorBtn').classList.remove('open');
+            
+            if (isOpen) {
+                panel.classList.remove('open');
+                btn.classList.remove('open');
+            } else {
+                panel.classList.add('open');
+                btn.classList.add('open');
+            }
+        }
+
+        function selectKnowledge(button) {
+            const isSelected = button.classList.contains('selected');
+            
+            // Toggle selection
+            if (isSelected) {
+                button.classList.remove('selected');
+            } else {
+                button.classList.add('selected');
+            }
+            
+            // Update displayed count
+            updateKnowledgeCount();
+        }
+        
+        function updateKnowledgeCount() {
+            const selectedKnowledge = document.querySelectorAll('.input-knowledge-option.selected');
+            const count = selectedKnowledge.length;
+            const countElement = document.getElementById('inputKnowledgeCount');
+            
+            // Update count display
+            countElement.textContent = count;
+            
+            // Show/hide count badge
+            if (count === 0) {
+                countElement.style.display = 'none';
+            } else {
+                countElement.style.display = 'inline-flex';
+            }
+        }
+
         function toggleInputModelSelector() {
             const panel = document.getElementById('inputModelPanel');
             const btn = document.getElementById('inputModelSelectorBtn');
             const isOpen = panel.classList.contains('open');
             
-            // Close tools selector if open
+            // Close other selectors if open
             const toolsPanel = document.getElementById('inputToolsPanel');
             toolsPanel.classList.remove('open');
             document.getElementById('inputToolsSelectorBtn').classList.remove('open');
+            
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
+            knowledgePanel.classList.remove('open');
+            document.getElementById('inputKnowledgeSelectorBtn').classList.remove('open');
             
             if (isOpen) {
                 panel.classList.remove('open');
@@ -1363,6 +1494,8 @@
         document.addEventListener('click', function(event) {
             const toolsBtn = document.getElementById('inputToolsSelectorBtn');
             const toolsPanel = document.getElementById('inputToolsPanel');
+            const knowledgeBtn = document.getElementById('inputKnowledgeSelectorBtn');
+            const knowledgePanel = document.getElementById('inputKnowledgePanel');
             const modelBtn = document.getElementById('inputModelSelectorBtn');
             const modelPanel = document.getElementById('inputModelPanel');
             
@@ -1370,6 +1503,12 @@
             if (!toolsBtn.contains(event.target) && !toolsPanel.contains(event.target)) {
                 toolsPanel.classList.remove('open');
                 toolsBtn.classList.remove('open');
+            }
+            
+            // Close knowledge panel if clicked outside
+            if (!knowledgeBtn.contains(event.target) && !knowledgePanel.contains(event.target)) {
+                knowledgePanel.classList.remove('open');
+                knowledgeBtn.classList.remove('open');
             }
             
             // Close model panel if clicked outside
