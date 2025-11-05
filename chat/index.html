@@ -728,70 +728,122 @@
                             </svg>
                         </button>
                     </div>
+
+                    <!-- Auto-select Toggle -->
+                    <div class="tools-auto-select-section">
+                        <label class="tools-auto-select-toggle">
+                            <input type="checkbox" class="tools-auto-select-checkbox" id="toolsAutoSelect" onchange="toggleAutoSelect(this)">
+                            <span class="tools-auto-select-label">Auto-select tools</span>
+                        </label>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="tools-search-section">
+                        <div class="tools-search-wrapper">
+                            <svg class="tools-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            <input 
+                                type="text" 
+                                class="tools-search-input" 
+                                id="toolsSearchInput"
+                                placeholder="Filter tools..."
+                                oninput="filterTools(this.value)"
+                            >
+                        </div>
+                    </div>
                     
-                    <div class="tools-sidebar-content">
+                    <div class="tools-sidebar-content" id="toolsSidebarContent">
                         <!-- GitHub MCP Server -->
-                        <div class="mcp-server-section">
+                        <div class="mcp-server-section" data-server="github">
                             <div class="mcp-server-header-item">
                                 <input type="checkbox" class="mcp-checkbox" id="github-mcp" onchange="toggleMCPServer(this)" checked>
                                 <label for="github-mcp" class="mcp-server-label">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                                     </svg>
-                                    <span>GitHub MCP</span>
+                                    <div class="mcp-server-info">
+                                        <span class="mcp-server-name">GitHub MCP</span>
+                                        <span class="mcp-server-desc">Interact with repositories and issues</span>
+                                    </div>
                                 </label>
                             </div>
                             
                             <div class="mcp-tools-list">
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="list_issues">
                                     <input type="checkbox" class="tool-checkbox" checked onchange="toggleTool(this)">
-                                    <span class="tool-name">list_issues</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">list_issues</span>
+                                        <span class="tool-description">List repository issues with filters</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="list_pull_requests">
                                     <input type="checkbox" class="tool-checkbox" checked onchange="toggleTool(this)">
-                                    <span class="tool-name">list_pull_requests</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">list_pull_requests</span>
+                                        <span class="tool-description">List PRs in a repository</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="create_issue">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">create_issue</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">create_issue</span>
+                                        <span class="tool-description">Create a new issue</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="get_file_contents">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">get_file_contents</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">get_file_contents</span>
+                                        <span class="tool-description">Read file contents from repo</span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
                         
                         <!-- Filesystem MCP Server -->
-                        <div class="mcp-server-section">
+                        <div class="mcp-server-section" data-server="filesystem">
                             <div class="mcp-server-header-item">
                                 <input type="checkbox" class="mcp-checkbox" id="filesystem-mcp" onchange="toggleMCPServer(this)">
                                 <label for="filesystem-mcp" class="mcp-server-label">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                                     </svg>
-                                    <span>Filesystem MCP</span>
+                                    <div class="mcp-server-info">
+                                        <span class="mcp-server-name">Filesystem MCP</span>
+                                        <span class="mcp-server-desc">Read and write local files</span>
+                                    </div>
                                 </label>
                             </div>
                             
                             <div class="mcp-tools-list">
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="read_file">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">read_file</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">read_file</span>
+                                        <span class="tool-description">Read file contents</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="write_file">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">write_file</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">write_file</span>
+                                        <span class="tool-description">Write content to a file</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="list_directory">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">list_directory</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">list_directory</span>
+                                        <span class="tool-description">List directory contents</span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
                         
                         <!-- Slack MCP Server -->
-                        <div class="mcp-server-section">
+                        <div class="mcp-server-section" data-server="slack">
                             <div class="mcp-server-header-item">
                                 <input type="checkbox" class="mcp-checkbox" id="slack-mcp" onchange="toggleMCPServer(this)">
                                 <label for="slack-mcp" class="mcp-server-label">
@@ -805,20 +857,38 @@
                                         <path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/>
                                         <path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/>
                                     </svg>
-                                    <span>Slack MCP</span>
+                                    <div class="mcp-server-info">
+                                        <span class="mcp-server-name">Slack MCP</span>
+                                        <span class="mcp-server-desc">Send messages and manage channels</span>
+                                    </div>
                                 </label>
                             </div>
                             
                             <div class="mcp-tools-list">
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="send_message">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">send_message</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">send_message</span>
+                                        <span class="tool-description">Send a message to a channel</span>
+                                    </div>
                                 </label>
-                                <label class="tool-item">
+                                <label class="tool-item" data-tool="list_channels">
                                     <input type="checkbox" class="tool-checkbox" onchange="toggleTool(this)">
-                                    <span class="tool-name">list_channels</span>
+                                    <div class="tool-info">
+                                        <span class="tool-name">list_channels</span>
+                                        <span class="tool-description">List available Slack channels</span>
+                                    </div>
                                 </label>
                             </div>
+                        </div>
+
+                        <!-- No Results Message -->
+                        <div class="tools-no-results" id="toolsNoResults" style="display: none;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            <p>No tools found</p>
                         </div>
                     </div>
                     
