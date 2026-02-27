@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Agent Skills</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Skills Page Specific Styles */
+        .skill-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .skill-type-badge.prebuilt {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .skill-type-badge.custom {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .skill-source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            background-color: #374151;
+            color: #9ca3af;
+        }
+
+        .skill-description {
+            font-size: 13px;
+            color: #9ca3af;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .skill-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .skill-status-dot.enabled {
+            background-color: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+        }
+
+        .skill-status-dot.disabled {
+            background-color: #6b7280;
+        }
+
+        .skill-status-text {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background-color: #4b5563;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .toggle-switch.active {
+            background-color: #8b5cf6;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(16px);
+        }
+
+        .skill-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .skill-icon.kubernetes {
+            background: linear-gradient(135deg, #326ce5, #54a3ff);
+            color: #ffffff;
+        }
+
+        .skill-icon.openshift {
+            background: linear-gradient(135deg, #db212e, #ee0000);
+            color: #ffffff;
+        }
+
+        .skill-icon.podman {
+            background: linear-gradient(135deg, #892ca0, #a855f7);
+            color: #ffffff;
+        }
+
+        .skill-icon.rhel {
+            background: linear-gradient(135deg, #cc0000, #ee0000);
+            color: #ffffff;
+        }
+
+        .skill-icon.custom {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: #ffffff;
+        }
+
+        .skill-icon.french-gov {
+            background: linear-gradient(135deg, #000091, #000066);
+            color: #ffffff;
+        }
+
+        .skill-icon.accounting {
+            background: linear-gradient(135deg, #0891B2, #0E7490);
+            color: #ffffff;
+        }
+
+        .skill-icon.compliance {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: #ffffff;
+        }
+
+        /* Upload area styles */
+        .upload-skill-area {
+            border: 2px dashed #3d3e4f;
+            border-radius: 8px;
+            padding: 32px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+        }
+
+        .upload-skill-area:hover {
+            border-color: #8b5cf6;
+            background-color: rgba(139, 92, 246, 0.05);
+        }
+
+        .upload-skill-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            color: #9ca3af;
+        }
+
+        .upload-skill-text {
+            font-size: 14px;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .upload-skill-subtext {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Skill structure preview */
+        .skill-structure-preview {
+            background-color: #1e1f29;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 16px;
+        }
+
+        .skill-structure-preview .folder {
+            color: #60a5fa;
+        }
+
+        .skill-structure-preview .file {
+            color: #34d399;
+        }
+
+        .skill-structure-preview .required {
+            color: #f59e0b;
+        }
+
+        /* Internal Badge */
+        .internal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-right: 8px;
+        }
+
+        .internal-badge svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        /* Name cell with badge */
+        .skill-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body class="skills-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Skills UI -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Skills</h1>
+            </header>
+            
+            <div class="content">
+                <!-- Skills Content -->
+                <div class="rag-header">
+                    <h2 class="rag-title">Agent Skills</h2>
+                    <button class="create-button" onclick="openModal()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        New Skill
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search skills..." id="skillSearch">
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <a href="#" class="tab active" onclick="filterSkills('all'); return false;">All</a>
+                    <a href="#" class="tab" onclick="filterSkills('prebuilt'); return false;">Pre-built</a>
+                    <a href="#" class="tab" onclick="filterSkills('custom'); return false;">Custom</a>
+                    <a href="#" class="tab internal-tab" onclick="filterSkills('internal'); return false;">Internal</a>
+                </div>
+
+                <!-- Skills Table -->
+                <table class="rag-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th class="status-cell"></th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Source</th>
+                            <th class="actions-cell">Default</th>
+                        </tr>
+                    </thead>
+                    <tbody id="skillsTableBody">
+                        <!-- Internal Skills -->
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=french-gov-accounting'" data-internal="true">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon french-gov">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 21h18"/>
+                                        <path d="M9 8h1"/>
+                                        <path d="M9 12h1"/>
+                                        <path d="M9 16h1"/>
+                                        <path d="M14 8h1"/>
+                                        <path d="M14 12h1"/>
+                                        <path d="M14 16h1"/>
+                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="skill-name-cell">
+                                    <span class="internal-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                        Internal
+                                    </span>
+                                    <span class="env-name">French Government Accounting</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Handle French public sector accounting standards (M14, M57, LOLF)</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">OpenShift AI</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=corporate-expense'" data-internal="true">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon accounting">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                        <path d="M12 9v6"/>
+                                        <path d="M9 12h6"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="skill-name-cell">
+                                    <span class="internal-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                        Internal
+                                    </span>
+                                    <span class="env-name">Corporate Expense Management</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Track expenses, generate reports, and manage corporate budgets</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">OpenShift AI</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=compliance-audit'" data-internal="true">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon compliance">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        <path d="M9 12l2 2 4-4"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="skill-name-cell">
+                                    <span class="internal-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                        Internal
+                                    </span>
+                                    <span class="env-name">Compliance & Audit</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Corporate compliance checks and audit report generation</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">OpenShift AI</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch" onclick="toggleSkill(this)" title="Disabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Pre-built Skills -->
+                        <tr class="skill-row prebuilt" onclick="window.location.href='details.html?skill=kubernetes'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon kubernetes">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="9"/>
+                                        <polygon points="12,6 14,10 12,9 10,10"/>
+                                        <polygon points="12,18 14,14 12,15 10,14"/>
+                                        <polygon points="6,12 10,14 9,12 10,10"/>
+                                        <polygon points="18,12 14,14 15,12 14,10"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">Kubernetes</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Deploy, manage, and troubleshoot Kubernetes clusters and workloads</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Red Hat</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row prebuilt" onclick="window.location.href='details.html?skill=openshift'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon openshift">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                        <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">OpenShift</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Build, deploy, and manage applications on Red Hat OpenShift Container Platform</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Red Hat</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row prebuilt" onclick="window.location.href='details.html?skill=podman'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon podman">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                        <line x1="6" y1="12" x2="6" y2="12"/>
+                                        <line x1="10" y1="12" x2="10" y2="12"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">Podman</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Build, run, and manage containers and pods with Podman</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Red Hat</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row prebuilt" onclick="window.location.href='details.html?skill=rhel'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon rhel">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                        <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">RHEL</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Administer, configure, and troubleshoot Red Hat Enterprise Linux systems</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Red Hat</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Custom Skills -->
+                        <tr class="skill-row custom" onclick="window.location.href='details.html?skill=code-review'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon custom">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 11l3 3L22 4"/>
+                                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">code-review</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge custom">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    Custom
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Analyze code for best practices, security issues, and performance</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Local</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                    <button class="action-button delete" title="Delete">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row custom" onclick="window.location.href='details.html?skill=api-docs-generator'">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon custom">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                        <line x1="10" y1="9" x2="8" y2="9"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="env-name">api-docs-generator</span>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge custom">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    Custom
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Generate comprehensive API documentation from code</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">Local</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch" onclick="toggleSkill(this)" title="Disabled"></div>
+                                    <button class="action-button delete" title="Delete">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for creating new skill -->
+    <div class="modal-overlay" id="createModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Skill</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Upload Area -->
+                <div class="upload-skill-area" onclick="document.getElementById('skillZipInput').click()">
+                    <svg class="upload-skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <div class="upload-skill-text">Drop skill folder here or click to upload</div>
+                    <div class="upload-skill-subtext">Upload a ZIP file containing SKILL.md</div>
+                    <input type="file" id="skillZipInput" accept=".zip" style="display: none;">
+                </div>
+
+                <div style="text-align: center; color: #6b7280; margin: 20px 0;">or create manually</div>
+
+                <div class="form-section">
+                    <label class="form-label">Skill Name</label>
+                    <input type="text" class="form-input" placeholder="my-custom-skill" id="skillName">
+                </div>
+                
+                <div class="form-section">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input" style="min-height: 80px; resize: vertical;" placeholder="Brief description of what this skill does and when to use it..." id="skillDescription"></textarea>
+                </div>
+
+                <!-- Skill Structure Preview -->
+                <div class="skill-structure-preview">
+                    <div style="margin-bottom: 8px; color: #e5e7eb; font-weight: 500;">Required Skill Structure:</div>
+                    <div><span class="folder">my-skill/</span></div>
+                    <div style="padding-left: 16px;"><span class="file required">├── SKILL.md</span> <span style="color: #6b7280;">(required)</span></div>
+                    <div style="padding-left: 16px;"><span class="file">├── scripts/</span></div>
+                    <div style="padding-left: 16px;"><span class="file">└── resources/</span></div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" id="createBtn" onclick="createSkill()" disabled>Create Skill</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        let currentFilter = 'all';
+
+        // Skills-specific functions
+        function openModal() {
+            document.getElementById('createModal').classList.add('show');
+            document.getElementById('skillName').value = '';
+            document.getElementById('skillDescription').value = '';
+            updateCreateButton();
+        }
+
+        function closeModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+
+        function updateCreateButton() {
+            const btn = document.getElementById('createBtn');
+            const nameInput = document.getElementById('skillName');
+            const descInput = document.getElementById('skillDescription');
+            btn.disabled = !(nameInput.value && descInput.value);
+        }
+
+        function createSkill() {
+            const name = document.getElementById('skillName').value;
+            const description = document.getElementById('skillDescription').value;
+            console.log('Creating skill:', { name, description });
+            closeModal();
+        }
+
+        function toggleSkill(element) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            element.title = isActive ? 'Enabled' : 'Disabled';
+        }
+
+        function filterSkills(type) {
+            currentFilter = type;
+            
+            // Update active tab
+            document.querySelectorAll('.tabs .tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('skillSearch')?.value?.toLowerCase() || '';
+            const isConnected = document.body.classList.contains('openshift-connected');
+            const rows = document.querySelectorAll('.skill-row');
+
+            rows.forEach(row => {
+                const isInternal = row.dataset.internal === 'true';
+                const name = row.querySelector('.env-name').textContent.toLowerCase();
+                const description = row.querySelector('.skill-description').textContent.toLowerCase();
+                const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
+
+                let matchesFilter = false;
+                if (currentFilter === 'all') {
+                    matchesFilter = true;
+                } else if (currentFilter === 'internal') {
+                    matchesFilter = isInternal;
+                } else if (currentFilter === 'prebuilt' && row.classList.contains('prebuilt')) {
+                    matchesFilter = true;
+                } else if (currentFilter === 'custom' && row.classList.contains('custom')) {
+                    matchesFilter = true;
+                }
+
+                // Hide internal assets if not connected
+                if (isInternal && !isConnected) {
+                    row.style.display = 'none';
+                } else if (matchesSearch && matchesFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Add input listeners
+        document.getElementById('skillName')?.addEventListener('input', updateCreateButton);
+        document.getElementById('skillDescription')?.addEventListener('input', updateCreateButton);
+
+        // Search functionality
+        document.getElementById('skillSearch')?.addEventListener('input', applyFilters);
+
+        // Listen for OpenShift AI connection state changes
+        document.addEventListener('openshiftAIStateChanged', function(e) {
+            applyFilters();
+        });
+
+        // Initial filter when page loads
+        document.addEventListener('sidebarLoaded', function() {
+            setTimeout(applyFilters, 100);
+        });
+    </script>
+</body>
+</html>

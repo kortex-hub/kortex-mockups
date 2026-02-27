@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - MCP Configuration</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+</head>
+<body class="mcp-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- MCP Details Content -->
+        <main class="main-content mcp-details-layout">
+            
+            <!-- Header -->
+            <div class="mcp-details-header">
+                <!-- Breadcrumb -->
+                <nav class="mcp-breadcrumb">
+                    <a href="index.html">MCP Catalog</a>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                    <span id="mcpBreadcrumbName">RHEL MCP</span>
+                </nav>
+
+                <!-- Hero Section -->
+                <div class="mcp-details-hero">
+                    <div class="mcp-details-icon" id="mcpDetailsIcon">
+                        <!-- Icon will be dynamically inserted -->
+                    </div>
+                    <div class="mcp-details-info">
+                        <h1 class="mcp-details-title" id="mcpDetailsTitle">RHEL MCP</h1>
+                        <p class="mcp-details-subtitle">
+                            <span class="mcp-details-version" id="mcpDetailsVersion">v1.2.0</span>
+                            <span id="mcpDetailsToolCount">12 tools available</span>
+                        </p>
+                    </div>
+                    <div class="mcp-details-actions">
+                        <div class="mcp-toggle-wrapper">
+                            <span class="mcp-toggle-label">Enabled</span>
+                            <div class="mcp-toggle active" id="mcpToggle" onclick="toggleMcp()">
+                                <div class="mcp-toggle-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Content -->
+            <div class="mcp-details-content">
+                <div class="mcp-config-grid">
+                    
+                    <!-- Connection Settings -->
+                    <div class="mcp-config-section">
+                        <div class="mcp-config-section-header">
+                            <h3 class="mcp-config-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                Connection Settings
+                            </h3>
+                        </div>
+                        
+                        <div class="mcp-form-group">
+                            <label class="mcp-form-label">Server Command</label>
+                            <input type="text" class="mcp-form-input code" id="serverCommand" value="uvx mcp-server-rhel" placeholder="uvx mcp-server-rhel">
+                        </div>
+                        
+                        <div class="mcp-form-group">
+                            <label class="mcp-form-label">Arguments</label>
+                            <input type="text" class="mcp-form-input code" id="serverArgs" value="--host localhost --port 8080" placeholder="--host localhost --port 8080">
+                        </div>
+                        
+                        <div class="mcp-form-group">
+                            <label class="mcp-form-label">Working Directory</label>
+                            <input type="text" class="mcp-form-input code" id="workingDir" value="/home/user" placeholder="/path/to/working/directory">
+                        </div>
+                    </div>
+
+                    <!-- Authentication -->
+                    <div class="mcp-config-section">
+                        <div class="mcp-config-section-header">
+                            <h3 class="mcp-config-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                Authentication
+                            </h3>
+                        </div>
+                        
+                        <div class="mcp-form-group">
+                            <label class="mcp-form-label">API Key</label>
+                            <input type="password" class="mcp-form-input code" id="apiKey" value="••••••••••••••••" placeholder="Enter API key">
+                        </div>
+                        
+                        <div class="mcp-form-group">
+                            <label class="mcp-form-label">Auth Token (Optional)</label>
+                            <input type="password" class="mcp-form-input code" id="authToken" value="" placeholder="Bearer token for authentication">
+                        </div>
+                    </div>
+
+                    <!-- Environment Variables -->
+                    <div class="mcp-config-section full-width">
+                        <div class="mcp-config-section-header">
+                            <h3 class="mcp-config-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="4 17 10 11 4 5"/>
+                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                </svg>
+                                Environment Variables
+                            </h3>
+                        </div>
+                        
+                        <div class="mcp-env-list" id="envList">
+                            <div class="mcp-env-item">
+                                <input type="text" class="mcp-form-input code" value="RHEL_SUBSCRIPTION_ID" placeholder="Variable name">
+                                <input type="text" class="mcp-form-input code" value="sub-xxxx-xxxx-xxxx" placeholder="Value">
+                                <button class="mcp-env-remove" onclick="removeEnvVar(this)">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mcp-env-item">
+                                <input type="text" class="mcp-form-input code" value="RHEL_ORG_ID" placeholder="Variable name">
+                                <input type="text" class="mcp-form-input code" value="12345678" placeholder="Value">
+                                <button class="mcp-env-remove" onclick="removeEnvVar(this)">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="mcp-add-env-btn" onclick="addEnvVar()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Add Variable
+                        </button>
+                    </div>
+
+                    <!-- Available Tools -->
+                    <div class="mcp-config-section full-width">
+                        <div class="mcp-config-section-header">
+                            <h3 class="mcp-config-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                </svg>
+                                Available Tools
+                            </h3>
+                        </div>
+                        
+                        <div class="mcp-tools-list" id="toolsList">
+                            <!-- Tools will be dynamically inserted -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Save Actions -->
+            <div class="mcp-save-actions">
+                <button class="mcp-delete-btn" onclick="deleteMcp()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        <line x1="10" y1="11" x2="10" y2="17"/>
+                        <line x1="14" y1="11" x2="14" y2="17"/>
+                    </svg>
+                    Remove MCP
+                </button>
+                <div class="mcp-save-group">
+                    <button class="mcp-cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
+                    <button class="mcp-save-btn" onclick="saveMcpConfig()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Save Configuration
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // MCP Data
+        const mcpData = {
+            'rhel': {
+                name: 'RHEL MCP',
+                version: 'v1.2.0',
+                command: 'uvx mcp-server-rhel',
+                args: '--host localhost --port 8080',
+                workDir: '/home/user',
+                envVars: [
+                    { name: 'RHEL_SUBSCRIPTION_ID', value: 'sub-xxxx-xxxx-xxxx' },
+                    { name: 'RHEL_ORG_ID', value: '12345678' }
+                ],
+                tools: [
+                    { name: 'get_system_info', description: 'Get detailed system information including OS version, kernel, and hardware' },
+                    { name: 'list_packages', description: 'List all installed RPM packages on the system' },
+                    { name: 'install_package', description: 'Install a package using DNF/YUM package manager' },
+                    { name: 'remove_package', description: 'Remove an installed package from the system' },
+                    { name: 'update_system', description: 'Update all packages to their latest versions' },
+                    { name: 'check_subscription', description: 'Check Red Hat subscription status and entitlements' },
+                    { name: 'manage_services', description: 'Start, stop, enable, or disable systemd services' },
+                    { name: 'view_logs', description: 'View and search system logs using journalctl' },
+                    { name: 'manage_firewall', description: 'Configure firewalld rules and zones' },
+                    { name: 'check_selinux', description: 'View and modify SELinux status and policies' },
+                    { name: 'run_insights', description: 'Run Red Hat Insights analysis on the system' },
+                    { name: 'manage_users', description: 'Create, modify, and delete system users' }
+                ],
+                icon: `<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="50" fill="url(#rhelGradient)"/>
+                    <path d="M35 75C35 75 40 55 60 50C80 45 85 55 85 55C85 55 90 65 85 75C80 85 60 90 60 90C60 90 40 85 35 75Z" fill="#fff" opacity="0.95"/>
+                    <path d="M42 72C42 72 46 58 60 54C74 50 78 58 78 58C78 58 82 66 78 74C74 82 60 85 60 85C60 85 50 82 42 72Z" fill="#EE0000"/>
+                    <ellipse cx="60" cy="42" rx="18" ry="12" fill="#fff" opacity="0.9"/>
+                    <ellipse cx="60" cy="42" rx="14" ry="9" fill="#EE0000"/>
+                    <defs>
+                        <linearGradient id="rhelGradient" x1="10" y1="10" x2="110" y2="110">
+                            <stop offset="0%" stop-color="#CC0000"/>
+                            <stop offset="100%" stop-color="#8B0000"/>
+                        </linearGradient>
+                    </defs>
+                </svg>`
+            },
+            'openshift': {
+                name: 'OpenShift MCP',
+                version: 'v2.1.3',
+                command: 'uvx mcp-server-openshift',
+                args: '--cluster https://api.cluster.example.com:6443',
+                workDir: '/home/user/.kube',
+                envVars: [
+                    { name: 'KUBECONFIG', value: '/home/user/.kube/config' },
+                    { name: 'OPENSHIFT_TOKEN', value: 'sha256~xxxxxxxxxxxxx' }
+                ],
+                tools: [
+                    { name: 'get_clusters', description: 'List all available OpenShift clusters' },
+                    { name: 'get_projects', description: 'List all projects/namespaces in the cluster' },
+                    { name: 'create_project', description: 'Create a new OpenShift project' },
+                    { name: 'get_deployments', description: 'List deployments in a project' },
+                    { name: 'scale_deployment', description: 'Scale a deployment to specified replicas' },
+                    { name: 'get_pods', description: 'List all pods in a project with status' },
+                    { name: 'get_pod_logs', description: 'Retrieve logs from a specific pod' },
+                    { name: 'create_route', description: 'Create an OpenShift route for a service' },
+                    { name: 'get_routes', description: 'List all routes in a project' },
+                    { name: 'apply_manifest', description: 'Apply a Kubernetes/OpenShift YAML manifest' },
+                    { name: 'get_events', description: 'Get cluster events for debugging' },
+                    { name: 'manage_secrets', description: 'Create and manage secrets' },
+                    { name: 'get_quota', description: 'View resource quotas and limits' },
+                    { name: 'rollout_restart', description: 'Restart a deployment with rolling update' },
+                    { name: 'get_builds', description: 'List BuildConfigs and Builds' },
+                    { name: 'start_build', description: 'Trigger a new build from BuildConfig' },
+                    { name: 'get_imagestreams', description: 'List ImageStreams in a project' },
+                    { name: 'oc_debug', description: 'Start a debug pod for troubleshooting' }
+                ],
+                icon: `<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="50" fill="url(#openshiftGradient)"/>
+                    <g transform="translate(25, 30)">
+                        <path d="M35 5L55 15L55 35L35 45L15 35L15 15L35 5Z" fill="#fff" opacity="0.95"/>
+                        <path d="M35 10L50 18L50 32L35 40L20 32L20 18L35 10Z" fill="#EE0000"/>
+                        <path d="M35 15L45 21L45 29L35 35L25 29L25 21L35 15Z" fill="#fff"/>
+                        <path d="M5 25L12 25L8 20M8 30L12 25" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M65 25L58 25L62 20M62 30L58 25" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <defs>
+                        <linearGradient id="openshiftGradient" x1="10" y1="10" x2="110" y2="110">
+                            <stop offset="0%" stop-color="#DB212E"/>
+                            <stop offset="100%" stop-color="#A30000"/>
+                        </linearGradient>
+                    </defs>
+                </svg>`
+            },
+            'github': {
+                name: 'GitHub MCP',
+                version: 'v3.0.1',
+                command: 'uvx mcp-server-github',
+                args: '',
+                workDir: '/home/user/projects',
+                envVars: [
+                    { name: 'GITHUB_TOKEN', value: 'ghp_xxxxxxxxxxxxxxxxxxxx' }
+                ],
+                tools: [
+                    { name: 'list_repos', description: 'List repositories for a user or organization' },
+                    { name: 'get_repo', description: 'Get detailed information about a repository' },
+                    { name: 'create_repo', description: 'Create a new GitHub repository' },
+                    { name: 'list_issues', description: 'List issues in a repository' },
+                    { name: 'create_issue', description: 'Create a new issue' },
+                    { name: 'list_prs', description: 'List pull requests in a repository' },
+                    { name: 'create_pr', description: 'Create a new pull request' },
+                    { name: 'merge_pr', description: 'Merge a pull request' },
+                    { name: 'get_file', description: 'Get contents of a file from repository' },
+                    { name: 'create_file', description: 'Create or update a file in repository' },
+                    { name: 'list_branches', description: 'List branches in a repository' },
+                    { name: 'create_branch', description: 'Create a new branch' },
+                    { name: 'list_commits', description: 'List commits in a repository' },
+                    { name: 'get_workflows', description: 'List GitHub Actions workflows' },
+                    { name: 'trigger_workflow', description: 'Trigger a GitHub Actions workflow' },
+                    { name: 'list_releases', description: 'List releases for a repository' },
+                    { name: 'create_release', description: 'Create a new release' },
+                    { name: 'search_code', description: 'Search code across repositories' },
+                    { name: 'get_user', description: 'Get information about a GitHub user' },
+                    { name: 'list_gists', description: 'List gists for authenticated user' },
+                    { name: 'create_gist', description: 'Create a new gist' },
+                    { name: 'add_comment', description: 'Add comment to issue or PR' },
+                    { name: 'add_labels', description: 'Add labels to an issue or PR' },
+                    { name: 'request_review', description: 'Request review on a pull request' }
+                ],
+                icon: `<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="50" fill="url(#githubGradient)"/>
+                    <path d="M60 25C40.67 25 25 40.67 25 60C25 75.52 35.16 88.62 49.14 93.16C50.94 93.49 51.6 92.39 51.6 91.44C51.6 90.59 51.57 88.33 51.55 85.33C41.55 87.52 39.44 80.52 39.44 80.52C37.81 76.6 35.44 75.5 35.44 75.5C32.14 73.24 35.68 73.28 35.68 73.28C39.32 73.54 41.23 77.02 41.23 77.02C44.48 82.52 49.77 80.89 51.68 79.98C52 77.67 52.9 76.05 53.9 75.12C45.9 74.18 37.52 71.08 37.52 57.48C37.52 53.78 38.92 50.72 41.28 48.33C40.92 47.38 39.68 43.88 41.6 39.15C41.6 39.15 44.65 38.13 51.5 42.58C54.42 41.74 57.54 41.32 60.64 41.31C63.73 41.32 66.86 41.74 69.78 42.58C76.62 38.13 79.66 39.15 79.66 39.15C81.58 43.88 80.35 47.38 79.98 48.33C82.36 50.72 83.74 53.78 83.74 57.48C83.74 71.12 75.34 74.16 67.3 75.07C68.55 76.2 69.66 78.42 69.66 81.77C69.66 86.54 69.62 90.36 69.62 91.44C69.62 92.4 70.26 93.52 72.1 93.15C86.06 88.6 96.2 75.5 96.2 60C96.2 40.67 80.53 25 60 25Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="githubGradient" x1="10" y1="10" x2="110" y2="110">
+                            <stop offset="0%" stop-color="#333"/>
+                            <stop offset="100%" stop-color="#1a1a1a"/>
+                        </linearGradient>
+                    </defs>
+                </svg>`
+            }
+        };
+
+        // Get MCP ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mcpId = urlParams.get('mcp') || 'rhel';
+        const mcp = mcpData[mcpId] || mcpData['rhel'];
+
+        // Populate page
+        function initializePage() {
+            document.getElementById('mcpBreadcrumbName').textContent = mcp.name;
+            document.getElementById('mcpDetailsTitle').textContent = mcp.name;
+            document.getElementById('mcpDetailsVersion').textContent = mcp.version;
+            document.getElementById('mcpDetailsToolCount').textContent = `${mcp.tools.length} tools available`;
+            document.getElementById('mcpDetailsIcon').innerHTML = mcp.icon;
+            document.getElementById('serverCommand').value = mcp.command;
+            document.getElementById('serverArgs').value = mcp.args;
+            document.getElementById('workingDir').value = mcp.workDir;
+            
+            // Populate env vars
+            const envList = document.getElementById('envList');
+            envList.innerHTML = mcp.envVars.map(env => `
+                <div class="mcp-env-item">
+                    <input type="text" class="mcp-form-input code" value="${env.name}" placeholder="Variable name">
+                    <input type="text" class="mcp-form-input code" value="${env.value}" placeholder="Value">
+                    <button class="mcp-env-remove" onclick="removeEnvVar(this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+            
+            // Populate tools
+            const toolsList = document.getElementById('toolsList');
+            toolsList.innerHTML = mcp.tools.map((tool, index) => `
+                <div class="mcp-tool-item">
+                    <input type="checkbox" class="mcp-tool-checkbox" id="tool_${index}" checked>
+                    <div class="mcp-tool-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <div class="mcp-tool-info">
+                        <div class="mcp-tool-name">${tool.name}</div>
+                        <div class="mcp-tool-description">${tool.description}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle MCP enabled/disabled
+        function toggleMcp() {
+            const toggle = document.getElementById('mcpToggle');
+            toggle.classList.toggle('active');
+            const label = document.querySelector('.mcp-toggle-label');
+            label.textContent = toggle.classList.contains('active') ? 'Enabled' : 'Disabled';
+        }
+
+        // Add environment variable
+        function addEnvVar() {
+            const envList = document.getElementById('envList');
+            const newEnvItem = document.createElement('div');
+            newEnvItem.className = 'mcp-env-item';
+            newEnvItem.innerHTML = `
+                <input type="text" class="mcp-form-input code" placeholder="Variable name">
+                <input type="text" class="mcp-form-input code" placeholder="Value">
+                <button class="mcp-env-remove" onclick="removeEnvVar(this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            `;
+            envList.appendChild(newEnvItem);
+        }
+
+        // Remove environment variable
+        function removeEnvVar(button) {
+            button.parentElement.remove();
+        }
+
+        // Save MCP configuration
+        function saveMcpConfig() {
+            const config = {
+                command: document.getElementById('serverCommand').value,
+                args: document.getElementById('serverArgs').value,
+                workDir: document.getElementById('workingDir').value,
+                apiKey: document.getElementById('apiKey').value,
+                authToken: document.getElementById('authToken').value,
+                enabled: document.getElementById('mcpToggle').classList.contains('active'),
+                envVars: [],
+                tools: []
+            };
+            
+            // Collect env vars
+            document.querySelectorAll('.mcp-env-item').forEach(item => {
+                const inputs = item.querySelectorAll('input');
+                if (inputs[0].value) {
+                    config.envVars.push({
+                        name: inputs[0].value,
+                        value: inputs[1].value
+                    });
+                }
+            });
+            
+            // Collect enabled tools
+            document.querySelectorAll('.mcp-tool-checkbox:checked').forEach((checkbox, index) => {
+                config.tools.push(mcp.tools[index].name);
+            });
+            
+            console.log('Saving MCP configuration:', config);
+            
+            // Show success feedback
+            const saveBtn = document.querySelector('.mcp-save-btn');
+            const originalContent = saveBtn.innerHTML;
+            saveBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Saved!
+            `;
+            saveBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+            
+            setTimeout(() => {
+                saveBtn.innerHTML = originalContent;
+                saveBtn.style.background = '';
+            }, 2000);
+        }
+
+        // Delete MCP
+        function deleteMcp() {
+            if (confirm(`Are you sure you want to remove ${mcp.name}? This action cannot be undone.`)) {
+                console.log('Deleting MCP:', mcpId);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize page on load
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>

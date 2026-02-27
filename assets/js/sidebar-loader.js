@@ -14,6 +14,16 @@ const sidebarHTML = `
         <span>Chat</span>
     </a>
 
+    <!-- Agents -->
+    <a href="../sessions/index.html" class="nav-item" data-section="sessions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+        </svg>
+        <span>Agents</span>
+    </a>
+
     <!-- Knowledges -->
     <a href="../knowledges/index.html" class="nav-item" data-section="knowledges">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -26,15 +36,23 @@ const sidebarHTML = `
         <span>Knowledges</span>
     </a>
 
-    <!-- MCP -->
-    <a href="../mcp/index.html" class="nav-item" data-section="mcp">
+    <!-- Tools (MCP) - conditionally shown based on settings -->
+    <a href="../mcp/index.html" class="nav-item" data-section="mcp" id="mcp-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="7"/>
             <rect x="14" y="3" width="7" height="7"/>
             <rect x="14" y="14" width="7" height="7"/>
             <rect x="3" y="14" width="7" height="7"/>
         </svg>
-        <span>MCP</span>
+        <span>Tools</span>
+    </a>
+
+    <!-- Skills (conditionally shown based on settings) -->
+    <a href="../skills/index.html" class="nav-item" data-section="skills" id="skills-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        <span>Skills</span>
     </a>
 
     <!-- Flows -->
@@ -54,6 +72,14 @@ const sidebarHTML = `
         <span>Extensions</span>
     </a>
 
+    <!-- Bridge (conditionally shown based on settings) -->
+    <a href="../bridge/index.html" class="nav-item" data-section="bridge" id="bridge-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+        </svg>
+        <span>Bridge</span>
+    </a>
+
     <div class="nav-spacer"></div>
 
     <!-- Settings -->
@@ -65,7 +91,153 @@ const sidebarHTML = `
         <span>Settings</span>
     </a>
 </nav>
+
+<!-- Global Status Bar -->
+<div class="global-status-bar" id="globalStatusBar">
+    <div class="status-bar-left">
+        <div class="status-bar-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Ready</span>
+        </div>
+    </div>
+    <div class="status-bar-right">
+        <div class="status-bar-item openshift-status" id="openshiftStatusItem" onclick="window.openOpenshiftAIModal()">
+            <div class="status-bar-dot" id="openshiftStatusDot"></div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                <polyline points="2 17 12 22 22 17"/>
+                <polyline points="2 12 12 17 22 12"/>
+            </svg>
+            <span id="openshiftStatusText">OpenShift AI: Not connected</span>
+        </div>
+    </div>
+</div>
+
+<!-- OpenShift AI Connection Modal -->
+<div class="openshift-modal-overlay" id="openshiftModalOverlay">
+    <div class="openshift-modal">
+        <div class="openshift-modal-header">
+            <div class="openshift-modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                    <polyline points="2 17 12 22 22 17"/>
+                    <polyline points="2 12 12 17 22 12"/>
+                </svg>
+            </div>
+            <div class="openshift-modal-header-info">
+                <h2>Connect to OpenShift AI</h2>
+                <p>Sign in to access your organization's AI assets</p>
+            </div>
+            <button class="openshift-modal-close" onclick="window.closeOpenshiftAIModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="openshift-modal-body">
+            <div class="openshift-form-group">
+                <label class="openshift-form-label">OpenShift AI URL</label>
+                <input type="url" class="openshift-form-input" id="openshiftUrl" placeholder="https://ai.openshift.example.com" value="https://ai.openshift.corp.example.com">
+            </div>
+            <div class="openshift-form-group">
+                <label class="openshift-form-label">Username</label>
+                <input type="text" class="openshift-form-input" id="openshiftUsername" placeholder="your.username" value="john.doe">
+            </div>
+            <div class="openshift-form-group">
+                <label class="openshift-form-label">Password or Token</label>
+                <input type="password" class="openshift-form-input" id="openshiftPassword" placeholder="••••••••••••" value="mock-token-12345">
+            </div>
+        </div>
+        <div class="openshift-modal-footer">
+            <button class="openshift-modal-cancel" onclick="window.closeOpenshiftAIModal()">Cancel</button>
+            <button class="openshift-modal-submit" id="openshiftSubmitBtn" onclick="window.connectToOpenshiftAI()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                    <polyline points="10 17 15 12 10 7"/>
+                    <line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+                Connect
+            </button>
+        </div>
+    </div>
+</div>
 `;
+
+// Check if Skills module is enabled
+function isSkillsModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kortexSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // If modules.skillsEnabled is explicitly set to false, return false
+            // Otherwise default to true (enabled)
+            if (settings.modules && settings.modules.skillsEnabled === false) {
+                return false;
+            }
+        }
+        return true; // Default to enabled
+    } catch (e) {
+        return true; // Default to enabled on error
+    }
+}
+
+// Check if Bridge module is enabled
+function isBridgeModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kortexSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // If modules.bridgeEnabled is explicitly set to false, return false
+            // Otherwise default to true (enabled)
+            if (settings.modules && settings.modules.bridgeEnabled === false) {
+                return false;
+            }
+        }
+        return true; // Default to enabled
+    } catch (e) {
+        return true; // Default to enabled on error
+    }
+}
+
+// Check if MCP module is enabled
+function isMcpModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kortexSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // If modules.mcpEnabled is explicitly set to false, return false
+            // Otherwise default to true (enabled)
+            if (settings.modules && settings.modules.mcpEnabled === false) {
+                return false;
+            }
+        }
+        return true; // Default to enabled
+    } catch (e) {
+        return true; // Default to enabled on error
+    }
+}
+
+// Check if OpenShift AI module is enabled
+function isOpenshiftAIModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kortexSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // If modules.openshiftAIEnabled is explicitly set to false, return false
+            // Otherwise default to true (enabled)
+            if (settings.modules && settings.modules.openshiftAIEnabled === false) {
+                return false;
+            }
+        }
+        return true; // Default to enabled
+    } catch (e) {
+        return true; // Default to enabled on error
+    }
+}
 
 // Load sidebar component
 function loadSidebar(activeSection) {
@@ -78,6 +250,30 @@ function loadSidebar(activeSection) {
     // Insert sidebar HTML
     sidebarContainer.innerHTML = sidebarHTML;
 
+    // Hide Skills nav item if module is disabled
+    const skillsNavItem = document.getElementById('skills-nav-item');
+    if (skillsNavItem && !isSkillsModuleEnabled()) {
+        skillsNavItem.style.display = 'none';
+    }
+
+    // Hide Bridge nav item if module is disabled
+    const bridgeNavItem = document.getElementById('bridge-nav-item');
+    if (bridgeNavItem && !isBridgeModuleEnabled()) {
+        bridgeNavItem.style.display = 'none';
+    }
+
+    // Hide MCP nav item if module is disabled
+    const mcpNavItem = document.getElementById('mcp-nav-item');
+    if (mcpNavItem && !isMcpModuleEnabled()) {
+        mcpNavItem.style.display = 'none';
+    }
+
+    // Hide OpenShift AI status bar item if module is disabled
+    const openshiftStatusItem = document.getElementById('openshiftStatusItem');
+    if (openshiftStatusItem && !isOpenshiftAIModuleEnabled()) {
+        openshiftStatusItem.style.display = 'none';
+    }
+
     // Set active section
     if (activeSection) {
         const navItems = document.querySelectorAll('.nav-item');
@@ -88,6 +284,9 @@ function loadSidebar(activeSection) {
             }
         });
     }
+
+    // Dispatch event to notify that sidebar is loaded
+    document.dispatchEvent(new CustomEvent('sidebarLoaded'));
 }
 
 // Auto-load sidebar on page load
@@ -97,4 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeSection = bodyClass.split(' ').find(c => c.endsWith('-page'))?.replace('-page', '');
     
     loadSidebar(activeSection);
+
+    // Dynamically load the OpenShift AI script
+    const script = document.createElement('script');
+    script.src = '../assets/js/openshift-ai.js';
+    document.body.appendChild(script);
 });

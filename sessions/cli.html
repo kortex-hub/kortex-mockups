@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - CLI Commands</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .cli-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cli-header {
+            margin-bottom: 32px;
+        }
+
+        .cli-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cli-header p {
+            font-size: 15px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .cli-section {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .cli-section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cli-section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cli-section-icon.basic {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+        }
+
+        .cli-section-icon.agents {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+        }
+
+        .cli-section-icon.config {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #fff;
+        }
+
+        .cli-section-icon.advanced {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #fff;
+        }
+
+        .cli-section-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cli-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .cli-section-body {
+            padding: 0;
+        }
+
+        .cli-command {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .cli-command:last-child {
+            border-bottom: none;
+        }
+
+        .cli-command-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .cli-command-info {
+            flex: 1;
+        }
+
+        .cli-command-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .cli-command-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        .cli-code-block {
+            background: #0d0e14;
+            border: 1px solid #2d2e3f;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+            font-size: 13px;
+            color: #e5e7eb;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .cli-code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .cli-code-block .prompt {
+            color: #22c55e;
+        }
+
+        .cli-code-block .command {
+            color: #f59e0b;
+        }
+
+        .cli-code-block .flag {
+            color: #06b6d4;
+        }
+
+        .cli-code-block .value {
+            color: #a78bfa;
+        }
+
+        .cli-code-block .comment {
+            color: #6b7280;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 10px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 6px;
+            color: #a78bfa;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+        }
+
+        .copy-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .cli-options-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .cli-options-table th,
+        .cli-options-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .cli-options-table th {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .cli-options-table td {
+            font-size: 13px;
+            color: #e5e7eb;
+        }
+
+        .cli-options-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cli-option-flag {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            color: #06b6d4;
+            font-weight: 500;
+        }
+
+        .cli-option-desc {
+            color: #9ca3af;
+        }
+
+        .cli-option-default {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 24px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #e5e7eb;
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .cli-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .cli-badge.required {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .cli-badge.optional {
+            background: rgba(107, 114, 128, 0.15);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .quick-start-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .quick-start-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-start-card h3 svg {
+            color: #a78bfa;
+        }
+    </style>
+</head>
+<body class="sessions-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- CLI Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>CLI Commands</h1>
+            </header>
+            
+            <div class="content">
+                <div class="cli-container">
+                    <a href="index.html" class="back-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"/>
+                            <polyline points="12 19 5 12 12 5"/>
+                        </svg>
+                        Back to Workspaces
+                    </a>
+
+                    <div class="cli-header">
+                        <h2>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
+                            Kortex CLI
+                        </h2>
+                        <p>Create and manage agentic coding workspaces directly from your terminal. The Kortex CLI provides powerful commands for automation, CI/CD integration, and headless operation.</p>
+                    </div>
+
+                    <!-- Quick Start -->
+                    <div class="quick-start-card">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                            Quick Start
+                        </h3>
+                        <div class="cli-code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                            <code><span class="comment"># Start a workspace with Claude agent</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span>
+
+<span class="comment"># Start with a specific task</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> <span class="flag">--task</span> <span class="value">"Refactor the authentication module"</span></code>
+                        </div>
+                    </div>
+
+                    <!-- Basic Commands -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon basic">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="4 17 10 11 4 5"/>
+                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Basic Commands</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Start a new workspace</h4>
+                                        <p class="cli-command-desc">Create and start an agentic coding workspace with a specific agent</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span>                  <span class="comment"># Use Claude agent</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--cursor</span>                  <span class="comment"># Use Cursor agent</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--goose</span>                   <span class="comment"># Use Goose agent</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">List workspaces</h4>
+                                        <p class="cli-command-desc">Display all existing workspaces and their status</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">list</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">ls</span> <span class="flag">--running</span>              <span class="comment"># Show only running</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Stop a workspace</h4>
+                                        <p class="cli-command-desc">Stop a running workspace by name or ID</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">stop</span> <span class="value">frontend-refactor</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">stop</span> <span class="flag">--all</span>                <span class="comment"># Stop all workspaces</span></code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agent Options -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon agents">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Agent Options</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <table class="cli-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>Flag</th>
+                                        <th>Description</th>
+                                        <th>Default</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--claude</span></td>
+                                        <td class="cli-option-desc">Use Claude 3.5 Sonnet as the coding agent</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--cursor</span></td>
+                                        <td class="cli-option-desc">Use Cursor Agent for coding tasks</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--goose</span></td>
+                                        <td class="cli-option-desc">Use Goose Agent for coding tasks</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--model &lt;name&gt;</span></td>
+                                        <td class="cli-option-desc">Specify a custom model (e.g., granite-3.1, llama-3.2)</td>
+                                        <td><span class="cli-option-default">granite-3.1</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Configuration Options -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon config">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Configuration Options</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <table class="cli-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>Flag</th>
+                                        <th>Description</th>
+                                        <th>Default</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--task &lt;description&gt;</span></td>
+                                        <td class="cli-option-desc">Initial task description for the agent</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--name &lt;name&gt;</span></td>
+                                        <td class="cli-option-desc">Name for the workspace</td>
+                                        <td><span class="cli-option-default">auto-generated</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--dir &lt;path&gt;</span></td>
+                                        <td class="cli-option-desc">Working directory for the workspace</td>
+                                        <td><span class="cli-option-default">.</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--mcp &lt;servers&gt;</span></td>
+                                        <td class="cli-option-desc">Comma-separated list of MCP servers to enable</td>
+                                        <td><span class="cli-option-default">filesystem</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--skills &lt;names&gt;</span></td>
+                                        <td class="cli-option-desc">Comma-separated list of skills to enable</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--knowledge &lt;id&gt;</span></td>
+                                        <td class="cli-option-desc">Knowledge base ID to attach</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--devspaces</span></td>
+                                        <td class="cli-option-desc">Run workspace in Red Hat DevSpaces</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Examples -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon advanced">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Advanced Examples</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Full configuration example</h4>
+                                        <p class="cli-command-desc">Start a fully configured workspace with all options</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> \
+    <span class="flag">--name</span> <span class="value">"api-refactor"</span> \
+    <span class="flag">--task</span> <span class="value">"Refactor the REST API to use async handlers"</span> \
+    <span class="flag">--dir</span> <span class="value">./backend</span> \
+    <span class="flag">--mcp</span> <span class="value">filesystem,postgres,github</span> \
+    <span class="flag">--skills</span> <span class="value">code-review,kubernetes</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Run in DevSpaces</h4>
+                                        <p class="cli-command-desc">Start workspace in Red Hat DevSpaces cloud environment</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> <span class="flag">--devspaces</span> \
+    <span class="flag">--task</span> <span class="value">"Set up CI/CD pipeline for the project"</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Headless mode for CI/CD</h4>
+                                        <p class="cli-command-desc">Run workspace non-interactively with auto-approval</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> <span class="flag">--headless</span> <span class="flag">--yes</span> \
+    <span class="flag">--task</span> <span class="value">"Run all tests and fix any failures"</span> \
+    <span class="flag">--timeout</span> <span class="value">30m</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Connect to OpenShift AI</h4>
+                                        <p class="cli-command-desc">Use models served from OpenShift AI platform</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--openshift-ai</span> <span class="value">https://ai.openshift.example.com</span> \
+    <span class="flag">--model</span> <span class="value">granite-3.1</span> \
+    <span class="flag">--task</span> <span class="value">"Analyze code for security vulnerabilities"</span></code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').innerText;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Copied!
+                `;
+                button.style.background = 'rgba(34, 197, 94, 0.15)';
+                button.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                button.style.color = '#22c55e';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                    button.style.borderColor = '';
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

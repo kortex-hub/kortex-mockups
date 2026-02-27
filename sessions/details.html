@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Workspace Details</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Session Details Page Styles */
+        .session-details-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #0f0f14;
+        }
+
+        /* Session Header Bar */
+        .session-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .session-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .session-back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .session-back-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            color: #e5e7eb;
+        }
+
+        .session-header-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .session-header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .session-header-icon.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+        }
+
+        .session-header-icon.cursor {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+        }
+
+        .session-header-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .session-header-text span {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .session-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(52, 211, 153, 0); }
+        }
+
+        .session-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .session-control-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .session-control-btn.terminal {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .session-control-btn.terminal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .session-control-btn.stop {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .session-control-btn.stop:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .session-control-btn.settings {
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+        }
+
+        .session-control-btn.settings:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+        }
+
+        /* Main Content Area */
+        .session-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .session-main::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .session-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .session-main::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+
+        /* Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 400px;
+            gap: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Summary Card */
+        .summary-card {
+            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .summary-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .summary-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-card-title svg {
+            width: 18px;
+            height: 18px;
+            color: #a78bfa;
+        }
+
+        .summary-card-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+        }
+
+        /* Agent Info Card */
+        .agent-info-card {
+            grid-column: span 2;
+        }
+
+        .agent-profile {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .agent-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .agent-avatar-large.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+        }
+
+        .agent-details {
+            flex: 1;
+        }
+
+        .agent-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 6px 0;
+        }
+
+        .agent-model {
+            font-size: 14px;
+            color: #a78bfa;
+            margin-bottom: 12px;
+        }
+
+        .agent-description {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            background: rgba(37, 38, 49, 0.5);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .info-value.running {
+            color: #34d399;
+        }
+
+        /* Context Card */
+        .context-card {
+            grid-row: span 2;
+        }
+
+        .context-meter-large {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 24px;
+        }
+
+        .context-meter-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #f59e0b 0deg 223deg,
+                rgba(107, 114, 128, 0.2) 223deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .context-meter-inner {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #1a1b23;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .context-percentage {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .context-label {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .context-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .context-stat {
+            background: rgba(37, 38, 49, 0.5);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .context-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .context-stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .context-breakdown {
+            background: rgba(37, 38, 49, 0.5);
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .context-breakdown-title {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .context-breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .context-breakdown-row:last-child {
+            border-bottom: none;
+        }
+
+        .context-breakdown-label {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .context-breakdown-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        /* Resources List */
+        .resources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .resource-item:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .resource-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .resource-icon.skill {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .resource-icon.mcp {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .resource-icon.tool {
+            background: rgba(236, 72, 153, 0.15);
+            color: #f9a8d4;
+        }
+
+        .resource-icon.filesystem {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fcd34d;
+        }
+
+        .resource-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+
+        .resource-status {
+            font-size: 11px;
+            color: #6ee7b7;
+        }
+
+        .resource-status.pending {
+            color: #fbbf24;
+        }
+
+        /* Session Stats Card */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: rgba(37, 38, 49, 0.5);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-box-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .stat-box-value.highlight {
+            color: #a78bfa;
+        }
+
+        .stat-box-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        /* Terminal Preview */
+        .terminal-preview {
+            margin-top: 24px;
+            grid-column: span 2;
+        }
+
+        .terminal-window {
+            background: #0a0a0f;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #1a1b23;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .terminal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+
+        .terminal-title svg {
+            width: 16px;
+            height: 16px;
+            color: #67e8f9;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .terminal-action-btn.expand {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #ffffff;
+        }
+
+        .terminal-action-btn.expand:hover {
+            transform: scale(1.02);
+        }
+
+        .terminal-body {
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            min-height: 150px;
+        }
+
+        .terminal-prompt {
+            color: #67e8f9;
+        }
+
+        .terminal-command {
+            color: #e5e7eb;
+        }
+
+        .terminal-output {
+            color: #9ca3af;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #67e8f9;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Sandbox Badge */
+        .sandbox-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .sandbox-badge svg {
+            width: 18px;
+            height: 18px;
+            color: #6ee7b7;
+        }
+
+        .sandbox-badge span {
+            font-size: 13px;
+            color: #6ee7b7;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="sessions-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Session Details UI -->
+        <main class="main-content">
+            <div class="session-details-layout">
+                <!-- Header Bar -->
+                <div class="session-header-bar">
+                    <div class="session-header-left">
+                        <button class="session-back-btn" onclick="window.location.href='index.html'">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"/>
+                            </svg>
+                        </button>
+                        <div class="session-header-info">
+                            <div class="session-header-icon claude">C</div>
+                            <div class="session-header-text">
+                                <h1>Frontend Refactor</h1>
+                                <span>Working in ~/projects/dashboard</span>
+                            </div>
+                        </div>
+                        <div class="session-status-badge">
+                            <span class="status-dot"></span>
+                            Running
+                        </div>
+                    </div>
+                    <div class="session-header-right">
+                        <button class="session-control-btn terminal" onclick="openTerminal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
+                            Open Terminal
+                        </button>
+                        <button class="session-control-btn settings" onclick="window.location.href='settings.html'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
+                            </svg>
+                            Settings
+                        </button>
+                        <button class="session-control-btn stop" onclick="stopSession()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="6" width="12" height="12" rx="2"/>
+                            </svg>
+                            Stop
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="session-main">
+                    <div class="summary-grid">
+                        <!-- Agent Info Card -->
+                        <div class="summary-card agent-info-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                    </svg>
+                                    Coding Agent
+                                </div>
+                                <span class="summary-card-badge">Active</span>
+                            </div>
+
+                            <div class="agent-profile">
+                                <div class="agent-avatar-large claude">C</div>
+                                <div class="agent-details">
+                                    <h2 class="agent-name">Claude 3.5 Sonnet</h2>
+                                    <div class="agent-model">Anthropic • claude-3-5-sonnet-20241022</div>
+                                    <p class="agent-description">
+                                        Refactoring the React components in the dashboard module. Currently working on optimizing the state management and splitting large components into smaller, reusable pieces.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="info-label">Status</div>
+                                    <div class="info-value running">Running</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Started</div>
+                                    <div class="info-value">2h 14m ago</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Working Directory</div>
+                                    <div class="info-value">~/projects/dashboard</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Files Modified</div>
+                                    <div class="info-value">6 files</div>
+                                </div>
+                            </div>
+
+                            <div class="sandbox-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <span>Secured Sandbox Environment Active</span>
+                            </div>
+                        </div>
+
+                        <!-- Context Window Card -->
+                        <div class="summary-card context-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                    Context Window
+                                </div>
+                            </div>
+
+                            <div class="context-meter-large">
+                                <div class="context-meter-circle">
+                                    <div class="context-meter-inner">
+                                        <span class="context-percentage">62%</span>
+                                        <span class="context-label">Used</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="context-stats">
+                                <div class="context-stat">
+                                    <div class="context-stat-value">124K</div>
+                                    <div class="context-stat-label">Tokens Used</div>
+                                </div>
+                                <div class="context-stat">
+                                    <div class="context-stat-value">200K</div>
+                                    <div class="context-stat-label">Total Available</div>
+                                </div>
+                            </div>
+
+                            <div class="context-breakdown">
+                                <div class="context-breakdown-title">Breakdown</div>
+                                <div class="context-breakdown-row">
+                                    <span class="context-breakdown-label">System Prompt</span>
+                                    <span class="context-breakdown-value">8K</span>
+                                </div>
+                                <div class="context-breakdown-row">
+                                    <span class="context-breakdown-label">Conversation</span>
+                                    <span class="context-breakdown-value">81K</span>
+                                </div>
+                                <div class="context-breakdown-row">
+                                    <span class="context-breakdown-label">Tool Results</span>
+                                    <span class="context-breakdown-value">35K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Card (conditionally shown based on settings) -->
+                        <div class="summary-card" id="skills-summary-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="16 18 22 12 16 6"/>
+                                        <polyline points="8 6 2 12 8 18"/>
+                                    </svg>
+                                    Active Skills
+                                </div>
+                                <span class="summary-card-badge">2 Active</span>
+                            </div>
+
+                            <div class="resources-list">
+                                <div class="resource-item">
+                                    <div class="resource-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="resource-info">
+                                        <div class="resource-name">code-review</div>
+                                        <div class="resource-status">Active</div>
+                                    </div>
+                                </div>
+                                <div class="resource-item">
+                                    <div class="resource-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14,2 14,8 20,8"/>
+                                        </svg>
+                                    </div>
+                                    <div class="resource-info">
+                                        <div class="resource-name">PowerPoint</div>
+                                        <div class="resource-status">Active</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MCP Servers Card (conditionally shown based on settings) -->
+                        <div class="summary-card" id="mcp-summary-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                    MCP Servers
+                                </div>
+                                <span class="summary-card-badge">2 Connected</span>
+                            </div>
+
+                            <div class="resources-list">
+                                <div class="resource-item">
+                                    <div class="resource-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                            <path d="M2 17l10 5 10-5"/>
+                                            <path d="M2 12l10 5 10-5"/>
+                                        </svg>
+                                    </div>
+                                    <div class="resource-info">
+                                        <div class="resource-name">RHEL MCP</div>
+                                        <div class="resource-status">Connected</div>
+                                    </div>
+                                </div>
+                                <div class="resource-item">
+                                    <div class="resource-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M8 12h8M8 8h8M8 16h8"/>
+                                        </svg>
+                                    </div>
+                                    <div class="resource-info">
+                                        <div class="resource-name">OpenShift MCP</div>
+                                        <div class="resource-status">Connected</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File System Access Card -->
+                        <div class="summary-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                    File System Access
+                                </div>
+                            </div>
+
+                            <div class="resources-list">
+                                <div class="resource-item">
+                                    <div class="resource-icon filesystem">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="resource-info">
+                                        <div class="resource-name">~/projects/dashboard</div>
+                                        <div class="resource-status">Read/Write Access</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Stats Card -->
+                        <div class="summary-card">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 20V10"/>
+                                        <path d="M12 20V4"/>
+                                        <path d="M6 20v-6"/>
+                                    </svg>
+                                    Session Activity
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value highlight">12</div>
+                                    <div class="stat-box-label">Messages</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-box-value highlight">28</div>
+                                    <div class="stat-box-label">Tool Calls</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-box-value">6</div>
+                                    <div class="stat-box-label">Files Modified</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-box-value">243</div>
+                                    <div class="stat-box-label">Lines Changed</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terminal Preview -->
+                        <div class="summary-card terminal-preview">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                    Terminal Preview
+                                </div>
+                            </div>
+
+                            <div class="terminal-window">
+                                <div class="terminal-header">
+                                    <div class="terminal-title">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="4 17 10 11 4 5"/>
+                                            <line x1="12" y1="19" x2="20" y2="19"/>
+                                        </svg>
+                                        bash — ~/projects/dashboard
+                                    </div>
+                                    <div class="terminal-actions">
+                                        <button class="terminal-action-btn expand" onclick="openTerminal()">
+                                            Open Full Terminal
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="terminal-body">
+                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-command">npm run build</span></div>
+                                    <div class="terminal-output">
+> dashboard@1.0.0 build
+> vite build
+
+vite v5.0.12 building for production...
+✓ 234 modules transformed.
+                                    </div>
+                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-cursor"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Check if Skills module is enabled in settings
+        function isSkillsModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.skillsEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if MCP module is enabled in settings
+        function isMcpModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.mcpEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Hide module cards if disabled
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillsCard = document.getElementById('skills-summary-card');
+            if (skillsCard && !isSkillsModuleEnabled()) {
+                skillsCard.style.display = 'none';
+            }
+
+            const mcpCard = document.getElementById('mcp-summary-card');
+            if (mcpCard && !isMcpModuleEnabled()) {
+                mcpCard.style.display = 'none';
+            }
+        });
+
+        function stopSession() {
+            if (confirm('Are you sure you want to stop this session?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function openTerminal() {
+            // In a real app, this would open a full terminal view
+            alert('Opening terminal session for ~/projects/dashboard');
+        }
+    </script>
+</body>
+</html>

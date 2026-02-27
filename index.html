@@ -52,7 +52,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-width: 400px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -106,6 +106,16 @@
                 <span>Chat</span>
             </a>
 
+            <!-- Agents -->
+            <a href="sessions/index.html" class="nav-item" data-section="sessions">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                    <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+                    <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+                </svg>
+                <span>Agents</span>
+            </a>
+
             <!-- Knowledges -->
             <a href="knowledges/index.html" class="nav-item" data-section="knowledges">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -118,8 +128,8 @@
                 <span>Knowledges</span>
             </a>
 
-            <!-- MCP -->
-            <a href="mcp/index.html" class="nav-item" data-section="mcp">
+            <!-- MCP (conditionally shown based on settings) -->
+            <a href="mcp/index.html" class="nav-item" data-section="mcp" id="mcp-sidebar-nav">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/>
                     <rect x="14" y="3" width="7" height="7"/>
@@ -127,6 +137,14 @@
                     <rect x="3" y="14" width="7" height="7"/>
                 </svg>
                 <span>MCP</span>
+            </a>
+
+            <!-- Skills (conditionally shown based on settings) -->
+            <a href="skills/index.html" class="nav-item" data-section="skills" id="skills-sidebar-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                <span>Skills</span>
             </a>
 
             <!-- Flows -->
@@ -144,6 +162,14 @@
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
                 <span>Extensions</span>
+            </a>
+
+            <!-- Bridge (conditionally shown based on settings) -->
+            <a href="bridge/index.html" class="nav-item" data-section="bridge" id="bridge-sidebar-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+                </svg>
+                <span>Bridge</span>
             </a>
 
             <div class="nav-spacer"></div>
@@ -178,6 +204,18 @@
                     </div>
                 </a>
 
+                <a href="sessions/index.html" class="nav-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                        <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+                        <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+                    </svg>
+                    <div class="nav-button-label">
+                        <div>Agentic Coding Workspaces</div>
+                        <div class="nav-button-desc">Launch AI coding agents in secure sandboxes</div>
+                    </div>
+                </a>
+
                 <a href="knowledges/index.html" class="nav-button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -192,7 +230,7 @@
                     </div>
                 </a>
 
-                <a href="mcp/index.html" class="nav-button">
+                <a href="mcp/index.html" class="nav-button" id="mcp-welcome-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="7" height="7"/>
                         <rect x="14" y="3" width="7" height="7"/>
@@ -202,6 +240,16 @@
                     <div class="nav-button-label">
                         <div>MCP Servers</div>
                         <div class="nav-button-desc">Connect to Model Context Protocol servers</div>
+                    </div>
+                </a>
+
+                <a href="skills/index.html" class="nav-button" id="skills-welcome-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    <div class="nav-button-label">
+                        <div>Agent Skills</div>
+                        <div class="nav-button-desc">Manage modular agent capabilities</div>
                     </div>
                 </a>
 
@@ -225,10 +273,99 @@
                         <div class="nav-button-desc">Extend Kortex with plugins and integrations</div>
                     </div>
                 </a>
+
+                <a href="bridge/index.html" class="nav-button" id="bridge-welcome-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+                    </svg>
+                    <div class="nav-button-label">
+                        <div>Bridge</div>
+                        <div class="nav-button-desc">Connect and orchestrate AI systems</div>
+                    </div>
+                </a>
             </div>
         </div>
         </div>
     </div>
+
+    <script>
+        // Check if Skills module is enabled and hide elements if disabled
+        function isSkillsModuleEnabled() {
+            try {
+                const saved = localStorage.getItem('kortexSettings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    if (settings.modules && settings.modules.skillsEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if Bridge module is enabled and hide elements if disabled
+        function isBridgeModuleEnabled() {
+            try {
+                const saved = localStorage.getItem('kortexSettings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    if (settings.modules && settings.modules.bridgeEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if MCP module is enabled and hide elements if disabled
+        function isMcpModuleEnabled() {
+            try {
+                const saved = localStorage.getItem('kortexSettings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    if (settings.modules && settings.modules.mcpEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide Skills elements if module is disabled
+            if (!isSkillsModuleEnabled()) {
+                const skillsSidebarNav = document.getElementById('skills-sidebar-nav');
+                if (skillsSidebarNav) skillsSidebarNav.style.display = 'none';
+
+                const skillsWelcomeBtn = document.getElementById('skills-welcome-btn');
+                if (skillsWelcomeBtn) skillsWelcomeBtn.style.display = 'none';
+            }
+
+            // Hide Bridge elements if module is disabled
+            if (!isBridgeModuleEnabled()) {
+                const bridgeSidebarNav = document.getElementById('bridge-sidebar-nav');
+                if (bridgeSidebarNav) bridgeSidebarNav.style.display = 'none';
+
+                const bridgeWelcomeBtn = document.getElementById('bridge-welcome-btn');
+                if (bridgeWelcomeBtn) bridgeWelcomeBtn.style.display = 'none';
+            }
+
+            // Hide MCP elements if module is disabled
+            if (!isMcpModuleEnabled()) {
+                const mcpSidebarNav = document.getElementById('mcp-sidebar-nav');
+                if (mcpSidebarNav) mcpSidebarNav.style.display = 'none';
+
+                const mcpWelcomeBtn = document.getElementById('mcp-welcome-btn');
+                if (mcpWelcomeBtn) mcpWelcomeBtn.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
 

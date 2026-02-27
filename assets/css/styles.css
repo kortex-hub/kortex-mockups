@@ -4717,3 +4717,1091 @@ select:focus-visible {
     }
 }
 
+/* ================================
+   MCP Catalog Styles
+   ================================ */
+
+.mcp-catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.mcp-card {
+    background: linear-gradient(145deg, #2d2e3f 0%, #252631 100%);
+    border: 1px solid #3d3e4f;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mcp-card:hover {
+    transform: translateY(-4px);
+    border-color: #8b5cf6;
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15),
+                0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 20px 0;
+}
+
+.mcp-card-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Brand-specific icon backgrounds */
+.mcp-card-icon.rhel-icon {
+    background: linear-gradient(135deg, #CC0000 0%, #8B0000 100%);
+}
+
+.mcp-card-icon.openshift-icon {
+    background: linear-gradient(135deg, #DB212E 0%, #A30000 100%);
+}
+
+.mcp-card-icon.github-icon {
+    background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+}
+
+.mcp-card-icon.ansible-icon {
+    background: linear-gradient(135deg, #1A1918 0%, #000 100%);
+}
+
+.mcp-card-icon.podman-icon {
+    background: linear-gradient(135deg, #892CA0 0%, #46237A 100%);
+}
+
+.mcp-card-icon.kubernetes-icon {
+    background: linear-gradient(135deg, #326CE5 0%, #1D4ED8 100%);
+}
+
+.mcp-card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.mcp-card-status.installed {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.15) 100%);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.mcp-card-status.available {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(124, 58, 237, 0.15) 100%);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.mcp-card-status.disabled {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.2) 0%, rgba(75, 85, 99, 0.15) 100%);
+    color: #9ca3af;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* Internal/Business Badge */
+.internal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.internal-badge svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Internal badge for MCP cards - positioned in header */
+.mcp-card-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+/* Internal badge variant for skills table */
+.skill-internal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-left: 8px;
+}
+
+.skill-internal-badge svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* Internal MCP icon styling */
+.mcp-card-icon.internal-icon {
+    background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+}
+
+.mcp-card-icon.accounting-icon {
+    background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+}
+
+.mcp-card-icon.sap-icon {
+    background: linear-gradient(135deg, #0066B3 0%, #004E8C 100%);
+}
+
+.mcp-card-icon.french-gov-icon {
+    background: linear-gradient(135deg, #000091 0%, #000066 100%);
+}
+
+/* Skill icon variants for internal */
+.skill-icon.internal {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #ffffff;
+}
+
+.skill-icon.french-gov {
+    background: linear-gradient(135deg, #000091, #1e3a8a);
+    color: #ffffff;
+}
+
+.skill-icon.accounting {
+    background: linear-gradient(135deg, #0891b2, #0e7490);
+    color: #ffffff;
+}
+
+.mcp-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.mcp-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.01em;
+}
+
+.mcp-card-description {
+    font-size: 14px;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+    flex: 1;
+}
+
+.mcp-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mcp-card-version {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    background: rgba(107, 114, 128, 0.15);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+}
+
+.mcp-card-tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.mcp-card-tools svg {
+    color: #a78bfa;
+}
+
+.mcp-card-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #3d3e4f;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.mcp-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.mcp-card-btn.configure {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.mcp-card-btn.configure:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(124, 58, 237, 0.2) 100%);
+    border-color: #8b5cf6;
+    transform: translateY(-1px);
+}
+
+.mcp-card-btn.install {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.mcp-card-btn.install:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+.mcp-card-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* MCP Details Page Styles */
+.mcp-details-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.mcp-details-header {
+    padding: 24px 32px;
+    background: linear-gradient(180deg, #252631 0%, #1e1f2b 100%);
+    border-bottom: 1px solid #3d3e4f;
+}
+
+.mcp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.mcp-breadcrumb a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.mcp-breadcrumb a:hover {
+    color: #a78bfa;
+}
+
+.mcp-breadcrumb svg {
+    width: 14px;
+    height: 14px;
+    color: #6b7280;
+}
+
+.mcp-breadcrumb span {
+    color: #e5e7eb;
+    font-weight: 500;
+}
+
+.mcp-details-hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.mcp-details-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.mcp-details-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.mcp-details-info {
+    flex: 1;
+}
+
+.mcp-details-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+}
+
+.mcp-details-subtitle {
+    font-size: 14px;
+    color: #9ca3af;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mcp-details-version {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    background: rgba(107, 114, 128, 0.2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.mcp-details-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mcp-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mcp-toggle-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #e5e7eb;
+}
+
+.mcp-toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background: #4b5563;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.mcp-toggle.active {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.mcp-toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-toggle.active .mcp-toggle-knob {
+    transform: translateX(24px);
+}
+
+.mcp-details-content {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+.mcp-config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.mcp-config-section {
+    background: linear-gradient(145deg, #2d2e3f 0%, #252631 100%);
+    border: 1px solid #3d3e4f;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.mcp-config-section.full-width {
+    grid-column: 1 / -1;
+}
+
+.mcp-config-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.mcp-config-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mcp-config-section-title svg {
+    width: 20px;
+    height: 20px;
+    color: #a78bfa;
+}
+
+.mcp-form-group {
+    margin-bottom: 20px;
+}
+
+.mcp-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.mcp-form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mcp-form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1a1b23;
+    border: 1px solid #3d3e4f;
+    border-radius: 10px;
+    color: #e5e7eb;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.mcp-form-input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.mcp-form-input::placeholder {
+    color: #6b7280;
+}
+
+.mcp-form-input.code {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.mcp-env-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mcp-env-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mcp-env-item .mcp-form-input {
+    flex: 1;
+}
+
+.mcp-env-item .mcp-form-input:first-child {
+    max-width: 200px;
+}
+
+.mcp-env-remove {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    color: #f87171;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mcp-env-remove:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.mcp-add-env-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px dashed rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
+    color: #a78bfa;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 12px;
+}
+
+.mcp-add-env-btn:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+/* MCP Tools List */
+.mcp-tools-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mcp-tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid #3d3e4f;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.mcp-tool-item:hover {
+    background: rgba(139, 92, 246, 0.05);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.mcp-tool-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #8b5cf6;
+    cursor: pointer;
+}
+
+.mcp-tool-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 8px;
+    color: #a78bfa;
+}
+
+.mcp-tool-info {
+    flex: 1;
+}
+
+.mcp-tool-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin-bottom: 2px;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+}
+
+.mcp-tool-description {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* MCP Save Actions */
+.mcp-save-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    background: linear-gradient(180deg, #1e1f2b 0%, #252631 100%);
+    border-top: 1px solid #3d3e4f;
+}
+
+.mcp-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    color: #f87171;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mcp-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.mcp-save-group {
+    display: flex;
+    gap: 12px;
+}
+
+.mcp-cancel-btn {
+    padding: 12px 24px;
+    background: #374151;
+    border: 1px solid #4b5563;
+    border-radius: 10px;
+    color: #e5e7eb;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mcp-cancel-btn:hover {
+    background: #4b5563;
+}
+
+.mcp-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.mcp-save-btn:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsive MCP Styles */
+@media (max-width: 1024px) {
+    .mcp-config-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mcp-config-section.full-width {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .mcp-catalog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mcp-details-header {
+        padding: 20px;
+    }
+    
+    .mcp-details-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .mcp-details-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .mcp-toggle-wrapper {
+        justify-content: center;
+    }
+    
+    .mcp-details-content {
+        padding: 20px;
+    }
+    
+    .mcp-save-actions {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+    
+    .mcp-save-group {
+        width: 100%;
+    }
+    
+    .mcp-cancel-btn,
+    .mcp-save-btn {
+        flex: 1;
+    }
+}
+
+/* ==========================================
+   Global Status Bar (Bottom of Application)
+   ========================================== */
+
+.global-status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(180deg, #1e1f29 0%, #1a1b23 100%);
+    border-top: 1px solid #3d3e4f;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    z-index: 1000;
+    font-size: 12px;
+}
+
+.status-bar-left,
+.status-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.status-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+    cursor: default;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.status-bar-item svg {
+    opacity: 0.7;
+}
+
+.status-bar-item.openshift-status {
+    cursor: pointer;
+    background: rgba(238, 0, 0, 0.08);
+    border: 1px solid transparent;
+}
+
+.status-bar-item.openshift-status:hover {
+    background: rgba(238, 0, 0, 0.15);
+    border-color: rgba(238, 0, 0, 0.3);
+    color: #e5e7eb;
+}
+
+.status-bar-item.openshift-status svg {
+    color: #EE0000;
+    opacity: 1;
+}
+
+.status-bar-item.openshift-status.connected {
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.status-bar-item.openshift-status.connected:hover {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.status-bar-item.openshift-status.connected svg {
+    color: #22c55e;
+}
+
+.status-bar-item.openshift-status.connected .status-bar-dot {
+    background: #22c55e;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}
+
+.status-bar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6b7280;
+    flex-shrink: 0;
+}
+
+/* Adjust main content for status bar */
+.app-container {
+    padding-bottom: 28px;
+}
+
+.main-content {
+    min-height: calc(100vh - 28px);
+}
+
+/* Pulse animation for connected state */
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 6px rgba(34, 197, 94, 0.5); }
+    50% { box-shadow: 0 0 10px rgba(34, 197, 94, 0.8); }
+}
+
+.status-bar-item.openshift-status.connected .status-bar-dot {
+    animation: pulse-green 2s infinite;
+}
+
+/* OpenShift AI Modal */
+.openshift-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.openshift-modal-overlay.show {
+    display: flex;
+}
+
+.openshift-modal {
+    background: linear-gradient(145deg, #2d2e3f 0%, #252631 100%);
+    border: 1px solid #3d3e4f;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 480px;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.openshift-modal-header {
+    padding: 24px;
+    border-bottom: 1px solid #3d3e4f;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+.openshift-modal-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #EE0000 0%, #CC0000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.openshift-modal-icon svg {
+    width: 26px;
+    height: 26px;
+    color: #fff;
+}
+
+.openshift-modal-header-info h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin: 0 0 4px 0;
+}
+
+.openshift-modal-header-info p {
+    font-size: 13px;
+    color: #9ca3af;
+    margin: 0;
+}
+
+.openshift-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.openshift-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e5e7eb;
+}
+
+.openshift-modal-body {
+    padding: 24px;
+}
+
+.openshift-form-group {
+    margin-bottom: 20px;
+}
+
+.openshift-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.openshift-form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.openshift-form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1a1b23;
+    border: 1px solid #3d3e4f;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.openshift-form-input:focus {
+    outline: none;
+    border-color: #EE0000;
+    box-shadow: 0 0 0 3px rgba(238, 0, 0, 0.15);
+}
+
+.openshift-form-input::placeholder {
+    color: #6b7280;
+}
+
+.openshift-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #3d3e4f;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.openshift-modal-cancel {
+    padding: 10px 20px;
+    background: #374151;
+    border: 1px solid #4b5563;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.openshift-modal-cancel:hover {
+    background: #4b5563;
+}
+
+.openshift-modal-submit {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #EE0000 0%, #CC0000 100%);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.openshift-modal-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(238, 0, 0, 0.3);
+}
+
+.openshift-modal-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Internal assets visibility */
+.internal-asset {
+    display: none;
+}
+
+body.openshift-connected .internal-asset {
+    display: flex;
+}
+
+/* For table rows */
+tr.internal-asset {
+    display: none;
+}
+
+body.openshift-connected tr.internal-asset {
+    display: table-row;
+}
+
+/* Internal tab visibility */
+.tab.internal-tab {
+    display: none;
+}
+
+body.openshift-connected .tab.internal-tab {
+    display: inline-flex;
+}
