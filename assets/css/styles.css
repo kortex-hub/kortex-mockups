@@ -226,6 +226,7 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    vertical-align: middle;
 }
 
 .rag-table tbody tr {
@@ -242,6 +243,7 @@ body {
     background-color: #252631;
     border: 1px solid #3d3e4f;
     transition: background-color 0.2s ease;
+    vertical-align: middle;
 }
 
 .rag-table tbody tr td:first-child {
@@ -262,6 +264,7 @@ body {
 .checkbox-cell {
     width: 40px;
     text-align: center;
+    vertical-align: middle;
 }
 
 .checkbox {
@@ -273,6 +276,7 @@ body {
 .status-cell {
     width: 50px;
     text-align: center;
+    vertical-align: middle;
 }
 
 .status-icon {
@@ -333,10 +337,12 @@ body {
 
 .actions-cell {
     width: 120px;
+    vertical-align: middle;
 }
 
 .actions-row {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 

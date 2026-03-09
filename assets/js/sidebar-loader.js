@@ -24,6 +24,17 @@ const sidebarHTML = `
         <span>Agents</span>
     </a>
 
+    <!-- Profiles -->
+    <a href="../profiles/index.html" class="nav-item" data-section="profiles" id="profiles-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Profiles</span>
+    </a>
+
     <!-- Knowledges -->
     <a href="../knowledges/index.html" class="nav-item" data-section="knowledges">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -102,6 +113,13 @@ const sidebarHTML = `
             </svg>
             <span>Ready</span>
         </div>
+        <div class="status-bar-item status-bar-cli" onclick="window.location.href='../cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"/>
+                <line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+            <span style="color: #67e8f9;">CLI</span>
+        </div>
     </div>
     <div class="status-bar-right">
         <div class="status-bar-item openshift-status" id="openshiftStatusItem" onclick="window.openOpenshiftAIModal()">
@@ -166,6 +184,24 @@ const sidebarHTML = `
     </div>
 </div>
 `;
+
+// Check if Profiles module is enabled
+function isProfilesModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kortexSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // If modules.profilesEnabled is explicitly set to false, return false
+            // Otherwise default to true (enabled)
+            if (settings.modules && settings.modules.profilesEnabled === false) {
+                return false;
+            }
+        }
+        return true; // Default to enabled
+    } catch (e) {
+        return true; // Default to enabled on error
+    }
+}
 
 // Check if Skills module is enabled
 function isSkillsModuleEnabled() {
@@ -249,6 +285,12 @@ function loadSidebar(activeSection) {
 
     // Insert sidebar HTML
     sidebarContainer.innerHTML = sidebarHTML;
+
+    // Hide Profiles nav item if module is disabled
+    const profilesNavItem = document.getElementById('profiles-nav-item');
+    if (profilesNavItem && !isProfilesModuleEnabled()) {
+        profilesNavItem.style.display = 'none';
+    }
 
     // Hide Skills nav item if module is disabled
     const skillsNavItem = document.getElementById('skills-nav-item');

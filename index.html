@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex Studio</title>
+    <title>Kortex</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
         .welcome-container {
@@ -12,6 +12,7 @@
             align-items: center;
             justify-content: center;
             background-color: #1a1b23;
+            padding-bottom: 28px;
         }
 
         .welcome-content {
@@ -116,6 +117,17 @@
                 <span>Agents</span>
             </a>
 
+            <!-- Profiles -->
+            <a href="profiles/index.html" class="nav-item" data-section="profiles" id="profiles-sidebar-nav">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span>Profiles</span>
+            </a>
+
             <!-- Knowledges -->
             <a href="knowledges/index.html" class="nav-item" data-section="knowledges">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -187,7 +199,7 @@
         <div class="welcome-container">
         <div class="welcome-content">
             <div class="logo">K</div>
-            <h1 class="welcome-title">Welcome to Kortex Studio</h1>
+            <h1 class="welcome-title">Welcome to Kortex</h1>
             <p class="welcome-subtitle">
                 Build powerful agentic systems with unified models, providers, and MCPs. 
                 Deploy anywhere with knowledge-augmented capabilities.
@@ -213,6 +225,19 @@
                     <div class="nav-button-label">
                         <div>Agentic Coding Workspaces</div>
                         <div class="nav-button-desc">Launch AI coding agents in secure sandboxes</div>
+                    </div>
+                </a>
+
+                <a href="profiles/index.html" class="nav-button" id="profiles-welcome-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <div class="nav-button-label">
+                        <div>Agent Profiles</div>
+                        <div class="nav-button-desc">Create and manage configuration presets</div>
                     </div>
                 </a>
 
@@ -285,6 +310,36 @@
                 </a>
             </div>
         </div>
+        </div>
+
+        <!-- Global Status Bar -->
+        <div class="global-status-bar" id="globalStatusBar">
+            <div class="status-bar-left">
+                <div class="status-bar-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>Ready</span>
+                </div>
+                <div class="status-bar-item status-bar-cli" onclick="window.location.href='cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
+                        <polyline points="4 17 10 11 4 5"/>
+                        <line x1="12" y1="19" x2="20" y2="19"/>
+                    </svg>
+                    <span style="color: #67e8f9;">CLI</span>
+                </div>
+            </div>
+            <div class="status-bar-right">
+                <div class="status-bar-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                        <polyline points="2 17 12 22 22 17"/>
+                        <polyline points="2 12 12 17 22 12"/>
+                    </svg>
+                    <span>OpenShift AI: Not connected</span>
+                </div>
+            </div>
         </div>
     </div>
 

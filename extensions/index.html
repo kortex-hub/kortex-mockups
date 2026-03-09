@@ -3,9 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - Extensions</title>
+    <title>Kortex - Extensions Catalog</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Extensions Catalog Specific Styles */
+        .extensions-catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .extension-card {
+            background: linear-gradient(135deg, #252631 0%, #1e1f29 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .extension-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+        }
+
+        .extension-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .extension-card:hover::before {
+            opacity: 1;
+        }
+
+        .extension-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .extension-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .extension-card-icon svg {
+            width: 28px;
+            height: 28px;
+            color: #ffffff;
+        }
+
+        .extension-card-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+        }
+
+        .extension-card-badges {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .extension-card-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .extension-card-status.installed {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .extension-card-status.available {
+            background-color: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .extension-card-status.enabled {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .extension-card-status.disabled {
+            background-color: rgba(107, 114, 128, 0.15);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .extension-card-body {
+            margin-bottom: 16px;
+        }
+
+        .extension-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 8px 0;
+        }
+
+        .extension-card-description {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .extension-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 12px;
+        }
+
+        .extension-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .extension-card-footer {
+            display: flex;
+            gap: 10px;
+            padding-top: 16px;
+            border-top: 1px solid #3d3e4f;
+        }
+
+        .extension-card-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .extension-card-btn.install {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #ffffff;
+        }
+
+        .extension-card-btn.install:hover {
+            background: linear-gradient(135deg, #9b6cf7 0%, #8c4aed 100%);
+        }
+
+        .extension-card-btn.configure {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        .extension-card-btn.configure:hover {
+            background-color: #4b5563;
+        }
+
+        .extension-card-btn.view {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .extension-card-btn.view:hover {
+            background-color: rgba(139, 92, 246, 0.2);
+        }
+
+        /* Category tabs styling */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .category-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-tab:hover {
+            background-color: #2d2e3f;
+            color: #e5e7eb;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-color: #8b5cf6;
+            color: #a78bfa;
+        }
+
+        .category-tab svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .category-tab .count {
+            background-color: #3d3e4f;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .category-tab.active .count {
+            background-color: rgba(139, 92, 246, 0.3);
+        }
+
+        /* Internal Badge */
+        .internal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .internal-badge svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Category-specific icon colors */
+        .extension-card-icon.skills {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .extension-card-icon.mcp {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .extension-card-icon.models {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .extension-card-icon.agents {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+
+        .extension-card-icon.openshift {
+            background: linear-gradient(135deg, #db212e 0%, #a30000 100%);
+        }
+
+        .extension-card-icon.github {
+            background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+        }
+
+        .extension-card-icon.kubernetes {
+            background: linear-gradient(135deg, #326ce5 0%, #2154c5 100%);
+        }
+
+        .extension-card-icon.ansible {
+            background: linear-gradient(135deg, #1a1918 0%, #000 100%);
+        }
+
+        .extension-card-icon.rhel {
+            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
+        }
+
+        .extension-card-icon.granite {
+            background: linear-gradient(135deg, #2d2e3f 0%, #1a1b23 100%);
+            border: 1px solid #3d3e4f;
+        }
+
+        .extension-card-icon.llama {
+            background: linear-gradient(135deg, #0081fb 0%, #0064c8 100%);
+        }
+
+        .extension-card-icon.mistral {
+            background: linear-gradient(135deg, #ff7000 0%, #cc5a00 100%);
+        }
+
+        .extension-card-icon.anthropic {
+            background: linear-gradient(135deg, #c9a97c 0%, #a38a5f 100%);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            color: #4b5563;
+        }
+
+        .empty-state h3 {
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        /* Featured section */
+        .featured-section {
+            margin-bottom: 24px;
+        }
+
+        .featured-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .featured-header svg {
+            width: 18px;
+            height: 18px;
+            color: #f59e0b;
+        }
+
+        /* Provider badge */
+        .provider-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            background-color: #374151;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Section divider */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 32px 0 20px;
+        }
+
+        .section-divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: #3d3e4f;
+        }
+
+        .section-divider-text {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
 </head>
 <body class="extensions-page">
     <div class="app-container">
@@ -19,18 +426,1067 @@
             </header>
             
             <div class="content">
-                <div style="padding: 40px; text-align: center; color: #9ca3af;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px; margin: 0 auto 20px; color: #8b5cf6;">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                    <h2 style="color: #e5e7eb; margin-bottom: 10px;">Extensions</h2>
-                    <p>Extend Kortex with plugins and integrations.</p>
-                    <p style="font-size: 14px; margin-top: 20px;">Coming soon...</p>
+                <!-- Extensions Header -->
+                <div class="rag-header">
+                    <h2 class="rag-title">Extension Catalog</h2>
+                    <button class="create-button" onclick="openInstallModal()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Install Extension
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search extensions..." id="extensionSearch" oninput="filterExtensions()">
+                    </div>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="category-tabs">
+                    <button class="category-tab active" onclick="switchCategory('all', this)" data-category="all">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        All
+                        <span class="count">24</span>
+                    </button>
+                    <button class="category-tab" onclick="switchCategory('skills', this)" data-category="skills">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                        Skills
+                        <span class="count">8</span>
+                    </button>
+                    <button class="category-tab" onclick="switchCategory('mcp', this)" data-category="mcp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                        MCP Servers
+                        <span class="count">7</span>
+                    </button>
+                    <button class="category-tab" onclick="switchCategory('models', this)" data-category="models">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                        Models
+                        <span class="count">6</span>
+                    </button>
+                    <button class="category-tab" onclick="switchCategory('agents', this)" data-category="agents">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8"/>
+                            <rect x="2" y="2" width="20" height="12" rx="2"/>
+                            <path d="M6 20h12"/>
+                            <path d="M12 14v6"/>
+                        </svg>
+                        Coding Agents
+                        <span class="count">3</span>
+                    </button>
+                </div>
+
+                <!-- Status Filter Tabs -->
+                <div class="tabs">
+                    <a href="#" class="tab active" onclick="filterByStatus('all', this)">All</a>
+                    <a href="#" class="tab" onclick="filterByStatus('installed', this)">Installed</a>
+                    <a href="#" class="tab" onclick="filterByStatus('available', this)">Available</a>
+                    <a href="#" class="tab internal-tab" onclick="filterByStatus('internal', this)">Internal</a>
+                </div>
+
+                <!-- Extensions Grid -->
+                <div class="extensions-catalog-grid" id="extensionsCatalogGrid">
+                    
+                    <!-- ======================== -->
+                    <!-- SKILLS EXTENSIONS -->
+                    <!-- ======================== -->
+                    
+                    <!-- Kubernetes Skill -->
+                    <div class="extension-card" data-category="skills" data-status="installed" data-name="kubernetes-skill" onclick="window.location.href='../skills/details.html?skill=kubernetes'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon kubernetes">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <polygon points="12,6 14,10 12,9 10,10"/>
+                                    <polygon points="12,18 14,14 12,15 10,14"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Kubernetes</h3>
+                            <p class="extension-card-description">Deploy, manage, and troubleshoot Kubernetes clusters and workloads with AI assistance.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v2.1.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OpenShift Skill -->
+                    <div class="extension-card" data-category="skills" data-status="installed" data-name="openshift-skill" onclick="window.location.href='../skills/details.html?skill=openshift'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon openshift">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">OpenShift</h3>
+                            <p class="extension-card-description">Build, deploy, and manage applications on Red Hat OpenShift Container Platform.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v3.0.2</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RHEL Skill -->
+                    <div class="extension-card" data-category="skills" data-status="installed" data-name="rhel-skill" onclick="window.location.href='../skills/details.html?skill=rhel'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon rhel">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                    <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                    <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">RHEL</h3>
+                            <p class="extension-card-description">Administer, configure, and troubleshoot Red Hat Enterprise Linux systems.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v2.3.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hummingbird Skill -->
+                    <div class="extension-card" data-category="skills" data-status="available" data-name="hummingbird-skill">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Hummingbird Containers</h3>
+                            <p class="extension-card-description">Create minimal, hardened, distroless container images using Hummingbird base images.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v1.0.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('hummingbird-skill', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Internal Skill - French Gov Accounting -->
+                    <div class="extension-card internal-asset" data-category="skills" data-status="installed" data-internal="true" data-name="french-gov-accounting-skill">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #000091 0%, #000066 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 21h18"/>
+                                    <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                                    <path d="M9 8h1"/>
+                                    <path d="M9 12h1"/>
+                                    <path d="M14 8h1"/>
+                                    <path d="M14 12h1"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="internal-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                    Internal
+                                </div>
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">French Gov Accounting</h3>
+                            <p class="extension-card-description">Handle French public sector accounting standards (M14, M57, LOLF compliance).</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">OpenShift AI</span>
+                                <span>v1.8.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================== -->
+                    <!-- MCP EXTENSIONS -->
+                    <!-- ======================== -->
+
+                    <!-- GitHub MCP -->
+                    <div class="extension-card" data-category="mcp" data-status="installed" data-name="github-mcp" onclick="window.location.href='../mcp/details.html?mcp=github'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon github">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">GitHub MCP</h3>
+                            <p class="extension-card-description">Manage repositories, issues, pull requests, and workflows through natural language.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">GitHub</span>
+                                <span>v3.0.1</span>
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    24 tools
+                                </span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OpenShift MCP -->
+                    <div class="extension-card" data-category="mcp" data-status="installed" data-name="openshift-mcp" onclick="window.location.href='../mcp/details.html?mcp=openshift'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon openshift">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">OpenShift MCP</h3>
+                            <p class="extension-card-description">Manage clusters, deployments, routes, and Kubernetes resources with AI assistance.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v2.1.3</span>
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    18 tools
+                                </span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ansible MCP -->
+                    <div class="extension-card" data-category="mcp" data-status="available" data-name="ansible-mcp" onclick="window.location.href='../mcp/details.html?mcp=ansible'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon ansible">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2L22 22H18L12 10L6 22H2L12 2Z"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Ansible MCP</h3>
+                            <p class="extension-card-description">Run playbooks, manage inventories, and orchestrate infrastructure automation.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v1.5.0</span>
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    15 tools
+                                </span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('ansible-mcp', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RHEL MCP -->
+                    <div class="extension-card" data-category="mcp" data-status="installed" data-name="rhel-mcp" onclick="window.location.href='../mcp/details.html?mcp=rhel'">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon rhel">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                    <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                    <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status installed">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Installed
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">RHEL MCP</h3>
+                            <p class="extension-card-description">System management, package operations, and configuration tools for RHEL.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v1.2.0</span>
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    12 tools
+                                </span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Internal MCP - SAP Integration -->
+                    <div class="extension-card internal-asset" data-category="mcp" data-status="available" data-internal="true" data-name="sap-integration-mcp">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #0066B3 0%, #004E8C 100%);">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold" font-family="Arial">SAP</text>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="internal-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                    Internal
+                                </div>
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">SAP Integration MCP</h3>
+                            <p class="extension-card-description">Connect to corporate SAP systems. Query business objects and manage purchase orders.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">OpenShift AI</span>
+                                <span>v3.1.2</span>
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    22 tools
+                                </span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('sap-integration-mcp', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================== -->
+                    <!-- MODELS EXTENSIONS -->
+                    <!-- ======================== -->
+
+                    <!-- Granite Code -->
+                    <div class="extension-card" data-category="models" data-status="installed" data-name="granite-code">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon granite">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status enabled">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Enabled
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Granite Code 34B</h3>
+                            <p class="extension-card-description">IBM's enterprise-ready code generation model optimized for coding tasks.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">IBM</span>
+                                <span>34B params</span>
+                                <span>Apache 2.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Llama 3.1 -->
+                    <div class="extension-card" data-category="models" data-status="installed" data-name="llama-3-1">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon llama">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">Ll</text>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status enabled">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Enabled
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Llama 3.1 70B</h3>
+                            <p class="extension-card-description">Meta's powerful open-source LLM for general-purpose AI tasks and coding.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Meta</span>
+                                <span>70B params</span>
+                                <span>Llama 3.1 License</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mistral -->
+                    <div class="extension-card" data-category="models" data-status="available" data-name="mistral-large">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon mistral">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <rect x="3" y="3" width="4" height="4" fill="#fff"/>
+                                    <rect x="10" y="3" width="4" height="4" fill="#fff"/>
+                                    <rect x="17" y="3" width="4" height="4" fill="#fff"/>
+                                    <rect x="3" y="10" width="4" height="4" fill="#fff"/>
+                                    <rect x="17" y="10" width="4" height="4" fill="#fff"/>
+                                    <rect x="3" y="17" width="4" height="4" fill="#fff"/>
+                                    <rect x="10" y="17" width="4" height="4" fill="#fff"/>
+                                    <rect x="17" y="17" width="4" height="4" fill="#fff"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Mistral Large</h3>
+                            <p class="extension-card-description">Mistral's flagship model with strong coding and reasoning capabilities.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Mistral AI</span>
+                                <span>123B params</span>
+                                <span>Apache 2.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('mistral-large', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DeepSeek Coder -->
+                    <div class="extension-card" data-category="models" data-status="available" data-name="deepseek-coder">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 18l6-6-6-6"/>
+                                    <path d="M8 6l-6 6 6 6"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">DeepSeek Coder V2</h3>
+                            <p class="extension-card-description">Specialized code generation model with MoE architecture for efficient inference.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">DeepSeek</span>
+                                <span>236B MoE</span>
+                                <span>MIT</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('deepseek-coder', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Qwen 2.5 Coder -->
+                    <div class="extension-card" data-category="models" data-status="available" data-name="qwen-coder">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Qwen 2.5 Coder 32B</h3>
+                            <p class="extension-card-description">Alibaba's code-specialized model with excellent multilingual programming support.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Alibaba</span>
+                                <span>32B params</span>
+                                <span>Apache 2.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('qwen-coder', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================== -->
+                    <!-- CODING AGENTS EXTENSIONS -->
+                    <!-- ======================== -->
+
+                    <!-- Agentic Coder -->
+                    <div class="extension-card" data-category="agents" data-status="installed" data-name="agentic-coder">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon agents">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 8V4H8"/>
+                                    <rect x="2" y="2" width="20" height="12" rx="2"/>
+                                    <path d="M6 20h12"/>
+                                    <path d="M12 14v6"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status enabled">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Enabled
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Agentic Coder</h3>
+                            <p class="extension-card-description">Autonomous coding agent capable of planning, implementing, and testing code changes.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v2.0.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Code Reviewer Agent -->
+                    <div class="extension-card" data-category="agents" data-status="installed" data-name="code-reviewer">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status enabled">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Enabled
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Code Reviewer</h3>
+                            <p class="extension-card-description">Automated code review agent for security, best practices, and performance analysis.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v1.5.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn configure" onclick="event.stopPropagation()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                                </svg>
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Test Generator Agent -->
+                    <div class="extension-card" data-category="agents" data-status="available" data-name="test-generator">
+                        <div class="extension-card-header">
+                            <div class="extension-card-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <path d="M12 18v-6"/>
+                                    <path d="M8 18v-1"/>
+                                    <path d="M16 18v-3"/>
+                                </svg>
+                            </div>
+                            <div class="extension-card-badges">
+                                <div class="extension-card-status available">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    Available
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extension-card-body">
+                            <h3 class="extension-card-title">Test Generator</h3>
+                            <p class="extension-card-description">Automatically generate unit tests, integration tests, and test coverage reports.</p>
+                            <div class="extension-card-meta">
+                                <span class="provider-badge">Red Hat</span>
+                                <span>v1.0.0</span>
+                            </div>
+                        </div>
+                        <div class="extension-card-footer">
+                            <button class="extension-card-btn install" onclick="event.stopPropagation(); installExtension('test-generator', this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Install
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Install Extension Modal -->
+    <div class="modal-overlay" id="installModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Install Extension</h2>
+                <button class="modal-close" onclick="closeInstallModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-section">
+                    <label class="form-label">Extension Source</label>
+                    <select class="form-input" id="extensionSource">
+                        <option value="registry">Kortex Registry</option>
+                        <option value="url">URL</option>
+                        <option value="file">Local File</option>
+                    </select>
+                </div>
+                
+                <div class="form-section" id="urlSection" style="display: none;">
+                    <label class="form-label">Extension URL</label>
+                    <input type="text" class="form-input" placeholder="https://..." id="extensionUrl">
+                </div>
+
+                <div class="form-section" id="fileSection" style="display: none;">
+                    <label class="form-label">Extension Package</label>
+                    <div style="border: 2px dashed #3d3e4f; border-radius: 8px; padding: 32px 24px; text-align: center; cursor: pointer;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="margin: 0 auto 12px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <div style="color: #e5e7eb; font-size: 14px;">Drop extension package here</div>
+                        <div style="color: #6b7280; font-size: 12px; margin-top: 4px;">Supports .zip and .tar.gz</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeInstallModal()">Cancel</button>
+                <button class="btn btn-primary">Install</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        let currentCategory = 'all';
+        let currentStatus = 'all';
+
+        function switchCategory(category, tabElement) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+            
+            filterExtensions();
+        }
+
+        function filterByStatus(status, tabElement) {
+            currentStatus = status;
+            
+            // Update active tab
+            document.querySelectorAll('.tabs .tab').forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+            
+            filterExtensions();
+            
+            event.preventDefault();
+        }
+
+        function filterExtensions() {
+            const searchInput = document.getElementById('extensionSearch');
+            const filter = searchInput.value.toLowerCase();
+            const cards = document.querySelectorAll('.extension-card');
+            const isConnected = document.body.classList.contains('openshift-connected');
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const category = card.dataset.category;
+                const status = card.dataset.status;
+                const isInternal = card.dataset.internal === 'true';
+                const title = card.querySelector('.extension-card-title').textContent.toLowerCase();
+                const description = card.querySelector('.extension-card-description').textContent.toLowerCase();
+                
+                const matchesSearch = name.includes(filter) || title.includes(filter) || description.includes(filter);
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                
+                let matchesStatus = false;
+                if (currentStatus === 'all') {
+                    matchesStatus = true;
+                } else if (currentStatus === 'internal') {
+                    matchesStatus = isInternal;
+                } else if (currentStatus === 'installed') {
+                    matchesStatus = (status === 'installed' || status === 'enabled') && !isInternal;
+                } else if (currentStatus === 'available') {
+                    matchesStatus = status === 'available' && !isInternal;
+                }
+
+                // Hide internal assets if not connected
+                if (isInternal && !isConnected) {
+                    card.style.display = 'none';
+                } else if (matchesSearch && matchesCategory && matchesStatus) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            updateCounts();
+        }
+
+        function updateCounts() {
+            const categories = ['all', 'skills', 'mcp', 'models', 'agents'];
+            const isConnected = document.body.classList.contains('openshift-connected');
+
+            categories.forEach(cat => {
+                const tab = document.querySelector(`.category-tab[data-category="${cat}"]`);
+                if (tab) {
+                    let count = 0;
+                    document.querySelectorAll('.extension-card').forEach(card => {
+                        const isInternal = card.dataset.internal === 'true';
+                        if (isInternal && !isConnected) return;
+                        
+                        if (cat === 'all' || card.dataset.category === cat) {
+                            count++;
+                        }
+                    });
+                    const countEl = tab.querySelector('.count');
+                    if (countEl) {
+                        countEl.textContent = count;
+                    }
+                }
+            });
+        }
+
+        function installExtension(extensionName, button) {
+            const card = button.closest('.extension-card');
+            const statusBadge = card.querySelector('.extension-card-status');
+            
+            // Show installing state
+            button.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                Installing...
+            `;
+            button.disabled = true;
+            
+            setTimeout(() => {
+                card.dataset.status = 'installed';
+                statusBadge.className = 'extension-card-status installed';
+                statusBadge.innerHTML = `
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Installed
+                `;
+                button.className = 'extension-card-btn configure';
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    Configure
+                `;
+                button.disabled = false;
+                
+                filterExtensions();
+            }, 2000);
+        }
+
+        function openInstallModal() {
+            document.getElementById('installModal').classList.add('show');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('installModal').classList.remove('show');
+        }
+
+        // Handle source type change
+        document.getElementById('extensionSource')?.addEventListener('change', function() {
+            const urlSection = document.getElementById('urlSection');
+            const fileSection = document.getElementById('fileSection');
+            
+            urlSection.style.display = this.value === 'url' ? 'block' : 'none';
+            fileSection.style.display = this.value === 'file' ? 'block' : 'none';
+        });
+
+        // Listen for OpenShift AI connection state changes
+        document.addEventListener('openshiftAIStateChanged', function(e) {
+            filterExtensions();
+        });
+
+        // Initial filter when page loads
+        document.addEventListener('sidebarLoaded', function() {
+            setTimeout(filterExtensions, 100);
+        });
+    </script>
 </body>
 </html>
-

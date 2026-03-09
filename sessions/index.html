@@ -496,7 +496,7 @@
                             </svg>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-value">2</span>
+                            <span class="stat-value">3</span>
                             <span class="stat-label">Active Sessions</span>
                         </div>
                     </div>
@@ -509,7 +509,7 @@
                             </svg>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-value">5</span>
+                            <span class="stat-value">6</span>
                             <span class="stat-label">Total Sessions</span>
                         </div>
                     </div>
@@ -541,6 +541,94 @@
 
                 <!-- Sessions Grid -->
                 <div class="sessions-grid">
+                    <!-- Session Card - Hummingbird Demo -->
+                    <div class="session-card" onclick="window.location.href='details.html?session=hummingbird-demo'" style="border-color: rgba(14, 165, 233, 0.4);">
+                        <div class="session-card-header">
+                            <div class="session-agent-badge">
+                                <div class="session-agent-icon" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4);">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                    </svg>
+                                </div>
+                                <div class="session-agent-info">
+                                    <h3>My New app</h3>
+                                    <span>Claude 3.5 Sonnet</span>
+                                </div>
+                            </div>
+                            <div class="session-status running">
+                                <span class="session-status-dot"></span>
+                                Running
+                            </div>
+                        </div>
+                        
+                        <p class="session-description">
+                            Building a FastAPI application, containerizing with Hummingbird distroless images, and deploying to OpenShift cluster.
+                        </p>
+
+                        <div class="session-context">
+                            <span class="context-label">Context</span>
+                            <div class="context-bar-wrapper">
+                                <div class="context-bar">
+                                    <div class="context-bar-fill medium" style="width: 45%"></div>
+                                </div>
+                                <div class="context-info">
+                                    <span class="context-usage">90K / 200K tokens</span>
+                                    <span class="context-percent">45%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="session-resources">
+                            <span class="resource-tag skill">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                </svg>
+                                Hummingbird
+                            </span>
+                            <span class="resource-tag skill">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                </svg>
+                                OpenShift
+                            </span>
+                            <span class="resource-tag mcp">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"/>
+                                    <rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/>
+                                    <rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                filesystem
+                            </span>
+                            <span class="resource-tag tool">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polygon points="12 6 12 12 16 14"/>
+                                </svg>
+                                OpenShift
+                            </span>
+                        </div>
+                        
+                        <div class="session-footer">
+                            <span class="session-meta">Started 25 minutes ago</span>
+                            <div class="session-actions" onclick="event.stopPropagation()">
+                                <button class="session-action-btn stop" onclick="stopSession('hummingbird-demo')" title="Stop">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="6" y="6" width="12" height="12" rx="2"/>
+                                    </svg>
+                                </button>
+                                <button class="session-action-btn open" onclick="window.location.href='details.html?session=hummingbird-demo'" title="Open">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                        <polyline points="15 3 21 3 21 9"/>
+                                        <line x1="10" y1="14" x2="21" y2="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Session Card 1 - Running -->
                     <div class="session-card" onclick="window.location.href='details.html?session=frontend-refactor'">
                         <div class="session-card-header">

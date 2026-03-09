@@ -109,6 +109,11 @@
             color: #ffffff;
         }
 
+        .skill-icon-large.hummingbird {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            color: #ffffff;
+        }
+
         .skill-icon-large.custom {
             background: linear-gradient(135deg, #7c3aed, #8b5cf6);
             color: #ffffff;
@@ -668,6 +673,14 @@
 
                 <!-- Tab Content: Summary -->
                 <div id="summaryTab" class="tab-content active">
+                    <!-- About Section -->
+                    <div class="info-card" style="margin-bottom: 24px;">
+                        <h3 class="info-card-title">About This Skill</h3>
+                        <p id="summaryAbout" style="color: #e5e7eb; font-size: 14px; line-height: 1.7; margin: 0;">
+                            This skill helps you deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use it when working with pods, deployments, services, configmaps, secrets, or any cluster administration tasks. The skill provides best practices, common commands, resource templates, and troubleshooting guides.
+                        </p>
+                    </div>
+
                     <div class="summary-grid">
                         <div class="info-card">
                             <h3 class="info-card-title">General Information</h3>
@@ -791,7 +804,7 @@ kubectl apply -f manifest.yaml</code></pre>
                         <div class="resources-header">
                             <h3 class="resources-title" id="resourcesTitle">Bundled Resources (8)</h3>
                         </div>
-                        
+                        <div id="resourcesContent">
                         <div class="resource-item">
                             <div class="resource-info">
                                 <div class="resource-icon folder">
@@ -925,6 +938,7 @@ kubectl apply -f manifest.yaml</code></pre>
                                 </button>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -977,6 +991,7 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Custom',
                 source: 'Local',
                 description: 'Analyze code for best practices, security issues, and performance',
+                about: 'This skill analyzes code for best practices, security vulnerabilities, and performance issues. Use it when reviewing pull requests, auditing codebases, or improving code quality. The skill checks for common anti-patterns, suggests improvements, and identifies potential security risks across multiple programming languages.',
                 resources: '3 files',
                 iconClass: 'custom',
                 iconSvg: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
@@ -988,6 +1003,7 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Custom',
                 source: 'Local',
                 description: 'Generate comprehensive API documentation from code',
+                about: 'This skill generates comprehensive API documentation from your codebase. Use it to create OpenAPI/Swagger specifications, generate markdown documentation, or produce interactive API references. Supports REST APIs, GraphQL endpoints, and various programming languages including Python, JavaScript, Go, and Java.',
                 resources: '5 files',
                 iconClass: 'custom',
                 iconSvg: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>',
@@ -999,6 +1015,7 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Pre-built',
                 source: 'Red Hat',
                 description: 'Deploy, manage, and troubleshoot Kubernetes clusters and workloads',
+                about: 'This skill helps you deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use it when working with pods, deployments, services, configmaps, secrets, or any cluster administration tasks. The skill provides best practices, common commands, resource templates, and troubleshooting guides.',
                 resources: '8 files',
                 iconClass: 'kubernetes',
                 iconSvg: '<circle cx="12" cy="12" r="9"/><polygon points="12,6 14,10 12,9 10,10"/><polygon points="12,18 14,14 12,15 10,14"/><polygon points="6,12 10,14 9,12 10,10"/><polygon points="18,12 14,14 15,12 14,10"/>',
@@ -1010,6 +1027,7 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Pre-built',
                 source: 'Red Hat',
                 description: 'Build, deploy, and manage applications on Red Hat OpenShift Container Platform',
+                about: 'This skill helps you build, deploy, and manage applications on Red Hat OpenShift Container Platform. Use it for working with routes, builds, deployments, operators, and OpenShift-specific resources. The skill covers both oc CLI commands and OpenShift web console workflows, including CI/CD pipelines, source-to-image builds, and operator management.',
                 resources: '12 files',
                 iconClass: 'openshift',
                 iconSvg: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
@@ -1021,7 +1039,20 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Pre-built',
                 source: 'Red Hat',
                 description: 'Build, run, and manage containers and pods with Podman',
+                about: 'This skill helps you build, run, and manage containers using Podman. Use it for container lifecycle management, image building with Containerfiles, rootless container operations, and basic pod management. The skill covers podman commands for running, inspecting, and debugging containers.',
                 resources: '6 files',
+                iconClass: 'podman',
+                iconSvg: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/>',
+                enabled: true
+            },
+            'podman-pods': {
+                name: 'Podman Pods',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Create and define composite applications running as pods in Podman',
+                about: 'This skill helps you create, manage, and deploy composite applications using Podman pods. A pod is a group of containers that share the same network namespace, allowing them to communicate via localhost. Use this skill when building multi-container applications, simulating Kubernetes pod behavior locally, or generating Kubernetes-compatible YAML from your Podman setups. Includes templates for common stacks like web+database, API+cache, and full-stack applications.',
+                resources: '10 files',
                 iconClass: 'podman',
                 iconSvg: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/>',
                 enabled: true
@@ -1032,11 +1063,482 @@ kubectl apply -f manifest.yaml</code></pre>
                 typeLabel: 'Pre-built',
                 source: 'Red Hat',
                 description: 'Administer, configure, and troubleshoot Red Hat Enterprise Linux systems',
+                about: 'This skill helps you administer, configure, and troubleshoot Red Hat Enterprise Linux systems. Use it for system administration tasks including package management with dnf/yum, systemd service management, firewall configuration, SELinux policies, user management, and performance tuning. Includes troubleshooting guides and best practices for enterprise Linux environments.',
                 resources: '15 files',
                 iconClass: 'rhel',
                 iconSvg: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
                 enabled: true
+            },
+            'hummingbird': {
+                name: 'Hummingbird Containers',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Create Dockerfiles using Hummingbird minimal, hardened, distroless base images',
+                about: 'This skill helps you containerize applications using Project Hummingbird base images. Hummingbird builds minimal, hardened, and secure container images with significantly reduced attack surfaces. Images are distroless (no package manager or shell in production variants) and default to non-root user (UID 65532). Use this skill when creating Dockerfiles, containerizing applications, or building secure container images. Includes templates for Python, Node.js, Go, Rust, Java, and multi-stage builds.',
+                resources: '12 files',
+                iconClass: 'hummingbird',
+                iconSvg: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+                enabled: true
             }
+        };
+
+        // Skill instructions content
+        const skillInstructions = {
+            'podman-pods': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">podman-pods</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Create and define composite applications running as pods in Podman. Use when building multi-container applications that need to share networking and resources.</span>
+<span class="yaml-key">triggers:</span> <span class="yaml-value">["podman pod", "composite application", "multi-container", "pod create", "pod yaml"]</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Podman Pods Skill</h1>
+
+                <p>This skill helps you create, manage, and deploy composite applications using Podman pods. A pod is a group of containers that share the same network namespace, allowing them to communicate via localhost.</p>
+
+                <h2>## When to Use Pods</h2>
+                <p>Use Podman pods when you need:</p>
+                <p>• <strong>Multi-container applications</strong> - Apps with tightly coupled services (e.g., web server + database + cache)</p>
+                <p>• <strong>Shared networking</strong> - Containers that need to communicate via localhost</p>
+                <p>• <strong>Kubernetes compatibility</strong> - Generate Kubernetes YAML from running pods</p>
+                <p>• <strong>Local development</strong> - Simulate Kubernetes pod behavior locally</p>
+
+                <h2>## Creating a Pod</h2>
+                <pre><code># Create an empty pod
+podman pod create --name my-app-pod -p 8080:80 -p 5432:5432
+
+# Add containers to the pod
+podman run -d --pod my-app-pod --name web nginx:latest
+podman run -d --pod my-app-pod --name db postgres:15
+podman run -d --pod my-app-pod --name cache redis:alpine</code></pre>
+
+                <h2>## Defining Composite Applications</h2>
+                <p>Use a pod YAML file to define your entire application stack:</p>
+                <pre><code># my-app-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app-pod
+  labels:
+    app: my-composite-app
+spec:
+  containers:
+  - name: web
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+      hostPort: 8080
+    volumeMounts:
+    - name: web-content
+      mountPath: /usr/share/nginx/html
+  - name: api
+    image: my-api:latest
+    env:
+    - name: DATABASE_URL
+      value: "postgres://localhost:5432/mydb"
+  - name: db
+    image: postgres:15
+    env:
+    - name: POSTGRES_PASSWORD
+      value: "mysecretpassword"
+  volumes:
+  - name: web-content
+    hostPath:
+      path: ./html</code></pre>
+
+                <h2>## Pod Management Commands</h2>
+                <pre><code># Play a pod from YAML
+podman play kube my-app-pod.yaml
+
+# List all pods
+podman pod ls
+
+# Inspect a pod
+podman pod inspect my-app-pod
+
+# View pod logs (all containers)
+podman pod logs my-app-pod
+
+# Stop and remove a pod
+podman pod stop my-app-pod
+podman pod rm my-app-pod</code></pre>
+
+                <h2>## Generate Kubernetes YAML</h2>
+                <p>Export your running pod to Kubernetes-compatible YAML:</p>
+                <pre><code># Generate YAML from running pod
+podman generate kube my-app-pod > k8s-deployment.yaml
+
+# Generate with persistent volume claims
+podman generate kube my-app-pod --service > k8s-full.yaml</code></pre>
+
+                <p>For pod templates, see the <code>templates/</code> directory. For troubleshooting, refer to <code>TROUBLESHOOTING.md</code>.</p>
+            `,
+            'kubernetes': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">kubernetes</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use when working with pods, deployments, services, or cluster administration.</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Kubernetes Skill</h1>
+
+                <h2>## Quick Start</h2>
+                <p>When working with Kubernetes, follow these best practices:</p>
+                <p>1. <strong>Cluster Health</strong> - Check node status, resource utilization, and system pods</p>
+                <p>2. <strong>Workload Management</strong> - Deploy, scale, and update applications using Deployments and StatefulSets</p>
+                <p>3. <strong>Troubleshooting</strong> - Inspect logs, events, and pod states to diagnose issues</p>
+
+                <h2>## Common Commands</h2>
+                <pre><code># Get cluster info
+kubectl cluster-info
+kubectl get nodes
+
+# Manage workloads
+kubectl get pods -A
+kubectl describe deployment &lt;name&gt;
+kubectl logs &lt;pod-name&gt; -f
+
+# Apply configurations
+kubectl apply -f manifest.yaml</code></pre>
+
+                <h2>## Resource Templates</h2>
+                <p>Use the templates in <code>templates/</code> for common resource types:</p>
+                <pre><code>templates/
+├── deployment.yaml
+├── service.yaml
+├── configmap.yaml
+└── ingress.yaml</code></pre>
+
+                <p>For troubleshooting guides, see <code>TROUBLESHOOTING.md</code>.</p>
+            `,
+            'hummingbird': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">containerize-hummingbird</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Create Dockerfiles/Containerfiles using Hummingbird base images for minimal, hardened, distroless containers. Use when containerizing applications or building secure container images.</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Containerize with Hummingbird Images</h1>
+
+                <p><a href="https://gitlab.com/redhat/hummingbird/containers" style="color: #8b5cf6;">Project Hummingbird</a> builds minimal, hardened, and secure container images with significantly reduced attack surfaces. Images are distroless (no package manager, no shell in production variants) and default to non-root user (UID 65532).</p>
+
+                <h2>## Registry and Available Images</h2>
+                <p>All images available at: <code>quay.io/hummingbird/</code></p>
+                <p>• <strong>Languages:</strong> python, go, nodejs, rust, php, ruby, dotnet-runtime, dotnet-sdk</p>
+                <p>• <strong>Databases:</strong> postgresql, mariadb, valkey</p>
+                <p>• <strong>Web Servers:</strong> httpd, caddy, nginx</p>
+                <p>• <strong>Tools:</strong> curl, git, jq</p>
+                <p>• <strong>Base:</strong> core-runtime (for compiled binaries)</p>
+
+                <h2>## Image Variants</h2>
+                <p>• <strong>Default</strong> (<code>:latest</code>, <code>:3.13</code>) - Production, minimal, distroless</p>
+                <p>• <strong>Builder</strong> (<code>:latest-builder</code>) - Multi-stage builds, includes <code>dnf</code> and <code>bash</code></p>
+
+                <h2>## Quick Reference - Python</h2>
+                <pre><code>FROM quay.io/hummingbird/python:3.13
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ /app/
+WORKDIR /app
+CMD ["python3", "main.py"]</code></pre>
+
+                <h2>## Multi-Stage Build - Go</h2>
+                <pre><code># Build stage
+FROM quay.io/hummingbird/go:latest-builder AS builder
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /app .
+
+# Runtime stage
+FROM quay.io/hummingbird/core-runtime:latest
+COPY --from=builder /app /app
+ENTRYPOINT ["/app"]</code></pre>
+
+                <h2>## Security Features</h2>
+                <p>• <strong>Distroless:</strong> No shell or package manager in production images</p>
+                <p>• <strong>Non-root:</strong> Default user UID 65532</p>
+                <p>• <strong>Minimal footprint:</strong> Only essential packages included</p>
+                <p>• <strong>Hermetic builds:</strong> Built without network access for reproducibility</p>
+
+                <p>For language-specific templates, see <code>templates/</code>. For volume permissions and troubleshooting, refer to <code>TROUBLESHOOTING.md</code>.</p>
+            `
+        };
+
+        // Skill resources content
+        const skillResources = {
+            'podman-pods': `
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>templates/</h4>
+                            <div class="resource-meta">Directory • 5 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>web-db-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Web + Database stack • 1.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>api-cache-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • API + Redis cache • 2.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>full-stack-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Frontend + API + DB + Cache • 3.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>monitoring-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Prometheus + Grafana • 2.6 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>scripts/</h4>
+                            <div class="resource-meta">Directory • 3 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon script">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>pod-create.sh</h4>
+                            <div class="resource-meta">Shell Script • Creates pod from YAML • 1.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon script">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>generate-kube.sh</h4>
+                            <div class="resource-meta">Shell Script • Export to Kubernetes YAML • 0.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>TROUBLESHOOTING.md</h4>
+                            <div class="resource-meta">Markdown • Pod debugging guide • 12.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'hummingbird': `
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>templates/</h4>
+                            <div class="resource-meta">Directory • 7 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>python.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Python application • 0.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>nodejs.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Node.js multi-stage • 1.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>go.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Go multi-stage build • 1.0 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>rust.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Rust multi-stage build • 1.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>java-maven.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Java with Maven • 1.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>IMAGE_CATALOG.md</h4>
+                            <div class="resource-meta">Markdown • Available images and variants • 8.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>SECURITY_BEST_PRACTICES.md</h4>
+                            <div class="resource-meta">Markdown • Non-root, permissions, SELinux • 6.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>MULTI_STAGE_BUILDS.md</h4>
+                            <div class="resource-meta">Markdown • Builder patterns guide • 5.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>TROUBLESHOOTING.md</h4>
+                            <div class="resource-meta">Markdown • Common issues and solutions • 4.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+            `
         };
 
         // Load skill data based on URL parameter
@@ -1097,6 +1599,22 @@ kubectl apply -f manifest.yaml</code></pre>
             document.getElementById('summarySource').textContent = skill.source;
             document.getElementById('summaryDescription').textContent = skill.description;
             document.getElementById('summaryResources').textContent = skill.resources;
+            document.getElementById('resourcesTitle').textContent = `Bundled Resources (${skill.resources.split(' ')[0]})`;
+            
+            // Update about section
+            if (skill.about) {
+                document.getElementById('summaryAbout').textContent = skill.about;
+            }
+
+            // Update instructions content if available
+            if (skillInstructions[skillId]) {
+                document.getElementById('skillMdContent').innerHTML = skillInstructions[skillId];
+            }
+
+            // Update resources content if available
+            if (skillResources[skillId]) {
+                document.getElementById('resourcesContent').innerHTML = skillResources[skillId];
+            }
         }
 
         // Initialize

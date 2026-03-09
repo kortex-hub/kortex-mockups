@@ -389,6 +389,24 @@
                             </div>
                         </div>
                         <div class="settings-section-body">
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%); border-left: 3px solid #10b981; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                        Agent Profiles
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Enable pre-configured agent profiles that bundle skills, MCP servers, and behaviors for specific roles.
+                                        Profiles like DevOps Engineer, Platform Engineer, and Security Analyst come with optimized configurations. When disabled, the Profiles tab will be hidden.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="profilesModuleToggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
                             <div class="settings-item" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%); border-left: 3px solid #8b5cf6; margin-left: -1px;">
                                 <div class="settings-item-info">
                                     <h4 class="settings-item-label">
@@ -464,6 +482,145 @@
                                 </div>
                                 <div class="settings-item-control">
                                     <div class="settings-toggle active" id="openshiftAIModuleToggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrations Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Integrations</h3>
+                                <p class="settings-section-description">Connect external tools and services to extend Kortex capabilities</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <!-- GitHub Integration -->
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(36, 41, 46, 0.15) 0%, transparent 100%); border-left: 3px solid #6e7681; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#e5e7eb">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                        </svg>
+                                        GitHub
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Connect to GitHub for repository access, issue tracking, and pull request management.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="githubEnabled" onclick="toggleSetting(this); toggleIntegrationFields('github')"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item integration-fields github-fields" style="display: none; flex-direction: column; align-items: stretch; gap: 16px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">GitHub URL</h4>
+                                        <p class="settings-item-description">
+                                            Use github.com or your GitHub Enterprise instance URL.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="url" class="settings-input" id="githubUrl" placeholder="https://github.com" value="https://github.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Personal Access Token</h4>
+                                        <p class="settings-item-description">
+                                            Generate a token with repo and workflow scopes for full access.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="password" class="settings-input" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Default Organization/User</h4>
+                                        <p class="settings-item-description">
+                                            The default organization or username for repository operations.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="text" class="settings-input" id="githubOrg" placeholder="my-organization">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- JIRA Integration -->
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(0, 82, 204, 0.1) 0%, transparent 100%); border-left: 3px solid #0052cc; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                            <defs>
+                                                <linearGradient id="jiraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" style="stop-color:#2684ff"/>
+                                                    <stop offset="100%" style="stop-color:#0052cc"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.213 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.005 1.005 0 0 0 23.013 0z" fill="url(#jiraGradient)"/>
+                                        </svg>
+                                        JIRA
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Connect to JIRA for issue tracking, sprint management, and project updates.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="jiraEnabled" onclick="toggleSetting(this); toggleIntegrationFields('jira')"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item integration-fields jira-fields" style="display: none; flex-direction: column; align-items: stretch; gap: 16px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">JIRA Instance URL</h4>
+                                        <p class="settings-item-description">
+                                            Your Atlassian Cloud or JIRA Server instance URL.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="url" class="settings-input" id="jiraUrl" placeholder="https://your-company.atlassian.net">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Email Address</h4>
+                                        <p class="settings-item-description">
+                                            The email associated with your Atlassian account.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="email" class="settings-input" id="jiraEmail" placeholder="you@company.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">API Token</h4>
+                                        <p class="settings-item-description">
+                                            Generate an API token from your Atlassian account settings.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="password" class="settings-input" id="jiraToken" placeholder="ATATT3xxxxxxxxxxx">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Default Project Key</h4>
+                                        <p class="settings-item-description">
+                                            The project key to use by default (e.g., PROJ, DEV, PLATFORM).
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="text" class="settings-input" id="jiraProject" placeholder="PROJ" style="min-width: 120px;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -652,14 +809,40 @@
             element.classList.toggle('active');
         }
 
+        function toggleIntegrationFields(integration) {
+            const fields = document.querySelector('.' + integration + '-fields');
+            const toggle = document.getElementById(integration + 'Enabled');
+            if (toggle.classList.contains('active')) {
+                fields.style.display = 'flex';
+            } else {
+                fields.style.display = 'none';
+            }
+        }
+
         function saveSettings() {
             // Gather all settings
             const settings = {
                 modules: {
+                    profilesEnabled: document.getElementById('profilesModuleToggle').classList.contains('active'),
                     skillsEnabled: document.getElementById('skillsModuleToggle').classList.contains('active'),
                     bridgeEnabled: document.getElementById('bridgeModuleToggle').classList.contains('active'),
                     mcpEnabled: document.getElementById('mcpModuleToggle').classList.contains('active'),
                     openshiftAIEnabled: document.getElementById('openshiftAIModuleToggle').classList.contains('active')
+                },
+                integrations: {
+                    github: {
+                        enabled: document.getElementById('githubEnabled').classList.contains('active'),
+                        url: document.getElementById('githubUrl').value,
+                        token: document.getElementById('githubToken').value,
+                        org: document.getElementById('githubOrg').value
+                    },
+                    jira: {
+                        enabled: document.getElementById('jiraEnabled').classList.contains('active'),
+                        url: document.getElementById('jiraUrl').value,
+                        email: document.getElementById('jiraEmail').value,
+                        token: document.getElementById('jiraToken').value,
+                        project: document.getElementById('jiraProject').value
+                    }
                 },
                 devspaces: {
                     enabled: document.getElementById('devspacesToggle').classList.contains('active'),
@@ -706,6 +889,7 @@
         function resetSettings() {
             if (confirm('Reset all settings to their default values?')) {
                 // Reset toggles
+                document.getElementById('profilesModuleToggle').classList.add('active');
                 document.getElementById('skillsModuleToggle').classList.add('active');
                 document.getElementById('bridgeModuleToggle').classList.add('active');
                 document.getElementById('mcpModuleToggle').classList.add('active');
@@ -718,12 +902,27 @@
                 document.getElementById('debugMode').classList.remove('active');
                 document.getElementById('experimentalFeatures').classList.remove('active');
 
+                // Reset integration toggles
+                document.getElementById('githubEnabled').classList.remove('active');
+                document.getElementById('jiraEnabled').classList.remove('active');
+                document.querySelector('.github-fields').style.display = 'none';
+                document.querySelector('.jira-fields').style.display = 'none';
+
                 // Reset inputs
                 document.getElementById('devspacesUrl').value = '';
                 document.getElementById('devspacesTemplate').value = 'universal';
                 document.getElementById('defaultModel').value = 'granite-3.1';
                 document.getElementById('theme').value = 'dark';
                 document.getElementById('apiEndpoint').value = '';
+
+                // Reset integration inputs
+                document.getElementById('githubUrl').value = 'https://github.com';
+                document.getElementById('githubToken').value = '';
+                document.getElementById('githubOrg').value = '';
+                document.getElementById('jiraUrl').value = '';
+                document.getElementById('jiraEmail').value = '';
+                document.getElementById('jiraToken').value = '';
+                document.getElementById('jiraProject').value = '';
 
                 // Clear localStorage
                 localStorage.removeItem('kortexSettings');
@@ -739,6 +938,11 @@
                     
                     // Apply Modules settings
                     if (settings.modules) {
+                        if (settings.modules.profilesEnabled) {
+                            document.getElementById('profilesModuleToggle').classList.add('active');
+                        } else {
+                            document.getElementById('profilesModuleToggle').classList.remove('active');
+                        }
                         if (settings.modules.skillsEnabled) {
                             document.getElementById('skillsModuleToggle').classList.add('active');
                         } else {
@@ -772,6 +976,35 @@
                         document.getElementById('devspacesTemplate').value = settings.devspaces.template || 'universal';
                         if (settings.devspaces.autoStart) {
                             document.getElementById('autoStartDevspaces').classList.add('active');
+                        }
+                    }
+
+                    // Apply integrations settings
+                    if (settings.integrations) {
+                        // GitHub
+                        if (settings.integrations.github) {
+                            if (settings.integrations.github.enabled) {
+                                document.getElementById('githubEnabled').classList.add('active');
+                                document.querySelector('.github-fields').style.display = 'flex';
+                            } else {
+                                document.getElementById('githubEnabled').classList.remove('active');
+                            }
+                            document.getElementById('githubUrl').value = settings.integrations.github.url || 'https://github.com';
+                            document.getElementById('githubToken').value = settings.integrations.github.token || '';
+                            document.getElementById('githubOrg').value = settings.integrations.github.org || '';
+                        }
+                        // JIRA
+                        if (settings.integrations.jira) {
+                            if (settings.integrations.jira.enabled) {
+                                document.getElementById('jiraEnabled').classList.add('active');
+                                document.querySelector('.jira-fields').style.display = 'flex';
+                            } else {
+                                document.getElementById('jiraEnabled').classList.remove('active');
+                            }
+                            document.getElementById('jiraUrl').value = settings.integrations.jira.url || '';
+                            document.getElementById('jiraEmail').value = settings.integrations.jira.email || '';
+                            document.getElementById('jiraToken').value = settings.integrations.jira.token || '';
+                            document.getElementById('jiraProject').value = settings.integrations.jira.project || '';
                         }
                     }
 

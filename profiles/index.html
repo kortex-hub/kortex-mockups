@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Agent Profiles</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Profile Page Specific Styles */
+        .profile-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .profile-type-badge.prebuilt {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .profile-type-badge.custom {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .profile-description {
+            font-size: 13px;
+            color: #9ca3af;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .profile-icon.devops {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #ffffff;
+        }
+
+        .profile-icon.frontend {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+        }
+
+        .profile-icon.backend {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+        }
+
+        .profile-icon.fullstack {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #ffffff;
+        }
+
+        .profile-icon.platform {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+        }
+
+        .profile-icon.security {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+        }
+
+        .profile-icon.custom {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #ffffff;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .profile-stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: rgba(55, 65, 81, 0.5);
+            border-radius: 6px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .profile-stat svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .profile-stat.skills {
+            color: #6ee7b7;
+        }
+
+        .profile-stat.mcp {
+            color: #67e8f9;
+        }
+
+        .profile-stat.access {
+            color: #fcd34d;
+        }
+
+        .profile-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .default-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(55, 65, 81, 0.5);
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+
+        .action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .action-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            color: #4b5563;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #9ca3af;
+            margin: 0 0 8px 0;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="profiles-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Profiles UI -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Agent Profiles</h1>
+            </header>
+            
+            <div class="content">
+                <!-- Profiles Content -->
+                <div class="rag-header">
+                    <h2 class="rag-title">Configuration Presets</h2>
+                    <button class="create-button" onclick="window.location.href='create.html'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        New Profile
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search profiles..." id="profileSearch">
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <a href="#" class="tab active" onclick="filterProfiles('all'); return false;">All</a>
+                    <a href="#" class="tab" onclick="filterProfiles('prebuilt'); return false;">Pre-built</a>
+                    <a href="#" class="tab" onclick="filterProfiles('custom'); return false;">Custom</a>
+                </div>
+
+                <!-- Profiles Table -->
+                <table class="rag-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th>Profile</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Configuration</th>
+                            <th class="actions-cell">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="profilesTableBody">
+                        <!-- Pre-built Profiles -->
+                        <tr class="profile-row prebuilt" onclick="window.location.href='details.html?profile=devops-engineer'">
+                            <td class="checkbox-cell">
+                                <div class="profile-icon devops">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"/>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="profile-name-cell">
+                                    <span class="profile-name">DevOps Engineer</span>
+                                    <span class="default-badge">Default</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="profile-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="profile-description">Kubernetes, OpenShift, and CI/CD pipeline management</span>
+                            </td>
+                            <td>
+                                <div class="profile-stats">
+                                    <span class="profile-stat skills">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        4 Skills
+                                    </span>
+                                    <span class="profile-stat mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        3 MCP
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="action-buttons" onclick="event.stopPropagation()">
+                                    <button class="action-btn" title="Duplicate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="profile-row prebuilt" onclick="window.location.href='details.html?profile=platform-engineer'">
+                            <td class="checkbox-cell">
+                                <div class="profile-icon platform">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                        <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="profile-name-cell">
+                                    <span class="profile-name">Platform Engineer</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="profile-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="profile-description">OpenShift platform operations, RHEL administration</span>
+                            </td>
+                            <td>
+                                <div class="profile-stats">
+                                    <span class="profile-stat skills">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        3 Skills
+                                    </span>
+                                    <span class="profile-stat mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        2 MCP
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="action-buttons" onclick="event.stopPropagation()">
+                                    <button class="action-btn" title="Duplicate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="profile-row prebuilt" onclick="window.location.href='details.html?profile=backend-developer'">
+                            <td class="checkbox-cell">
+                                <div class="profile-icon backend">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="16 18 22 12 16 6"/>
+                                        <polyline points="8 6 2 12 8 18"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="profile-name-cell">
+                                    <span class="profile-name">Backend Developer</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="profile-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="profile-description">API development, code review, and documentation</span>
+                            </td>
+                            <td>
+                                <div class="profile-stats">
+                                    <span class="profile-stat skills">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        2 Skills
+                                    </span>
+                                    <span class="profile-stat mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        2 MCP
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="action-buttons" onclick="event.stopPropagation()">
+                                    <button class="action-btn" title="Duplicate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="profile-row prebuilt" onclick="window.location.href='details.html?profile=security-analyst'">
+                            <td class="checkbox-cell">
+                                <div class="profile-icon security">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="profile-name-cell">
+                                    <span class="profile-name">Security Analyst</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="profile-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="profile-description">Security scanning, compliance checks, and vulnerability analysis</span>
+                            </td>
+                            <td>
+                                <div class="profile-stats">
+                                    <span class="profile-stat skills">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        2 Skills
+                                    </span>
+                                    <span class="profile-stat mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        1 MCP
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="action-buttons" onclick="event.stopPropagation()">
+                                    <button class="action-btn" title="Duplicate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Custom Profiles -->
+                        <tr class="profile-row custom" onclick="window.location.href='details.html?profile=my-fullstack-profile'">
+                            <td class="checkbox-cell">
+                                <div class="profile-icon fullstack">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="profile-name-cell">
+                                    <span class="profile-name">My Fullstack Profile</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="profile-type-badge custom">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                    Custom
+                                </span>
+                            </td>
+                            <td>
+                                <span class="profile-description">Custom profile for full-stack development projects</span>
+                            </td>
+                            <td>
+                                <div class="profile-stats">
+                                    <span class="profile-stat skills">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                        </svg>
+                                        5 Skills
+                                    </span>
+                                    <span class="profile-stat mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7"/>
+                                            <rect x="14" y="3" width="7" height="7"/>
+                                            <rect x="14" y="14" width="7" height="7"/>
+                                            <rect x="3" y="14" width="7" height="7"/>
+                                        </svg>
+                                        4 MCP
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="action-buttons" onclick="event.stopPropagation()">
+                                    <button class="action-btn" title="Duplicate">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="action-btn delete" title="Delete">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3,6 5,6 21,6"/>
+                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        let currentFilter = 'all';
+
+        function filterProfiles(type) {
+            currentFilter = type;
+            
+            // Update active tab
+            document.querySelectorAll('.tabs .tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('profileSearch')?.value?.toLowerCase() || '';
+            const rows = document.querySelectorAll('.profile-row');
+
+            rows.forEach(row => {
+                const name = row.querySelector('.profile-name').textContent.toLowerCase();
+                const description = row.querySelector('.profile-description').textContent.toLowerCase();
+                const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm);
+
+                let matchesFilter = false;
+                if (currentFilter === 'all') {
+                    matchesFilter = true;
+                } else if (currentFilter === 'prebuilt' && row.classList.contains('prebuilt')) {
+                    matchesFilter = true;
+                } else if (currentFilter === 'custom' && row.classList.contains('custom')) {
+                    matchesFilter = true;
+                }
+
+                if (matchesSearch && matchesFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('profileSearch')?.addEventListener('input', applyFilters);
+    </script>
+</body>
+</html>

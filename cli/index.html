@@ -1,0 +1,3234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex CLI</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .cli-page-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 28px);
+            background: #0f0f14;
+        }
+
+        .cli-page .app-container {
+            height: 100vh;
+        }
+
+        .cli-page .main-content {
+            height: calc(100vh - 28px);
+        }
+
+        .status-bar-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .cli-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .cli-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cli-header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: #ffffff;
+        }
+
+        .cli-header-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .cli-header-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .cli-header-text span {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .cli-main-content {
+            flex: 1;
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .cli-terminal-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .cli-terminal-window {
+            flex: 1;
+            background: #0a0a0f;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cli-terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: #1a1b23;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .cli-terminal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+
+        .cli-terminal-title svg {
+            width: 16px;
+            height: 16px;
+            color: #67e8f9;
+        }
+
+        .cli-terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .cli-terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .cli-terminal-dot.red { background: #ef4444; }
+        .cli-terminal-dot.yellow { background: #eab308; }
+        .cli-terminal-dot.green { background: #22c55e; }
+
+        /* Tab Bar Styles */
+        .cli-tabs-bar {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 8px 12px 0 12px;
+            background: #1a1b23;
+            border-bottom: 1px solid #3d3e4f;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .cli-tabs-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cli-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            color: #9ca3af;
+            white-space: nowrap;
+            position: relative;
+            min-width: 120px;
+            max-width: 200px;
+        }
+
+        .cli-tab:hover {
+            background: rgba(37, 38, 49, 0.8);
+            color: #e5e7eb;
+        }
+
+        .cli-tab.active {
+            background: #0a0a0f;
+            border-color: #3d3e4f;
+            color: #e5e7eb;
+            margin-bottom: -1px;
+            padding-bottom: 9px;
+        }
+
+        .cli-tab-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .cli-tab-icon.claude { color: #f59e0b; }
+        .cli-tab-icon.codex { color: #10b981; }
+        .cli-tab-icon.goose { color: #8b5cf6; }
+        .cli-tab-icon.cursor { color: #06b6d4; }
+        .cli-tab-icon.kortex { color: #67e8f9; }
+
+        .cli-tab-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cli-tab-status {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            flex-shrink: 0;
+        }
+
+        .cli-tab-status.idle { background: #6b7280; }
+        .cli-tab-status.running { background: #22c55e; animation: pulse 2s infinite; }
+        .cli-tab-status.error { background: #ef4444; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .cli-tab-close {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+            opacity: 0;
+        }
+
+        .cli-tab:hover .cli-tab-close,
+        .cli-tab.active .cli-tab-close {
+            opacity: 1;
+        }
+
+        .cli-tab-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .cli-tab-close svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .cli-tab-add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px dashed #3d3e4f;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #6b7280;
+            flex-shrink: 0;
+            margin-left: 4px;
+        }
+
+        .cli-tab-add:hover {
+            background: rgba(103, 232, 249, 0.1);
+            border-color: #67e8f9;
+            color: #67e8f9;
+        }
+
+        .cli-tab-add svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Tab content panels */
+        .cli-tab-content {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .cli-tab-content.active {
+            display: flex;
+        }
+
+        .cli-tab-terminal-body {
+            flex: 1;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            overflow-y: auto;
+        }
+
+        .cli-tab-terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .cli-tab-terminal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .cli-tab-terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(103, 232, 249, 0.2);
+            border-radius: 4px;
+        }
+
+        .cli-tab-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 16px 16px 16px;
+        }
+
+        .cli-terminal-body {
+            flex: 1;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            overflow-y: auto;
+        }
+
+        .cli-terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .cli-terminal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .cli-terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(103, 232, 249, 0.2);
+            border-radius: 4px;
+        }
+
+        .cli-output-line {
+            margin-bottom: 4px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .cli-output-line.success { color: #22c55e; }
+        .cli-output-line.error { color: #ef4444; }
+        .cli-output-line.warning { color: #f59e0b; }
+        .cli-output-line.info { color: #67e8f9; }
+        .cli-output-line.muted { color: #6b7280; }
+        .cli-output-line.highlight { color: #a78bfa; }
+
+        .cli-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .cli-prompt {
+            color: #22c55e;
+            white-space: nowrap;
+        }
+
+        .cli-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: #e5e7eb;
+            caret-color: #67e8f9;
+        }
+
+        .cli-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #67e8f9;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .cli-demos-panel {
+            width: 340px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            max-height: calc(100vh - 150px);
+            padding-right: 8px;
+        }
+
+        .cli-demos-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cli-demos-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .cli-demos-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .cli-demos-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cli-demos-card {
+            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .cli-demos-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .cli-demos-header:hover {
+            opacity: 0.9;
+        }
+
+        .cli-demos-header svg.section-icon {
+            width: 18px;
+            height: 18px;
+            color: #a78bfa;
+        }
+
+        .cli-demos-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0;
+            flex: 1;
+        }
+
+        .cli-demos-header .toggle-icon {
+            width: 16px;
+            height: 16px;
+            color: #9ca3af;
+            transition: transform 0.2s ease;
+        }
+
+        .cli-demos-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .cli-demos-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.2s ease;
+        }
+
+        .cli-demos-content.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            margin-top: -16px;
+        }
+
+        .cli-demo-btn {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .cli-demo-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .cli-demo-btn:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(4px);
+        }
+
+        .cli-demo-btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+        }
+
+        .cli-demo-btn-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .cli-demo-btn-icon.cyan {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .cli-demo-btn-icon.green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .cli-demo-btn-icon.orange {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+        }
+
+        .cli-demo-btn-content {
+            flex: 1;
+        }
+
+        .cli-demo-btn-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .cli-demo-btn-desc {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .cli-help-section {
+            margin-top: auto;
+        }
+
+        .cli-help-card {
+            background: rgba(103, 232, 249, 0.05);
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .cli-help-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #67e8f9;
+            margin-bottom: 10px;
+        }
+
+        .cli-help-title svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .cli-help-commands {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .cli-help-commands code {
+            color: #a78bfa;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #3d3e4f;
+            border-top: 2px solid #67e8f9;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .typing-indicator {
+            display: inline-block;
+        }
+
+        .typing-indicator::after {
+            content: '';
+            animation: typing 1.5s steps(3, end) infinite;
+        }
+
+        @keyframes typing {
+            0%, 25% { content: '.'; }
+            50% { content: '..'; }
+            75%, 100% { content: '...'; }
+        }
+
+        /* Command Reference Modal */
+        .command-ref-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .command-ref-overlay.active {
+            display: flex;
+        }
+
+        .command-ref-modal {
+            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .command-ref-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .command-ref-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .command-ref-close {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            color: #9ca3af;
+            transition: all 0.2s ease;
+        }
+
+        .command-ref-close:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .command-ref-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .command-ref-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .command-ref-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .command-ref-body::-webkit-scrollbar-thumb {
+            background: rgba(103, 232, 249, 0.2);
+            border-radius: 4px;
+        }
+
+        .command-ref-section {
+            margin-bottom: 28px;
+        }
+
+        .command-ref-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .command-ref-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #67e8f9;
+            margin: 0 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(103, 232, 249, 0.2);
+        }
+
+        .command-ref-section.highlighted {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.08) 0%, rgba(103, 232, 249, 0.03) 100%);
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .command-ref-section.highlighted h3 {
+            color: #67e8f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .command-ref-section.highlighted h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #67e8f9;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(103, 232, 249, 0.5);
+        }
+
+        .command-ref-section.hidden {
+            display: none;
+        }
+
+        .command-ref-item {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: rgba(37, 38, 49, 0.5);
+            border-radius: 8px;
+            border: 1px solid #3d3e4f;
+        }
+
+        .command-ref-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .command-ref-item > code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .command-ref-item > p {
+            margin: 8px 0 0 0;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .command-ref-params {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .command-ref-params .param {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .command-ref-params .param:last-child {
+            margin-bottom: 0;
+        }
+
+        .command-ref-params .param code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 11px;
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+
+        .cli-help-card:hover {
+            border-color: rgba(103, 232, 249, 0.4);
+            background: rgba(103, 232, 249, 0.08);
+        }
+    </style>
+</head>
+<body class="cli-page">
+    <div class="app-container" style="padding-left: 0;">
+        <!-- Sidebar hidden in CLI mode -->
+
+        <main class="main-content" style="margin-left: 0;">
+            <div class="cli-page-layout">
+                <div class="cli-header-bar">
+                    <div class="cli-header-left">
+                        <div class="cli-header-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
+                        </div>
+                        <div class="cli-header-text">
+                            <h1>Kortex CLI</h1>
+                            <span>Command-line interface for Kortex</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cli-main-content">
+                    <div class="cli-terminal-container">
+                        <div class="cli-terminal-window">
+                            <div class="cli-terminal-header">
+                                <div class="cli-terminal-dots">
+                                    <div class="cli-terminal-dot red"></div>
+                                    <div class="cli-terminal-dot yellow"></div>
+                                    <div class="cli-terminal-dot green"></div>
+                                </div>
+                                <div class="cli-terminal-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                    Kortex Terminal
+                                </div>
+                                <div style="width: 54px;"></div>
+                            </div>
+                            
+                            <!-- Tabs Bar -->
+                            <div class="cli-tabs-bar" id="tabsBar">
+                                <div class="cli-tab active" data-tab-id="tab-1" onclick="if (!event.target.closest('.cli-tab-close')) switchToTab('tab-1')">
+                                    <svg class="cli-tab-icon kortex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                    <span class="cli-tab-name">kortex</span>
+                                    <div class="cli-tab-status idle"></div>
+                                    <div class="cli-tab-close" onclick="closeTab(event, 'tab-1')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"/>
+                                            <line x1="6" y1="6" x2="18" y2="18"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <button class="cli-tab-add" onclick="createNewTab()" title="New Tab (Ctrl+T)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Tab Contents Container -->
+                            <div class="cli-tabs-content" id="tabsContent" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                                <!-- Tab 1 Content (Default) -->
+                                <div class="cli-tab-content active" data-tab-id="tab-1">
+                                    <div class="cli-tab-terminal-body" id="terminalBody-tab-1">
+                                        <div class="cli-output-line highlight">
+  _  __          _            
+ | |/ /___  _ __| |_ _____  __
+ | ' // _ \| '__| __/ _ \ \/ /
+ | . \ (_) | |  | ||  __/>  < 
+ |_|\_\___/|_|   \__\___/_/\_\
+                                        </div>
+                                        <div class="cli-output-line"></div>
+                                        <div class="cli-output-line info">Welcome to Kortex CLI v1.0.0</div>
+                                        <div class="cli-output-line muted">Type 'help' to see available commands or 'kortex --help' for usage information.</div>
+                                        <div class="cli-output-line"></div>
+                                    </div>
+                                    <div class="cli-tab-input-line">
+                                        <span class="cli-prompt" id="prompt-tab-1">~/slemeur $</span>
+                                        <input type="text" class="cli-input" id="cliInput-tab-1" autofocus autocomplete="off" spellcheck="false">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cli-demos-panel">
+                        <div class="cli-demos-card">
+                            <div class="cli-demos-header" onclick="toggleQuickStart(this)">
+                                <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                <h3>Quick Start</h3>
+                                <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+
+                            <div class="cli-demos-content" id="quickStartContent">
+                            <button class="cli-demo-btn" onclick="runDemo('init-workspace')">
+                                <div class="cli-demo-btn-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Initialize Workspace</div>
+                                    <div class="cli-demo-btn-desc">Register a new workspace with kortex init</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('list-workspaces')">
+                                <div class="cli-demo-btn-icon cyan">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="8" y1="6" x2="21" y2="6"/>
+                                        <line x1="8" y1="12" x2="21" y2="12"/>
+                                        <line x1="8" y1="18" x2="21" y2="18"/>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">List Running Workspaces</div>
+                                    <div class="cli-demo-btn-desc">Show all active workspace sessions</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('ssh-workspace')">
+                                <div class="cli-demo-btn-icon green">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                        <path d="M6 8l4 4-4 4"/>
+                                        <line x1="12" y1="16" x2="18" y2="16"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">SSH into Workspace</div>
+                                    <div class="cli-demo-btn-desc">Access workspace sandbox environment via SSH</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('connect-mcp')">
+                                <div class="cli-demo-btn-icon cyan">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Install MCP Server</div>
+                                    <div class="cli-demo-btn-desc">List available MCPs and install into workspace</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('openshift-connect')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                        <polyline points="2 17 12 22 22 17"/>
+                                        <polyline points="2 12 12 17 22 12"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Connect to OpenShift AI</div>
+                                    <div class="cli-demo-btn-desc">Link to enterprise AI environment & MCP servers</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('enterprise-skills')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Enterprise Skills</div>
+                                    <div class="cli-demo-btn-desc">Skills with Red Hat hardened container images</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('rhel-mcp-demo')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                        <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">RHEL MCP Demo</div>
+                                    <div class="cli-demo-btn-desc">Troubleshoot podman containers on RHEL system</div>
+                                </div>
+                            </button>
+                            </div>
+                        </div>
+
+                        <div class="cli-help-section">
+                            <div class="cli-help-card" onclick="openCommandReference()" style="cursor: pointer; transition: all 0.2s ease;">
+                                <div class="cli-help-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                    Quick Commands
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                        <line x1="9" y1="3" x2="9" y2="21"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-help-commands">
+                                    <code>kortex init</code> - Initialize workspace<br>
+                                    <code>kortex workspace list</code> - List workspaces<br>
+                                    <code>kortex mcp list</code> - List MCP servers<br>
+                                    <code>help</code> - Show all commands<br>
+                                    <code>clear</code> - Clear terminal<br>
+                                    <span style="color: #67e8f9;">Ctrl+T</span> - New tab <span style="color: #67e8f9;">Ctrl+W</span> - Close tab
+                                </div>
+                                <div style="margin-top: 10px; font-size: 11px; color: #67e8f9; text-align: center;">Click to view full command reference</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Command Reference Modal -->
+        <div class="command-ref-overlay" id="commandRefOverlay" onclick="closeCommandReference(event)">
+            <div class="command-ref-modal" onclick="event.stopPropagation()">
+                <div class="command-ref-header">
+                    <div class="command-ref-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
+                            <polyline points="4 17 10 11 4 5"/>
+                            <line x1="12" y1="19" x2="20" y2="19"/>
+                        </svg>
+                        Kortex CLI Command Reference
+                    </div>
+                    <button class="command-ref-close" onclick="closeCommandReference()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="command-ref-body">
+                    <div class="command-ref-section highlighted">
+                        <h3>Workspace Commands</h3>
+                        <div class="command-ref-item">
+                            <code>kortex init [DIR]</code>
+                            <p>Initialize a new workspace in the specified directory</p>
+                            <div class="command-ref-params">
+                                <span class="param"><code>--name &lt;name&gt;</code> Workspace name (default: directory name)</span>
+                                <span class="param"><code>--agent &lt;type&gt;</code> Agent type: claude-code, codex, goose, cursor</span>
+                                <span class="param"><code>--config &lt;path&gt;</code> Configuration directory (default: DIR/.kortex/)</span>
+                            </div>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex workspace list</code>
+                            <p>List all running workspaces with context usage</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex workspace info &lt;id&gt;</code>
+                            <p>Show detailed workspace info and context window</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex workspace ssh &lt;id&gt;</code>
+                            <p>SSH into workspace sandbox environment</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex workspace stop &lt;id&gt;</code>
+                            <p>Stop a running workspace</p>
+                        </div>
+                    </div>
+
+                    <div class="command-ref-section highlighted">
+                        <h3>MCP Commands</h3>
+                        <div class="command-ref-item">
+                            <code>kortex mcp list</code>
+                            <p>List connected MCP servers</p>
+                            <div class="command-ref-params">
+                                <span class="param"><code>--available</code> Show all available MCP servers</span>
+                            </div>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex mcp install &lt;name&gt;</code>
+                            <p>Install MCP server into workspace</p>
+                            <div class="command-ref-params">
+                                <span class="param"><code>--workspace &lt;id&gt;</code> Target workspace ID</span>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="command-ref-section highlighted">
+                        <h3>Skill Commands</h3>
+                        <div class="command-ref-item">
+                            <code>kortex skill list</code>
+                            <p>List available skills</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex skill info &lt;name&gt;</code>
+                            <p>Show skill details and requirements</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex skill install &lt;name&gt;</code>
+                            <p>Install a skill (validates hardened image requirements)</p>
+                        </div>
+                    </div>
+
+                    <div class="command-ref-section hidden">
+                        <h3>OpenShift AI Commands</h3>
+                        <div class="command-ref-item">
+                            <code>kortex openshift connect</code>
+                            <p>Connect to OpenShift AI environment</p>
+                            <div class="command-ref-params">
+                                <span class="param"><code>--url &lt;url&gt;</code> OpenShift AI URL</span>
+                                <span class="param"><code>--token &lt;token&gt;</code> Authentication token</span>
+                            </div>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex openshift status</code>
+                            <p>Show OpenShift AI connection status</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex openshift mcp list</code>
+                            <p>List available MCP servers on OpenShift AI</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex openshift mcp connect &lt;name|all&gt;</code>
+                            <p>Connect to OpenShift AI MCP servers</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex openshift skills</code>
+                            <p>List enterprise skills with hardened images</p>
+                        </div>
+                    </div>
+
+                    <div class="command-ref-section">
+                        <h3>Other Commands</h3>
+                        <div class="command-ref-item">
+                            <code>kortex status</code>
+                            <p>Show Kortex status</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex version</code>
+                            <p>Show version info</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>help</code>
+                            <p>Show all commands in terminal</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>clear</code>
+                            <p>Clear terminal screen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLI Status Bar -->
+        <div class="global-status-bar" id="globalStatusBar">
+            <div class="status-bar-left">
+                <div class="status-bar-item status-bar-ui-mode" onclick="window.location.href='../index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span style="color: #a78bfa; font-weight: 500;">UI Mode</span>
+                </div>
+                <div class="status-bar-item" style="padding-left: 12px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
+                        <polyline points="4 17 10 11 4 5"/>
+                        <line x1="12" y1="19" x2="20" y2="19"/>
+                    </svg>
+                    <span style="color: #67e8f9;">CLI Mode</span>
+                </div>
+            </div>
+            <div class="status-bar-right">
+                <div class="status-bar-item">
+                    <div class="status-bar-dot" style="background: #22c55e;"></div>
+                    <span>Kortex Connected</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Tab Management System
+        let tabs = {
+            'tab-1': {
+                id: 'tab-1',
+                name: 'kortex',
+                type: 'kortex',
+                commandHistory: [],
+                historyIndex: -1,
+                isProcessing: false,
+                promptText: '~/slemeur $',
+                promptColor: '#22c55e',
+                status: 'idle'
+            }
+        };
+        let activeTabId = 'tab-1';
+        let tabCounter = 1;
+
+        // Get current tab's elements
+        function getTerminalBody() {
+            return document.getElementById(`terminalBody-${activeTabId}`);
+        }
+
+        function getCliInput() {
+            return document.getElementById(`cliInput-${activeTabId}`);
+        }
+
+        function getPromptEl() {
+            return document.getElementById(`prompt-${activeTabId}`);
+        }
+
+        function getCurrentTab() {
+            return tabs[activeTabId];
+        }
+
+        // Create a new tab
+        function createNewTab(agentType = null, name = null) {
+            tabCounter++;
+            const tabId = `tab-${tabCounter}`;
+            const tabName = name || (agentType || 'kortex');
+            
+            // Create tab data
+            tabs[tabId] = {
+                id: tabId,
+                name: tabName,
+                type: agentType || 'kortex',
+                commandHistory: [],
+                historyIndex: -1,
+                isProcessing: false,
+                promptText: '~/slemeur $',
+                promptColor: '#22c55e',
+                status: 'idle'
+            };
+
+            // Create tab element
+            const tabsBar = document.getElementById('tabsBar');
+            const addBtn = tabsBar.querySelector('.cli-tab-add');
+            
+            const tabEl = document.createElement('div');
+            tabEl.className = 'cli-tab';
+            tabEl.setAttribute('data-tab-id', tabId);
+            tabEl.onclick = (e) => {
+                if (!e.target.closest('.cli-tab-close')) {
+                    switchToTab(tabId);
+                }
+            };
+            
+            const iconClass = getIconClass(agentType || 'kortex');
+            tabEl.innerHTML = `
+                <svg class="cli-tab-icon ${iconClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                </svg>
+                <span class="cli-tab-name">${tabName}</span>
+                <div class="cli-tab-status idle"></div>
+                <div class="cli-tab-close" onclick="closeTab(event, '${tabId}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </div>
+            `;
+            
+            tabsBar.insertBefore(tabEl, addBtn);
+
+            // Create tab content
+            const tabsContent = document.getElementById('tabsContent');
+            const contentEl = document.createElement('div');
+            contentEl.className = 'cli-tab-content';
+            contentEl.setAttribute('data-tab-id', tabId);
+            contentEl.innerHTML = `
+                <div class="cli-tab-terminal-body" id="terminalBody-${tabId}">
+                    <div class="cli-output-line highlight">
+  _  __          _            
+ | |/ /___  _ __| |_ _____  __
+ | ' // _ \\| '__| __/ _ \\ \\/ /
+ | . \\ (_) | |  | ||  __/>  < 
+ |_|\\_\\___/|_|   \\__\\___/_/\\_\\
+                    </div>
+                    <div class="cli-output-line"></div>
+                    <div class="cli-output-line info">Welcome to Kortex CLI v1.0.0</div>
+                    <div class="cli-output-line muted">Type 'help' to see available commands or 'kortex --help' for usage information.</div>
+                    <div class="cli-output-line"></div>
+                </div>
+                <div class="cli-tab-input-line">
+                    <span class="cli-prompt" id="prompt-${tabId}">~/slemeur $</span>
+                    <input type="text" class="cli-input" id="cliInput-${tabId}" autocomplete="off" spellcheck="false">
+                </div>
+            `;
+            tabsContent.appendChild(contentEl);
+
+            // Add event listener for input
+            const input = document.getElementById(`cliInput-${tabId}`);
+            input.addEventListener('keydown', handleInputKeydown);
+
+            // Switch to new tab
+            switchToTab(tabId);
+
+            return tabId;
+        }
+
+        function getIconClass(type) {
+            const classes = {
+                'claude-code': 'claude',
+                'codex': 'codex',
+                'goose': 'goose',
+                'cursor': 'cursor',
+                'kortex': 'kortex'
+            };
+            return classes[type] || 'kortex';
+        }
+
+        // Switch to a specific tab
+        function switchToTab(tabId) {
+            if (!tabs[tabId]) return;
+
+            // Update active states
+            document.querySelectorAll('.cli-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('data-tab-id') === tabId);
+            });
+            document.querySelectorAll('.cli-tab-content').forEach(content => {
+                content.classList.toggle('active', content.getAttribute('data-tab-id') === tabId);
+            });
+
+            activeTabId = tabId;
+            
+            // Focus input
+            const input = getCliInput();
+            if (input && !getCurrentTab().isProcessing) {
+                input.focus();
+            }
+        }
+
+        // Close a tab
+        function closeTab(event, tabId) {
+            event.stopPropagation();
+            
+            const tabKeys = Object.keys(tabs);
+            if (tabKeys.length <= 1) {
+                return; // Don't close the last tab
+            }
+
+            // Remove tab element
+            const tabEl = document.querySelector(`.cli-tab[data-tab-id="${tabId}"]`);
+            if (tabEl) tabEl.remove();
+
+            // Remove content element
+            const contentEl = document.querySelector(`.cli-tab-content[data-tab-id="${tabId}"]`);
+            if (contentEl) contentEl.remove();
+
+            // If closing active tab, switch to another
+            if (activeTabId === tabId) {
+                const remainingTabs = Object.keys(tabs).filter(id => id !== tabId);
+                switchToTab(remainingTabs[remainingTabs.length - 1]);
+            }
+
+            // Remove from tabs object
+            delete tabs[tabId];
+        }
+
+        // Update tab appearance (name, icon, status)
+        function updateTab(tabId, updates) {
+            const tab = tabs[tabId];
+            if (!tab) return;
+
+            Object.assign(tab, updates);
+
+            const tabEl = document.querySelector(`.cli-tab[data-tab-id="${tabId}"]`);
+            if (!tabEl) return;
+
+            if (updates.name) {
+                tabEl.querySelector('.cli-tab-name').textContent = updates.name;
+            }
+
+            if (updates.type) {
+                const icon = tabEl.querySelector('.cli-tab-icon');
+                icon.className = `cli-tab-icon ${getIconClass(updates.type)}`;
+            }
+
+            if (updates.status) {
+                const statusEl = tabEl.querySelector('.cli-tab-status');
+                statusEl.className = `cli-tab-status ${updates.status}`;
+            }
+        }
+
+        // Initialize first tab's input listener
+        document.getElementById('cliInput-tab-1').addEventListener('keydown', handleInputKeydown);
+
+        // Keyboard shortcut for new tab
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 't') {
+                e.preventDefault();
+                createNewTab();
+            }
+            if (e.ctrlKey && e.key === 'w') {
+                e.preventDefault();
+                closeTab({ stopPropagation: () => {} }, activeTabId);
+            }
+            // Tab switching with Ctrl+1-9
+            if (e.ctrlKey && e.key >= '1' && e.key <= '9') {
+                e.preventDefault();
+                const tabKeys = Object.keys(tabs);
+                const index = parseInt(e.key) - 1;
+                if (index < tabKeys.length) {
+                    switchToTab(tabKeys[index]);
+                }
+            }
+        });
+
+        // Handle input keydown for tabs
+        async function handleInputKeydown(e) {
+            const tab = getCurrentTab();
+            const input = getCliInput();
+            
+            if (e.key === 'Enter') {
+                const command = input.value;
+                input.value = '';
+                if (command.trim()) {
+                    tab.commandHistory.push(command);
+                    tab.historyIndex = tab.commandHistory.length;
+                }
+                await processCommand(command);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (tab.historyIndex > 0) {
+                    tab.historyIndex--;
+                    input.value = tab.commandHistory[tab.historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (tab.historyIndex < tab.commandHistory.length - 1) {
+                    tab.historyIndex++;
+                    input.value = tab.commandHistory[tab.historyIndex];
+                } else {
+                    tab.historyIndex = tab.commandHistory.length;
+                    input.value = '';
+                }
+            }
+        }
+
+        function parseArgs(parts) {
+            const result = { name: null };
+            let i = 0;
+            while (i < parts.length) {
+                if (parts[i] === '--agent' && parts[i + 1]) {
+                    result.agent = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--model' && parts[i + 1]) {
+                    result.model = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--path' && parts[i + 1]) {
+                    result.path = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--url' && parts[i + 1]) {
+                    result.url = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--token' && parts[i + 1]) {
+                    result.token = parts[i + 1];
+                    i += 2;
+                } else if (!parts[i].startsWith('--') && !result.name) {
+                    result.name = parts[i];
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+            return result;
+        }
+
+        function parseInitArgs(parts) {
+            const result = { dir: null, name: null, agent: null, config: null };
+            let i = 0;
+            while (i < parts.length) {
+                if (parts[i] === '--name' && parts[i + 1]) {
+                    result.name = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--agent' && parts[i + 1]) {
+                    result.agent = parts[i + 1];
+                    i += 2;
+                } else if (parts[i] === '--config' && parts[i + 1]) {
+                    result.config = parts[i + 1];
+                    i += 2;
+                } else if (!parts[i].startsWith('--') && !result.dir) {
+                    result.dir = parts[i];
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+            return result;
+        }
+
+        let openshiftConnected = false;
+        let openshiftUrl = '';
+
+        const agentConfigs = {
+            'claude-code': {
+                name: 'Claude Code',
+                provider: 'Anthropic',
+                defaultModel: 'Claude 3.5 Sonnet',
+                icon: 'C',
+                color: '#f59e0b'
+            },
+            'codex': {
+                name: 'Codex CLI',
+                provider: 'OpenAI',
+                defaultModel: 'o3-mini',
+                icon: 'X',
+                color: '#10b981'
+            },
+            'goose': {
+                name: 'Goose',
+                provider: 'Block',
+                defaultModel: 'Claude 3.5 Sonnet',
+                icon: 'G',
+                color: '#8b5cf6'
+            },
+            'cursor': {
+                name: 'Cursor Agent',
+                provider: 'Cursor',
+                defaultModel: 'Claude 3.5 Sonnet',
+                icon: 'Cu',
+                color: '#06b6d4'
+            }
+        };
+
+        function addOutput(text, className = '') {
+            const terminalBody = getTerminalBody();
+            const line = document.createElement('div');
+            line.className = 'cli-output-line' + (className ? ' ' + className : '');
+            line.textContent = text;
+            terminalBody.appendChild(line);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function addOutputHTML(html, className = '') {
+            const terminalBody = getTerminalBody();
+            const line = document.createElement('div');
+            line.className = 'cli-output-line' + (className ? ' ' + className : '');
+            line.innerHTML = html;
+            terminalBody.appendChild(line);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function clearTerminal() {
+            const terminalBody = getTerminalBody();
+            terminalBody.innerHTML = '';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function waitForEnter() {
+            return new Promise(resolve => {
+                const cliInput = getCliInput();
+                if (cliInput) {
+                    cliInput.focus();
+                }
+                
+                function handleKeyPress(e) {
+                    if (e.key === 'Enter') {
+                        document.removeEventListener('keydown', handleKeyPress);
+                        resolve();
+                    }
+                }
+                
+                document.addEventListener('keydown', handleKeyPress);
+            });
+        }
+
+        async function typeText(text, className = '', delay = 30) {
+            const terminalBody = getTerminalBody();
+            const line = document.createElement('div');
+            line.className = 'cli-output-line' + (className ? ' ' + className : '');
+            terminalBody.appendChild(line);
+            
+            for (let i = 0; i < text.length; i++) {
+                line.textContent += text[i];
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                await sleep(delay);
+            }
+        }
+
+        async function processCommand(command) {
+            const tab = getCurrentTab();
+            const cliInput = getCliInput();
+            
+            if (tab.isProcessing) return;
+            tab.isProcessing = true;
+            updateTab(activeTabId, { status: 'running' });
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${command}`);
+            
+            const cmd = command.trim().toLowerCase();
+            const parts = command.trim().split(/\s+/);
+
+            if (cmd === 'clear') {
+                clearTerminal();
+            } else if (cmd === 'help' || cmd === 'kortex --help' || cmd === 'kortex -h') {
+                await showHelp();
+            } else if (cmd === 'kortex init' || cmd.startsWith('kortex init ')) {
+                const args = parseInitArgs(parts.slice(2));
+                await initWorkspaceDemo(args.dir, args.name, args.agent, args.config);
+            } else if (cmd === 'kortex workspace list' || cmd === 'kortex workspaces') {
+                await listAgentsDemo();
+            } else if (cmd.startsWith('kortex workspace info ') || cmd === 'kortex workspace info') {
+                const agentId = parts[3] || 'agt_7x8k2m9n4p1q';
+                await agentInfoDemo(agentId);
+            } else if (cmd === 'kortex mcp list' || cmd === 'kortex mcp list --available') {
+                await listMcpDemo(cmd.includes('--available'));
+            } else if (cmd.startsWith('kortex mcp install ')) {
+                const args = parseArgs(parts.slice(3));
+                await installMcpDemo(args.name || parts[3], args.workspace);
+            } else if (cmd === 'kortex status') {
+                await showStatusDemo();
+            } else if (cmd === 'kortex version' || cmd === 'kortex --version') {
+                addOutput('kortex version 1.0.0');
+                addOutput('Build: 2026.03.04-release', 'muted');
+            } else if (cmd.startsWith('kortex workspace ssh ') || cmd === 'kortex workspace ssh') {
+                const agentId = parts[3] || 'agt_7x8k2m9n4p1q';
+                await agentSshDemo(agentId);
+            } else if (cmd === 'kortex skill list' || cmd === 'kortex skills') {
+                await skillListDemo();
+            } else if (cmd.startsWith('kortex skill info ')) {
+                const skillName = parts[3] || 'code-review';
+                await skillInfoDemo(skillName);
+            } else if (cmd.startsWith('kortex skill install ')) {
+                const skillName = parts[3] || 'code-review';
+                await skillInstallDemo(skillName);
+            } else if (cmd === 'kortex openshift skills') {
+                await openshiftSkillsDemo();
+            } else if (cmd === 'kortex openshift connect' || cmd.startsWith('kortex openshift connect ')) {
+                const args = parseArgs(parts.slice(3));
+                await connectOpenshiftDemo(args.url, args.token);
+            } else if (cmd === 'kortex openshift status') {
+                await openshiftStatusDemo();
+            } else if (cmd === 'kortex openshift mcp list') {
+                await openshiftMcpListDemo();
+            } else if (cmd === 'kortex openshift mcp connect' || cmd.startsWith('kortex openshift mcp connect ')) {
+                const serverName = parts[4] || 'all';
+                await openshiftMcpConnectDemo(serverName);
+            } else if (cmd === '' || cmd === undefined) {
+                // Empty command, do nothing
+            } else {
+                addOutput(`Command not found: ${command}`, 'error');
+                addOutput("Type 'help' for available commands.", 'muted');
+            }
+
+            addOutput('');
+            tab.isProcessing = false;
+            updateTab(activeTabId, { status: 'idle' });
+            cliInput.disabled = false;
+            cliInput.focus();
+            
+            // Check for pending demo steps
+            if (window.pendingDemo) {
+                const pendingDemo = window.pendingDemo;
+                window.pendingDemo = null;
+                await sleep(500);
+                
+                if (pendingDemo === 'connect-mcp-step2') {
+                    await typeCommand('kortex mcp install github --workspace agt_7x8k2m9n4p1q');
+                }
+            }
+        }
+
+        async function showHelp() {
+            addOutput('');
+            addOutput('Kortex CLI - Command Line Interface for Kortex', 'info');
+            addOutput('');
+            addOutput('USAGE:', 'highlight');
+            addOutput('  kortex <command> [subcommand] [options]');
+            addOutput('');
+            addOutput('COMMANDS:', 'highlight');
+            addOutput('  init [DIR]             Initialize a new workspace');
+            addOutput('       --name <name>     Workspace name (default: directory name)');
+            addOutput('       --agent <type>    Agent type: claude-code, codex, goose, cursor');
+            addOutput('       --config <path>   Configuration directory (default: DIR/.kortex/)');
+            addOutput('  workspace list         List all running workspaces with context usage');
+            addOutput('  workspace info <id>    Show detailed workspace info and context window');
+            addOutput('  workspace ssh <id>     SSH into workspace sandbox environment');
+            addOutput('  workspace stop <id>    Stop a running workspace');
+            addOutput('');
+            addOutput('  mcp list               List connected MCP servers');
+            addOutput('  mcp list --available   List all available MCP servers');
+            addOutput('  mcp install <name>     Install MCP into workspace');
+            addOutput('       --workspace <id>  Target workspace ID');
+            addOutput('');
+            addOutput('  knowledge add <path>   Add knowledge source');
+            addOutput('  knowledge list         List knowledge bases');
+            addOutput('');
+            addOutput('  skill list             List available skills');
+            addOutput('  skill info <name>      Show skill details and requirements');
+            addOutput('  skill install <name>   Install a skill');
+            addOutput('  skill search <query>   Search for skills');
+            addOutput('');
+            addOutput('  openshift connect      Connect to OpenShift AI environment');
+            addOutput('       --url <url>       OpenShift AI URL');
+            addOutput('       --token <token>   Authentication token');
+            addOutput('  openshift status       Show OpenShift AI connection status');
+            addOutput('  openshift mcp list     List available MCP servers on OpenShift AI');
+            addOutput('  openshift mcp connect  Connect to OpenShift AI MCP servers');
+            addOutput('  openshift skills       List enterprise skills with hardened images');
+            addOutput('');
+            addOutput('  status                 Show Kortex status');
+            addOutput('  version                Show version info');
+            addOutput('');
+            addOutput('AVAILABLE AGENTS:', 'highlight');
+            addOutput('  claude-code            Claude Code (Anthropic)');
+            addOutput('  codex                  Codex CLI (OpenAI)');
+            addOutput('  goose                  Goose (Block)');
+            addOutput('  cursor                 Cursor Agent');
+            addOutput('');
+            addOutput('KEYBOARD SHORTCUTS:', 'highlight');
+            addOutput('  Ctrl+T                 Open new tab');
+            addOutput('  Ctrl+W                 Close current tab');
+            addOutput('  Ctrl+1-9               Switch to tab 1-9');
+            addOutput('');
+            addOutput('EXAMPLES:', 'highlight');
+            addOutput('  kortex init --name my-project --agent claude-code');
+            addOutput('  kortex init /path/to/project --agent codex');
+            addOutput('  kortex init --name feature/issue-123 --agent goose');
+            addOutput('  kortex mcp install github --workspace agt_123');
+        }
+
+        async function initWorkspaceDemo(dir, name, agentType, configPath) {
+            const terminalBody = getTerminalBody();
+            // Determine directory and name based on GitHub issue spec
+            const workDir = dir || '.';
+            const workName = name || (dir ? dir.split('/').pop() : 'project1');
+            const workConfig = configPath || `${workDir}/.kortex/`;
+            
+            addOutput('');
+            
+            // If no agent specified, show interactive selection
+            if (!agentType) {
+                addOutput('Select a coding agent:', 'info');
+                addOutput('');
+                addOutput('  [1] Claude Code     - Anthropic\'s coding agent (Claude 3.5 Sonnet)');
+                addOutput('  [2] Codex CLI       - OpenAI\'s coding assistant (o3-mini)');
+                addOutput('  [3] Goose           - Block\'s autonomous agent (Claude 3.5 Sonnet)');
+                addOutput('  [4] Cursor Agent    - Cursor\'s AI coding agent (Claude 3.5 Sonnet)');
+                addOutput('');
+                addOutput('Use --agent flag to specify: kortex init --agent claude-code', 'muted');
+                addOutput('');
+                
+                // Simulate user selecting option 1
+                await sleep(800);
+                addOutput('> Selecting Claude Code (default)...', 'info');
+                agentType = 'claude-code';
+                await sleep(400);
+            }
+            
+            const config = agentConfigs[agentType] || agentConfigs['claude-code'];
+            const selectedModel = config.defaultModel;
+            
+            addOutput('');
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(500);
+            
+            terminalBody.lastChild.innerHTML = `✓ Directory verified: ${workDir === '.' ? '~/slemeur/project1' : workDir}`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(600);
+            
+            terminalBody.lastChild.innerHTML = `✓ Configuration created at ${workConfig}`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
+            await sleep(1000);
+            
+            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML(`<span class="spinner"></span>Starting ${config.name} agent...`, 'info');
+            await sleep(900);
+            
+            terminalBody.lastChild.innerHTML = `✓ ${config.name} agent initialized`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML(`<span class="spinner"></span>Connecting to ${selectedModel}...`, 'info');
+            await sleep(800);
+            
+            terminalBody.lastChild.innerHTML = `✓ Connected to ${selectedModel}`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            const workspaceId = Math.random().toString(36).substring(2, 18).toUpperCase();
+            
+            addOutput('');
+            addOutput(`Initialized workspace ${workspaceId} with name ${workName}`, 'success');
+            addOutput('');
+            addOutput(`  Workspace ID:    ${workspaceId}`, 'info');
+            addOutput(`  Name:            ${workName}`, 'info');
+            addOutput(`  Agent:           ${config.name} (${config.provider})`, 'info');
+            addOutput(`  Directory:       ${workDir === '.' ? '~/slemeur/project1' : workDir}`, 'info');
+            addOutput(`  Configuration:   ${workConfig}`, 'info');
+            addOutput('');
+            addOutput('Attaching to workspace session...', 'muted');
+            
+            await sleep(1000);
+            
+            // Auto-attach to the agent session
+            if (agentType === 'claude-code' || !agentType) {
+                clearTerminal();
+                showClaudeCodeInterface();
+            } else if (agentType === 'codex') {
+                clearTerminal();
+                showCodexInterface(workName);
+            } else if (agentType === 'goose') {
+                clearTerminal();
+                showGooseInterface(workName);
+            } else if (agentType === 'cursor') {
+                clearTerminal();
+                showCursorInterface(workName);
+            }
+        }
+
+        function showCodexInterface(projectName) {
+            // Update tab
+            updateTab(activeTabId, { name: `codex: ${projectName}`, type: 'codex' });
+            
+            // Update prompt
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = 'codex>';
+                promptEl.style.color = '#10b981';
+            }
+            getCurrentTab().promptText = 'codex>';
+            getCurrentTab().promptColor = '#10b981';
+
+            addOutputHTML(`<span style="color: #10b981;">┌──────────────────────────────────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">Codex CLI</span> <span style="color: #6b7280;">v1.2.0</span>                                                          <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #9ca3af;">OpenAI's Coding Assistant</span>                                                  <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">├──────────────────────────────────────────────────────────────────────────────┤</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Model:</span>     o3-mini                                                        <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Sandbox:</span>   Enabled                                                        <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Project:</span>   ~/slemeur/${projectName.padEnd(40)}<span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">└──────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            addOutput('  Ready to assist. Describe what you want to build or fix.', 'muted');
+            addOutput('');
+        }
+
+        function showGooseInterface(projectName) {
+            // Update tab
+            updateTab(activeTabId, { name: `goose: ${projectName}`, type: 'goose' });
+            
+            // Update prompt
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = 'goose>';
+                promptEl.style.color = '#8b5cf6';
+            }
+            getCurrentTab().promptText = 'goose>';
+            getCurrentTab().promptColor = '#8b5cf6';
+
+            addOutputHTML(`<span style="color: #8b5cf6; font-weight: bold;">
+   ▄████  ▒█████   ▒█████    ██████ ▓█████ 
+  ██▒ ▀█▒██▒  ██▒▒██▒  ██▒▒██    ▒ ▓█   ▀ 
+ ▒██░▄▄▄░▒██░  ██▒▒██░  ██▒░ ▓██▄   ▒███   
+ ░▓█  ██▓▒██   ██░▒██   ██░  ▒   ██▒▒▓█  ▄ 
+ ░▒▓███▀▒░ ████▓▒░░ ████▓▒░▒██████▒▒░▒████▒
+  ░▒   ▒ ░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░
+            </span>`);
+            addOutput('');
+            addOutputHTML(`  <span style="color: #8b5cf6;">Goose</span> <span style="color: #6b7280;">v0.9.2</span> <span style="color: #9ca3af;">— Autonomous Developer Agent by Block</span>`);
+            addOutput('');
+            addOutputHTML(`  <span style="color: #e5e7eb;">Session:</span>  ${projectName}`);
+            addOutputHTML(`  <span style="color: #e5e7eb;">Provider:</span> Anthropic (Claude 3.5 Sonnet)`);
+            addOutputHTML(`  <span style="color: #e5e7eb;">Toolkit:</span>  developer, github, jira`);
+            addOutput('');
+            addOutput('  Honk! Ready to help. What are we building today?', 'muted');
+            addOutput('');
+        }
+
+        function showCursorInterface(projectName) {
+            // Update tab
+            updateTab(activeTabId, { name: `cursor: ${projectName}`, type: 'cursor' });
+            
+            // Update prompt
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = 'cursor>';
+                promptEl.style.color = '#06b6d4';
+            }
+            getCurrentTab().promptText = 'cursor>';
+            getCurrentTab().promptColor = '#06b6d4';
+
+            addOutputHTML(`<span style="color: #06b6d4;">╔═══════════════════════════════════════════════════════════════════════════╗</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>                                                                           <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>   <span style="color: #06b6d4; font-weight: bold;">▄▀▀▀▀▄  █  █  █▀▀▄  ▄▀▀▀  ▄▀▀▀▄  █▀▀▄</span>                                   <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>   <span style="color: #06b6d4; font-weight: bold;">█      █  █  █▄▄▀  ▀▀▀▄  █   █  █▄▄▀</span>                                   <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>   <span style="color: #06b6d4; font-weight: bold;">▀▄▄▄▄▀  ▀▄▄▀  █  █  ▄▄▄▀  ▀▄▄▄▀  █  █</span>   <span style="color: #6b7280;">Agent Mode</span>                     <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>                                                                           <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">╠═══════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>  <span style="color: #e5e7eb;">Model:</span>      Claude 3.5 Sonnet                                           <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>  <span style="color: #e5e7eb;">Workspace:</span>  ~/slemeur/${projectName.padEnd(44)}<span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>  <span style="color: #e5e7eb;">Tools:</span>      Read, Write, Shell, Browser, Search                         <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">║</span>                                                                           <span style="color: #06b6d4;">║</span>`);
+            addOutputHTML(`<span style="color: #06b6d4;">╚═══════════════════════════════════════════════════════════════════════════╝</span>`);
+            addOutput('');
+            addOutput('  What would you like me to help you build?', 'muted');
+            addOutput('');
+        }
+
+        async function listAgentsDemo() {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML('<span class="spinner"></span>Fetching agent sessions...', 'info');
+            await sleep(500);
+            
+            terminalBody.lastChild.remove();
+            
+            addOutput('ACTIVE AGENTS:', 'highlight');
+            addOutput('');
+            addOutput('┌──────────────────┬────────────────────┬──────────────┬──────────────────┬──────────────┬──────────┐');
+            addOutput('│ ID               │ NAME               │ AGENT        │ MODEL            │ CONTEXT      │ STATUS   │');
+            addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
+            addOutput('│ agt_7x8k2m9n4p1q │ frontend-refactor  │ Claude Code  │ Claude 3.5       │ 124K/200K    │ Running  │', 'success');
+            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ Goose        │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Cursor       │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
+            addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
+            addOutput('');
+            addOutput('Total: 4 agents (3 running, 1 paused) | Total context: 414K tokens', 'muted');
+            addOutput('');
+            addOutput('View details: kortex workspace info <id>', 'muted');
+        }
+
+        async function agentInfoDemo(agentId) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML('<span class="spinner"></span>Fetching agent details...', 'info');
+            await sleep(400);
+            
+            terminalBody.lastChild.remove();
+            
+            const agents = {
+                'agt_7x8k2m9n4p1q': {
+                    name: 'frontend-refactor',
+                    agent: 'Claude Code',
+                    model: 'Claude 3.5 Sonnet',
+                    status: 'Running',
+                    path: '~/slemeur/frontend-refactor',
+                    started: '2h 14m ago',
+                    context: { used: 124000, total: 200000, percent: 62 },
+                    breakdown: { system: 8000, conversation: 81000, tools: 35000 },
+                    messages: 12,
+                    toolCalls: 28,
+                    filesModified: 6
+                },
+                'agt_3a2b1c4d5e6f': {
+                    name: 'api-development',
+                    agent: 'Codex CLI',
+                    model: 'o3-mini',
+                    status: 'Running',
+                    path: '~/slemeur/api-development',
+                    started: '45m ago',
+                    context: { used: 45000, total: 128000, percent: 35 },
+                    breakdown: { system: 4000, conversation: 32000, tools: 9000 },
+                    messages: 8,
+                    toolCalls: 15,
+                    filesModified: 3
+                },
+                'agt_9m8n7o6p5q4r': {
+                    name: 'bug-investigation',
+                    agent: 'Goose',
+                    model: 'Claude 3.5 Sonnet',
+                    status: 'Paused',
+                    path: '~/slemeur/bug-investigation',
+                    started: '1h 30m ago',
+                    context: { used: 89000, total: 200000, percent: 45 },
+                    breakdown: { system: 6000, conversation: 58000, tools: 25000 },
+                    messages: 15,
+                    toolCalls: 34,
+                    filesModified: 2
+                },
+                'agt_2k4m6n8p0q2s': {
+                    name: 'ui-components',
+                    agent: 'Cursor',
+                    model: 'Claude 3.5 Sonnet',
+                    status: 'Running',
+                    path: '~/slemeur/ui-components',
+                    started: '3h 45m ago',
+                    context: { used: 156000, total: 200000, percent: 78 },
+                    breakdown: { system: 8000, conversation: 102000, tools: 46000 },
+                    messages: 24,
+                    toolCalls: 52,
+                    filesModified: 11
+                }
+            };
+            
+            const agent = agents[agentId] || agents['agt_7x8k2m9n4p1q'];
+            
+            addOutput(`AGENT: ${agent.name}`, 'highlight');
+            addOutput('');
+            addOutput(`  ID:           ${agentId}`, 'info');
+            addOutput(`  Agent:        ${agent.agent}`);
+            addOutput(`  Model:        ${agent.model}`);
+            addOutput(`  Status:       ${agent.status}`, agent.status === 'Running' ? 'success' : 'warning');
+            addOutput(`  Path:         ${agent.path}`);
+            addOutput(`  Started:      ${agent.started}`);
+            addOutput('');
+            
+            // Context Window Visualization
+            const contextPercent = agent.context.percent;
+            const barLength = 40;
+            const filledLength = Math.round(barLength * contextPercent / 100);
+            const emptyLength = barLength - filledLength;
+            const barColor = contextPercent > 80 ? '#ef4444' : contextPercent > 60 ? '#f59e0b' : '#22c55e';
+            
+            addOutput('  CONTEXT WINDOW:', 'highlight');
+            addOutput('');
+            addOutputHTML(`  <span style="color: ${barColor};">[${'█'.repeat(filledLength)}${'░'.repeat(emptyLength)}]</span> <span style="color: ${barColor}; font-weight: bold;">${contextPercent}%</span>`);
+            addOutput('');
+            addOutput(`  Used:         ${(agent.context.used / 1000).toFixed(0)}K tokens`);
+            addOutput(`  Available:    ${((agent.context.total - agent.context.used) / 1000).toFixed(0)}K tokens`);
+            addOutput(`  Total:        ${(agent.context.total / 1000).toFixed(0)}K tokens`);
+            addOutput('');
+            addOutput('  Breakdown:', 'info');
+            addOutput(`    System Prompt:    ${(agent.breakdown.system / 1000).toFixed(0)}K tokens`);
+            addOutput(`    Conversation:     ${(agent.breakdown.conversation / 1000).toFixed(0)}K tokens`);
+            addOutput(`    Tool Results:     ${(agent.breakdown.tools / 1000).toFixed(0)}K tokens`);
+            addOutput('');
+            addOutput('  SESSION STATS:', 'highlight');
+            addOutput(`    Messages:         ${agent.messages}`);
+            addOutput(`    Tool Calls:       ${agent.toolCalls}`);
+            addOutput(`    Files Modified:   ${agent.filesModified}`);
+            
+            if (contextPercent > 75) {
+                addOutput('');
+                addOutputHTML(`<span style="color: #f59e0b;">  ⚠ Context window is ${contextPercent}% full. Consider summarizing or starting a new session.</span>`);
+            }
+        }
+
+        async function agentSshDemo(agentId) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            const agents = {
+                'agt_7x8k2m9n4p1q': { name: 'frontend-refactor', path: '~/slemeur/frontend-refactor' },
+                'agt_3a2b1c4d5e6f': { name: 'api-development', path: '~/slemeur/api-development' },
+                'agt_9m8n7o6p5q4r': { name: 'bug-investigation', path: '~/slemeur/bug-investigation' },
+                'agt_2k4m6n8p0q2s': { name: 'ui-components', path: '~/slemeur/ui-components' }
+            };
+            
+            const agent = agents[agentId] || agents['agt_7x8k2m9n4p1q'];
+            
+            addOutput(`Connecting to agent sandbox: ${agent.name}`, 'info');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Resolving sandbox container...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kortex-sandbox-' + agentId.slice(-8);
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Establishing secure tunnel...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Secure tunnel established (TLS 1.3)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Authenticating...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Authenticated as slemeur';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            await sleep(300);
+            
+            // Clear terminal and show SSH session
+            clearTerminal();
+            
+            // Update terminal header
+            const terminalTitle = document.querySelector('.cli-terminal-title');
+            if (terminalTitle) {
+                terminalTitle.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M6 8l4 4-4 4"/>
+                        <line x1="12" y1="16" x2="18" y2="16"/>
+                    </svg>
+                    ssh — ${agent.name}@sandbox
+                `;
+            }
+            
+            // Update input prompt
+            const promptEl = document.querySelector('.cli-prompt');
+            if (promptEl) {
+                promptEl.textContent = `[slemeur@${agent.name}] $`;
+                promptEl.style.color = '#22c55e';
+            }
+
+            addOutputHTML(`<span style="color: #22c55e;">╔════════════════════════════════════════════════════════════════════════════════╗</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #22c55e; font-weight: bold;">SSH Session - Agent Sandbox</span>                                                  <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Agent:       ${agent.name.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   kortex-sandbox-${agentId.slice(-8).padEnd(40)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  User:        slemeur                                                          <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Workdir:     ${agent.path.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #6b7280;">Type 'exit' to disconnect from sandbox</span>                                       <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╚════════════════════════════════════════════════════════════════════════════════╝</span>`);
+            addOutput('');
+            addOutput(`Last login: ${new Date().toLocaleString()} from kortex-cli`, 'muted');
+            addOutput('');
+            
+            // Show some sandbox environment info
+            addOutput(`[slemeur@${agent.name}] $ pwd`);
+            addOutput(agent.path.replace('~', '/home/slemeur'));
+            addOutput('');
+            addOutput(`[slemeur@${agent.name}] $ ls -la`);
+            addOutput('total 48');
+            addOutput('drwxr-xr-x  8 slemeur slemeur 4096 Mar  4 09:15 .');
+            addOutput('drwxr-xr-x  3 root    root    4096 Mar  4 08:00 ..');
+            addOutput('-rw-r--r--  1 slemeur slemeur  234 Mar  4 09:10 .gitignore');
+            addOutput('drwxr-xr-x  8 slemeur slemeur 4096 Mar  4 09:15 .git');
+            addOutput('-rw-r--r--  1 slemeur slemeur 1245 Mar  4 09:12 package.json');
+            addOutput('-rw-r--r--  1 slemeur slemeur  523 Mar  4 09:10 README.md');
+            addOutput('drwxr-xr-x  4 slemeur slemeur 4096 Mar  4 09:14 src');
+            addOutput('drwxr-xr-x  2 slemeur slemeur 4096 Mar  4 09:11 tests');
+            addOutput('-rw-r--r--  1 slemeur slemeur  892 Mar  4 09:10 tsconfig.json');
+            addOutput('');
+            addOutput(`[slemeur@${agent.name}] $ `, 'success');
+            
+            window.sshMode = true;
+            window.sshAgent = agent;
+        }
+
+        async function connectMcpDemo(server) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML(`<span class="spinner"></span>Discovering ${server} MCP server...`, 'info');
+            await sleep(700);
+            
+            terminalBody.lastChild.innerHTML = `✓ Found ${server} MCP server`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Establishing connection...', 'info');
+            await sleep(900);
+            
+            terminalBody.lastChild.innerHTML = '✓ Connection established';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Loading available tools...', 'info');
+            await sleep(600);
+            
+            terminalBody.lastChild.innerHTML = '✓ Loaded 12 tools';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput(`MCP Server "${server}" connected successfully!`, 'success');
+            addOutput('');
+            addOutput('Available tools:', 'info');
+            addOutput('  • read_file       • write_file      • list_directory');
+            addOutput('  • search_files    • create_folder   • delete_file');
+            addOutput('  • move_file       • copy_file       • get_file_info');
+            addOutput('  • read_multiple   • edit_file       • directory_tree');
+        }
+
+        async function listMcpDemo(showAvailable = false) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            if (showAvailable) {
+                addOutputHTML('<span class="spinner"></span>Fetching available MCP servers...', 'info');
+                await sleep(600);
+                terminalBody.lastChild.remove();
+                
+                addOutput('AVAILABLE MCP SERVERS:', 'highlight');
+                addOutput('');
+                addOutput('┌────────────────────┬─────────────────────────────────────────┬───────────┬────────────┐');
+                addOutput('│ NAME               │ DESCRIPTION                             │ TOOLS     │ STATUS     │');
+                addOutput('├────────────────────┼─────────────────────────────────────────┼───────────┼────────────┤');
+                addOutput('│ filesystem         │ Local file system operations            │ 12 tools  │ Available  │', 'info');
+                addOutput('│ github             │ GitHub API integration                  │ 18 tools  │ Available  │', 'info');
+                addOutput('│ gitlab             │ GitLab API integration                  │ 16 tools  │ Available  │', 'info');
+                addOutput('│ kubernetes         │ Kubernetes cluster management           │ 24 tools  │ Available  │', 'info');
+                addOutput('│ docker             │ Docker container management             │ 14 tools  │ Available  │', 'info');
+                addOutput('│ postgres           │ PostgreSQL database operations          │ 10 tools  │ Available  │', 'info');
+                addOutput('│ slack              │ Slack messaging integration             │ 8 tools   │ Available  │', 'info');
+                addOutput('│ jira               │ Jira issue tracking                     │ 12 tools  │ Available  │', 'info');
+                addOutput('└────────────────────┴─────────────────────────────────────────┴───────────┴────────────┘');
+                addOutput('');
+                addOutput('Total: 8 MCP servers available', 'muted');
+                addOutput('');
+                addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+            } else {
+                addOutput('CONNECTED MCP SERVERS:', 'highlight');
+                addOutput('');
+                addOutput('┌────────────────┬──────────────────┬───────────┬────────┐');
+                addOutput('│ NAME           │ TYPE             │ TOOLS     │ STATUS │');
+                addOutput('├────────────────┼──────────────────┼───────────┼────────┤');
+                addOutput('│ filesystem     │ Local            │ 12 tools  │ Active │', 'success');
+                addOutput('│ github         │ Remote           │ 8 tools   │ Active │', 'success');
+                addOutput('│ kubernetes     │ Remote           │ 15 tools  │ Active │', 'success');
+                addOutput('└────────────────┴──────────────────┴───────────┴────────┘');
+                addOutput('');
+                addOutput('Total: 3 servers connected, 35 tools available', 'muted');
+            }
+        }
+
+        async function installMcpDemo(mcpName, workspaceId) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            const mcpInfo = {
+                'filesystem': { tools: 12, desc: 'Local file system operations' },
+                'github': { tools: 18, desc: 'GitHub API integration' },
+                'gitlab': { tools: 16, desc: 'GitLab API integration' },
+                'kubernetes': { tools: 24, desc: 'Kubernetes cluster management' },
+                'docker': { tools: 14, desc: 'Docker container management' },
+                'postgres': { tools: 10, desc: 'PostgreSQL database operations' },
+                'slack': { tools: 8, desc: 'Slack messaging integration' },
+                'jira': { tools: 12, desc: 'Jira issue tracking' }
+            };
+            
+            const mcp = mcpInfo[mcpName] || { tools: 10, desc: 'MCP Server' };
+            const wsId = workspaceId || 'agt_7x8k2m9n4p1q';
+            
+            addOutput(`Installing MCP server "${mcpName}" into workspace...`, 'info');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Downloading MCP package...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = `✓ Downloaded ${mcpName} MCP package`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Validating configuration...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Configuration validated';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Installing into workspace...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = `✓ Installed into workspace ${wsId}`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Connecting MCP server...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ MCP server connected';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Loading tools...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = `✓ Loaded ${mcp.tools} tools`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput('╔════════════════════════════════════════════════════════════════╗', 'success');
+            addOutput('║  MCP Server Installed Successfully                             ║', 'success');
+            addOutput('╚════════════════════════════════════════════════════════════════╝', 'success');
+            addOutput('');
+            addOutput(`  MCP Server:    ${mcpName}`, 'info');
+            addOutput(`  Description:   ${mcp.desc}`);
+            addOutput(`  Tools:         ${mcp.tools} tools available`);
+            addOutput(`  Workspace:     ${wsId}`);
+            addOutput('  Status:        Connected', 'success');
+            addOutput('');
+            addOutput(`  Available tools from ${mcpName}:`, 'highlight');
+            
+            if (mcpName === 'github') {
+                addOutput('    • create_issue        • list_repos        • create_pr');
+                addOutput('    • get_file_contents   • search_code       • list_branches');
+                addOutput('    • create_branch       • merge_pr          • get_commit');
+            } else if (mcpName === 'kubernetes') {
+                addOutput('    • get_pods            • get_services      • get_deployments');
+                addOutput('    • apply_manifest      • delete_resource   • get_logs');
+                addOutput('    • scale_deployment    • get_events        • describe_pod');
+            } else {
+                addOutput('    • read_file           • write_file        • list_directory');
+                addOutput('    • search_files        • create_folder     • delete_file');
+            }
+        }
+
+        async function runFlowDemo(flowName) {
+            addOutput('');
+            addOutput(`Executing flow: ${flowName}`, 'info');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Step 1/4: Analyzing codebase...', 'info');
+            await sleep(1500);
+            terminalBody.lastChild.innerHTML = '✓ Step 1/4: Analyzed 127 files';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Step 2/4: Running static analysis...', 'info');
+            await sleep(1200);
+            terminalBody.lastChild.innerHTML = '✓ Step 2/4: Static analysis complete';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Step 3/4: Generating review comments...', 'info');
+            await sleep(1800);
+            terminalBody.lastChild.innerHTML = '✓ Step 3/4: Generated 14 review comments';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Step 4/4: Creating summary report...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Step 4/4: Report generated';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput('═══════════════════════════════════════════════════════════', 'highlight');
+            addOutput('  FLOW COMPLETED SUCCESSFULLY', 'success');
+            addOutput('═══════════════════════════════════════════════════════════', 'highlight');
+            addOutput('');
+            addOutput('  Duration:    12.4s');
+            addOutput('  Files:       127 analyzed');
+            addOutput('  Issues:      3 critical, 8 warnings, 3 suggestions', 'warning');
+            addOutput('  Report:      ./reports/code-review-2026-03-04.md');
+        }
+
+        async function listFlowsDemo() {
+            addOutput('');
+            addOutput('AVAILABLE FLOWS:', 'highlight');
+            addOutput('');
+            addOutput('┌──────────────────┬────────────────────────────────┬──────────┐');
+            addOutput('│ NAME             │ DESCRIPTION                    │ STEPS    │');
+            addOutput('├──────────────────┼────────────────────────────────┼──────────┤');
+            addOutput('│ code-review      │ Automated code review          │ 4 steps  │');
+            addOutput('│ test-generation  │ Generate unit tests            │ 3 steps  │');
+            addOutput('│ documentation    │ Generate API documentation     │ 5 steps  │');
+            addOutput('│ refactor-suggest │ Suggest refactoring patterns   │ 3 steps  │');
+            addOutput('│ security-audit   │ Security vulnerability scan    │ 6 steps  │');
+            addOutput('└──────────────────┴────────────────────────────────┴──────────┘');
+            addOutput('');
+            addOutput('Run a flow with: kortex flow run <name>', 'muted');
+        }
+
+        async function showStatusDemo() {
+            addOutput('');
+            addOutput('KORTEX STATUS', 'highlight');
+            addOutput('');
+            addOutput('  Version:        1.0.0');
+            addOutput('  Status:         Online', 'success');
+            addOutput('  Uptime:         4h 23m 12s');
+            addOutput('');
+            addOutput('  Active Agents:  3', 'info');
+            addOutput('  MCP Servers:    3 connected');
+            addOutput('  Flows:          5 available');
+            addOutput('');
+            addOutput('  OpenShift AI:   ' + (openshiftConnected ? 'Connected' : 'Not connected'), openshiftConnected ? 'success' : 'muted');
+            addOutput('');
+            addOutput('  CPU Usage:      12%');
+            addOutput('  Memory:         1.2 GB / 8 GB');
+            addOutput('  Context Used:   124K / 200K tokens');
+        }
+
+        async function connectOpenshiftDemo(url, token) {
+            const terminalBody = getTerminalBody();
+            const targetUrl = url || 'https://ai.openshift.corp.redhat.com';
+            
+            addOutput('');
+            addOutput('Connecting to OpenShift AI...', 'info');
+            addOutput(`  URL: ${targetUrl}`, 'muted');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Authenticating...', 'info');
+            await sleep(800);
+            
+            terminalBody.lastChild.innerHTML = '✓ Authenticated successfully';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Fetching environment configuration...', 'info');
+            await sleep(600);
+            
+            terminalBody.lastChild.innerHTML = '✓ Environment configuration loaded';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Discovering available services...', 'info');
+            await sleep(1000);
+            
+            terminalBody.lastChild.innerHTML = '✓ Discovered 4 MCP servers, 3 models, 2 knowledge bases';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Syncing organization settings...', 'info');
+            await sleep(500);
+            
+            terminalBody.lastChild.innerHTML = '✓ Organization settings synced';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            openshiftConnected = true;
+            openshiftUrl = targetUrl;
+            
+            addOutput('');
+            addOutputHTML(`<span style="color: #ee4433;">╔══════════════════════════════════════════════════════════════════════════════╗</span>`);
+            addOutputHTML(`<span style="color: #ee4433;">║</span>  <span style="color: #ee4433; font-weight: bold;">OpenShift AI Connected</span>                                                      <span style="color: #ee4433;">║</span>`);
+            addOutputHTML(`<span style="color: #ee4433;">╚══════════════════════════════════════════════════════════════════════════════╝</span>`);
+            addOutput('');
+            addOutput(`  Environment:    ${targetUrl}`, 'info');
+            addOutput('  Organization:   Red Hat Engineering', 'info');
+            addOutput('  User:           slemeur@redhat.com', 'info');
+            addOutput('  Status:         Connected', 'success');
+            addOutput('');
+            addOutput('  Available Resources:', 'highlight');
+            addOutput('    • 4 MCP Servers ready to connect');
+            addOutput('    • 3 AI Models available');
+            addOutput('    • 2 Shared Knowledge Bases');
+            addOutput('');
+            addOutput('Run "kortex openshift mcp list" to see available MCP servers.', 'muted');
+        }
+
+        async function openshiftStatusDemo() {
+            addOutput('');
+            if (!openshiftConnected) {
+                addOutput('OpenShift AI: Not connected', 'warning');
+                addOutput('');
+                addOutput('Use "kortex openshift connect" to connect to an OpenShift AI environment.', 'muted');
+                return;
+            }
+            
+            addOutputHTML(`<span style="color: #ee4433;">OPENSHIFT AI STATUS</span>`);
+            addOutput('');
+            addOutput(`  Environment:    ${openshiftUrl}`, 'info');
+            addOutput('  Organization:   Red Hat Engineering');
+            addOutput('  User:           slemeur@redhat.com');
+            addOutput('  Status:         Connected', 'success');
+            addOutput('  Session:        4h 12m remaining');
+            addOutput('');
+            addOutput('  Resources:', 'highlight');
+            addOutput('    MCP Servers:      4 available (2 connected)');
+            addOutput('    Models:           3 available');
+            addOutput('    Knowledge Bases:  2 shared');
+            addOutput('    Quotas:           85% remaining');
+        }
+
+        async function openshiftMcpListDemo() {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            if (!openshiftConnected) {
+                addOutput('Not connected to OpenShift AI.', 'warning');
+                addOutput('Run "kortex openshift connect" first.', 'muted');
+                
+                // Auto-connect for demo purposes
+                addOutput('');
+                addOutput('Connecting to OpenShift AI for demo...', 'info');
+                await sleep(500);
+                openshiftConnected = true;
+                openshiftUrl = 'https://ai.openshift.corp.redhat.com';
+                addOutput('');
+            }
+            
+            addOutputHTML('<span class="spinner"></span>Fetching MCP servers from OpenShift AI...', 'info');
+            await sleep(700);
+            
+            terminalBody.lastChild.remove();
+            
+            addOutputHTML(`<span style="color: #ee4433;">OPENSHIFT AI MCP SERVERS</span>`);
+            addOutput('');
+            addOutput('┌────────────────────┬─────────────────────────────────────┬───────────┬──────────┐');
+            addOutput('│ NAME               │ DESCRIPTION                         │ TOOLS     │ STATUS   │');
+            addOutput('├────────────────────┼─────────────────────────────────────┼───────────┼──────────┤');
+            addOutput('│ rhel-mcp           │ RHEL documentation & system tools   │ 15 tools  │ Ready    │', 'success');
+            addOutput('│ openshift-mcp      │ OpenShift/Kubernetes management     │ 24 tools  │ Ready    │', 'success');
+            addOutput('│ ansible-mcp        │ Ansible automation & playbooks      │ 12 tools  │ Ready    │', 'success');
+            addOutput('│ quay-mcp           │ Container registry operations       │ 8 tools   │ Ready    │', 'success');
+            addOutput('└────────────────────┴─────────────────────────────────────┴───────────┴──────────┘');
+            addOutput('');
+            addOutput('Total: 4 MCP servers available (59 tools)', 'muted');
+            addOutput('');
+            addOutput('Connect with: kortex openshift mcp connect <name>', 'muted');
+            addOutput('Connect all:  kortex openshift mcp connect all', 'muted');
+        }
+
+        async function openshiftMcpConnectDemo(serverName) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            if (!openshiftConnected) {
+                openshiftConnected = true;
+                openshiftUrl = 'https://ai.openshift.corp.redhat.com';
+            }
+            
+            const servers = serverName === 'all' 
+                ? ['rhel-mcp', 'openshift-mcp', 'ansible-mcp', 'quay-mcp']
+                : [serverName];
+            
+            const serverInfo = {
+                'rhel-mcp': { tools: 15, desc: 'RHEL documentation & system tools' },
+                'openshift-mcp': { tools: 24, desc: 'OpenShift/Kubernetes management' },
+                'ansible-mcp': { tools: 12, desc: 'Ansible automation & playbooks' },
+                'quay-mcp': { tools: 8, desc: 'Container registry operations' }
+            };
+            
+            addOutput(`Connecting to OpenShift AI MCP server${servers.length > 1 ? 's' : ''}...`, 'info');
+            addOutput('');
+            
+            let totalTools = 0;
+            
+            for (const server of servers) {
+                const info = serverInfo[server] || { tools: 10, desc: 'MCP Server' };
+                
+                addOutputHTML(`<span class="spinner"></span>Connecting to ${server}...`, 'info');
+                await sleep(600 + Math.random() * 400);
+                
+                terminalBody.lastChild.innerHTML = `✓ Connected to ${server} (${info.tools} tools)`;
+                terminalBody.lastChild.className = 'cli-output-line success';
+                totalTools += info.tools;
+            }
+            
+            addOutput('');
+            addOutputHTML(`<span style="color: #ee4433;">═══════════════════════════════════════════════════════════════════════════════</span>`);
+            addOutput(`  OpenShift AI MCP Servers Connected`, 'success');
+            addOutputHTML(`<span style="color: #ee4433;">═══════════════════════════════════════════════════════════════════════════════</span>`);
+            addOutput('');
+            addOutput(`  Servers:    ${servers.length} connected`);
+            addOutput(`  Tools:      ${totalTools} tools available`);
+            addOutput(`  Source:     OpenShift AI (${openshiftUrl})`);
+            addOutput('');
+            
+            if (servers.includes('rhel-mcp') || serverName === 'all') {
+                addOutput('  RHEL MCP Tools:', 'highlight');
+                addOutput('    • rhel_docs_search    • system_info      • package_manager');
+                addOutput('    • security_advisories • subscription_mgr • insights_client');
+            }
+            
+            if (servers.includes('openshift-mcp') || serverName === 'all') {
+                addOutput('');
+                addOutput('  OpenShift MCP Tools:', 'highlight');
+                addOutput('    • oc_get_pods         • oc_get_services  • oc_describe');
+                addOutput('    • oc_logs             • oc_apply         • oc_delete');
+                addOutput('    • helm_install        • route_create     • scale_deployment');
+            }
+            
+            if (servers.includes('ansible-mcp') || serverName === 'all') {
+                addOutput('');
+                addOutput('  Ansible MCP Tools:', 'highlight');
+                addOutput('    • playbook_run        • inventory_list   • role_search');
+                addOutput('    • collection_install  • vault_encrypt    • lint_playbook');
+            }
+        }
+
+        async function skillListDemo() {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML('<span class="spinner"></span>Fetching available skills...', 'info');
+            await sleep(500);
+            
+            terminalBody.lastChild.remove();
+            
+            addOutput('AVAILABLE SKILLS:', 'highlight');
+            addOutput('');
+            addOutput('┌────────────────────────┬───────────────────────────────────┬─────────────┬──────────────────┐');
+            addOutput('│ NAME                   │ DESCRIPTION                       │ SOURCE      │ IMAGE            │');
+            addOutput('├────────────────────────┼───────────────────────────────────┼─────────────┼──────────────────┤');
+            addOutput('│ code-review            │ Automated code review             │ Local       │ -                │');
+            addOutput('│ test-generation        │ Generate unit tests               │ Local       │ -                │');
+            addOutput('│ documentation          │ Generate API documentation        │ Local       │ -                │');
+            addOutput('│ security-scan          │ Security vulnerability scanner    │ OpenShift   │ 🔒 RH Hardened   │', 'info');
+            addOutput('│ compliance-check       │ RHEL compliance verification      │ OpenShift   │ 🔒 RH Hardened   │', 'info');
+            addOutput('│ container-analysis     │ Container image analysis          │ OpenShift   │ 🔒 RH Hardened   │', 'info');
+            addOutput('│ ansible-automation     │ Ansible playbook generation       │ OpenShift   │ 🔒 RH Hardened   │', 'info');
+            addOutput('└────────────────────────┴───────────────────────────────────┴─────────────┴──────────────────┘');
+            addOutput('');
+            addOutput('🔒 = Requires Red Hat Hardened Container Image', 'muted');
+            addOutput('');
+            addOutput('View details: kortex skill info <name>', 'muted');
+        }
+
+        async function skillInfoDemo(skillName) {
+            addOutput('');
+            
+            const skills = {
+                'security-scan': {
+                    name: 'security-scan',
+                    description: 'Enterprise security vulnerability scanner for code and dependencies',
+                    version: '2.1.0',
+                    source: 'OpenShift AI',
+                    author: 'Red Hat Security Team',
+                    hardened: true,
+                    image: 'registry.redhat.io/rhel9/security-scanner:2.1',
+                    imageDetails: {
+                        base: 'Red Hat Universal Base Image 9',
+                        certified: true,
+                        fips: true,
+                        cve: 'Continuously patched',
+                        signature: 'Signed by Red Hat'
+                    },
+                    capabilities: ['CVE scanning', 'SAST analysis', 'Dependency audit', 'License compliance', 'SBOM generation'],
+                    requires: ['OpenShift AI connection', 'Red Hat subscription']
+                },
+                'compliance-check': {
+                    name: 'compliance-check',
+                    description: 'RHEL and OpenShift compliance verification against security benchmarks',
+                    version: '1.4.2',
+                    source: 'OpenShift AI',
+                    author: 'Red Hat Compliance Team',
+                    hardened: true,
+                    image: 'registry.redhat.io/rhel9/compliance-operator:1.4',
+                    imageDetails: {
+                        base: 'Red Hat Universal Base Image 9',
+                        certified: true,
+                        fips: true,
+                        cve: 'Continuously patched',
+                        signature: 'Signed by Red Hat'
+                    },
+                    capabilities: ['CIS Benchmark', 'STIG compliance', 'PCI-DSS checks', 'HIPAA verification', 'SOC 2 audit'],
+                    requires: ['OpenShift AI connection', 'Red Hat subscription']
+                },
+                'container-analysis': {
+                    name: 'container-analysis',
+                    description: 'Deep analysis of container images for security and best practices',
+                    version: '3.0.1',
+                    source: 'OpenShift AI',
+                    author: 'Red Hat Container Team',
+                    hardened: true,
+                    image: 'registry.redhat.io/rhel9/container-tools:3.0',
+                    imageDetails: {
+                        base: 'Red Hat Universal Base Image 9',
+                        certified: true,
+                        fips: true,
+                        cve: 'Continuously patched',
+                        signature: 'Signed by Red Hat'
+                    },
+                    capabilities: ['Layer analysis', 'Base image verification', 'Secret detection', 'Dockerfile linting', 'Size optimization'],
+                    requires: ['OpenShift AI connection', 'Red Hat subscription', 'Quay.io access']
+                },
+                'ansible-automation': {
+                    name: 'ansible-automation',
+                    description: 'Generate and validate Ansible playbooks with enterprise best practices',
+                    version: '2.15.0',
+                    source: 'OpenShift AI',
+                    author: 'Red Hat Ansible Team',
+                    hardened: true,
+                    image: 'registry.redhat.io/ansible-automation-platform/ee-supported-rhel9:2.15',
+                    imageDetails: {
+                        base: 'Red Hat Universal Base Image 9',
+                        certified: true,
+                        fips: true,
+                        cve: 'Continuously patched',
+                        signature: 'Signed by Red Hat'
+                    },
+                    capabilities: ['Playbook generation', 'Role scaffolding', 'Inventory management', 'Vault integration', 'AAP integration'],
+                    requires: ['OpenShift AI connection', 'Red Hat subscription', 'Ansible Automation Platform']
+                },
+                'code-review': {
+                    name: 'code-review',
+                    description: 'Automated code review and suggestions',
+                    version: '1.2.0',
+                    source: 'Local',
+                    author: 'Kortex',
+                    hardened: false,
+                    capabilities: ['Code analysis', 'Style checking', 'Bug detection', 'Performance tips'],
+                    requires: []
+                }
+            };
+            
+            const skill = skills[skillName] || skills['code-review'];
+            
+            addOutput(`SKILL: ${skill.name}`, 'highlight');
+            addOutput('');
+            addOutput(`  Description:  ${skill.description}`);
+            addOutput(`  Version:      ${skill.version}`);
+            addOutput(`  Source:       ${skill.source}`);
+            addOutput(`  Author:       ${skill.author}`);
+            addOutput('');
+            
+            if (skill.hardened) {
+                addOutputHTML(`<span style="color: #ee4433;">  ┌─────────────────────────────────────────────────────────────────────────────┐</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  <span style="color: #ee4433; font-weight: bold;">🔒 RED HAT HARDENED CONTAINER IMAGE</span>                                       <span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  ├─────────────────────────────────────────────────────────────────────────────┤</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  Image:        <span style="color: #67e8f9;">${skill.image.padEnd(52)}</span><span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  Base:         ${skill.imageDetails.base.padEnd(52)}<span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  Certified:    <span style="color: #22c55e;">Yes - Red Hat Certified Container</span>                          <span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  FIPS 140-2:   <span style="color: #22c55e;">Compliant</span>                                                    <span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  CVE Status:   ${skill.imageDetails.cve.padEnd(52)}<span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  │</span>  Signature:    ${skill.imageDetails.signature.padEnd(52)}<span style="color: #ee4433;">│</span>`);
+                addOutputHTML(`<span style="color: #ee4433;">  └─────────────────────────────────────────────────────────────────────────────┘</span>`);
+                addOutput('');
+            }
+            
+            addOutput('  Capabilities:', 'info');
+            skill.capabilities.forEach(cap => {
+                addOutput(`    • ${cap}`);
+            });
+            
+            if (skill.requires && skill.requires.length > 0) {
+                addOutput('');
+                addOutput('  Requirements:', 'warning');
+                skill.requires.forEach(req => {
+                    addOutput(`    • ${req}`);
+                });
+            }
+            
+            addOutput('');
+            addOutput(`Install with: kortex skill install ${skill.name}`, 'muted');
+        }
+
+        async function skillInstallDemo(skillName) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            const hardenedSkills = ['security-scan', 'compliance-check', 'container-analysis', 'ansible-automation'];
+            const isHardened = hardenedSkills.includes(skillName);
+            
+            if (isHardened && !openshiftConnected) {
+                addOutput(`Skill "${skillName}" requires Red Hat Hardened Container Image.`, 'warning');
+                addOutput('');
+                addOutput('This skill requires:', 'info');
+                addOutput('  • Active OpenShift AI connection');
+                addOutput('  • Valid Red Hat subscription');
+                addOutput('  • Access to registry.redhat.io');
+                addOutput('');
+                addOutput('Connect to OpenShift AI first:', 'muted');
+                addOutput('  kortex openshift connect', 'info');
+                return;
+            }
+            
+            addOutput(`Installing skill: ${skillName}`, 'info');
+            addOutput('');
+            
+            if (isHardened) {
+                addOutputHTML('<span class="spinner"></span>Verifying Red Hat subscription...', 'info');
+                await sleep(600);
+                terminalBody.lastChild.innerHTML = '✓ Subscription verified';
+                terminalBody.lastChild.className = 'cli-output-line success';
+                
+                addOutputHTML('<span class="spinner"></span>Pulling hardened container image...', 'info');
+                await sleep(1200);
+                terminalBody.lastChild.innerHTML = '✓ Image pulled from registry.redhat.io';
+                terminalBody.lastChild.className = 'cli-output-line success';
+                
+                addOutputHTML('<span class="spinner"></span>Verifying image signature...', 'info');
+                await sleep(500);
+                terminalBody.lastChild.innerHTML = '✓ Image signature verified (Red Hat GPG key)';
+                terminalBody.lastChild.className = 'cli-output-line success';
+                
+                addOutputHTML('<span class="spinner"></span>Checking FIPS compliance...', 'info');
+                await sleep(400);
+                terminalBody.lastChild.innerHTML = '✓ FIPS 140-2 compliant';
+                terminalBody.lastChild.className = 'cli-output-line success';
+            }
+            
+            addOutputHTML('<span class="spinner"></span>Installing skill components...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Skill components installed';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Registering with Kortex...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Skill registered';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput(`Skill "${skillName}" installed successfully!`, 'success');
+            
+            if (isHardened) {
+                addOutput('');
+                addOutputHTML(`<span style="color: #ee4433;">🔒 Running with Red Hat Hardened Container Image</span>`);
+                addOutput('   Security features: FIPS 140-2, CVE patched, Signed', 'muted');
+            }
+        }
+
+        async function openshiftSkillsDemo() {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            
+            if (!openshiftConnected) {
+                addOutput('Connecting to OpenShift AI...', 'info');
+                await sleep(500);
+                openshiftConnected = true;
+                openshiftUrl = 'https://ai.openshift.corp.redhat.com';
+                addOutput('');
+            }
+            
+            addOutputHTML('<span class="spinner"></span>Fetching enterprise skills from OpenShift AI...', 'info');
+            await sleep(700);
+            
+            terminalBody.lastChild.remove();
+            
+            addOutputHTML(`<span style="color: #ee4433;">OPENSHIFT AI ENTERPRISE SKILLS</span>`);
+            addOutput('');
+            addOutputHTML(`<span style="color: #ee4433;">🔒 All skills use Red Hat Hardened Container Images</span>`);
+            addOutput('');
+            addOutput('┌────────────────────────┬─────────────────────────────────────────────────────────────┐');
+            addOutput('│ SKILL                  │ CONTAINER IMAGE                                             │');
+            addOutput('├────────────────────────┼─────────────────────────────────────────────────────────────┤');
+            addOutput('│ security-scan          │ registry.redhat.io/rhel9/security-scanner:2.1               │');
+            addOutput('│ compliance-check       │ registry.redhat.io/rhel9/compliance-operator:1.4            │');
+            addOutput('│ container-analysis     │ registry.redhat.io/rhel9/container-tools:3.0                │');
+            addOutput('│ ansible-automation     │ registry.redhat.io/ansible-automation-platform/ee:2.15      │');
+            addOutput('│ rhel-insights          │ registry.redhat.io/rhel9/insights-client:latest             │');
+            addOutput('│ acs-scanner            │ registry.redhat.io/advanced-cluster-security/scanner:4.3    │');
+            addOutput('└────────────────────────┴─────────────────────────────────────────────────────────────┘');
+            addOutput('');
+            addOutput('  Image Features:', 'highlight');
+            addOutput('    ✓ Red Hat Universal Base Image 9 (UBI9)');
+            addOutput('    ✓ FIPS 140-2 Compliant');
+            addOutput('    ✓ Continuously patched for CVEs');
+            addOutput('    ✓ Signed with Red Hat GPG key');
+            addOutput('    ✓ Red Hat Certified Container');
+            addOutput('');
+            addOutput('Install: kortex skill install <name>', 'muted');
+            addOutput('Details: kortex skill info <name>', 'muted');
+        }
+
+        async function attachAgentDemo(agentId) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML(`<span class="spinner"></span>Attaching to agent ${agentId}...`, 'info');
+            await sleep(600);
+            
+            terminalBody.lastChild.innerHTML = `✓ Connected to agent ${agentId}`;
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            await sleep(400);
+            
+            // Clear terminal and show Claude Code interface
+            clearTerminal();
+            
+            // Show Claude Code CLI interface
+            showClaudeCodeInterface();
+        }
+
+        function showClaudeCodeInterface() {
+            // Update tab
+            updateTab(activeTabId, { name: 'claude-code', type: 'claude-code' });
+            
+            // Update input prompt
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = '>';
+                promptEl.style.color = '#f59e0b';
+            }
+            getCurrentTab().promptText = '>';
+            getCurrentTab().promptColor = '#f59e0b';
+
+            // Claude Code ASCII art and welcome screen
+            addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
+            addOutput('│                                                                                │');
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
+            addOutputHTML(`│                                    <span style="color: #9ca3af;">Run /init to create a CLAUDE.md file with</span>    │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #9ca3af;">instructions for Claude</span>                        │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #9ca3af;">Run /install-github-app to tag @claude right</span>  │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #9ca3af;">from your Github issues and PRs</span>                │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
+            addOutputHTML(`│                                    <span style="color: #9ca3af;">• Refactored UserService component</span>             │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Sonnet 4 · Claude Max</span>           <span style="color: #9ca3af;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #9ca3af;">• Added unit tests for API endpoints</span>           │`);
+            addOutput('│                                                                                │');
+            addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            addOutput('  What would you like to do?', 'muted');
+            addOutput('  Type your request or use /help for available commands.', 'muted');
+            addOutput('');
+            
+            // Switch to Claude Code mode
+            window.claudeCodeMode = true;
+        }
+
+        async function typeCommand(command) {
+            const cliInput = getCliInput();
+            cliInput.value = '';
+            cliInput.focus();
+            
+            for (let i = 0; i < command.length; i++) {
+                cliInput.value += command[i];
+                await sleep(30 + Math.random() * 20);
+            }
+        }
+
+        async function runRhelMcpDemo() {
+            const terminalBody = getTerminalBody();
+            
+            // Phase 1: Initialize workspace
+            addOutput('$ kortex init --name rhel-ops --agent claude-code', 'command');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/ops/rhel-server';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Starting Claude Code agent...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Claude Code agent initialized';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput('Initialized workspace WKS_RHEL_8X3M with name rhel-ops', 'success');
+            addOutput('');
+            
+            // Phase 2: Connect RHEL MCP Server
+            addOutput('$ kortex mcp install rhel-mcp --workspace WKS_RHEL_8X3M', 'command');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Fetching rhel-mcp from registry...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Found rhel-mcp v2.1.0';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Installing RHEL MCP Server...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ RHEL MCP Server installed';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Configuring connection to rhel-prod-01.example.com...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Connected to rhel-prod-01.example.com (RHEL 9.3)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput('RHEL MCP TOOLS AVAILABLE:', 'highlight');
+            addOutput('  rhel_system_status     - Get system health and resource usage');
+            addOutput('  rhel_podman_list       - List running podman containers');
+            addOutput('  rhel_podman_logs       - Get container logs');
+            addOutput('  rhel_podman_inspect    - Inspect container details');
+            addOutput('  rhel_podman_pull       - Pull container images');
+            addOutput('  rhel_podman_restart    - Restart containers');
+            addOutput('  rhel_package_info      - Query installed packages');
+            addOutput('  rhel_journal_query     - Query systemd journal');
+            addOutput('  rhel_firewall_status   - Check firewalld rules');
+            addOutput('');
+            
+            addOutput('Attaching to workspace session...', 'muted');
+            await sleep(800);
+            
+            // Phase 3: Show Claude Code Interface
+            clearTerminal();
+            updateTab(activeTabId, { name: 'claude: rhel-ops', type: 'claude-code' });
+            
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = '>';
+                promptEl.style.color = '#f59e0b';
+            }
+            getCurrentTab().promptText = '>';
+            getCurrentTab().promptColor = '#f59e0b';
+            
+            addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span> rhel-ops                <span style="color: #22c55e;">● RHEL MCP Connected</span>                    │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Target:</span>    rhel-prod-01.example.com  <span style="color: #9ca3af;">RHEL 9.3</span>                               │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>     Sonnet 4                                                          │`);
+            addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            
+            await sleep(1200);
+            
+            // Phase 4: User asks to check system status
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Check the status of our application containers running on this system. Something seems to be running slow.</span>`);
+            addOutput('');
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            
+            // Wait for user to press Enter
+            await waitForEnter();
+            
+            // Remove the "Press Enter" message
+            const terminalBodyForRemove = getTerminalBody();
+            if (terminalBodyForRemove.lastChild) {
+                terminalBodyForRemove.lastChild.remove();
+            }
+            
+            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">Claude</span>`);
+            addOutput('');
+            addOutput("I'll check the system status and podman containers to investigate the performance issue.", 'muted');
+            addOutput('');
+            
+            // Tool call 1: System Status
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_system_status</span>`);
+            await sleep(800);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ System Status ──────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Hostname:</span>   rhel-prod-01.example.com                        <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">OS:</span>         Red Hat Enterprise Linux 9.3                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Uptime:</span>     47 days, 3 hours                                 <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">CPU:</span>        78% <span style="color: #f59e0b;">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░</span>                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Memory:</span>     12.4 GB / 16 GB (78%)                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Disk:</span>       234 GB / 500 GB (47%)                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Load Avg:</span>   3.24, 2.89, 2.45                                 <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Tool call 2: Podman List
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_list</span>`);
+            await sleep(700);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ Podman Containers ────────────────────────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">CONTAINER ID</span>   <span style="color: #9ca3af;">IMAGE</span>                                    <span style="color: #9ca3af;">STATUS</span>         <span style="color: #9ca3af;">CPU</span>    <span style="color: #9ca3af;">MEM</span>   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #ef4444;">c3d4e5f6g7h8</span>   <span style="color: #ef4444;">quay.io/myorg/api-server:v1.2.3</span>          <span style="color: #f59e0b;">Up 12 days</span>     <span style="color: #ef4444;">62%</span>  <span style="color: #ef4444;">4.2G</span>  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(600);
+            
+            addOutput("I can see the issue. The api-server container (c3d4e5f6g7h8) is consuming 62% CPU and 4.2GB", 'muted');
+            addOutput("of memory, which is significantly higher than the other containers. Let me check its logs.", 'muted');
+            addOutput('');
+            
+            // Tool call 3: Container Logs
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_logs</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8" tail=25</span>`);
+            await sleep(900);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ Container Logs: api-server ──────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:23:01</span> <span style="color: #22c55e;">INFO</span>  Server started on port 8080                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:23:45</span> <span style="color: #f59e0b;">WARN</span>  High memory usage detected: 3.8GB               <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:24:12</span> <span style="color: #ef4444;">ERROR</span> Memory leak suspected in /api/v1/reports       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:24:33</span> <span style="color: #ef4444;">ERROR</span> GC overhead limit exceeded                      <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:01</span> <span style="color: #f59e0b;">WARN</span>  Response time degraded: avg 2340ms              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:18</span> <span style="color: #ef4444;">ERROR</span> Connection pool exhausted                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:44</span> <span style="color: #22c55e;">INFO</span>  Known issue CVE-2024-1234 affects this version  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Tool call 4: Inspect container
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_inspect</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
+            await sleep(600);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ Container Details ────────────────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Name:</span>           api-server-prod                                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Image:</span>          quay.io/myorg/api-server:<span style="color: #ef4444;">v1.2.3</span>                              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Created:</span>        12 days ago                                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Ports:</span>          8080->8080/tcp                                             <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Restart Policy:</span> always                                                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Image Digest:</span>   sha256:8a7b2c... (outdated)                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #f59e0b;">⚠ Latest:</span>       v1.2.5 available (fixes CVE-2024-1234, memory leak)        <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(700);
+            
+            // Claude's analysis
+            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">Analysis</span>`);
+            addOutput('');
+            addOutput("I've identified the problem:", 'muted');
+            addOutput('');
+            addOutputHTML(`<span style="color: #ef4444;">■</span> <span style="color: #e5e7eb;">Root Cause:</span> The api-server container is running version <span style="color: #ef4444;">v1.2.3</span> which has:`);
+            addOutput('  • A known memory leak in the /api/v1/reports endpoint');
+            addOutput('  • CVE-2024-1234 security vulnerability');
+            addOutput('  • GC overhead issues causing high CPU usage');
+            addOutput('');
+            addOutputHTML(`<span style="color: #22c55e;">■</span> <span style="color: #e5e7eb;">Solution:</span> Update to version <span style="color: #22c55e;">v1.2.5</span> which fixes these issues.`);
+            addOutput('');
+            addOutput("Would you like me to update the container image and restart the service?", 'muted');
+            addOutput('');
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            
+            // Wait for user to press Enter
+            await waitForEnter();
+            
+            // Remove the "Press Enter" message
+            const terminalBodyForRemove2 = getTerminalBody();
+            if (terminalBodyForRemove2.lastChild) {
+                terminalBodyForRemove2.lastChild.remove();
+            }
+            
+            // User confirms
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Yes, please update the image and restart the container</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">Claude</span>`);
+            addOutput('');
+            addOutput("I'll pull the new image and restart the container with zero-downtime deployment.", 'muted');
+            addOutput('');
+            
+            // Pull new image
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_pull</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5"</span>`);
+            await sleep(1200);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  Pulling quay.io/myorg/api-server:v1.2.5...</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  ├─ Layer 1/5: </span><span style="color: #22c55e;">████████████████████</span> <span style="color: #22c55e;">Done</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  ├─ Layer 2/5: </span><span style="color: #22c55e;">████████████████████</span> <span style="color: #22c55e;">Done</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  ├─ Layer 3/5: </span><span style="color: #22c55e;">████████████████████</span> <span style="color: #22c55e;">Done</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  ├─ Layer 4/5: </span><span style="color: #22c55e;">████████████████████</span> <span style="color: #22c55e;">Done</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └─ Layer 5/5: </span><span style="color: #22c55e;">████████████████████</span> <span style="color: #22c55e;">Done</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓ Image pulled successfully (245 MB)</span>`);
+            addOutput('');
+            
+            await sleep(600);
+            
+            // Stop old container
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_stop</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
+            await sleep(400);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓ Container stopped</span>`);
+            addOutput('');
+            
+            // Start new container
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_run</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5" name="api-server-prod" ...</span>`);
+            await sleep(800);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓ Container started: e5f6g7h8i9j0</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Verify new container status
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_list</span>`);
+            await sleep(600);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ Podman Containers ────────────────────────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">CONTAINER ID</span>   <span style="color: #9ca3af;">IMAGE</span>                                    <span style="color: #9ca3af;">STATUS</span>         <span style="color: #9ca3af;">CPU</span>    <span style="color: #9ca3af;">MEM</span>   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #22c55e;">e5f6g7h8i9j0</span>   <span style="color: #22c55e;">quay.io/myorg/api-server:v1.2.5</span>          <span style="color: #22c55e;">Up 5 secs</span>       <span style="color: #22c55e;">4%</span>   <span style="color: #22c55e;">380M</span>  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Final summary
+            addOutputHTML(`<span style="color: #f59e0b;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Updated api-server from v1.2.3 → v1.2.5</span>                                     │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Fixed memory leak in /api/v1/reports endpoint</span>                              │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Patched CVE-2024-1234 security vulnerability</span>                               │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">CPU usage reduced: 62% → 4%</span>                                                 │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Memory usage reduced: 4.2GB → 380MB</span>                                         │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">The container is now running the latest stable version.</span>                       │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Response times should normalize within the next few minutes.</span>                  │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            addOutput('  Is there anything else you would like me to check on this system?', 'muted');
+            addOutput('');
+            
+            window.claudeCodeMode = true;
+        }
+
+        async function runDemo(demoId) {
+            if (getCurrentTab().isProcessing) return;
+            
+            let command = '';
+            
+            switch (demoId) {
+                case 'init-workspace':
+                    command = 'kortex init --name my-project --agent claude-code';
+                    break;
+                case 'list-workspaces':
+                    command = 'kortex workspace list';
+                    break;
+                case 'ssh-workspace':
+                    command = 'kortex workspace ssh agt_7x8k2m9n4p1q';
+                    break;
+                case 'connect-mcp':
+                    command = 'kortex mcp list --available';
+                    window.pendingDemo = 'connect-mcp-step2';
+                    break;
+                case 'openshift-connect':
+                    command = 'kortex openshift connect';
+                    break;
+                case 'enterprise-skills':
+                    command = 'kortex openshift skills';
+                    break;
+                case 'rhel-mcp-demo':
+                    await runRhelMcpDemo();
+                    return;
+            }
+            
+            if (command) {
+                await typeCommand(command);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const tab = getCurrentTab();
+            const cliInput = getCliInput();
+            if (cliInput && !tab.isProcessing && !e.target.closest('.command-ref-overlay') && !e.target.closest('.cli-help-card') && !e.target.closest('.cli-tab') && !e.target.closest('.cli-tab-add')) {
+                cliInput.focus();
+            }
+        });
+
+        function toggleQuickStart(header) {
+            const content = document.getElementById('quickStartContent');
+            header.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        }
+
+        function openCommandReference() {
+            document.getElementById('commandRefOverlay').classList.add('active');
+        }
+
+        function closeCommandReference(event) {
+            if (!event || event.target === event.currentTarget) {
+                document.getElementById('commandRefOverlay').classList.remove('active');
+                cliInput.focus();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCommandReference();
+            }
+        });
+    </script>
+</body>
+</html>
