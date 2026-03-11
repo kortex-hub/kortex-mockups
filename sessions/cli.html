@@ -304,6 +304,283 @@
         .quick-start-card h3 svg {
             color: #a78bfa;
         }
+
+        /* Interactive Terminal Styles */
+        .interactive-terminal {
+            background: #0a0a0f;
+            border: 1px solid #2d2e3f;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: text;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .interactive-terminal:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+        }
+
+        .interactive-terminal:focus .terminal-overlay {
+            display: none;
+        }
+
+        .terminal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 15, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        .terminal-overlay .overlay-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: #ef4444;
+        }
+
+        .terminal-overlay .overlay-content svg {
+            opacity: 0.8;
+        }
+
+        .terminal-overlay .overlay-content span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .terminal-overlay:hover {
+            background: rgba(10, 10, 15, 0.75);
+        }
+
+        .terminal-overlay:hover .overlay-content svg {
+            opacity: 1;
+        }
+
+        .interactive-terminal {
+            position: relative;
+        }
+
+        .terminal-header {
+            background: linear-gradient(180deg, #1e1f2b 0%, #181922 100%);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #2d2e3f;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-btn.close { background: #ef4444; }
+        .terminal-btn.minimize { background: #f59e0b; }
+        .terminal-btn.maximize { background: #22c55e; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .terminal-restart-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 6px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terminal-restart-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+        }
+
+        .terminal-body {
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .terminal-prompt {
+            color: #22c55e;
+            margin-right: 8px;
+            user-select: none;
+        }
+
+        .terminal-command {
+            color: #f59e0b;
+        }
+
+        .terminal-output {
+            color: #e5e7eb;
+            display: block;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+
+        .terminal-output.info {
+            color: #06b6d4;
+        }
+
+        .terminal-output.success {
+            color: #22c55e;
+        }
+
+        .terminal-output.warning {
+            color: #f59e0b;
+        }
+
+        .terminal-output.error {
+            color: #ef4444;
+        }
+
+        .terminal-output.muted {
+            color: #6b7280;
+        }
+
+        .terminal-spinner {
+            display: inline-block;
+            color: #a78bfa;
+        }
+
+        .terminal-input-area {
+            padding: 12px 20px;
+            border-top: 1px solid #2d2e3f;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .terminal-hint {
+            font-size: 12px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-hint::before {
+            content: '↵';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .terminal-hint.hidden {
+            visibility: hidden;
+        }
+
+        .terminal-progress {
+            padding: 12px 20px;
+            border-top: 1px solid #2d2e3f;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-steps {
+            display: flex;
+            gap: 4px;
+            justify-content: space-between;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: #4b5563;
+            padding: 6px 8px;
+            background: rgba(75, 85, 99, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-step.active {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .progress-step.completed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #e5e7eb;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes spin {
+            0% { content: '⠋'; }
+            10% { content: '⠙'; }
+            20% { content: '⠹'; }
+            30% { content: '⠸'; }
+            40% { content: '⠼'; }
+            50% { content: '⠴'; }
+            60% { content: '⠦'; }
+            70% { content: '⠧'; }
+            80% { content: '⠇'; }
+            90% { content: '⠏'; }
+        }
+
+        .typing-text {
+            overflow: hidden;
+            border-right: 2px solid #e5e7eb;
+            white-space: nowrap;
+            animation: typing 0.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
     </style>
 </head>
 <body class="sessions-page">
@@ -354,10 +631,13 @@
                                 </svg>
                                 Copy
                             </button>
-                            <code><span class="comment"># Start a workspace with Claude agent</span>
-<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span>
+                            <code><span class="comment"># 1. Start a workspace with Claude agent</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> <span class="flag">--name</span> <span class="value">my-workspace</span>
 
-<span class="comment"># Start with a specific task</span>
+<span class="comment"># 2. Inspect workspace to see all resources and configuration</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">my-workspace</span>
+
+<span class="comment"># 3. Start working with a specific task</span>
 <span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">--claude</span> <span class="flag">--task</span> <span class="value">"Refactor the authentication module"</span></code>
                         </div>
                     </div>
@@ -434,6 +714,161 @@
 <span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">stop</span> <span class="flag">--all</span>                <span class="comment"># Stop all workspaces</span></code>
                                 </div>
                             </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Inspect workspace resources</h4>
+                                        <p class="cli-command-desc">Display all resources and configuration a workspace has access to</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span>
+
+<span class="comment">╭─────────────────────────────────────────────────────────────╮</span>
+<span class="comment">│  Workspace: api-refactor                                    │</span>
+<span class="comment">│  Status: running • Created: 2h ago                          │</span>
+<span class="comment">╰─────────────────────────────────────────────────────────────╯</span>
+
+<span class="info">SANDBOX</span>
+  Image:          <span class="value">fcos:40.20240301.0</span>
+  Container ID:   <span class="muted">sbx-7f3a9c2e</span>
+  Runtime:        <span class="muted">podman 5.0.2</span>
+  Resources:      <span class="muted">2 CPU, 4GB RAM, 20GB disk</span>
+
+<span class="info">ASSETS</span>
+  <span class="success">✓</span> filesystem     <span class="muted">~/projects/my-api (read-write)</span>
+  <span class="success">✓</span> knowledge      <span class="muted">kb-nodejs-best-practices</span>
+  <span class="success">✓</span> skills         <span class="muted">code-review, openshift-deployment, tekton-pipelines (ocp.internal)</span>
+  <span class="success">✓</span> mcp-servers    <span class="muted">filesystem, postgres, github</span>
+
+<span class="info">NETWORK</span>
+  Policy:         <span class="value">allow</span> <span class="muted">(default permit, selective block)</span>
+  Proxy:          <span class="muted">http://proxy.kortex.local:8080</span>
+  Blocked CIDRs:  <span class="muted">10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</span>
+  Allowed Hosts:  <span class="muted">*.anthropic.com, *.npmjs.org, github.com</span>
+  HTTPS Bypass:   <span class="muted">none</span>
+
+<span class="info">TOKENS</span>
+  <span class="success">✓</span> github         <span class="muted">ghp_****Xk92 (repo, workflow)</span>
+  <span class="success">✓</span> npm            <span class="muted">npm_****8fGh (publish)</span>
+  <span class="warning">○</span> docker-hub     <span class="muted">not configured</span>
+</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workspace Inspect Options -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="M21 21l-4.35-4.35"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Workspace Inspect</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Inspect specific sections</h4>
+                                        <p class="cli-command-desc">Filter inspection output to specific resource types</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="comment"># Show only sandbox information</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--section</span> <span class="value">sandbox</span>
+
+<span class="comment"># Show only network configuration</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--section</span> <span class="value">network</span>
+
+<span class="comment"># Show only available tokens</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--section</span> <span class="value">tokens</span>
+
+<span class="comment"># Show only assets (filesystem, knowledge, skills, mcp)</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--section</span> <span class="value">assets</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Output formats</h4>
+                                        <p class="cli-command-desc">Export workspace configuration in different formats</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="comment"># Output as JSON (useful for scripting)</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--json</span>
+
+<span class="comment"># Output as YAML</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--yaml</span>
+
+<span class="comment"># Quiet mode - show only values (for piping)</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">inspect</span> <span class="value">api-refactor</span> <span class="flag">--section</span> <span class="value">sandbox</span> <span class="flag">-q</span></code>
+                                </div>
+                            </div>
+
+                            <table class="cli-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>Flag</th>
+                                        <th>Description</th>
+                                        <th>Default</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--section &lt;name&gt;</span></td>
+                                        <td class="cli-option-desc">Show only specific section: sandbox, assets, network, tokens</td>
+                                        <td><span class="cli-option-default">all</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--json</span></td>
+                                        <td class="cli-option-desc">Output in JSON format</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--yaml</span></td>
+                                        <td class="cli-option-desc">Output in YAML format</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">-q, --quiet</span></td>
+                                        <td class="cli-option-desc">Minimal output, values only</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--show-secrets</span></td>
+                                        <td class="cli-option-desc">Show full token values (requires confirmation)</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -473,9 +908,19 @@
                                         <td><span class="cli-option-default">-</span></td>
                                     </tr>
                                     <tr>
+                                        <td><span class="cli-option-flag">--agent opencode</span></td>
+                                        <td class="cli-option-desc">Use OpenCode as a local coding agent</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
                                         <td><span class="cli-option-flag">--model &lt;name&gt;</span></td>
                                         <td class="cli-option-desc">Specify a custom model (e.g., granite-3.1, llama-3.2)</td>
                                         <td><span class="cli-option-default">granite-3.1</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--model-provider &lt;provider:model&gt;</span></td>
+                                        <td class="cli-option-desc">Specify model provider (e.g., ramalama:qwen, ollama:codellama)</td>
+                                        <td><span class="cli-option-default">-</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -525,7 +970,7 @@
                                     </tr>
                                     <tr>
                                         <td><span class="cli-option-flag">--skills &lt;names&gt;</span></td>
-                                        <td class="cli-option-desc">Comma-separated list of skills to enable</td>
+                                        <td class="cli-option-desc">Comma-separated list of skills (local or enterprise from ocp.internal)</td>
                                         <td><span class="cli-option-default">-</span></td>
                                     </tr>
                                     <tr>
@@ -537,6 +982,138 @@
                                         <td><span class="cli-option-flag">--devspaces</span></td>
                                         <td class="cli-option-desc">Run workspace in Red Hat DevSpaces</td>
                                         <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Network Policies -->
+                    <div class="cli-section">
+                        <div class="cli-section-header">
+                            <div class="cli-section-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Network Policies</h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Configure network proxy policy</h4>
+                                        <p class="cli-command-desc">Set network filtering rules for a workspace sandbox</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="comment"># Allow all traffic, block specific ranges (default)</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">proxy</span> <span class="value">my-workspace</span> \
+    <span class="flag">--policy</span> <span class="value">allow</span> \
+    <span class="flag">--block-cidr</span> <span class="value">10.0.0.0/8</span> \
+    <span class="flag">--block-cidr</span> <span class="value">172.16.0.0/12</span>
+
+<span class="comment"># Deny all traffic, allow only specific hosts</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">proxy</span> <span class="value">my-workspace</span> \
+    <span class="flag">--policy</span> <span class="value">deny</span> \
+    <span class="flag">--allow-host</span> <span class="value">"*.anthropic.com"</span> \
+    <span class="flag">--allow-host</span> <span class="value">"*.npmjs.org"</span> \
+    <span class="flag">--allow-host</span> <span class="value">github.com</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">View network activity log</h4>
+                                        <p class="cli-command-desc">Monitor blocked and allowed network requests</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">log</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">log</span> <span class="flag">--json</span>     <span class="comment"># Machine-readable output</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">log</span> <span class="flag">--limit</span> <span class="value">50</span>  <span class="comment"># Show last 50 entries</span></code>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Configure HTTPS bypass</h4>
+                                        <p class="cli-command-desc">Bypass HTTPS inspection for services with certificate pinning</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">proxy</span> <span class="value">my-workspace</span> \
+    <span class="flag">--bypass-host</span> <span class="value">api.service-with-pinning.com</span>
+
+<span class="comment"># Bypass by CIDR range</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">workspace</span> <span class="flag">network</span> <span class="flag">proxy</span> <span class="value">my-workspace</span> \
+    <span class="flag">--bypass-cidr</span> <span class="value">203.0.113.0/24</span></code>
+                                </div>
+                            </div>
+
+                            <table class="cli-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>Flag</th>
+                                        <th>Description</th>
+                                        <th>Default</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--policy &lt;mode&gt;</span></td>
+                                        <td class="cli-option-desc">Policy mode: allow (permit by default) or deny (block by default)</td>
+                                        <td><span class="cli-option-default">allow</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--block-cidr &lt;cidr&gt;</span></td>
+                                        <td class="cli-option-desc">Block traffic to IP range (can be repeated)</td>
+                                        <td><span class="cli-option-default">RFC 1918</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--allow-host &lt;host&gt;</span></td>
+                                        <td class="cli-option-desc">Allow traffic to host pattern (can be repeated)</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--block-host &lt;host&gt;</span></td>
+                                        <td class="cli-option-desc">Block traffic to host pattern (can be repeated)</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--bypass-host &lt;host&gt;</span></td>
+                                        <td class="cli-option-desc">Bypass HTTPS inspection for host (certificate pinning)</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--bypass-cidr &lt;cidr&gt;</span></td>
+                                        <td class="cli-option-desc">Bypass HTTPS inspection for IP range</td>
+                                        <td><span class="cli-option-default">-</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -574,7 +1151,7 @@
     <span class="flag">--task</span> <span class="value">"Refactor the REST API to use async handlers"</span> \
     <span class="flag">--dir</span> <span class="value">./backend</span> \
     <span class="flag">--mcp</span> <span class="value">filesystem,postgres,github</span> \
-    <span class="flag">--skills</span> <span class="value">code-review,kubernetes</span></code>
+    <span class="flag">--skills</span> <span class="value">code-review,openshift-deployment,tekton-pipelines</span></code>
                                 </div>
                             </div>
 
@@ -642,6 +1219,207 @@
                         </div>
                     </div>
 
+                    <!-- RHEL MCP Interactive Demo -->
+                    <div class="cli-section" style="border-color: #ef4444;">
+                        <div class="cli-section-header" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%);">
+                            <div class="cli-section-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <path d="M9 9h6v6H9z"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">RHEL MCP Demo <span style="font-size: 11px; background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 4px 8px; border-radius: 4px; margin-left: 8px; font-weight: 500;">Interactive</span></h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Install and configure RHEL MCP Server</h4>
+                                        <p class="cli-command-desc">Step through the installation process interactively. Click the terminal below and press <kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-family: inherit;">Enter</kbd> to proceed through each step.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Interactive Terminal -->
+                                <div class="interactive-terminal" id="rhel-mcp-terminal" tabindex="0">
+                                    <div class="terminal-overlay" id="rhel-terminal-overlay">
+                                        <div class="overlay-content">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32">
+                                                <polygon points="5 3 19 12 5 21 5 3"/>
+                                            </svg>
+                                            <span>Click to start interactive demo</span>
+                                        </div>
+                                    </div>
+                                    <div class="terminal-header">
+                                        <div class="terminal-buttons">
+                                            <span class="terminal-btn close"></span>
+                                            <span class="terminal-btn minimize"></span>
+                                            <span class="terminal-btn maximize"></span>
+                                        </div>
+                                        <div class="terminal-title">kortex — RHEL MCP Installation</div>
+                                        <button class="terminal-restart-btn" onclick="restartDemo()" title="Restart demo">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                                <path d="M23 4v6h-6"/>
+                                                <path d="M1 20v-6h6"/>
+                                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="terminal-body" id="terminal-output">
+                                        <div class="terminal-line">
+                                            <span class="terminal-prompt">$</span>
+                                            <span class="terminal-command" id="rhel-command-text"></span>
+                                            <span class="terminal-cursor" id="rhel-cursor"></span>
+                                        </div>
+                                    </div>
+                                    <div class="terminal-input-area">
+                                        <span class="terminal-hint" id="terminal-hint">Click terminal, then press Enter to type command...</span>
+                                    </div>
+                                    <div class="terminal-progress">
+                                        <div class="progress-steps">
+                                            <span class="progress-step active" data-step="0">Start</span>
+                                            <span class="progress-step" data-step="1">Init Sandbox</span>
+                                            <span class="progress-step" data-step="2">Install MCP</span>
+                                            <span class="progress-step" data-step="3">Configure</span>
+                                            <span class="progress-step" data-step="4">Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Local Coding Agent Demo -->
+                    <div class="cli-section" style="border-color: #22c55e;">
+                        <div class="cli-section-header" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);">
+                            <div class="cli-section-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <h3 class="cli-section-title">Local Coding Agent with RamaLama <span style="font-size: 11px; background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 4px 8px; border-radius: 4px; margin-left: 8px; font-weight: 500;">Interactive</span></h3>
+                        </div>
+                        <div class="cli-section-body">
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Start a local coding agent with RamaLama</h4>
+                                        <p class="cli-command-desc">Run a fully local AI coding agent using RamaLama and OpenCode. Click the terminal below and press <kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-family: inherit;">Enter</kbd> to proceed through each step.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Interactive Terminal -->
+                                <div class="interactive-terminal" id="ramalama-terminal" tabindex="0" style="border-color: #22c55e;">
+                                    <div class="terminal-overlay" id="ramalama-terminal-overlay" style="background: rgba(10, 10, 15, 0.85);">
+                                        <div class="overlay-content" style="color: #22c55e;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32">
+                                                <polygon points="5 3 19 12 5 21 5 3"/>
+                                            </svg>
+                                            <span>Click to start interactive demo</span>
+                                        </div>
+                                    </div>
+                                    <div class="terminal-header">
+                                        <div class="terminal-buttons">
+                                            <span class="terminal-btn close"></span>
+                                            <span class="terminal-btn minimize"></span>
+                                            <span class="terminal-btn maximize"></span>
+                                        </div>
+                                        <div class="terminal-title">kortex — Local Coding Agent Setup</div>
+                                        <button class="terminal-restart-btn" onclick="restartRamalamaDemo()" title="Restart demo">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                                <path d="M23 4v6h-6"/>
+                                                <path d="M1 20v-6h6"/>
+                                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="terminal-body" id="ramalama-terminal-output">
+                                        <div class="terminal-line">
+                                            <span class="terminal-prompt">$</span>
+                                            <span class="terminal-command" id="ramalama-command-text"></span>
+                                            <span class="terminal-cursor" id="ramalama-cursor"></span>
+                                        </div>
+                                    </div>
+                                    <div class="terminal-input-area">
+                                        <span class="terminal-hint" id="ramalama-terminal-hint">Click terminal, then press Enter to type command...</span>
+                                    </div>
+                                    <div class="terminal-progress">
+                                        <div class="progress-steps" id="ramalama-progress-steps">
+                                            <span class="progress-step active" data-step="0">List Models</span>
+                                            <span class="progress-step" data-step="1">Select Model</span>
+                                            <span class="progress-step" data-step="2">Start Agent</span>
+                                            <span class="progress-step" data-step="3">Ready</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cli-command">
+                                <div class="cli-command-header">
+                                    <div class="cli-command-info">
+                                        <h4 class="cli-command-name">Quick commands</h4>
+                                        <p class="cli-command-desc">One-liners for common local agent setups</p>
+                                    </div>
+                                </div>
+                                <div class="cli-code-block">
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                    <code><span class="comment"># List available models from RamaLama</span>
+<span class="prompt">$</span> <span class="command">ramalama</span> <span class="flag">list</span>
+
+<span class="comment"># Initialize workspace with local coding agent using Qwen model</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">init</span> <span class="flag">--name</span> <span class="value">my-project</span> \
+    <span class="flag">--agent</span> <span class="value">opencode</span> \
+    <span class="flag">--model-provider</span> <span class="value">ramalama:qwen</span>
+
+<span class="comment"># Start with a specific task</span>
+<span class="prompt">$</span> <span class="command">kortex</span> <span class="flag">init</span> <span class="flag">--name</span> <span class="value">my-project</span> \
+    <span class="flag">--agent</span> <span class="value">opencode</span> \
+    <span class="flag">--model-provider</span> <span class="value">ramalama:qwen</span> \
+    <span class="flag">--task</span> <span class="value">"Add unit tests for the auth module"</span></code>
+                                </div>
+                            </div>
+
+                            <table class="cli-options-table">
+                                <thead>
+                                    <tr>
+                                        <th>Flag</th>
+                                        <th>Description</th>
+                                        <th>Default</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--agent opencode</span></td>
+                                        <td class="cli-option-desc">Use OpenCode as the local coding agent</td>
+                                        <td><span class="cli-option-default">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--model-provider &lt;provider:model&gt;</span></td>
+                                        <td class="cli-option-desc">Specify model provider and model (e.g., ramalama:qwen, ramalama:granite)</td>
+                                        <td><span class="cli-option-default">ramalama:granite-3.1</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--local</span></td>
+                                        <td class="cli-option-desc">Force fully local execution (no external API calls)</td>
+                                        <td><span class="cli-option-default">false</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="cli-option-flag">--gpu</span></td>
+                                        <td class="cli-option-desc">Enable GPU acceleration for local models</td>
+                                        <td><span class="cli-option-default">auto</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </main>
@@ -673,6 +1451,606 @@
                 }, 2000);
             });
         }
+
+        // RHEL MCP Interactive Demo
+        (function() {
+            const demoSteps = [
+            {
+                type: 'output',
+                lines: [
+                    { text: '', class: '' },
+                    { text: '╭─────────────────────────────────────────────────────────────╮', class: 'info' },
+                    { text: '│           RHEL MCP Server Installation                      │', class: 'info' },
+                    { text: '│           Version 1.2.0                                     │', class: 'info' },
+                    { text: '╰─────────────────────────────────────────────────────────────╯', class: 'info' },
+                    { text: '', class: '' },
+                    { text: 'This wizard will guide you through the RHEL MCP installation.', class: '' },
+                    { text: '', class: '' },
+                ],
+                hint: 'Press Enter to initialize sandbox...',
+                progressStep: 0
+            },
+            {
+                type: 'command',
+                command: 'Initializing sandbox environment...',
+                lines: [
+                    { text: '', class: '' },
+                    { text: '⟳ Initializing sandbox environment...', class: 'warning', typing: true },
+                ],
+                delay: 800,
+                then: [
+                    { text: '  ├─ Creating isolated container...', class: 'muted' },
+                ],
+                delay2: 600,
+                then2: [
+                    { text: '  ├─ Setting up network policies...', class: 'muted' },
+                ],
+                delay3: 500,
+                then3: [
+                    { text: '  ├─ Mounting secure filesystem...', class: 'muted' },
+                ],
+                delay4: 400,
+                then4: [
+                    { text: '  └─ Configuring resource limits...', class: 'muted' },
+                    { text: '', class: '' },
+                    { text: '✓ Sandbox initialized successfully', class: 'success' },
+                    { text: '', class: '' },
+                    { text: '  Sandbox ID:    sbx-rhel-7f3a9c2e', class: 'muted' },
+                    { text: '  Container:     rhel-ubi9-minimal', class: 'muted' },
+                    { text: '  Network:       isolated (proxy-filtered)', class: 'muted' },
+                    { text: '  Resources:     2 CPU, 4GB RAM, 20GB disk', class: 'muted' },
+                    { text: '', class: '' },
+                ],
+                hint: 'Press Enter to install RHEL MCP server...',
+                progressStep: 1
+            },
+            {
+                type: 'command',
+                command: 'Installing RHEL MCP server...',
+                lines: [
+                    { text: '⟳ Installing RHEL MCP server components...', class: 'warning', typing: true },
+                ],
+                delay: 600,
+                then: [
+                    { text: '', class: '' },
+                    { text: '  Fetching package manifest...', class: 'muted' },
+                ],
+                delay2: 500,
+                then2: [
+                    { text: '  Downloading rhel-mcp-server-1.2.0.rpm (12.4 MB)...', class: 'muted' },
+                ],
+                delay3: 800,
+                then3: [
+                    { text: '  ████████████████████████████████████████ 100%', class: 'success' },
+                    { text: '', class: '' },
+                    { text: '  Verifying GPG signature... OK', class: 'muted' },
+                    { text: '  Installing dependencies:', class: 'muted' },
+                    { text: '    • python3-rhel-tools (2.1.0)', class: 'muted' },
+                    { text: '    • rhel-insights-client (3.4.2)', class: 'muted' },
+                    { text: '    • subscription-manager (1.29.0)', class: 'muted' },
+                ],
+                delay4: 600,
+                then4: [
+                    { text: '', class: '' },
+                    { text: '✓ RHEL MCP server installed successfully', class: 'success' },
+                    { text: '', class: '' },
+                ],
+                hint: 'Press Enter to configure MCP server...',
+                progressStep: 2
+            },
+            {
+                type: 'command',
+                command: 'Configuring RHEL MCP server...',
+                lines: [
+                    { text: '⟳ Configuring RHEL MCP server...', class: 'warning', typing: true },
+                ],
+                delay: 500,
+                then: [
+                    { text: '', class: '' },
+                    { text: '  Registering MCP tools:', class: 'muted' },
+                ],
+                delay2: 400,
+                then2: [
+                    { text: '    ✓ rhel_package_search    - Search RHEL packages', class: 'success' },
+                    { text: '    ✓ rhel_package_install   - Install packages in sandbox', class: 'success' },
+                ],
+                delay3: 400,
+                then3: [
+                    { text: '    ✓ rhel_system_info       - Get system information', class: 'success' },
+                    { text: '    ✓ rhel_security_scan     - Run security analysis', class: 'success' },
+                ],
+                delay4: 400,
+                then4: [
+                    { text: '    ✓ rhel_subscription      - Manage subscriptions', class: 'success' },
+                    { text: '    ✓ rhel_insights          - Red Hat Insights integration', class: 'success' },
+                    { text: '', class: '' },
+                    { text: '  Setting up authentication...', class: 'muted' },
+                    { text: '  Connecting to Red Hat CDN... OK', class: 'muted' },
+                    { text: '', class: '' },
+                    { text: '✓ Configuration complete', class: 'success' },
+                    { text: '', class: '' },
+                ],
+                hint: 'Press Enter to complete setup...',
+                progressStep: 3
+            },
+            {
+                type: 'complete',
+                lines: [
+                    { text: '╭─────────────────────────────────────────────────────────────╮', class: 'success' },
+                    { text: '│               Installation Complete! ✓                      │', class: 'success' },
+                    { text: '╰─────────────────────────────────────────────────────────────╯', class: 'success' },
+                    { text: '', class: '' },
+                    { text: 'RHEL MCP server is now available in your workspace.', class: '' },
+                    { text: '6 tools registered and ready to use.', class: 'muted' },
+                    { text: '', class: '' },
+                    { text: 'Try it: "Search for nginx packages on RHEL 9"', class: 'info' },
+                    { text: '', class: '' },
+                ],
+                hint: 'Demo complete. Press Enter to restart.',
+                progressStep: 4
+            }
+        ];
+
+            let currentStep = -1; // Start at -1 so first Enter types the command
+            let isAnimating = false;
+            let terminalOutput, terminalHint, terminal;
+            let commandText, cursor;
+            const command = 'kortex mcp install rhel';
+
+            async function typeCommand() {
+                isAnimating = true;
+                terminalHint.classList.add('hidden');
+                
+                for (let i = 0; i < command.length; i++) {
+                    commandText.textContent += command[i];
+                    await delay(30 + Math.random() * 40); // Random typing speed
+                }
+                
+                await delay(300);
+                cursor.style.display = 'none';
+                terminalHint.textContent = 'Press Enter to execute command...';
+                terminalHint.classList.remove('hidden');
+                isAnimating = false;
+            }
+
+            function updateProgressSteps(step) {
+                const steps = document.querySelectorAll('.progress-step');
+                steps.forEach((stepEl, index) => {
+                    stepEl.classList.remove('active', 'completed');
+                    if (index < step) {
+                        stepEl.classList.add('completed');
+                    } else if (index === step) {
+                        stepEl.classList.add('active');
+                    }
+                });
+            }
+
+            function addLine(text, className = '') {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                const output = document.createElement('span');
+                output.className = `terminal-output ${className}`;
+                output.textContent = text;
+                line.appendChild(output);
+                terminalOutput.appendChild(line);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+
+            function addLines(lines) {
+                lines.forEach(line => {
+                    addLine(line.text, line.class);
+                });
+            }
+
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function executeStep(step) {
+                isAnimating = true;
+                terminalHint.classList.add('hidden');
+
+                const stepData = demoSteps[step];
+                
+                if (stepData.type === 'output' || stepData.type === 'complete') {
+                    addLines(stepData.lines);
+                } else if (stepData.type === 'command') {
+                    addLines(stepData.lines);
+                    
+                    if (stepData.delay && stepData.then) {
+                        await delay(stepData.delay);
+                        addLines(stepData.then);
+                    }
+                    if (stepData.delay2 && stepData.then2) {
+                        await delay(stepData.delay2);
+                        addLines(stepData.then2);
+                    }
+                    if (stepData.delay3 && stepData.then3) {
+                        await delay(stepData.delay3);
+                        addLines(stepData.then3);
+                    }
+                    if (stepData.delay4 && stepData.then4) {
+                        await delay(stepData.delay4);
+                        addLines(stepData.then4);
+                    }
+                }
+
+                updateProgressSteps(stepData.progressStep);
+                
+                terminalHint.textContent = stepData.hint;
+                terminalHint.classList.remove('hidden');
+                
+                isAnimating = false;
+            }
+
+            function restartDemo() {
+                currentStep = -1;
+                terminalOutput.innerHTML = `
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-command" id="rhel-command-text"></span>
+                        <span class="terminal-cursor" id="rhel-cursor"></span>
+                    </div>
+                `;
+                commandText = document.getElementById('rhel-command-text');
+                cursor = document.getElementById('rhel-cursor');
+                updateProgressSteps(0);
+                terminalHint.textContent = 'Press Enter to type command...';
+                terminalHint.classList.remove('hidden');
+                terminal.focus();
+            }
+
+            // Make restartDemo available globally for the button onclick
+            window.restartDemo = restartDemo;
+
+            function initDemo() {
+                terminal = document.getElementById('rhel-mcp-terminal');
+                terminalOutput = document.getElementById('terminal-output');
+                terminalHint = document.getElementById('terminal-hint');
+                commandText = document.getElementById('rhel-command-text');
+                cursor = document.getElementById('rhel-cursor');
+                const overlay = document.getElementById('rhel-terminal-overlay');
+
+                if (!terminal || !terminalOutput || !terminalHint || !commandText || !cursor) {
+                    console.error('RHEL MCP Demo: Required elements not found');
+                    return;
+                }
+
+                terminal.addEventListener('keydown', async (e) => {
+                    if (e.key === 'Enter' && !isAnimating) {
+                        e.preventDefault();
+                        
+                        // Step -1: Type the command
+                        if (currentStep === -1) {
+                            await typeCommand();
+                            currentStep++;
+                            return;
+                        }
+                        
+                        // Step 0+: Execute demo steps
+                        if (currentStep >= demoSteps.length) {
+                            restartDemo();
+                            return;
+                        }
+                        
+                        await executeStep(currentStep);
+                        currentStep++;
+                    }
+                });
+
+                terminal.addEventListener('click', () => {
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    terminal.focus();
+                });
+
+                terminal.addEventListener('focus', () => {
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    if (currentStep === -1) {
+                        terminalHint.textContent = 'Press Enter to type command...';
+                    }
+                });
+
+                console.log('RHEL MCP Demo initialized');
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initDemo);
+            } else {
+                initDemo();
+            }
+        })();
+
+        // RamaLama Local Coding Agent Demo
+        (function() {
+            const ramalamaSteps = [
+                {
+                    type: 'output',
+                    lines: [
+                        { text: '', class: '' },
+                        { text: 'REPOSITORY                          TAG              SIZE', class: 'info' },
+                        { text: '────────────────────────────────────────────────────────────', class: 'muted' },
+                        { text: 'ollama://qwen2.5-coder:7b           latest           4.7 GB', class: '' },
+                        { text: 'ollama://granite-3.1-dense:8b       latest           4.9 GB', class: '' },
+                        { text: 'ollama://llama3.2:3b                latest           2.0 GB', class: '' },
+                        { text: 'ollama://codellama:13b              latest           7.4 GB', class: '' },
+                        { text: 'ollama://deepseek-coder:6.7b        latest           3.8 GB', class: '' },
+                        { text: 'huggingface://Qwen/Qwen2.5-Coder-7B q4_k_m           4.7 GB', class: '' },
+                        { text: '', class: '' },
+                        { text: '6 models available locally', class: 'muted' },
+                        { text: '', class: '' },
+                    ],
+                    hint: 'Press Enter to initialize workspace with Qwen model...',
+                    progressStep: 0
+                },
+                {
+                    type: 'command',
+                    command: 'Initializing workspace with Qwen model...',
+                    lines: [
+                        { text: '', class: '' },
+                        { text: '$ kortex init --name local-coding --agent opencode --model-provider ramalama:qwen', class: 'warning' },
+                        { text: '', class: '' },
+                    ],
+                    delay: 500,
+                    then: [
+                        { text: '✓ Directory verified: ~/projects/my-app', class: 'success' },
+                        { text: '✓ Configuration created at .kortex/', class: 'success' },
+                    ],
+                    delay2: 500,
+                    then2: [
+                        { text: '✓ Sandbox environment ready', class: 'success' },
+                        { text: '⟳ Connecting to RamaLama model provider...', class: 'warning' },
+                    ],
+                    delay3: 700,
+                    then3: [
+                        { text: '✓ RamaLama provider connected', class: 'success' },
+                        { text: '  ├─ Loading model: qwen2.5-coder:7b', class: 'muted' },
+                        { text: '  ├─ GPU: CUDA detected (NVIDIA RTX 4090)', class: 'muted' },
+                        { text: '  └─ Memory: 4.7 GB VRAM allocated', class: 'muted' },
+                    ],
+                    delay4: 600,
+                    then4: [
+                        { text: '', class: '' },
+                        { text: '✓ Model loaded: qwen2.5-coder:7b (4.7 GB)', class: 'success' },
+                        { text: '✓ OpenCode agent initialized', class: 'success' },
+                        { text: '', class: '' },
+                        { text: 'Initialized workspace WKS_LOCAL_9K4M with name local-coding', class: 'success' },
+                        { text: '', class: '' },
+                    ],
+                    hint: 'Press Enter to attach to workspace...',
+                    progressStep: 1
+                },
+                {
+                    type: 'command',
+                    command: 'Starting OpenCode agent...',
+                    lines: [
+                        { text: '⟳ Starting OpenCode agent...', class: 'warning' },
+                    ],
+                    delay: 500,
+                    then: [
+                        { text: '', class: '' },
+                        { text: '  Registering agent capabilities:', class: 'muted' },
+                    ],
+                    delay2: 300,
+                    then2: [
+                        { text: '    ✓ Code generation      - Generate code from prompts', class: 'success' },
+                        { text: '    ✓ Code editing         - Edit existing files', class: 'success' },
+                    ],
+                    delay3: 300,
+                    then3: [
+                        { text: '    ✓ Code review          - Analyze and review code', class: 'success' },
+                        { text: '    ✓ Shell commands       - Execute terminal commands', class: 'success' },
+                    ],
+                    delay4: 300,
+                    then4: [
+                        { text: '    ✓ File operations      - Read, write, search files', class: 'success' },
+                        { text: '    ✓ Git integration      - Version control operations', class: 'success' },
+                        { text: '', class: '' },
+                        { text: '  Workspace: ~/projects/my-app', class: 'muted' },
+                        { text: '  Mode: Fully local (no external API calls)', class: 'muted' },
+                        { text: '', class: '' },
+                    ],
+                    hint: 'Press Enter to see agent ready state...',
+                    progressStep: 2
+                },
+                {
+                    type: 'complete',
+                    lines: [
+                        { text: '╭─────────────────────────────────────────────────────────────╮', class: 'success' },
+                        { text: '│              Local Agent Ready! ✓                          │', class: 'success' },
+                        { text: '╰─────────────────────────────────────────────────────────────╯', class: 'success' },
+                        { text: '', class: '' },
+                        { text: 'OpenCode agent is running with Qwen 2.5 Coder (7B)', class: '' },
+                        { text: '', class: '' },
+                        { text: '  Model:      qwen2.5-coder:7b', class: 'muted' },
+                        { text: '  Provider:   ramalama (local)', class: 'muted' },
+                        { text: '  Latency:    ~120ms/token', class: 'muted' },
+                        { text: '  Privacy:    100% offline', class: 'muted' },
+                        { text: '', class: '' },
+                        { text: 'Type your coding task or press Ctrl+C to exit.', class: 'info' },
+                        { text: '', class: '' },
+                        { text: '> █', class: '' },
+                    ],
+                    hint: 'Demo complete. Press Enter to restart.',
+                    progressStep: 3
+                }
+            ];
+
+            let ramalamaCurrentStep = -1;
+            let ramalamaIsAnimating = false;
+            let ramalamaTerminalOutput, ramalamaTerminalHint, ramalamaTerminal;
+            let ramalamaCommandText, ramalamaCursor;
+            const ramalamaCommand = 'ramalama list';
+
+            async function typeRamalamaCommand() {
+                ramalamaIsAnimating = true;
+                ramalamaTerminalHint.classList.add('hidden');
+                
+                for (let i = 0; i < ramalamaCommand.length; i++) {
+                    ramalamaCommandText.textContent += ramalamaCommand[i];
+                    await ramalamaDelay(30 + Math.random() * 40);
+                }
+                
+                await ramalamaDelay(300);
+                ramalamaCursor.style.display = 'none';
+                ramalamaTerminalHint.textContent = 'Press Enter to execute command...';
+                ramalamaTerminalHint.classList.remove('hidden');
+                ramalamaIsAnimating = false;
+            }
+
+            function updateRamalamaProgressSteps(step) {
+                const steps = document.querySelectorAll('#ramalama-progress-steps .progress-step');
+                steps.forEach((stepEl, index) => {
+                    stepEl.classList.remove('active', 'completed');
+                    if (index < step) {
+                        stepEl.classList.add('completed');
+                    } else if (index === step) {
+                        stepEl.classList.add('active');
+                    }
+                });
+            }
+
+            function addRamalamaLine(text, className = '') {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                const output = document.createElement('span');
+                output.className = `terminal-output ${className}`;
+                output.textContent = text;
+                line.appendChild(output);
+                ramalamaTerminalOutput.appendChild(line);
+                ramalamaTerminalOutput.scrollTop = ramalamaTerminalOutput.scrollHeight;
+            }
+
+            function addRamalamaLines(lines) {
+                lines.forEach(line => {
+                    addRamalamaLine(line.text, line.class);
+                });
+            }
+
+            function ramalamaDelay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function executeRamalamaStep(step) {
+                ramalamaIsAnimating = true;
+                ramalamaTerminalHint.classList.add('hidden');
+
+                const stepData = ramalamaSteps[step];
+                
+                if (stepData.type === 'output' || stepData.type === 'complete') {
+                    addRamalamaLines(stepData.lines);
+                } else if (stepData.type === 'command') {
+                    addRamalamaLines(stepData.lines);
+                    
+                    if (stepData.delay && stepData.then) {
+                        await ramalamaDelay(stepData.delay);
+                        addRamalamaLines(stepData.then);
+                    }
+                    if (stepData.delay2 && stepData.then2) {
+                        await ramalamaDelay(stepData.delay2);
+                        addRamalamaLines(stepData.then2);
+                    }
+                    if (stepData.delay3 && stepData.then3) {
+                        await ramalamaDelay(stepData.delay3);
+                        addRamalamaLines(stepData.then3);
+                    }
+                    if (stepData.delay4 && stepData.then4) {
+                        await ramalamaDelay(stepData.delay4);
+                        addRamalamaLines(stepData.then4);
+                    }
+                }
+
+                updateRamalamaProgressSteps(stepData.progressStep);
+                
+                ramalamaTerminalHint.textContent = stepData.hint;
+                ramalamaTerminalHint.classList.remove('hidden');
+                
+                ramalamaIsAnimating = false;
+            }
+
+            function restartRamalamaDemo() {
+                ramalamaCurrentStep = -1;
+                ramalamaTerminalOutput.innerHTML = `
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-command" id="ramalama-command-text"></span>
+                        <span class="terminal-cursor" id="ramalama-cursor"></span>
+                    </div>
+                `;
+                ramalamaCommandText = document.getElementById('ramalama-command-text');
+                ramalamaCursor = document.getElementById('ramalama-cursor');
+                updateRamalamaProgressSteps(0);
+                ramalamaTerminalHint.textContent = 'Press Enter to type command...';
+                ramalamaTerminalHint.classList.remove('hidden');
+                ramalamaTerminal.focus();
+            }
+
+            window.restartRamalamaDemo = restartRamalamaDemo;
+
+            function initRamalamaDemo() {
+                ramalamaTerminal = document.getElementById('ramalama-terminal');
+                ramalamaTerminalOutput = document.getElementById('ramalama-terminal-output');
+                ramalamaTerminalHint = document.getElementById('ramalama-terminal-hint');
+                ramalamaCommandText = document.getElementById('ramalama-command-text');
+                ramalamaCursor = document.getElementById('ramalama-cursor');
+                const overlay = document.getElementById('ramalama-terminal-overlay');
+
+                if (!ramalamaTerminal || !ramalamaTerminalOutput || !ramalamaTerminalHint || !ramalamaCommandText || !ramalamaCursor) {
+                    console.error('RamaLama Demo: Required elements not found');
+                    return;
+                }
+
+                ramalamaTerminal.addEventListener('keydown', async (e) => {
+                    if (e.key === 'Enter' && !ramalamaIsAnimating) {
+                        e.preventDefault();
+                        
+                        // Step -1: Type the command
+                        if (ramalamaCurrentStep === -1) {
+                            await typeRamalamaCommand();
+                            ramalamaCurrentStep++;
+                            return;
+                        }
+                        
+                        // Step 0+: Execute demo steps
+                        if (ramalamaCurrentStep >= ramalamaSteps.length) {
+                            restartRamalamaDemo();
+                            return;
+                        }
+                        
+                        await executeRamalamaStep(ramalamaCurrentStep);
+                        ramalamaCurrentStep++;
+                    }
+                });
+
+                ramalamaTerminal.addEventListener('click', () => {
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    ramalamaTerminal.focus();
+                });
+
+                ramalamaTerminal.addEventListener('focus', () => {
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    if (ramalamaCurrentStep === -1) {
+                        ramalamaTerminalHint.textContent = 'Press Enter to type command...';
+                    }
+                });
+
+                console.log('RamaLama Demo initialized');
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initRamalamaDemo);
+            } else {
+                initRamalamaDemo();
+            }
+        })();
     </script>
 </body>
 </html>

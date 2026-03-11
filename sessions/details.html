@@ -552,11 +552,119 @@
 
         .terminal-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
+            flex-direction: column;
             background: #1a1b23;
             border-bottom: 1px solid #3d3e4f;
+        }
+
+        .terminal-titlebar {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        .terminal-traffic-lights {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-traffic-light.red { background: #ff5f57; }
+        .terminal-traffic-light.yellow { background: #febc2e; }
+        .terminal-traffic-light.green { background: #28c840; }
+
+        .terminal-tabs-bar {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 2px;
+            padding-left: 8px;
+        }
+
+        .terminal-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(45, 46, 63, 0.5);
+            border: 1px solid transparent;
+            border-radius: 6px 6px 0 0;
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .terminal-tab:hover {
+            background: rgba(61, 62, 79, 0.7);
+            color: #e5e7eb;
+        }
+
+        .terminal-tab.active {
+            background: #0a0a0f;
+            border-color: #3d3e4f;
+            border-bottom-color: #0a0a0f;
+            color: #e5e7eb;
+        }
+
+        .terminal-tab svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .terminal-tab .tab-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6b7280;
+        }
+
+        .terminal-tab.active .tab-dot {
+            background: #6ee7b7;
+        }
+
+        .terminal-tab-close {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            opacity: 0.5;
+            transition: all 0.2s ease;
+        }
+
+        .terminal-tab:hover .terminal-tab-close {
+            opacity: 1;
+        }
+
+        .terminal-tab-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-tab-add {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #4b5563;
+            border-radius: 6px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .terminal-tab-add:hover {
+            border-color: #9ca3af;
+            color: #9ca3af;
         }
 
         .terminal-title {
@@ -577,6 +685,8 @@
         .terminal-actions {
             display: flex;
             gap: 8px;
+            padding: 8px 12px;
+            margin-left: auto;
         }
 
         .terminal-action-btn {
@@ -705,6 +815,58 @@
             font-weight: 600;
             background: rgba(139, 92, 246, 0.2);
             color: #a78bfa;
+        }
+
+        /* Context Prefix Badge (sandbox/kortex) */
+        .context-prefix {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .context-prefix.sandbox {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.15));
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .context-prefix.kortex {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15));
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .terminal-context-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+        }
+
+        .terminal-context-indicator.sandbox {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.15));
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .terminal-context-indicator.kortex {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15));
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .terminal-context-indicator svg {
+            width: 12px;
+            height: 12px;
         }
 
         /* Tab Content */
@@ -1963,17 +2125,37 @@
 
                             <div class="terminal-window">
                                 <div class="terminal-header">
-                                    <div class="terminal-title">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="4 17 10 11 4 5"/>
-                                            <line x1="12" y1="19" x2="20" y2="19"/>
-                                        </svg>
-                                        bash — ~/projects/dashboard
-                                    </div>
-                                    <div class="terminal-actions">
-                                        <button class="terminal-action-btn expand" onclick="showTab('terminal')">
-                                            Open Full Terminal
-                                        </button>
+                                    <div class="terminal-titlebar">
+                                        <div class="terminal-traffic-lights">
+                                            <div class="terminal-traffic-light red"></div>
+                                            <div class="terminal-traffic-light yellow"></div>
+                                            <div class="terminal-traffic-light green"></div>
+                                        </div>
+                                        <div class="terminal-tabs-bar">
+                                            <div class="terminal-tab">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="4 17 10 11 4 5"/>
+                                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                                </svg>
+                                                <span>kortex</span>
+                                                <span class="tab-dot"></span>
+                                            </div>
+                                            <div class="terminal-tab active">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="4 17 10 11 4 5"/>
+                                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                                </svg>
+                                                <span>sandbox: claude-code</span>
+                                                <span class="tab-dot"></span>
+                                                <span class="terminal-tab-close">×</span>
+                                            </div>
+                                            <div class="terminal-tab-add">+</div>
+                                        </div>
+                                        <div class="terminal-actions">
+                                            <button class="terminal-action-btn expand" onclick="showTab('terminal')">
+                                                Open Full Terminal
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="terminal-body">
@@ -2207,17 +2389,37 @@ vite v5.0.12 building for production...
                         <div class="terminal-fullscreen">
                             <div class="terminal-window" style="height: calc(100vh - 280px);">
                                 <div class="terminal-header">
-                                    <div class="terminal-title">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="4 17 10 11 4 5"/>
-                                            <line x1="12" y1="19" x2="20" y2="19"/>
-                                        </svg>
-                                        bash — ~/projects/dashboard
-                                    </div>
-                                    <div class="terminal-actions">
-                                        <button class="terminal-action-btn expand" onclick="copyTerminalOutput()">
-                                            Copy Output
-                                        </button>
+                                    <div class="terminal-titlebar">
+                                        <div class="terminal-traffic-lights">
+                                            <div class="terminal-traffic-light red"></div>
+                                            <div class="terminal-traffic-light yellow"></div>
+                                            <div class="terminal-traffic-light green"></div>
+                                        </div>
+                                        <div class="terminal-tabs-bar">
+                                            <div class="terminal-tab">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="4 17 10 11 4 5"/>
+                                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                                </svg>
+                                                <span>kortex</span>
+                                                <span class="tab-dot"></span>
+                                            </div>
+                                            <div class="terminal-tab active">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="4 17 10 11 4 5"/>
+                                                    <line x1="12" y1="19" x2="20" y2="19"/>
+                                                </svg>
+                                                <span>sandbox: claude-code</span>
+                                                <span class="tab-dot"></span>
+                                                <span class="terminal-tab-close">×</span>
+                                            </div>
+                                            <div class="terminal-tab-add">+</div>
+                                        </div>
+                                        <div class="terminal-actions">
+                                            <button class="terminal-action-btn expand" onclick="copyTerminalOutput()">
+                                                Copy Output
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="terminal-body" style="min-height: 400px;">
@@ -2587,6 +2789,22 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
                 alert('Terminal output copied to clipboard');
             }
         }
+
+        // Terminal Tab Click Handler
+        function switchTerminalTab(tabElement) {
+            const tabs = document.querySelectorAll('.terminal-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabElement.classList.add('active');
+        }
+
+        // Initialize terminal tab click handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.terminal-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTerminalTab(this);
+                });
+            });
+        });
 
         // Wispr Voice Recording Functions
         let isRecording = false;

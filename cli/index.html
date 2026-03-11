@@ -908,61 +908,16 @@
                             </div>
 
                             <div class="cli-demos-content" id="quickStartContent">
-                            <button class="cli-demo-btn" onclick="runDemo('init-workspace')">
-                                <div class="cli-demo-btn-icon">
+                            <button class="cli-demo-btn" onclick="runDemo('workspace-exploration')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(103, 232, 249, 0.15); color: #67e8f9;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
                                     </svg>
                                 </div>
                                 <div class="cli-demo-btn-content">
-                                    <div class="cli-demo-btn-title">Initialize Workspace</div>
-                                    <div class="cli-demo-btn-desc">Register a new workspace with kortex init</div>
-                                </div>
-                            </button>
-
-                            <button class="cli-demo-btn" onclick="runDemo('list-workspaces')">
-                                <div class="cli-demo-btn-icon cyan">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="8" y1="6" x2="21" y2="6"/>
-                                        <line x1="8" y1="12" x2="21" y2="12"/>
-                                        <line x1="8" y1="18" x2="21" y2="18"/>
-                                        <line x1="3" y1="6" x2="3.01" y2="6"/>
-                                        <line x1="3" y1="12" x2="3.01" y2="12"/>
-                                        <line x1="3" y1="18" x2="3.01" y2="18"/>
-                                    </svg>
-                                </div>
-                                <div class="cli-demo-btn-content">
-                                    <div class="cli-demo-btn-title">List Running Workspaces</div>
-                                    <div class="cli-demo-btn-desc">Show all active workspace sessions</div>
-                                </div>
-                            </button>
-
-                            <button class="cli-demo-btn" onclick="runDemo('ssh-workspace')">
-                                <div class="cli-demo-btn-icon green">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                        <path d="M6 8l4 4-4 4"/>
-                                        <line x1="12" y1="16" x2="18" y2="16"/>
-                                    </svg>
-                                </div>
-                                <div class="cli-demo-btn-content">
-                                    <div class="cli-demo-btn-title">SSH into Workspace</div>
-                                    <div class="cli-demo-btn-desc">Access workspace sandbox environment via SSH</div>
-                                </div>
-                            </button>
-
-                            <button class="cli-demo-btn" onclick="runDemo('connect-mcp')">
-                                <div class="cli-demo-btn-icon cyan">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="7" height="7"/>
-                                        <rect x="14" y="3" width="7" height="7"/>
-                                        <rect x="14" y="14" width="7" height="7"/>
-                                        <rect x="3" y="14" width="7" height="7"/>
-                                    </svg>
-                                </div>
-                                <div class="cli-demo-btn-content">
-                                    <div class="cli-demo-btn-title">Install MCP Server</div>
-                                    <div class="cli-demo-btn-desc">List available MCPs and install into workspace</div>
+                                    <div class="cli-demo-btn-title">Intro to Workspace Concept</div>
+                                    <div class="cli-demo-btn-desc">Initialize, list, inspect &amp; SSH into workspaces</div>
                                 </div>
                             </button>
 
@@ -980,19 +935,6 @@
                                 </div>
                             </button>
 
-                            <button class="cli-demo-btn" onclick="runDemo('enterprise-skills')">
-                                <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                    </svg>
-                                </div>
-                                <div class="cli-demo-btn-content">
-                                    <div class="cli-demo-btn-title">Enterprise Skills</div>
-                                    <div class="cli-demo-btn-desc">Skills with Red Hat hardened container images</div>
-                                </div>
-                            </button>
-
                             <button class="cli-demo-btn" onclick="runDemo('rhel-mcp-demo')">
                                 <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1005,6 +947,37 @@
                                 <div class="cli-demo-btn-content">
                                     <div class="cli-demo-btn-title">RHEL MCP Demo</div>
                                     <div class="cli-demo-btn-desc">Troubleshoot podman containers on RHEL system</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('devspaces-workspace')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                                        <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                                        <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Workspace with DevSpaces</div>
+                                    <div class="cli-demo-btn-desc">Run agentic workspace on OpenShift DevSpaces</div>
+                                </div>
+                            </button>
+
+                            <button class="cli-demo-btn" onclick="runDemo('local-coding-agent')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(34, 197, 94, 0.15); color: #22c55e;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Workspace with Local AI</div>
+                                    <div class="cli-demo-btn-desc">Run AI coding agent locally with RamaLama</div>
                                 </div>
                             </button>
                             </div>
@@ -1027,6 +1000,7 @@
                                 <div class="cli-help-commands">
                                     <code>kortex init</code> - Initialize workspace<br>
                                     <code>kortex workspace list</code> - List workspaces<br>
+                                    <code>kortex workspace inspect</code> - Inspect resources<br>
                                     <code>kortex mcp list</code> - List MCP servers<br>
                                     <code>help</code> - Show all commands<br>
                                     <code>clear</code> - Clear terminal<br>
@@ -1077,6 +1051,14 @@
                         <div class="command-ref-item">
                             <code>kortex workspace info &lt;id&gt;</code>
                             <p>Show detailed workspace info and context window</p>
+                        </div>
+                        <div class="command-ref-item">
+                            <code>kortex workspace inspect &lt;name&gt;</code>
+                            <p>Inspect workspace resources: sandbox image, assets, network & tokens</p>
+                            <div class="command-ref-params">
+                                <span class="param"><code>--section &lt;name&gt;</code> Show only: sandbox, assets, network, tokens</span>
+                                <span class="param"><code>--json</code> Output in JSON format</span>
+                            </div>
                         </div>
                         <div class="command-ref-item">
                             <code>kortex workspace ssh &lt;id&gt;</code>
@@ -1633,6 +1615,9 @@
             } else if (cmd.startsWith('kortex workspace info ') || cmd === 'kortex workspace info') {
                 const agentId = parts[3] || 'agt_7x8k2m9n4p1q';
                 await agentInfoDemo(agentId);
+            } else if (cmd.startsWith('kortex workspace inspect ') || cmd === 'kortex workspace inspect') {
+                const workspaceName = parts[3] || 'my-project';
+                await inspectWorkspaceDemo(workspaceName);
             } else if (cmd === 'kortex mcp list' || cmd === 'kortex mcp list --available') {
                 await listMcpDemo(cmd.includes('--available'));
             } else if (cmd.startsWith('kortex mcp install ')) {
@@ -1687,6 +1672,8 @@
                 
                 if (pendingDemo === 'connect-mcp-step2') {
                     await typeCommand('kortex mcp install github --workspace agt_7x8k2m9n4p1q');
+                } else if (pendingDemo === 'openshift-mcp-list') {
+                    await typeCommand('kortex mcp list');
                 }
             }
         }
@@ -1705,6 +1692,7 @@
             addOutput('       --config <path>   Configuration directory (default: DIR/.kortex/)');
             addOutput('  workspace list         List all running workspaces with context usage');
             addOutput('  workspace info <id>    Show detailed workspace info and context window');
+            addOutput('  workspace inspect <n>  Inspect workspace resources, sandbox, network & tokens');
             addOutput('  workspace ssh <id>     SSH into workspace sandbox environment');
             addOutput('  workspace stop <id>    Stop a running workspace');
             addOutput('');
@@ -2063,6 +2051,124 @@
             }
         }
 
+        async function inspectWorkspaceDemo(workspaceName) {
+            const terminalBody = getTerminalBody();
+            addOutput('');
+            addOutputHTML('<span class="spinner"></span>Inspecting workspace...', 'info');
+            await sleep(600);
+            
+            terminalBody.lastChild.remove();
+            
+            const workspaces = {
+                'my-project': {
+                    name: 'my-project',
+                    status: 'running',
+                    created: '2h ago',
+                    sandbox: {
+                        image: 'fcos:40.20240301.0',
+                        containerId: 'sbx-7f3a9c2e',
+                        runtime: 'podman 5.0.2',
+                        resources: '2 CPU, 4GB RAM, 20GB disk'
+                    },
+                    assets: {
+                        filesystem: '~/projects/my-project (read-write)',
+                        knowledge: 'kb-nodejs-best-practices',
+                        skills: ['code-review', 'kubernetes', 'testing'],
+                        mcpServers: ['filesystem', 'postgres', 'github']
+                    },
+                    network: {
+                        policy: 'allow',
+                        policyDesc: 'default permit, selective block',
+                        proxy: 'http://proxy.kortex.local:8080',
+                        blockedCidrs: ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'],
+                        allowedHosts: ['*.anthropic.com', '*.npmjs.org', 'github.com'],
+                        httpsBypass: 'none'
+                    },
+                    tokens: [
+                        { name: 'github', value: 'ghp_****Xk92', scopes: 'repo, workflow', configured: true },
+                        { name: 'npm', value: 'npm_****8fGh', scopes: 'publish', configured: true },
+                        { name: 'docker-hub', value: '', scopes: '', configured: false }
+                    ]
+                },
+                'api-refactor': {
+                    name: 'api-refactor',
+                    status: 'running',
+                    created: '45m ago',
+                    sandbox: {
+                        image: 'fcos:40.20240301.0',
+                        containerId: 'sbx-3a2b1c4d',
+                        runtime: 'podman 5.0.2',
+                        resources: '4 CPU, 8GB RAM, 40GB disk'
+                    },
+                    assets: {
+                        filesystem: '~/projects/api-backend (read-write)',
+                        knowledge: 'kb-rest-api-design',
+                        skills: ['code-review', 'openapi', 'security-scan'],
+                        mcpServers: ['filesystem', 'postgres', 'redis', 'github']
+                    },
+                    network: {
+                        policy: 'deny',
+                        policyDesc: 'default block, selective allow',
+                        proxy: 'http://proxy.kortex.local:8080',
+                        blockedCidrs: [],
+                        allowedHosts: ['*.anthropic.com', 'api.openai.com', 'github.com', 'registry.npmjs.org'],
+                        httpsBypass: 'api.stripe.com'
+                    },
+                    tokens: [
+                        { name: 'github', value: 'ghp_****Mn45', scopes: 'repo, workflow, packages', configured: true },
+                        { name: 'npm', value: 'npm_****2kLp', scopes: 'publish, read', configured: true },
+                        { name: 'docker-hub', value: 'dckr_****9xYz', scopes: 'push, pull', configured: true }
+                    ]
+                }
+            };
+            
+            const ws = workspaces[workspaceName] || workspaces['my-project'];
+            
+            // Header
+            addOutput('╭─────────────────────────────────────────────────────────────╮', 'info');
+            addOutput(`│  Workspace: ${ws.name.padEnd(47)}│`, 'info');
+            addOutput(`│  Status: ${ws.status} • Created: ${ws.created}`.padEnd(62) + '│', 'info');
+            addOutput('╰─────────────────────────────────────────────────────────────╯', 'info');
+            addOutput('');
+            
+            // Sandbox section
+            addOutput('SANDBOX', 'highlight');
+            addOutput(`  Image:          ${ws.sandbox.image}`, 'success');
+            addOutput(`  Container ID:   ${ws.sandbox.containerId}`, 'muted');
+            addOutput(`  Runtime:        ${ws.sandbox.runtime}`, 'muted');
+            addOutput(`  Resources:      ${ws.sandbox.resources}`, 'muted');
+            addOutput('');
+            
+            // Assets section
+            addOutput('ASSETS', 'highlight');
+            addOutputHTML(`  <span style="color: #22c55e;">✓</span> filesystem     <span style="color: #6b7280;">${ws.assets.filesystem}</span>`);
+            addOutputHTML(`  <span style="color: #22c55e;">✓</span> knowledge      <span style="color: #6b7280;">${ws.assets.knowledge}</span>`);
+            addOutputHTML(`  <span style="color: #22c55e;">✓</span> skills         <span style="color: #6b7280;">${ws.assets.skills.join(', ')}</span>`);
+            addOutputHTML(`  <span style="color: #22c55e;">✓</span> mcp-servers    <span style="color: #6b7280;">${ws.assets.mcpServers.join(', ')}</span>`);
+            addOutput('');
+            
+            // Network section
+            addOutput('NETWORK', 'highlight');
+            addOutputHTML(`  Policy:         <span style="color: #a78bfa;">${ws.network.policy}</span> <span style="color: #6b7280;">(${ws.network.policyDesc})</span>`);
+            addOutput(`  Proxy:          ${ws.network.proxy}`, 'muted');
+            if (ws.network.blockedCidrs.length > 0) {
+                addOutput(`  Blocked CIDRs:  ${ws.network.blockedCidrs.join(', ')}`, 'muted');
+            }
+            addOutput(`  Allowed Hosts:  ${ws.network.allowedHosts.join(', ')}`, 'muted');
+            addOutput(`  HTTPS Bypass:   ${ws.network.httpsBypass}`, 'muted');
+            addOutput('');
+            
+            // Tokens section
+            addOutput('TOKENS', 'highlight');
+            for (const token of ws.tokens) {
+                if (token.configured) {
+                    addOutputHTML(`  <span style="color: #22c55e;">✓</span> ${token.name.padEnd(14)} <span style="color: #6b7280;">${token.value} (${token.scopes})</span>`);
+                } else {
+                    addOutputHTML(`  <span style="color: #f59e0b;">○</span> ${token.name.padEnd(14)} <span style="color: #6b7280;">not configured</span>`);
+                }
+            }
+        }
+
         async function agentSshDemo(agentId) {
             const terminalBody = getTerminalBody();
             addOutput('');
@@ -2211,6 +2317,29 @@
                 addOutput('└────────────────────┴─────────────────────────────────────────┴───────────┴────────────┘');
                 addOutput('');
                 addOutput('Total: 8 MCP servers available', 'muted');
+                addOutput('');
+                addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+            } else if (openshiftConnected) {
+                addOutputHTML('<span class="spinner"></span>Fetching MCP servers...', 'info');
+                await sleep(500);
+                terminalBody.lastChild.remove();
+
+                addOutput('MCP SERVERS:', 'highlight');
+                addOutput('');
+                addOutput('┌────────────────────┬─────────────────────────────────────────┬───────────┬─────────────────┬──────────┐');
+                addOutput('│ NAME               │ DESCRIPTION                             │ TOOLS     │ SOURCE          │ STATUS   │');
+                addOutput('├────────────────────┼─────────────────────────────────────────┼───────────┼─────────────────┼──────────┤');
+                addOutput('│ filesystem         │ Local file system operations            │ 12 tools  │ Local           │ Active   │', 'success');
+                addOutput('│ github             │ GitHub API integration                  │ 18 tools  │ Local           │ Active   │', 'success');
+                addOutput('│ kubernetes         │ Kubernetes cluster management           │ 15 tools  │ Local           │ Active   │', 'success');
+                addOutput('├────────────────────┼─────────────────────────────────────────┼───────────┼─────────────────┼──────────┤');
+                addOutputHTML('│ rhel-mcp           │ RHEL documentation & system tools      │ 15 tools  │ <span style="color: #ee4433;">OpenShift AI</span>    │ Ready    │');
+                addOutputHTML('│ openshift-mcp      │ OpenShift/Kubernetes management        │ 24 tools  │ <span style="color: #ee4433;">OpenShift AI</span>    │ Ready    │');
+                addOutputHTML('│ ansible-mcp        │ Ansible automation & playbooks         │ 12 tools  │ <span style="color: #ee4433;">OpenShift AI</span>    │ Ready    │');
+                addOutputHTML('│ quay-mcp           │ Container registry operations          │ 8 tools   │ <span style="color: #ee4433;">OpenShift AI</span>    │ Ready    │');
+                addOutput('└────────────────────┴─────────────────────────────────────────┴───────────┴─────────────────┴──────────┘');
+                addOutput('');
+                addOutput('Total: 7 servers (3 local active, 4 from OpenShift AI ready) | 104 tools', 'muted');
                 addOutput('');
                 addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
             } else {
@@ -2419,12 +2548,30 @@
             addOutput('  User:           slemeur@redhat.com', 'info');
             addOutput('  Status:         Connected', 'success');
             addOutput('');
-            addOutput('  Available Resources:', 'highlight');
-            addOutput('    • 4 MCP Servers ready to connect');
-            addOutput('    • 3 AI Models available');
-            addOutput('    • 2 Shared Knowledge Bases');
+            addOutput('  MCP SERVERS (4)', 'highlight');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> rhel-mcp            <span style="color: #6b7280;">RHEL documentation & system tools          (15 tools)</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> openshift-mcp       <span style="color: #6b7280;">OpenShift/Kubernetes management            (24 tools)</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> ansible-mcp         <span style="color: #6b7280;">Ansible automation & playbooks             (12 tools)</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> quay-mcp            <span style="color: #6b7280;">Container registry operations              (8 tools)</span>');
             addOutput('');
-            addOutput('Run "kortex openshift mcp list" to see available MCP servers.', 'muted');
+            addOutput('  AI MODELS (3)', 'highlight');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> granite-3.1-8b      <span style="color: #6b7280;">IBM Granite 3.1 8B — general purpose</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> granite-3.1-dense   <span style="color: #6b7280;">IBM Granite 3.1 Dense — code generation</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> llama-3.2-70b       <span style="color: #6b7280;">Meta Llama 3.2 70B — reasoning & analysis</span>');
+            addOutput('');
+            addOutput('  KNOWLEDGE BASES (2)', 'highlight');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> openshift-knowledges  <span style="color: #6b7280;">ChromaDB — 15 sources</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> kubernetes-knowledges <span style="color: #6b7280;">ChromaDB — 31 sources</span>');
+            addOutput('');
+            addOutput('  ENTERPRISE SKILLS (6)', 'highlight');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> security-scan         <span style="color: #6b7280;">Security vulnerability scanner</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> compliance-check      <span style="color: #6b7280;">RHEL compliance verification</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> openshift-deployment  <span style="color: #6b7280;">Deploy applications on OpenShift</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> tekton-pipelines      <span style="color: #6b7280;">CI/CD with Tekton templates</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> quay-registry         <span style="color: #6b7280;">Container images on internal Quay</span>');
+            addOutputHTML('    <span style="color: #22c55e;">✓</span> ansible-automation    <span style="color: #6b7280;">Ansible playbook generation</span>');
+            addOutput('');
+            addOutput('Run "kortex openshift mcp list" to see MCP server details.', 'muted');
         }
 
         async function openshiftStatusDemo() {
@@ -2888,6 +3035,478 @@
             }
         }
 
+        async function runWorkspaceExplorationDemo() {
+            const tab = getCurrentTab();
+            const cliInput = getCliInput();
+            const terminalBody = getTerminalBody();
+
+            if (tab.isProcessing) return;
+            tab.isProcessing = true;
+            updateTab(activeTabId, { status: 'running' });
+
+            const enterHint = '<span style="color: #67e8f9; font-style: italic;">  ↵ Press Enter to execute...</span>';
+
+            // ── Step 1: kortex init ──
+            const cmd1 = 'kortex init --name my-project --agent claude-code';
+            cliInput.disabled = false;
+            await typeCommand(cmd1);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd1}`);
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/slemeur/project1';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at ./.kortex/';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
+            await sleep(1000);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Starting Claude Code agent...', 'info');
+            await sleep(900);
+            terminalBody.lastChild.innerHTML = '✓ Claude Code agent initialized';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting to Claude 3.5 Sonnet...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Connected to Claude 3.5 Sonnet';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('Initialized workspace WKS_7X8K2M9N with name my-project', 'success');
+            addOutput('');
+            addOutput('  Workspace ID:    WKS_7X8K2M9N', 'info');
+            addOutput('  Name:            my-project', 'info');
+            addOutput('  Agent:           Claude Code (Anthropic)', 'info');
+            addOutput('  Directory:       ~/slemeur/project1', 'info');
+            addOutput('  Configuration:   ./.kortex/', 'info');
+            addOutput('');
+
+            // ── Step 2: kortex workspace list ──
+            const cmd2 = 'kortex workspace list';
+            cliInput.disabled = false;
+            await typeCommand(cmd2);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd2}`);
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Fetching workspace sessions...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.remove();
+
+            addOutput('ACTIVE WORKSPACES:', 'highlight');
+            addOutput('');
+            addOutput('┌──────────────────┬────────────────────┬──────────────┬──────────────────┬──────────────┬──────────┐');
+            addOutput('│ ID               │ NAME               │ AGENT        │ MODEL            │ CONTEXT      │ STATUS   │');
+            addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
+            addOutput('│ agt_7x8k2m9n4p1q │ my-project         │ Claude Code  │ Claude 3.5       │ 12K/200K     │ Running  │', 'success');
+            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ Goose        │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Cursor       │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
+            addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
+            addOutput('');
+            addOutput('Total: 4 workspaces (3 running, 1 paused) | Total context: 302K tokens', 'muted');
+            addOutput('');
+            addOutput('View details: kortex workspace inspect <name>', 'muted');
+            addOutput('');
+
+            // ── Step 3: kortex workspace inspect ──
+            const cmd3 = 'kortex workspace inspect my-project';
+            cliInput.disabled = false;
+            await typeCommand(cmd3);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd3}`);
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Inspecting workspace...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.remove();
+
+            addOutput('╭─────────────────────────────────────────────────────────────╮', 'info');
+            addOutput('│  Workspace: my-project                                     │', 'info');
+            addOutput('│  Status: running • Created: just now                        │', 'info');
+            addOutput('╰─────────────────────────────────────────────────────────────╯', 'info');
+            addOutput('');
+            addOutput('SANDBOX', 'highlight');
+            addOutput('  Image:          fcos:40.20240301.0', 'success');
+            addOutput('  Container ID:   sbx-7f3a9c2e', 'muted');
+            addOutput('  Runtime:        podman 5.0.2', 'muted');
+            addOutput('  Resources:      2 CPU, 4GB RAM, 20GB disk', 'muted');
+            addOutput('');
+            addOutput('ASSETS', 'highlight');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> filesystem     <span style="color: #6b7280;">~/projects/my-project (read-write)</span>');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> knowledge      <span style="color: #6b7280;">kb-nodejs-best-practices</span>');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> skills         <span style="color: #6b7280;">code-review, kubernetes, testing</span>');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> mcp-servers    <span style="color: #6b7280;">filesystem, postgres, github</span>');
+            addOutput('');
+            addOutput('NETWORK', 'highlight');
+            addOutputHTML('  Policy:         <span style="color: #a78bfa;">allow</span> <span style="color: #6b7280;">(default permit, selective block)</span>');
+            addOutput('  Proxy:          http://proxy.kortex.local:8080', 'muted');
+            addOutput('  Blocked CIDRs:  10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16', 'muted');
+            addOutput('  Allowed Hosts:  *.anthropic.com, *.npmjs.org, github.com', 'muted');
+            addOutput('  HTTPS Bypass:   none', 'muted');
+            addOutput('');
+            addOutput('TOKENS', 'highlight');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> github         <span style="color: #6b7280;">ghp_****Xk92 (repo, workflow)</span>');
+            addOutputHTML('  <span style="color: #22c55e;">✓</span> npm            <span style="color: #6b7280;">npm_****8fGh (publish)</span>');
+            addOutputHTML('  <span style="color: #f59e0b;">○</span> docker-hub     <span style="color: #6b7280;">not configured</span>');
+            addOutput('');
+
+            // ── Step 4: kortex mcp list --available ──
+            const cmd4 = 'kortex mcp list --available';
+            cliInput.disabled = false;
+            await typeCommand(cmd4);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd4}`);
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Fetching available MCP servers...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.remove();
+
+            addOutput('AVAILABLE MCP SERVERS:', 'highlight');
+            addOutput('');
+            addOutput('┌────────────────────┬─────────────────────────────────────────┬───────────┬────────────┐');
+            addOutput('│ NAME               │ DESCRIPTION                             │ TOOLS     │ STATUS     │');
+            addOutput('├────────────────────┼─────────────────────────────────────────┼───────────┼────────────┤');
+            addOutput('│ filesystem         │ Local file system operations            │ 12 tools  │ Available  │', 'info');
+            addOutput('│ github             │ GitHub API integration                  │ 18 tools  │ Available  │', 'info');
+            addOutput('│ gitlab             │ GitLab API integration                  │ 16 tools  │ Available  │', 'info');
+            addOutput('│ kubernetes         │ Kubernetes cluster management           │ 24 tools  │ Available  │', 'info');
+            addOutput('│ docker             │ Docker container management             │ 14 tools  │ Available  │', 'info');
+            addOutput('│ postgres           │ PostgreSQL database operations          │ 10 tools  │ Available  │', 'info');
+            addOutput('│ slack              │ Slack messaging integration             │ 8 tools   │ Available  │', 'info');
+            addOutput('│ jira               │ Jira issue tracking                     │ 12 tools  │ Available  │', 'info');
+            addOutput('└────────────────────┴─────────────────────────────────────────┴───────────┴────────────┘');
+            addOutput('');
+            addOutput('Total: 8 MCP servers available', 'muted');
+            addOutput('');
+            addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+            addOutput('');
+
+            // ── Step 5: kortex mcp install github ──
+            const cmd5 = 'kortex mcp install github --workspace agt_7x8k2m9n4p1q';
+            cliInput.disabled = false;
+            await typeCommand(cmd5);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd5}`);
+            addOutput('');
+
+            addOutput('Installing MCP server "github" into workspace...', 'info');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Downloading MCP package...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Downloaded github MCP package';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Validating configuration...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Configuration validated';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Installing into workspace...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Installed into workspace agt_7x8k2m9n4p1q';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting MCP server...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ MCP server connected';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Loading tools...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Loaded 18 tools';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('╔════════════════════════════════════════════════════════════════╗', 'success');
+            addOutput('║  MCP Server Installed Successfully                             ║', 'success');
+            addOutput('╚════════════════════════════════════════════════════════════════╝', 'success');
+            addOutput('');
+            addOutput('  MCP Server:    github', 'info');
+            addOutput('  Description:   GitHub API integration');
+            addOutput('  Tools:         18 tools available');
+            addOutput('  Workspace:     agt_7x8k2m9n4p1q');
+            addOutput('  Status:        Connected', 'success');
+            addOutput('');
+            addOutput('  Available tools from github:', 'highlight');
+            addOutput('    • create_issue        • list_repos        • create_pr');
+            addOutput('    • get_file_contents   • search_code       • list_branches');
+            addOutput('    • create_branch       • merge_pr          • get_commit');
+            addOutput('');
+
+            // ── Step 6: kortex workspace ssh ──
+            const cmd6 = 'kortex workspace ssh agt_7x8k2m9n4p1q';
+            cliInput.disabled = false;
+            await typeCommand(cmd6);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd6}`);
+            addOutput('');
+
+            const agentName = 'my-project';
+            const agentPath = '~/slemeur/project1';
+
+            addOutput(`Connecting to workspace sandbox: ${agentName}`, 'info');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Resolving sandbox container...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kortex-sandbox-n4p1q';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Establishing secure tunnel...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Secure tunnel established (TLS 1.3)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Authenticating...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Authenticated as slemeur';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            await sleep(300);
+
+            clearTerminal();
+
+            const terminalTitle = document.querySelector('.cli-terminal-title');
+            if (terminalTitle) {
+                terminalTitle.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                        <path d="M6 8l4 4-4 4"/>
+                        <line x1="12" y1="16" x2="18" y2="16"/>
+                    </svg>
+                    ssh — ${agentName}@sandbox
+                `;
+            }
+
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = `[slemeur@${agentName}] $`;
+                promptEl.style.color = '#22c55e';
+            }
+
+            addOutputHTML(`<span style="color: #22c55e;">╔════════════════════════════════════════════════════════════════════════════════╗</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #22c55e; font-weight: bold;">SSH Session - Workspace Sandbox</span>                                              <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Workspace:   ${'my-project'.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   ${'kortex-sandbox-n4p1q'.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  User:        slemeur                                                          <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Workdir:     ${agentPath.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #6b7280;">Type 'exit' to disconnect from sandbox</span>                                       <span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">╚════════════════════════════════════════════════════════════════════════════════╝</span>`);
+            addOutput('');
+            addOutput(`Last login: ${new Date().toLocaleString()} from kortex-cli`, 'muted');
+            addOutput('');
+            addOutput(`[slemeur@${agentName}] $ pwd`);
+            addOutput(agentPath.replace('~', '/home/slemeur'));
+            addOutput('');
+            addOutput(`[slemeur@${agentName}] $ ls -la`);
+            addOutput('total 48');
+            addOutput('drwxr-xr-x  8 slemeur slemeur 4096 Mar  4 09:15 .');
+            addOutput('drwxr-xr-x  3 root    root    4096 Mar  4 08:00 ..');
+            addOutput('-rw-r--r--  1 slemeur slemeur  234 Mar  4 09:10 .gitignore');
+            addOutput('drwxr-xr-x  8 slemeur slemeur 4096 Mar  4 09:15 .git');
+            addOutput('-rw-r--r--  1 slemeur slemeur 1245 Mar  4 09:12 package.json');
+            addOutput('-rw-r--r--  1 slemeur slemeur  523 Mar  4 09:10 README.md');
+            addOutput('drwxr-xr-x  4 slemeur slemeur 4096 Mar  4 09:14 src');
+            addOutput('drwxr-xr-x  2 slemeur slemeur 4096 Mar  4 09:11 tests');
+            addOutput('-rw-r--r--  1 slemeur slemeur  892 Mar  4 09:10 tsconfig.json');
+            addOutput('');
+            addOutput(`[slemeur@${agentName}] $ `, 'success');
+
+            window.sshMode = true;
+            window.sshAgent = { name: agentName, path: agentPath };
+
+            tab.isProcessing = false;
+            updateTab(activeTabId, { status: 'idle' });
+            cliInput.disabled = false;
+            cliInput.focus();
+        }
+
+        async function runDevSpacesWorkspaceDemo() {
+            const terminalBody = getTerminalBody();
+
+            // Phase 1: kortex init with DevSpaces sandbox
+            addOutput('$ kortex init --name inventory-api --agent opencode --model qwen2.5-coder --sandbox AgenticDevSpaces', 'command');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/projects/inventory-api';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting to OpenShift cluster...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Connected to cluster: ocp.internal.example.com';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('PROVISIONING DEVSPACES ENVIRONMENT:', 'highlight');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Creating DevSpaces workspace...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ DevWorkspace "inventory-api" created';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Scheduling pod on OpenShift...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Pod scheduled: agentic-inventory-api-7f3a9';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Pulling container image...', 'info');
+            await sleep(1200);
+            terminalBody.lastChild.innerHTML = '✓ Image pulled: registry.redhat.io/devspaces/agentic-workspace:3.19';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Starting containers...', 'info');
+            await sleep(900);
+            terminalBody.lastChild.innerHTML = '✓ Containers running (2/2): workspace, agent-sidecar';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Mounting persistent storage...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ PVC mounted: 10Gi at /projects';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('  Pod:        agentic-inventory-api-7f3a9', 'muted');
+            addOutput('  Namespace:  slemeur-devspaces', 'muted');
+            addOutput('  Node:       worker-03.ocp.internal.example.com', 'muted');
+            addOutput('  Resources:  4 CPU, 8GB RAM, 10Gi PVC', 'muted');
+            addOutput('');
+
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            await waitForEnter();
+            const tb1 = getTerminalBody();
+            if (tb1.lastChild) tb1.lastChild.remove();
+
+            // Phase 2: Connect to OpenShift AI resources
+            addOutput('CONNECTING TO OPENSHIFT AI:', 'highlight');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Authenticating with OpenShift AI...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Authenticated: slemeur@redhat.com (Red Hat Engineering)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Loading model: qwen2.5-coder...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Model ready: Qwen 2.5 Coder 32B (served on OpenShift AI)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Discovering enterprise resources...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Discovered 4 MCP servers, 2 knowledge bases, 6 skills';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('LOADING MCP TOOLS:', 'highlight');
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Connecting rhel-mcp...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ rhel-mcp            15 tools loaded  (RHEL documentation & system tools)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting openshift-mcp...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ openshift-mcp       24 tools loaded  (OpenShift/Kubernetes management)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting ansible-mcp...', 'info');
+            await sleep(350);
+            terminalBody.lastChild.innerHTML = '✓ ansible-mcp         12 tools loaded  (Ansible automation & playbooks)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting quay-mcp...', 'info');
+            await sleep(350);
+            terminalBody.lastChild.innerHTML = '✓ quay-mcp             8 tools loaded  (Container registry operations)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('Initialized workspace WKS_DVSPC_4R2K with name inventory-api', 'success');
+            addOutput('');
+            addOutput('WORKSPACE CONFIGURATION:', 'highlight');
+            addOutput('  Agent:          OpenCode');
+            addOutputHTML('  Model:          Qwen 2.5 Coder 32B  <span style="color: #ee4433;">via OpenShift AI</span>');
+            addOutputHTML('  Sandbox:        AgenticDevSpaces     <span style="color: #ee4433;">on ocp.internal.example.com</span>');
+            addOutput('  MCP Tools:      59 tools from 4 servers');
+            addOutput('  Knowledge:      openshift-knowledges, kubernetes-knowledges');
+            addOutput('  Skills:         6 enterprise skills loaded');
+            addOutput('');
+
+            addOutput('Attaching to workspace session...', 'muted');
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            await waitForEnter();
+            const tb2 = getTerminalBody();
+            if (tb2.lastChild) tb2.lastChild.remove();
+
+            // Phase 3: Show OpenCode interface
+            clearTerminal();
+            updateTab(activeTabId, { name: 'opencode: inventory-api', type: 'claude-code' });
+
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = '>';
+                promptEl.style.color = '#22c55e';
+            }
+            getCurrentTab().promptText = '>';
+            getCurrentTab().promptColor = '#22c55e';
+
+            addOutputHTML(`<span style="color: #22c55e;">╭─ OpenCode v1.0.0 ─────────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span>  inventory-api              <span style="color: #ee4433;">● OpenShift DevSpaces</span>                   │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>      Qwen 2.5 Coder 32B         <span style="color: #9ca3af;">via OpenShift AI</span>                       │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Pod:</span>        agentic-inventory-api-7f3a9 <span style="color: #9ca3af;">on worker-03</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">MCP Tools:</span>  59 tools from 4 servers     <span style="color: #22c55e;">✓ Enterprise resources connected</span>       │`);
+            addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            addOutput('  What would you like me to work on?', 'muted');
+            addOutput('');
+
+            window.claudeCodeMode = true;
+        }
+
         async function runRhelMcpDemo() {
             const terminalBody = getTerminalBody();
             
@@ -3164,33 +3783,250 @@
             window.claudeCodeMode = true;
         }
 
+        async function runLocalCodingAgentDemo() {
+            const terminalBody = getTerminalBody();
+            
+            // Phase 1: List available models from RamaLama
+            addOutput('$ ramalama list', 'command');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Querying local models...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Found 6 local models';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutputHTML(`<span style="color: #67e8f9;">REPOSITORY                              TAG              SIZE</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">────────────────────────────────────────────────────────────────</span>`);
+            addOutput('ollama://qwen2.5-coder:7b               latest           4.7 GB');
+            addOutput('ollama://granite-3.1-dense:8b           latest           4.9 GB');
+            addOutput('ollama://llama3.2:3b                    latest           2.0 GB');
+            addOutput('ollama://codellama:13b                  latest           7.4 GB');
+            addOutput('ollama://deepseek-coder:6.7b            latest           3.8 GB');
+            addOutput('huggingface://Qwen/Qwen2.5-Coder-7B     q4_k_m           4.7 GB');
+            addOutput('');
+            addOutput('6 models available locally', 'muted');
+            addOutput('');
+            
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to initialize workspace with local coding agent...</span>`);
+            
+            await waitForEnter();
+            
+            const terminalBodyForRemove = getTerminalBody();
+            if (terminalBodyForRemove.lastChild) {
+                terminalBodyForRemove.lastChild.remove();
+            }
+            
+            // Phase 2: Initialize workspace with opencode agent and ramalama model provider
+            addOutput('$ kortex init --name local-coding --agent opencode --model-provider ramalama:qwen', 'command');
+            addOutput('');
+            
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/projects/my-app';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Connecting to RamaLama model provider...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ RamaLama provider connected';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Loading model: qwen2.5-coder:7b...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Model loaded: qwen2.5-coder:7b (4.7 GB)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Detecting GPU acceleration...', 'info');
+            await sleep(400);
+            terminalBody.lastChild.innerHTML = '✓ GPU: CUDA detected (NVIDIA RTX 4090)';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutputHTML('<span class="spinner"></span>Starting OpenCode agent...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ OpenCode agent initialized';
+            terminalBody.lastChild.className = 'cli-output-line success';
+            
+            addOutput('');
+            addOutput('Initialized workspace WKS_LOCAL_9K4M with name local-coding', 'success');
+            addOutput('');
+            addOutput('WORKSPACE CONFIGURATION:', 'highlight');
+            addOutput('  Agent:          opencode');
+            addOutput('  Model Provider: ramalama');
+            addOutput('  Model:          qwen2.5-coder:7b');
+            addOutput('  Mode:           Local (no external API calls)');
+            addOutput('  GPU:            NVIDIA RTX 4090');
+            addOutput('');
+            
+            addOutput('AGENT CAPABILITIES:', 'highlight');
+            addOutput('  code_generate      - Generate code from prompts');
+            addOutput('  code_edit          - Edit existing files');
+            addOutput('  code_review        - Analyze and review code');
+            addOutput('  shell_execute      - Execute terminal commands');
+            addOutput('  file_operations    - Read, write, search files');
+            addOutput('  git_integration    - Version control operations');
+            addOutput('');
+            
+            addOutput('Attaching to workspace session...', 'muted');
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            
+            await waitForEnter();
+            
+            const terminalBodyForRemove2 = getTerminalBody();
+            if (terminalBodyForRemove2.lastChild) {
+                terminalBodyForRemove2.lastChild.remove();
+            }
+            
+            // Phase 3: Show OpenCode agent interface
+            clearTerminal();
+            updateTab(activeTabId, { name: 'opencode: local-coding', type: 'claude-code' });
+            
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = '>';
+                promptEl.style.color = '#22c55e';
+            }
+            getCurrentTab().promptText = '>';
+            getCurrentTab().promptColor = '#22c55e';
+            
+            addOutputHTML(`<span style="color: #22c55e;">╭─ OpenCode v1.0.0 ─────────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span> local-coding              <span style="color: #22c55e;">● Local Model Active</span>                    │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>     qwen2.5-coder:7b          <span style="color: #9ca3af;">via RamaLama</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Provider:</span>  ramalama (local)          <span style="color: #9ca3af;">~120ms/token</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Privacy:</span>   100% offline              <span style="color: #22c55e;">✓ No data leaves your machine</span>         │`);
+            addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            
+            await sleep(1000);
+            
+            // Phase 4: User asks a coding question
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Add unit tests for the authentication module in src/auth/</span>`);
+            addOutput('');
+            addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
+            
+            await waitForEnter();
+            
+            const terminalBodyForRemove3 = getTerminalBody();
+            if (terminalBodyForRemove3.lastChild) {
+                terminalBodyForRemove3.lastChild.remove();
+            }
+            
+            addOutputHTML(`<span style="color: #22c55e; font-weight: bold;">OpenCode</span>`);
+            addOutput('');
+            addOutput("I'll analyze the authentication module and create comprehensive unit tests.", 'muted');
+            addOutput('');
+            
+            // Tool call 1: Read files
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ file_read</span> <span style="color: #6b7280;">path="src/auth/auth.ts"</span>`);
+            await sleep(600);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ File: src/auth/auth.ts ──────────────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">export class AuthService {</span>                                                   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async login(email: string, password: string): Promise&lt;User&gt;</span>                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async logout(userId: string): Promise&lt;void&gt;</span>                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async validateToken(token: string): Promise&lt;boolean&gt;</span>                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async refreshToken(refreshToken: string): Promise&lt;TokenPair&gt;</span>               <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">}</span>                                                                           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Tool call 2: Create test file
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ file_write</span> <span style="color: #6b7280;">path="src/auth/auth.test.ts"</span>`);
+            await sleep(800);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  ┌─ Creating: src/auth/auth.test.ts ─────────────────────────────────────────────┐</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #f59e0b;">import</span> { describe, it, expect, beforeEach, vi } <span style="color: #f59e0b;">from</span> <span style="color: #22c55e;">'vitest'</span>;           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #f59e0b;">import</span> { AuthService } <span style="color: #f59e0b;">from</span> <span style="color: #22c55e;">'./auth'</span>;                                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>                                                                              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> describe(<span style="color: #22c55e;">'AuthService'</span>, () => {                                              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>   describe(<span style="color: #22c55e;">'login'</span>, () => {                                                  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should return user on valid credentials'</span>, async () => {             <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>       <span style="color: #9ca3af;">// ... test implementation</span>                                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>     });                                                                      <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should throw on invalid password'</span>, ...);                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should throw on non-existent user'</span>, ...);                           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>   });                                                                        <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>   <span style="color: #9ca3af;">// ... more test suites for logout, validateToken, refreshToken</span>           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> });                                                                          <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓ File created: src/auth/auth.test.ts (142 lines)</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Tool call 3: Run tests
+            addOutputHTML(`<span style="color: #a78bfa;">⚡ shell_execute</span> <span style="color: #6b7280;">command="npm test src/auth/"</span>`);
+            await sleep(1000);
+            
+            addOutputHTML(`<span style="color: #6b7280;">  Running tests...</span>`);
+            addOutput('');
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › login › should return user on valid credentials`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › login › should throw on invalid password`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › login › should throw on non-existent user`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › logout › should invalidate session`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › validateToken › should return true for valid token`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › validateToken › should return false for expired token`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › refreshToken › should return new token pair`);
+            addOutputHTML(`<span style="color: #22c55e;">  ✓</span> AuthService › refreshToken › should reject invalid refresh token`);
+            addOutput('');
+            addOutputHTML(`<span style="color: #22c55e;">  Test Files  1 passed (1)</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">  Tests       8 passed (8)</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">  Duration    1.24s</span>`);
+            addOutput('');
+            
+            await sleep(500);
+            
+            // Final summary
+            addOutputHTML(`<span style="color: #22c55e;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Created comprehensive test suite for AuthService</span>                            │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">8 test cases covering all public methods</span>                                    │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">All tests passing</span>                                                            │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">File: src/auth/auth.test.ts (142 lines)</span>                                     │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Running entirely on local hardware - no data sent externally.</span>                 │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Model latency: ~120ms/token | Total time: 4.2s</span>                               │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            addOutput('  What would you like me to work on next?', 'muted');
+            addOutput('');
+            
+            window.claudeCodeMode = true;
+        }
+
         async function runDemo(demoId) {
             if (getCurrentTab().isProcessing) return;
             
             let command = '';
             
             switch (demoId) {
-                case 'init-workspace':
-                    command = 'kortex init --name my-project --agent claude-code';
-                    break;
-                case 'list-workspaces':
-                    command = 'kortex workspace list';
-                    break;
-                case 'ssh-workspace':
-                    command = 'kortex workspace ssh agt_7x8k2m9n4p1q';
-                    break;
-                case 'connect-mcp':
-                    command = 'kortex mcp list --available';
-                    window.pendingDemo = 'connect-mcp-step2';
-                    break;
+                case 'workspace-exploration':
+                    await runWorkspaceExplorationDemo();
+                    return;
                 case 'openshift-connect':
                     command = 'kortex openshift connect';
+                    window.pendingDemo = 'openshift-mcp-list';
                     break;
-                case 'enterprise-skills':
-                    command = 'kortex openshift skills';
-                    break;
+                case 'devspaces-workspace':
+                    await runDevSpacesWorkspaceDemo();
+                    return;
                 case 'rhel-mcp-demo':
                     await runRhelMcpDemo();
+                    return;
+                case 'local-coding-agent':
+                    await runLocalCodingAgentDemo();
                     return;
             }
             

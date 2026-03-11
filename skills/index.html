@@ -307,23 +307,33 @@
                             <th class="actions-cell">Default</th>
                         </tr>
                     </thead>
+                    <!-- Internal Skills Info Banner -->
+                    <div id="internal-skills-banner" style="display: none; margin-bottom: 16px; padding: 14px 16px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(234, 88, 12, 0.08) 100%); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 10px;">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #fca5a5; margin-bottom: 4px; font-size: 13px;">Enterprise Skills from OpenShift</div>
+                                <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+                                    These skills are synced from your organization's OpenShift cluster at <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 11px;">ocp.internal.example.com</code>. They provide access to internal CI/CD pipelines, deployment templates, security policies, and enterprise-specific tooling.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <tbody id="skillsTableBody">
-                        <!-- Internal Skills -->
-                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=french-gov-accounting'" data-internal="true">
+                        <!-- Internal Skills from OpenShift -->
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=tekton-pipelines'" data-internal="true">
                             <td class="checkbox-cell">
                                 <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
                             </td>
                             <td class="status-cell">
                                 <div class="skill-icon french-gov">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 21h18"/>
-                                        <path d="M9 8h1"/>
-                                        <path d="M9 12h1"/>
-                                        <path d="M9 16h1"/>
-                                        <path d="M14 8h1"/>
-                                        <path d="M14 12h1"/>
-                                        <path d="M14 16h1"/>
-                                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
                                     </svg>
                                 </div>
                             </td>
@@ -335,7 +345,7 @@
                                         </svg>
                                         Internal
                                     </span>
-                                    <span class="env-name">French Government Accounting</span>
+                                    <span class="env-name">Tekton Pipelines</span>
                                 </div>
                             </td>
                             <td>
@@ -349,10 +359,10 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="skill-description">Handle French public sector accounting standards (M14, M57, LOLF)</span>
+                                <span class="skill-description">Create and manage CI/CD pipelines using internal Tekton templates (pipelines.ocp.internal)</span>
                             </td>
                             <td>
-                                <span class="skill-source-badge">OpenShift AI</span>
+                                <span class="skill-source-badge">ocp.internal</span>
                             </td>
                             <td class="actions-cell">
                                 <div class="actions-row" onclick="event.stopPropagation()">
@@ -361,16 +371,14 @@
                             </td>
                         </tr>
 
-                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=corporate-expense'" data-internal="true">
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=quay-registry'" data-internal="true">
                             <td class="checkbox-cell">
                                 <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
                             </td>
                             <td class="status-cell">
                                 <div class="skill-icon accounting">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                        <path d="M12 9v6"/>
-                                        <path d="M9 12h6"/>
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                                     </svg>
                                 </div>
                             </td>
@@ -382,7 +390,7 @@
                                         </svg>
                                         Internal
                                     </span>
-                                    <span class="env-name">Corporate Expense Management</span>
+                                    <span class="env-name">Quay Registry</span>
                                 </div>
                             </td>
                             <td>
@@ -396,10 +404,10 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="skill-description">Track expenses, generate reports, and manage corporate budgets</span>
+                                <span class="skill-description">Push and manage container images on internal Quay registry (quay.ocp.internal)</span>
                             </td>
                             <td>
-                                <span class="skill-source-badge">OpenShift AI</span>
+                                <span class="skill-source-badge">ocp.internal</span>
                             </td>
                             <td class="actions-cell">
                                 <div class="actions-row" onclick="event.stopPropagation()">
@@ -408,7 +416,7 @@
                             </td>
                         </tr>
 
-                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=compliance-audit'" data-internal="true">
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=acs-security'" data-internal="true">
                             <td class="checkbox-cell">
                                 <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
                             </td>
@@ -428,7 +436,7 @@
                                         </svg>
                                         Internal
                                     </span>
-                                    <span class="env-name">Compliance & Audit</span>
+                                    <span class="env-name">ACS Security Scanning</span>
                                 </div>
                             </td>
                             <td>
@@ -442,10 +450,106 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="skill-description">Corporate compliance checks and audit report generation</span>
+                                <span class="skill-description">Security scanning with Advanced Cluster Security (acs.ocp.internal)</span>
                             </td>
                             <td>
-                                <span class="skill-source-badge">OpenShift AI</span>
+                                <span class="skill-source-badge">ocp.internal</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch" onclick="toggleSkill(this)" title="Disabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=gitops-argocd'" data-internal="true">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon french-gov">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="3"/>
+                                        <path d="M12 1v6m0 6v10"/>
+                                        <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/>
+                                        <path d="M1 12h6m6 0h10"/>
+                                        <path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="skill-name-cell">
+                                    <span class="internal-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                        Internal
+                                    </span>
+                                    <span class="env-name">GitOps with ArgoCD</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Deploy apps using internal ArgoCD GitOps workflows (argocd.ocp.internal)</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">ocp.internal</span>
+                            </td>
+                            <td class="actions-cell">
+                                <div class="actions-row" onclick="event.stopPropagation()">
+                                    <div class="toggle-switch active" onclick="toggleSkill(this)" title="Enabled"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="skill-row internal internal-asset" onclick="window.location.href='details.html?skill=internal-db-templates'" data-internal="true">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
+                            </td>
+                            <td class="status-cell">
+                                <div class="skill-icon accounting">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="skill-name-cell">
+                                    <span class="internal-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                        Internal
+                                    </span>
+                                    <span class="env-name">Database Templates</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="skill-type-badge prebuilt">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Pre-built
+                                </span>
+                            </td>
+                            <td>
+                                <span class="skill-description">Deploy PostgreSQL, MySQL, MongoDB using internal operator templates (dbaas.ocp.internal)</span>
+                            </td>
+                            <td>
+                                <span class="skill-source-badge">ocp.internal</span>
                             </td>
                             <td class="actions-cell">
                                 <div class="actions-row" onclick="event.stopPropagation()">
@@ -849,6 +953,12 @@
             document.querySelectorAll('.tabs .tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
 
+            // Show/hide internal skills banner
+            const banner = document.getElementById('internal-skills-banner');
+            if (banner) {
+                banner.style.display = (type === 'internal' || type === 'all') && document.body.classList.contains('openshift-connected') ? 'block' : 'none';
+            }
+
             applyFilters();
         }
 
@@ -856,6 +966,13 @@
             const searchTerm = document.getElementById('skillSearch')?.value?.toLowerCase() || '';
             const isConnected = document.body.classList.contains('openshift-connected');
             const rows = document.querySelectorAll('.skill-row');
+
+            // Show/hide internal skills banner based on connection and filter state
+            const banner = document.getElementById('internal-skills-banner');
+            if (banner) {
+                const showBanner = isConnected && (currentFilter === 'internal' || currentFilter === 'all');
+                banner.style.display = showBanner ? 'block' : 'none';
+            }
 
             rows.forEach(row => {
                 const isInternal = row.dataset.internal === 'true';
