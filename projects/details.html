@@ -147,6 +147,7 @@
         .pd-nav-icon.secrets { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .pd-nav-icon.workspace { background: linear-gradient(135deg, #a855f7, #9333ea); }
         .pd-nav-icon.history { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .pd-nav-icon.chat-history { background: linear-gradient(135deg, #ec4899, #db2777); }
 
         .pd-nav-count {
             margin-left: auto;
@@ -597,11 +598,17 @@
 
         .pd-secret-row {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             padding: 12px;
             border-radius: 10px;
             transition: background 0.15s;
+        }
+
+        .pd-secret-row .pd-secret-icon,
+        .pd-secret-row .pd-secret-badge,
+        .pd-secret-row .pd-secret-actions {
+            margin-top: 2px;
         }
 
         .pd-secret-row:hover {
@@ -716,6 +723,97 @@
         .pd-secret-badge.missing {
             background: rgba(251, 146, 60, 0.12);
             color: #fb923c;
+        }
+
+        .pd-secret-permissions-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #8b5cf6;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.15s;
+        }
+
+        .pd-secret-permissions-toggle:hover {
+            color: #a78bfa;
+        }
+
+        .pd-secret-permissions-toggle svg {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.2s;
+        }
+
+        .pd-secret-permissions-toggle.open svg {
+            transform: rotate(90deg);
+        }
+
+        .pd-secret-permissions {
+            display: none;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: rgba(139, 92, 246, 0.04);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 8px;
+        }
+
+        .pd-secret-permissions.open {
+            display: flex;
+        }
+
+        .pd-perm-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            white-space: nowrap;
+        }
+
+        .pd-perm-tag.read {
+            background: rgba(96, 165, 250, 0.1);
+            color: #93c5fd;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .pd-perm-tag.write {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.15);
+        }
+
+        .pd-perm-tag.admin {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .pd-perm-tag.scope {
+            background: rgba(139, 92, 246, 0.08);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .pd-perm-tag svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .pd-permissions-summary {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 12px 4px;
+            font-size: 10px;
+            color: #6b7280;
         }
 
         .pd-integration-add-row {
@@ -1427,6 +1525,36 @@
                                         <div class="pd-secret-value">
                                             <span class="pd-secret-masked">ghp_••••••••••••••••</span>
                                         </div>
+                                        <div class="pd-secret-permissions-toggle" onclick="togglePermissions(this)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                            6 permissions granted
+                                        </div>
+                                        <div class="pd-secret-permissions">
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                repo:read
+                                            </span>
+                                            <span class="pd-perm-tag write">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                                repo:write
+                                            </span>
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                read:org
+                                            </span>
+                                            <span class="pd-perm-tag scope">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                                workflow
+                                            </span>
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                read:packages
+                                            </span>
+                                            <span class="pd-perm-tag write">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                                write:discussion
+                                            </span>
+                                        </div>
                                     </div>
                                     <span class="pd-secret-badge set">Set</span>
                                     <div class="pd-secret-actions">
@@ -1499,6 +1627,28 @@
                                         <div class="pd-secret-label">API Token</div>
                                         <div class="pd-secret-value">
                                             <span class="pd-secret-masked">ATATT3x••••••••••</span>
+                                        </div>
+                                        <div class="pd-secret-permissions-toggle" onclick="togglePermissions(this)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                            4 permissions granted
+                                        </div>
+                                        <div class="pd-secret-permissions">
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                read:jira-work
+                                            </span>
+                                            <span class="pd-perm-tag write">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                                write:jira-work
+                                            </span>
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                read:jira-user
+                                            </span>
+                                            <span class="pd-perm-tag scope">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                                manage:jira-webhook
+                                            </span>
                                         </div>
                                     </div>
                                     <span class="pd-secret-badge set">Set</span>
@@ -1588,6 +1738,24 @@
                                         <div class="pd-secret-label">Bot Token</div>
                                         <div class="pd-secret-value">
                                             <span style="color: #4b5563; font-style: italic;">Not configured</span>
+                                        </div>
+                                        <div class="pd-secret-permissions-toggle" onclick="togglePermissions(this)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                            3 permissions required
+                                        </div>
+                                        <div class="pd-secret-permissions">
+                                            <span class="pd-perm-tag scope">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                                chat:write
+                                            </span>
+                                            <span class="pd-perm-tag read">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                                channels:read
+                                            </span>
+                                            <span class="pd-perm-tag scope">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                                files:write
+                                            </span>
                                         </div>
                                     </div>
                                     <span class="pd-secret-badge missing">Missing</span>
@@ -1849,6 +2017,12 @@
     </div>
 
     <script>
+        function togglePermissions(el) {
+            el.classList.toggle('open');
+            const permsDiv = el.nextElementSibling;
+            if (permsDiv) permsDiv.classList.toggle('open');
+        }
+
         function switchSection(sectionId, navEl) {
             document.querySelectorAll('.pd-nav-item').forEach(item => item.classList.remove('active'));
             navEl.classList.add('active');
