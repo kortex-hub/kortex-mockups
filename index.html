@@ -430,33 +430,82 @@
             line-height: 1.4;
         }
 
-        /* ── Resource Meters ── */
-        .dash-resource-row {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding: 16px 20px;
+        /* ── Resource Tiles ── */
+        .dash-resource-tiles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
-        .dash-resource-item {
+        .dash-resource-tile {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-resource-tile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 0 0 80px;
+            opacity: 0.06;
+        }
+
+        .dash-resource-tile.cpu::after { background: #8b5cf6; }
+        .dash-resource-tile.memory::after { background: #3b82f6; }
+        .dash-resource-tile.tokens::after { background: #10b981; }
+
+        .dash-resource-tile-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 14px;
         }
 
-        .dash-resource-label {
+        .dash-resource-tile-label {
             font-size: 12px;
-            color: #9ca3af;
-            width: 70px;
-            flex-shrink: 0;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .dash-resource-tile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-resource-tile-icon svg { width: 16px; height: 16px; color: #fff; }
+        .dash-resource-tile-icon.cpu { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-resource-tile-icon.memory { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-resource-tile-icon.tokens { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .dash-resource-tile-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-bottom: 14px;
         }
 
         .dash-resource-bar-bg {
-            flex: 1;
+            width: 100%;
             height: 6px;
             background: rgba(255,255,255,0.06);
             border-radius: 3px;
             overflow: hidden;
+            margin-bottom: 8px;
         }
 
         .dash-resource-bar {
@@ -469,13 +518,9 @@
         .dash-resource-bar.memory { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
         .dash-resource-bar.tokens { background: linear-gradient(90deg, #10b981, #34d399); }
 
-        .dash-resource-value {
+        .dash-resource-tile-detail {
             font-size: 12px;
-            color: #e5e7eb;
-            font-weight: 600;
-            width: 40px;
-            text-align: right;
-            flex-shrink: 0;
+            color: #6b7280;
         }
 
         /* ── Hide default header ── */
@@ -502,7 +547,15 @@
                     <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
                     <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
                 </svg>
-                <span>Tasks</span>
+                <span>Agents</span>
+            </a>
+            <a href="agent-feed/index.html" class="nav-item" data-section="agent-feed">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 11a9 9 0 0 1 9 9"/>
+                    <path d="M4 4a16 16 0 0 1 16 16"/>
+                    <circle cx="5" cy="19" r="1"/>
+                </svg>
+                <span>Agent Feed</span>
             </a>
             <a href="projects/index.html" class="nav-item" data-section="projects">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -671,36 +724,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Resource Usage -->
-                            <div style="border-top: 1px solid rgba(61,62,79,0.5);">
-                                <div class="dash-section-header">
-                                    <div class="dash-section-title">Resource Usage</div>
-                                </div>
-                                <div class="dash-resource-row">
-                                    <div class="dash-resource-item">
-                                        <span class="dash-resource-label">CPU</span>
-                                        <div class="dash-resource-bar-bg">
-                                            <div class="dash-resource-bar cpu" style="width: 42%;"></div>
-                                        </div>
-                                        <span class="dash-resource-value">42%</span>
-                                    </div>
-                                    <div class="dash-resource-item">
-                                        <span class="dash-resource-label">Memory</span>
-                                        <div class="dash-resource-bar-bg">
-                                            <div class="dash-resource-bar memory" style="width: 67%;"></div>
-                                        </div>
-                                        <span class="dash-resource-value">67%</span>
-                                    </div>
-                                    <div class="dash-resource-item">
-                                        <span class="dash-resource-label">Tokens</span>
-                                        <div class="dash-resource-bar-bg">
-                                            <div class="dash-resource-bar tokens" style="width: 23%;"></div>
-                                        </div>
-                                        <span class="dash-resource-value">23K</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Activity Feed -->
@@ -782,6 +805,51 @@
                         </div>
                     </div>
 
+                    <!-- Resource Tiles -->
+                    <div class="dash-resource-tiles">
+                        <div class="dash-resource-tile cpu">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">CPU Usage</span>
+                                <div class="dash-resource-tile-icon cpu">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">42%</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar cpu" style="width: 42%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">3 agents consuming &middot; 8 cores available</div>
+                        </div>
+
+                        <div class="dash-resource-tile memory">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">Memory</span>
+                                <div class="dash-resource-tile-icon memory">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><path d="M8 11V9"/><path d="M16 11V9"/><path d="M12 11V9"/><path d="M2 15h20"/><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">67%</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar memory" style="width: 67%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">10.7 GB used &middot; 16 GB total</div>
+                        </div>
+
+                        <div class="dash-resource-tile tokens">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">Token Budget</span>
+                                <div class="dash-resource-tile-icon tokens">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">23K</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar tokens" style="width: 23%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">23,400 of 100K used today</div>
+                        </div>
+                    </div>
+
                     <!-- Quick Actions -->
                     <div class="dash-quick-actions">
                         <a href="tasks/index.html" class="dash-quick-action">
@@ -828,7 +896,7 @@
                     </svg>
                     <span>Ready</span>
                 </div>
-                <div class="status-bar-item" style="cursor: pointer; padding: 4px 10px; background: rgba(52, 211, 153, 0.1); border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2);">
+                <div class="status-bar-item agents-status" onclick="window.location.href='agent-feed/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(52, 211, 153, 0.1); border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2);" title="Open Agent Feed">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
                         <circle cx="12" cy="12" r="6"/>
