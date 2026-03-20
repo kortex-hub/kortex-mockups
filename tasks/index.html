@@ -17,12 +17,40 @@
         /* ── Left Panel: Task List ── */
         .tasks-left-panel {
             width: 300px;
-            min-width: 260px;
+            min-width: 220px;
+            max-width: 500px;
             background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-right: 1px solid #3d3e4f;
+            border-right: none;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+        }
+
+        .tasks-resize-handle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            cursor: col-resize;
+            z-index: 10;
+            background: #3d3e4f;
+            transition: background 0.15s ease;
+        }
+
+        .tasks-resize-handle:hover,
+        .tasks-resize-handle.dragging {
+            background: #8b5cf6;
+        }
+
+        .tasks-resize-handle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -3px;
+            right: -3px;
+            bottom: 0;
         }
 
         .tasks-left-header {
@@ -96,6 +124,143 @@
 
         .tasks-filter-btn:hover:not(.active) {
             color: #9ca3af;
+        }
+
+        .tasks-project-filter {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .tasks-project-filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            padding: 7px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tasks-project-filter-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+
+        .tasks-project-filter-btn.has-selection {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .tasks-project-filter-btn svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+            opacity: 0.5;
+        }
+
+        .tasks-project-filter-btn .filter-label {
+            flex: 1;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tasks-project-filter-btn .filter-label .filter-project-name {
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .tasks-project-filter-btn .filter-chevron {
+            width: 12px;
+            height: 12px;
+            opacity: 0.4;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .tasks-project-filter-btn.open .filter-chevron {
+            transform: rotate(180deg);
+        }
+
+        .tasks-project-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #1e1f2e;
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            padding: 4px;
+            z-index: 100;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .tasks-project-dropdown.show {
+            display: block;
+        }
+
+        .tasks-project-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #9ca3af;
+            transition: all 0.12s ease;
+        }
+
+        .tasks-project-option:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: #d1d5db;
+        }
+
+        .tasks-project-option.active {
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+        }
+
+        .tasks-project-option svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            opacity: 0.5;
+        }
+
+        .tasks-project-option .project-option-name {
+            flex: 1;
+        }
+
+        .tasks-project-option .project-option-count {
+            font-size: 10px;
+            color: #4b5563;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .tasks-project-option.active .project-option-count {
+            color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .tasks-project-option .project-option-check {
+            width: 14px;
+            height: 14px;
+            display: none;
+            color: #8b5cf6;
+        }
+
+        .tasks-project-option.active .project-option-check {
+            display: block;
         }
 
         .tasks-list {
@@ -260,11 +425,39 @@
             color: #9ca3af;
         }
 
+        .task-item-context {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #6b7280;
+            overflow: hidden;
+        }
+
+        .task-item-project {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .task-item-project svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+            opacity: 0.5;
+        }
+
+        .task-item-project-name {
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
         .task-item-git {
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 4px;
             font-size: 11px;
             color: #6b7280;
             overflow: hidden;
@@ -282,15 +475,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
-
-        .task-item-git-project {
-            color: #9ca3af;
-        }
-
-        .task-item-git-sep {
-            color: #4b5563;
-            margin: 0 1px;
         }
 
         .task-item-git-branch {
@@ -861,6 +1045,383 @@
             text-transform: uppercase;
             letter-spacing: 0.04em;
             margin-bottom: 4px;
+        }
+
+        /* Plan step: blocked state */
+        .flow-plan-icon.blocked {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            animation: taskPulse 2s infinite;
+        }
+        .flow-plan-step.is-blocked .flow-plan-step-text {
+            color: #fca5a5;
+            font-weight: 500;
+        }
+        .flow-plan-step-badge.blocked {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        /* Tool status: blocked */
+        .flow-tool-status.blocked-status {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        /* ── Network Block Event ── */
+        .flow-network-block {
+            margin: 4px 0 20px 0;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.04);
+            overflow: hidden;
+        }
+
+        .flow-network-block-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(239, 68, 68, 0.06);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.12);
+        }
+
+        .flow-network-block-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .flow-network-block-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #f87171;
+        }
+
+        .flow-network-block-title {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+        .flow-network-block-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fca5a5;
+        }
+        .flow-network-block-time {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .flow-network-block-body {
+            padding: 14px 16px;
+        }
+
+        .flow-network-block-message {
+            font-size: 13px;
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+        .flow-network-block-message strong {
+            color: #fca5a5;
+            font-weight: 600;
+        }
+
+        .flow-network-block-details {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flow-network-detail-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .flow-network-detail-key {
+            color: #6b7280;
+            font-weight: 500;
+            min-width: 72px;
+            flex-shrink: 0;
+        }
+        .flow-network-detail-value {
+            color: #d1d5db;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 11.5px;
+            word-break: break-all;
+        }
+        .flow-network-detail-value code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .flow-network-policy-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-family: inherit;
+        }
+        .flow-network-policy-badge.deny {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+        .flow-network-policy-badge.allow {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .flow-network-block-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .flow-network-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+        }
+        .flow-network-action-btn svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        .flow-network-action-btn.primary {
+            background: rgba(52, 211, 153, 0.15);
+            color: #6ee7b7;
+            border: 1px solid rgba(52, 211, 153, 0.25);
+        }
+        .flow-network-action-btn.primary:hover {
+            background: rgba(52, 211, 153, 0.25);
+            border-color: rgba(52, 211, 153, 0.4);
+        }
+
+        .flow-network-action-btn.secondary {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        .flow-network-action-btn.secondary:hover {
+            background: rgba(251, 191, 36, 0.18);
+            border-color: rgba(251, 191, 36, 0.35);
+        }
+
+        .flow-network-action-btn.tertiary {
+            background: rgba(255, 255, 255, 0.04);
+            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .flow-network-action-btn.tertiary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #d1d5db;
+        }
+
+        .flow-network-block-reply {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .flow-network-reply-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #e5e7eb;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .flow-network-reply-input:focus {
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        .flow-network-reply-input::placeholder {
+            color: #4b5563;
+        }
+        .flow-network-reply-send {
+            width: 34px;
+            height: 34px;
+            border-radius: 7px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+        .flow-network-reply-send:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+        .flow-network-reply-send svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Network allowed confirmation */
+        .flow-network-allowed {
+            margin: 4px 0 20px 0;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 10px;
+            background: rgba(52, 211, 153, 0.04);
+            padding: 12px 16px;
+            display: none;
+        }
+        .flow-network-allowed.show {
+            display: block;
+        }
+        .flow-network-allowed-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .flow-network-allowed-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: rgba(52, 211, 153, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .flow-network-allowed-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: #34d399;
+        }
+        .flow-network-allowed-text {
+            font-size: 13px;
+            color: #6ee7b7;
+            font-weight: 500;
+        }
+        .flow-network-allowed-text span {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        /* Right panel: Network Policy section */
+        .rp-network-policy {
+            background: rgba(239, 68, 68, 0.04);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }
+        .rp-network-policy.resolved {
+            background: rgba(52, 211, 153, 0.04);
+            border-color: rgba(52, 211, 153, 0.15);
+        }
+        .rp-network-policy-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .rp-network-policy-header svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+        .rp-network-policy-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #fca5a5;
+        }
+        .rp-network-policy.resolved .rp-network-policy-label {
+            color: #6ee7b7;
+        }
+        .rp-network-policy-mode {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+        .rp-network-hosts {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .rp-network-host {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #9ca3af;
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        .rp-network-host-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .rp-network-host-dot.allowed { background: #34d399; }
+        .rp-network-host-dot.blocked { background: #f87171; }
+        .rp-network-host-name { flex: 1; }
+        .rp-network-host-status {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .rp-network-host-status.allowed { color: #34d399; }
+        .rp-network-host-status.blocked { color: #f87171; }
+        .rp-network-configure-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #8b5cf6;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .rp-network-configure-link:hover {
+            color: #a78bfa;
+            text-decoration: underline;
+        }
+        .rp-network-configure-link svg {
+            width: 11px;
+            height: 11px;
         }
 
         /* Input Area */
@@ -2349,6 +2910,267 @@
             font-size: 11px;
             color: #6b7280;
         }
+
+        /* ── Live Monitoring Button ── */
+        .live-monitor-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 12px 14px;
+            padding: 9px 14px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 9px;
+            color: #6ee7b7;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .live-monitor-btn:hover {
+            background: rgba(16, 185, 129, 0.14);
+            border-color: rgba(16, 185, 129, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+        }
+        .live-monitor-btn .lm-pulse {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+            animation: lm-pulse 2s ease-in-out infinite;
+        }
+        @keyframes lm-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
+            50%       { opacity: 0.4; box-shadow: 0 0 2px rgba(16, 185, 129, 0.2); }
+        }
+        .live-monitor-btn .lm-label { flex: 1; }
+        .live-monitor-btn svg { width: 14px; height: 14px; opacity: 0.5; }
+
+        /* ── Monitoring Overlay ── */
+        .monitor-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+        .monitor-overlay.active {
+            display: flex;
+        }
+        .monitor-panel {
+            width: 820px;
+            max-height: 88vh;
+            background: linear-gradient(170deg, #1e1f2e 0%, #171822 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+            animation: monitor-enter 0.25s ease-out;
+        }
+        @keyframes monitor-enter {
+            from { opacity: 0; transform: translateY(12px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .monitor-header {
+            display: flex;
+            align-items: center;
+            padding: 18px 22px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+        .monitor-header-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .monitor-header-left .lm-pulse { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: lm-pulse 2s ease-in-out infinite; }
+        .monitor-header-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        .monitor-header-badge {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6ee7b7;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 3px 9px;
+            border-radius: 20px;
+        }
+        .monitor-close-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .monitor-close-btn:hover { color: #e5e7eb; background: rgba(255,255,255,0.06); }
+        .monitor-close-btn svg { width: 18px; height: 18px; }
+
+        /* ── Pipeline Stages ── */
+        .monitor-pipeline {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            padding: 24px 22px 18px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+        .mp-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .mp-stage-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+        .mp-stage-box {
+            width: 100%;
+            min-height: 72px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px dashed rgba(61, 62, 79, 0.6);
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 8px;
+            position: relative;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .mp-stage-box.has-agents {
+            border-style: solid;
+            border-color: rgba(139, 92, 246, 0.25);
+            background: rgba(139, 92, 246, 0.04);
+        }
+        .mp-stage-arrow {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            color: #3d3e4f;
+        }
+        .mp-stage-arrow svg { width: 18px; height: 18px; }
+        .mp-stage:last-child .mp-stage-arrow { display: none; }
+
+        /* Agent dots inside stages */
+        .mp-agent {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            cursor: default;
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+        }
+        .mp-agent.moving {
+            animation: mp-agent-move 0.6s ease-in-out;
+        }
+        @keyframes mp-agent-move {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(0.6) translateX(20px); opacity: 0.4; }
+            70%  { transform: scale(0.6) translateX(-20px); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .mp-agent-tooltip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: #2a2b3d;
+            color: #e5e7eb;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        .mp-agent:hover .mp-agent-tooltip { display: block; }
+
+        /* ── Activity Feed ── */
+        .monitor-feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 22px 18px;
+        }
+        .monitor-feed::-webkit-scrollbar { width: 5px; }
+        .monitor-feed::-webkit-scrollbar-track { background: transparent; }
+        .monitor-feed::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.15); border-radius: 3px; }
+        .monitor-feed-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+        }
+        .mf-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(61,62,79,0.25);
+            animation: mf-fadein 0.35s ease-out;
+        }
+        @keyframes mf-fadein {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .mf-item:last-child { border-bottom: none; }
+        .mf-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .mf-content { flex: 1; min-width: 0; }
+        .mf-text {
+            font-size: 13px;
+            color: #d1d5db;
+            line-height: 1.4;
+        }
+        .mf-text strong { color: #e5e7eb; font-weight: 600; }
+        .mf-text .mf-stage-name {
+            color: #c4b5fd;
+            font-weight: 600;
+        }
+        .mf-time {
+            font-size: 11px;
+            color: #4b5563;
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body class="tasks-page">
@@ -2357,7 +3179,8 @@
 
         <div class="tasks-layout">
             <!-- Left Panel: Task List -->
-            <div class="tasks-left-panel">
+            <div class="tasks-left-panel" id="tasksLeftPanel">
+                <div class="tasks-resize-handle" id="resizeHandle"></div>
                 <div class="tasks-left-header">
                     <div class="tasks-left-header-row">
                         <div class="tasks-left-title">Agents</div>
@@ -2371,27 +3194,66 @@
                         <button class="tasks-filter-btn" onclick="filterTasks('completed', this)">Completed</button>
                         <button class="tasks-filter-btn" onclick="filterTasks('all', this)">All</button>
                     </div>
+                    <div class="tasks-project-filter" id="projectFilter">
+                        <button class="tasks-project-filter-btn" id="projectFilterBtn" onclick="toggleProjectFilter()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            <span class="filter-label" id="projectFilterLabel">All Projects</span>
+                            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="tasks-project-dropdown" id="projectDropdown">
+                            <div class="tasks-project-option active" data-project="all" onclick="selectProjectFilter('all', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                <span class="project-option-name">All Projects</span>
+                                <span class="project-option-count">6</span>
+                                <svg class="project-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="tasks-project-option" data-project="Kortex Backend" onclick="selectProjectFilter('Kortex Backend', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                <span class="project-option-name">Kortex Backend</span>
+                                <span class="project-option-count">3</span>
+                                <svg class="project-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="tasks-project-option" data-project="Frontend App" onclick="selectProjectFilter('Frontend App', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                <span class="project-option-name">Frontend App</span>
+                                <span class="project-option-count">2</span>
+                                <svg class="project-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="tasks-project-option" data-project="API Gateway" onclick="selectProjectFilter('API Gateway', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                <span class="project-option-name">API Gateway</span>
+                                <span class="project-option-count">1</span>
+                                <svg class="project-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tasks-list">
                     <div class="tasks-section-label">Running</div>
 
-                    <div class="task-item active" onclick="selectTask(this, 'refactor-auth')">
+                    <div class="task-item active" data-project="Kortex Backend" onclick="selectTask(this, 'refactor-auth')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Refactor authentication module to use JWT tokens</div>
                             <div class="task-item-meta">
-                                <div class="task-status-dot running"></div>
-                                <span class="task-item-status-label">Running</span>
+                                <div class="task-status-dot" style="background: #f87171; box-shadow: 0 0 6px rgba(248, 113, 113, 0.4);"></div>
+                                <span class="task-item-status-label" style="color: #fca5a5;">Blocked</span>
                                 <span class="task-item-time">12m</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">feat/jwt-auth</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">Kortex Backend</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">feat/jwt-auth</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="task-item" onclick="selectTask(this, 'add-dark-mode')">
+                    <div class="task-item" data-project="Frontend App" onclick="selectTask(this, 'add-dark-mode')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Add dark mode toggle to settings page</div>
                             <div class="task-item-meta">
@@ -2399,14 +3261,20 @@
                                 <span class="task-item-status-label">Running</span>
                                 <span class="task-item-time">34m</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/frontend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">feat/dark-mode</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">Frontend App</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">feat/dark-mode</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="task-item needs-input" onclick="selectTask(this, 'fix-memory-leak')">
+                    <div class="task-item needs-input" data-project="API Gateway" onclick="selectTask(this, 'fix-memory-leak')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Fix memory leak in WebSocket connection handler</div>
                             <div class="task-item-meta">
@@ -2414,16 +3282,22 @@
                                 <span class="task-item-status-label">Waiting for input</span>
                                 <span class="task-item-time">1h</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/realtime-svc</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">fix/ws-memory-leak</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">API Gateway</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">fix/ws-memory-leak</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="tasks-section-label">Paused</div>
 
-                    <div class="task-item" onclick="selectTask(this, 'api-docs')">
+                    <div class="task-item" data-project="Kortex Backend" onclick="selectTask(this, 'api-docs')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Generate OpenAPI docs for REST endpoints</div>
                             <div class="task-item-meta">
@@ -2431,16 +3305,22 @@
                                 <span class="task-item-status-label">Paused</span>
                                 <span class="task-item-time">3h</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">docs/openapi-spec</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">Kortex Backend</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">docs/openapi-spec</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="tasks-section-label">Completed today</div>
 
-                    <div class="task-item" onclick="selectTask(this, 'update-deps')">
+                    <div class="task-item" data-project="Frontend App" onclick="selectTask(this, 'update-deps')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Update npm dependencies and fix breaking changes</div>
                             <div class="task-item-meta">
@@ -2448,14 +3328,20 @@
                                 <span class="task-item-status-label">Completed</span>
                                 <span class="task-item-time">2h ago</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/frontend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">chore/update-deps</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">Frontend App</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">chore/update-deps</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="task-item" onclick="selectTask(this, 'dockerfile')">
+                    <div class="task-item" data-project="Kortex Backend" onclick="selectTask(this, 'dockerfile')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Create multi-stage Dockerfile for production</div>
                             <div class="task-item-meta">
@@ -2463,13 +3349,25 @@
                                 <span class="task-item-status-label">Completed</span>
                                 <span class="task-item-time">5h ago</span>
                             </div>
-                            <div class="task-item-git">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">infra/docker-prod</span></span>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">Kortex Backend</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">infra/docker-prod</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <button class="live-monitor-btn" onclick="openMonitor()">
+                    <span class="lm-pulse"></span>
+                    <span class="lm-label">Live Monitoring</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
             </div>
 
             <!-- Center Panel: Conversation -->
@@ -2477,9 +3375,9 @@
                 <div class="task-conv-header">
                     <div class="task-conv-header-left">
                         <span class="task-conv-title">Refactor authentication module to use JWT tokens</span>
-                        <div class="task-conv-status running">
-                            <div class="task-status-dot running"></div>
-                            Running
+                        <div class="task-conv-status blocked" id="taskConvStatus" style="color: #f87171;">
+                            <div class="task-status-dot" style="background: #f87171; box-shadow: 0 0 6px rgba(248, 113, 113, 0.4);"></div>
+                            Needs input — network blocked
                         </div>
                     </div>
                     <div class="task-conv-header-actions">
@@ -2538,12 +3436,12 @@
                                 <span class="flow-plan-step-text">Update middleware for Bearer token verification</span>
                                 <span class="flow-plan-step-badge done">done</span>
                             </div>
-                            <div class="flow-plan-step is-running">
-                                <div class="flow-plan-icon running">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1.5s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <div class="flow-plan-step is-blocked">
+                                <div class="flow-plan-icon blocked">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
                                 </div>
                                 <span class="flow-plan-step-text">Add refresh token endpoint with rotation</span>
-                                <span class="flow-plan-step-badge running">running</span>
+                                <span class="flow-plan-step-badge blocked">blocked</span>
                             </div>
                             <div class="flow-plan-step is-queued">
                                 <div class="flow-plan-icon queued"></div>
@@ -2628,14 +3526,79 @@
                         Good, but also add refresh token support with a separate endpoint.
                     </div>
 
-                    <!-- Step 4: Adding refresh token (in progress) -->
+                    <!-- Step 4: Adding refresh token -->
                     <div class="flow-step">
                         <div class="flow-step-dot active"></div>
-                        <div class="flow-summary">Adding refresh token support with a dedicated <code>/auth/refresh</code> endpoint and rotating token strategy...</div>
+                        <div class="flow-summary">Adding refresh token support with a dedicated <code>/auth/refresh</code> endpoint. To validate tokens securely, I need to fetch the JWKS public keys from the identity provider...</div>
                         <div class="flow-tool">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            <span class="flow-tool-name">Writing src/auth/refresh.ts</span>
-                            <span class="flow-tool-status running">running</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="flow-tool-name">Created src/auth/refresh.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <span class="flow-tool-name">GET https://auth.example.com/.well-known/jwks.json</span>
+                            <span class="flow-tool-status blocked-status">blocked</span>
+                        </div>
+                    </div>
+
+                    <!-- Network Block Event -->
+                    <div class="flow-network-block">
+                        <div class="flow-network-block-header">
+                            <div class="flow-network-block-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                            </div>
+                            <div class="flow-network-block-title">
+                                <span class="flow-network-block-label">Network request blocked</span>
+                                <span class="flow-network-block-time">just now</span>
+                            </div>
+                        </div>
+
+                        <div class="flow-network-block-body">
+                            <div class="flow-network-block-message">
+                                The agent attempted to reach <strong>auth.example.com</strong> but the request was denied by the workspace network policy.
+                            </div>
+
+                            <div class="flow-network-block-details" id="networkBlockDetails">
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Request</span>
+                                    <span class="flow-network-detail-value"><code>GET https://auth.example.com/.well-known/jwks.json</code></span>
+                                </div>
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Purpose</span>
+                                    <span class="flow-network-detail-value">Fetch JWKS public keys for JWT token verification</span>
+                                </div>
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Policy</span>
+                                    <span class="flow-network-detail-value"><span class="flow-network-policy-badge deny">Deny mode</span> — host not in allowed list</span>
+                                </div>
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Workspace</span>
+                                    <span class="flow-network-detail-value">Kortex Backend</span>
+                                </div>
+                            </div>
+
+                            <div class="flow-network-block-actions">
+                                <button class="flow-network-action-btn primary" onclick="allowNetworkHost('auth.example.com')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Allow auth.example.com
+                                </button>
+                                <button class="flow-network-action-btn secondary" onclick="allowNetworkHostSession('auth.example.com')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Allow for this session only
+                                </button>
+                                <button class="flow-network-action-btn tertiary" onclick="window.location.href='../sessions/settings.html'">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                    Open Network Settings
+                                </button>
+                            </div>
+
+                            <div class="flow-network-block-reply">
+                                <input type="text" class="flow-network-reply-input" placeholder="Or type a response (e.g., use a local key instead)..." onkeydown="if(event.key==='Enter') handleNetworkReply(this)">
+                                <button class="flow-network-reply-send" onclick="handleNetworkReply(this.previousElementSibling)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -2856,6 +3819,39 @@
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                 Add asset
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Network Policy -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Network Policy</div>
+                        <div class="rp-network-policy" id="rpNetworkPolicy">
+                            <div class="rp-network-policy-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                <span class="rp-network-policy-label">1 blocked request</span>
+                                <span class="rp-network-policy-mode">deny mode</span>
+                            </div>
+                            <div class="rp-network-hosts">
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot allowed"></div>
+                                    <span class="rp-network-host-name">github.com</span>
+                                    <span class="rp-network-host-status allowed">allowed</span>
+                                </div>
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot allowed"></div>
+                                    <span class="rp-network-host-name">registry.npmjs.org</span>
+                                    <span class="rp-network-host-status allowed">allowed</span>
+                                </div>
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot blocked"></div>
+                                    <span class="rp-network-host-name">auth.example.com</span>
+                                    <span class="rp-network-host-status blocked">blocked</span>
+                                </div>
+                            </div>
+                            <a href="../sessions/settings.html" class="rp-network-configure-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                Configure network settings
+                            </a>
                         </div>
                     </div>
 
@@ -3125,6 +4121,53 @@
         </div>
     </div>
 
+    <!-- Live Monitoring Overlay -->
+    <div class="monitor-overlay" id="monitorOverlay" onclick="if(event.target===this) closeMonitor()">
+        <div class="monitor-panel">
+            <div class="monitor-header">
+                <div class="monitor-header-left">
+                    <span class="lm-pulse"></span>
+                    <span class="monitor-header-title">Live Agent Monitoring</span>
+                    <span class="monitor-header-badge">3 active</span>
+                </div>
+                <button class="monitor-close-btn" onclick="closeMonitor()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <div class="monitor-pipeline" id="monitorPipeline">
+                <div class="mp-stage" data-stage="planning">
+                    <div class="mp-stage-label">Planning</div>
+                    <div class="mp-stage-box" id="stage-planning"></div>
+                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
+                </div>
+                <div class="mp-stage" data-stage="coding">
+                    <div class="mp-stage-label">Coding</div>
+                    <div class="mp-stage-box" id="stage-coding"></div>
+                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
+                </div>
+                <div class="mp-stage" data-stage="testing">
+                    <div class="mp-stage-label">Testing</div>
+                    <div class="mp-stage-box" id="stage-testing"></div>
+                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
+                </div>
+                <div class="mp-stage" data-stage="review">
+                    <div class="mp-stage-label">Review</div>
+                    <div class="mp-stage-box" id="stage-review"></div>
+                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
+                </div>
+                <div class="mp-stage" data-stage="done">
+                    <div class="mp-stage-label">Done</div>
+                    <div class="mp-stage-box" id="stage-done"></div>
+                </div>
+            </div>
+
+            <div class="monitor-feed" id="monitorFeed">
+                <div class="monitor-feed-title">Activity</div>
+            </div>
+        </div>
+    </div>
+
     <style>
         @keyframes spin {
             from { transform: rotate(0deg); }
@@ -3133,6 +4176,40 @@
     </style>
 
     <script>
+        (function initResize() {
+            const handle = document.getElementById('resizeHandle');
+            const panel = document.getElementById('tasksLeftPanel');
+            if (!handle || !panel) return;
+
+            let startX, startWidth;
+
+            handle.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                startX = e.clientX;
+                startWidth = panel.offsetWidth;
+                handle.classList.add('dragging');
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+
+                function onMove(e) {
+                    const dx = e.clientX - startX;
+                    const newWidth = Math.max(220, Math.min(500, startWidth + dx));
+                    panel.style.width = newWidth + 'px';
+                }
+
+                function onUp() {
+                    handle.classList.remove('dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                }
+
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            });
+        })();
+
         function selectTask(el, taskId) {
             document.querySelectorAll('.task-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
@@ -3141,6 +4218,76 @@
         function filterTasks(filter, btn) {
             document.querySelectorAll('.tasks-filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+        }
+
+        let currentProjectFilter = 'all';
+
+        function toggleProjectFilter() {
+            const dropdown = document.getElementById('projectDropdown');
+            const btn = document.getElementById('projectFilterBtn');
+            const isOpen = dropdown.classList.contains('show');
+            dropdown.classList.toggle('show');
+            btn.classList.toggle('open');
+
+            if (!isOpen) {
+                setTimeout(() => {
+                    document.addEventListener('click', closeProjectFilterOutside, { once: true });
+                }, 0);
+            }
+        }
+
+        function closeProjectFilterOutside(e) {
+            const filter = document.getElementById('projectFilter');
+            if (!filter.contains(e.target)) {
+                document.getElementById('projectDropdown').classList.remove('show');
+                document.getElementById('projectFilterBtn').classList.remove('open');
+            } else {
+                setTimeout(() => {
+                    document.addEventListener('click', closeProjectFilterOutside, { once: true });
+                }, 0);
+            }
+        }
+
+        function selectProjectFilter(project, el) {
+            currentProjectFilter = project;
+
+            document.querySelectorAll('.tasks-project-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+
+            const label = document.getElementById('projectFilterLabel');
+            const btn = document.getElementById('projectFilterBtn');
+
+            if (project === 'all') {
+                label.innerHTML = 'All Projects';
+                btn.classList.remove('has-selection');
+            } else {
+                label.innerHTML = '<span class="filter-project-name">' + project + '</span>';
+                btn.classList.add('has-selection');
+            }
+
+            document.querySelectorAll('.task-item').forEach(item => {
+                if (project === 'all' || item.dataset.project === project) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('.tasks-section-label').forEach(label => {
+                let next = label.nextElementSibling;
+                let hasVisible = false;
+                while (next && !next.classList.contains('tasks-section-label')) {
+                    if (next.classList.contains('task-item') && next.style.display !== 'none') {
+                        hasVisible = true;
+                        break;
+                    }
+                    next = next.nextElementSibling;
+                }
+                label.style.display = hasVisible ? '' : 'none';
+            });
+
+            document.getElementById('projectDropdown').classList.remove('show');
+            document.getElementById('projectFilterBtn').classList.remove('open');
         }
 
         function toggleRightPanel() {
@@ -3278,6 +4425,216 @@
             if (body) body.style.display = body.style.display === 'none' ? 'block' : 'none';
         }
 
+        function allowNetworkHost(host) {
+            const block = document.querySelector('.flow-network-block');
+            if (!block) return;
+
+            block.style.transition = 'all 0.4s ease';
+            block.style.borderColor = 'rgba(52, 211, 153, 0.25)';
+            block.style.background = 'rgba(52, 211, 153, 0.04)';
+
+            const header = block.querySelector('.flow-network-block-header');
+            header.style.background = 'rgba(52, 211, 153, 0.06)';
+            header.style.borderBottomColor = 'rgba(52, 211, 153, 0.12)';
+
+            const icon = block.querySelector('.flow-network-block-icon');
+            icon.style.background = 'rgba(52, 211, 153, 0.12)';
+            icon.querySelector('svg').style.stroke = '#34d399';
+
+            const label = block.querySelector('.flow-network-block-label');
+            label.textContent = 'Network access granted';
+            label.style.color = '#6ee7b7';
+
+            const body = block.querySelector('.flow-network-block-body');
+            body.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 7px; background: rgba(52, 211, 153, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #6ee7b7; font-weight: 500;">${host} added to allowed hosts</div>
+                        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Agent is resuming — retrying the request...</div>
+                    </div>
+                </div>
+            `;
+
+            updatePlanStepToRunning();
+            updateRightPanelNetworkAllowed(host);
+
+            setTimeout(() => {
+                simulateAgentResume();
+            }, 1500);
+        }
+
+        function allowNetworkHostSession(host) {
+            const block = document.querySelector('.flow-network-block');
+            if (!block) return;
+
+            block.style.transition = 'all 0.4s ease';
+            block.style.borderColor = 'rgba(251, 191, 36, 0.2)';
+            block.style.background = 'rgba(251, 191, 36, 0.03)';
+
+            const header = block.querySelector('.flow-network-block-header');
+            header.style.background = 'rgba(251, 191, 36, 0.05)';
+            header.style.borderBottomColor = 'rgba(251, 191, 36, 0.1)';
+
+            const icon = block.querySelector('.flow-network-block-icon');
+            icon.style.background = 'rgba(251, 191, 36, 0.12)';
+            icon.querySelector('svg').style.stroke = '#fbbf24';
+
+            const label = block.querySelector('.flow-network-block-label');
+            label.textContent = 'Temporarily allowed for this session';
+            label.style.color = '#fbbf24';
+
+            const body = block.querySelector('.flow-network-block-body');
+            body.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 7px; background: rgba(251, 191, 36, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #fbbf24; font-weight: 500;">${host} allowed for this session</div>
+                        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">This permission will expire when the agent task completes.</div>
+                    </div>
+                </div>
+            `;
+
+            updatePlanStepToRunning();
+
+            setTimeout(() => {
+                simulateAgentResume();
+            }, 1500);
+        }
+
+        function handleNetworkReply(inputEl) {
+            const val = inputEl.value.trim();
+            if (!val) return;
+
+            const block = document.querySelector('.flow-network-block');
+            if (!block) return;
+
+            block.style.transition = 'all 0.4s ease';
+            block.style.borderColor = 'rgba(139, 92, 246, 0.2)';
+            block.style.background = 'rgba(139, 92, 246, 0.03)';
+
+            const header = block.querySelector('.flow-network-block-header');
+            header.style.background = 'rgba(139, 92, 246, 0.06)';
+            header.style.borderBottomColor = 'rgba(139, 92, 246, 0.1)';
+
+            const icon = block.querySelector('.flow-network-block-icon');
+            icon.style.background = 'rgba(139, 92, 246, 0.12)';
+            icon.querySelector('svg').style.stroke = '#a78bfa';
+
+            const label = block.querySelector('.flow-network-block-label');
+            label.textContent = 'User response received';
+            label.style.color = '#a78bfa';
+
+            const body = block.querySelector('.flow-network-block-body');
+            body.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+                    <div style="width: 28px; height: 28px; border-radius: 7px; background: rgba(139, 92, 246, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #e5e7eb; font-weight: 500;">"${val}"</div>
+                        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">Agent is adapting its approach...</div>
+                    </div>
+                </div>
+            `;
+
+            updatePlanStepToRunning();
+
+            setTimeout(() => {
+                simulateAgentResume();
+            }, 1500);
+        }
+
+        function updatePlanStepToRunning() {
+            const blockedStep = document.querySelector('.flow-plan-step.is-blocked');
+            if (!blockedStep) return;
+            blockedStep.className = 'flow-plan-step is-running';
+
+            const icon = blockedStep.querySelector('.flow-plan-icon');
+            icon.className = 'flow-plan-icon running';
+            icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1.5s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+
+            const badge = blockedStep.querySelector('.flow-plan-step-badge');
+            badge.className = 'flow-plan-step-badge running';
+            badge.textContent = 'running';
+        }
+
+        function updateRightPanelNetworkAllowed(host) {
+            const hostRow = document.querySelectorAll('.rp-network-host');
+            hostRow.forEach(row => {
+                const name = row.querySelector('.rp-network-host-name');
+                if (name && name.textContent === host) {
+                    row.querySelector('.rp-network-host-dot').className = 'rp-network-host-dot allowed';
+                    const status = row.querySelector('.rp-network-host-status');
+                    status.className = 'rp-network-host-status allowed';
+                    status.textContent = 'allowed';
+                }
+            });
+
+            const policyCard = document.getElementById('rpNetworkPolicy');
+            if (policyCard) {
+                policyCard.classList.add('resolved');
+                const label = policyCard.querySelector('.rp-network-policy-label');
+                label.textContent = 'All requests allowed';
+                const headerSvg = policyCard.querySelector('.rp-network-policy-header svg');
+                headerSvg.setAttribute('stroke', '#34d399');
+            }
+        }
+
+        function simulateAgentResume() {
+            const convStatus = document.getElementById('taskConvStatus');
+            if (convStatus) {
+                convStatus.className = 'task-conv-status running';
+                convStatus.style.color = '';
+                convStatus.innerHTML = '<div class="task-status-dot running"></div>Running';
+            }
+
+            const activeTask = document.querySelector('.task-item.active .task-status-dot');
+            if (activeTask) {
+                activeTask.style = '';
+                activeTask.className = 'task-status-dot running';
+            }
+            const activeLabel = document.querySelector('.task-item.active .task-item-status-label');
+            if (activeLabel) {
+                activeLabel.style = '';
+                activeLabel.textContent = 'Running';
+            }
+
+            const messages = document.getElementById('taskMessages');
+            const resumeStep = document.createElement('div');
+            resumeStep.className = 'flow-step';
+            resumeStep.innerHTML = `
+                <div class="flow-step-dot active"></div>
+                <div class="flow-summary">Successfully fetched JWKS public keys from <code>auth.example.com</code>. Now implementing token verification using the RS256 algorithm with key rotation support...</div>
+                <div class="flow-tool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span class="flow-tool-name">GET https://auth.example.com/.well-known/jwks.json</span>
+                    <span class="flow-tool-status done">done</span>
+                </div>
+                <div class="flow-tool">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span class="flow-tool-name">Writing src/auth/jwks-verifier.ts</span>
+                    <span class="flow-tool-status running">running</span>
+                </div>
+            `;
+
+            resumeStep.style.opacity = '0';
+            resumeStep.style.transform = 'translateY(8px)';
+            messages.appendChild(resumeStep);
+
+            requestAnimationFrame(() => {
+                resumeStep.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                resumeStep.style.opacity = '1';
+                resumeStep.style.transform = 'translateY(0)';
+            });
+
+            messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+        }
+
         function pauseTask() {}
         function stopTask() {}
         function toggleAttachMenu() {
@@ -3341,6 +4698,115 @@
                 setTimeout(() => typeText(el, text, i + 1), 18);
             }
         }
+
+        // ── Live Monitoring ──
+        const monitorAgents = [
+            { id: 'jwt',   initials: 'JA', label: 'JWT Auth Refactor',      color: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', stage: 'coding' },
+            { id: 'dark',  initials: 'DM', label: 'Dark Mode Toggle',       color: 'linear-gradient(135deg, #3b82f6, #2563eb)', stage: 'coding' },
+            { id: 'ws',    initials: 'WS', label: 'WebSocket Memory Fix',   color: 'linear-gradient(135deg, #f59e0b, #d97706)', stage: 'planning' },
+            { id: 'api',   initials: 'AD', label: 'OpenAPI Docs',           color: 'linear-gradient(135deg, #6366f1, #4f46e5)', stage: 'review' },
+            { id: 'deps',  initials: 'UD', label: 'Update Dependencies',    color: 'linear-gradient(135deg, #10b981, #059669)', stage: 'done' },
+        ];
+        const stageOrder = ['planning', 'coding', 'testing', 'review', 'done'];
+        const stageLabels = { planning: 'Planning', coding: 'Coding', testing: 'Testing', review: 'Review', done: 'Done' };
+        let monitorInterval = null;
+
+        function openMonitor() {
+            document.getElementById('monitorOverlay').classList.add('active');
+            renderPipeline();
+            addFeedItem(null, 'Monitoring started — showing live agent activity', true);
+            startMonitorSimulation();
+        }
+
+        function closeMonitor() {
+            document.getElementById('monitorOverlay').classList.remove('active');
+            if (monitorInterval) { clearInterval(monitorInterval); monitorInterval = null; }
+        }
+
+        function renderPipeline() {
+            stageOrder.forEach(s => {
+                const box = document.getElementById('stage-' + s);
+                box.innerHTML = '';
+                box.classList.remove('has-agents');
+            });
+            monitorAgents.forEach(a => {
+                const box = document.getElementById('stage-' + a.stage);
+                box.classList.add('has-agents');
+                const dot = document.createElement('div');
+                dot.className = 'mp-agent';
+                dot.id = 'mp-' + a.id;
+                dot.style.background = a.color;
+                dot.innerHTML = a.initials + '<span class="mp-agent-tooltip">' + a.label + '</span>';
+                box.appendChild(dot);
+            });
+        }
+
+        function moveAgent(agent) {
+            const curIdx = stageOrder.indexOf(agent.stage);
+            if (curIdx >= stageOrder.length - 1) return;
+            const nextStage = stageOrder[curIdx + 1];
+            const prevStage = agent.stage;
+            const dot = document.getElementById('mp-' + agent.id);
+            if (dot) { dot.classList.add('moving'); setTimeout(() => dot.classList.remove('moving'), 600); }
+            agent.stage = nextStage;
+            setTimeout(() => {
+                renderPipeline();
+                addFeedItem(agent, 'moved from <span class="mf-stage-name">' + stageLabels[prevStage] + '</span> to <span class="mf-stage-name">' + stageLabels[nextStage] + '</span>');
+            }, 300);
+        }
+
+        function addFeedItem(agent, message, isSystem) {
+            const feed = document.getElementById('monitorFeed');
+            const item = document.createElement('div');
+            item.className = 'mf-item';
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
+            if (isSystem) {
+                item.innerHTML =
+                    '<div class="mf-dot" style="background: rgba(16,185,129,0.2); color: #6ee7b7; font-size: 11px;">&#x25cf;</div>' +
+                    '<div class="mf-content"><div class="mf-text">' + message + '</div><div class="mf-time">' + timeStr + '</div></div>';
+            } else {
+                item.innerHTML =
+                    '<div class="mf-dot" style="background: ' + agent.color + ';">' + agent.initials + '</div>' +
+                    '<div class="mf-content"><div class="mf-text"><strong>' + agent.label + '</strong> ' + message + '</div><div class="mf-time">' + timeStr + '</div></div>';
+            }
+            const title = feed.querySelector('.monitor-feed-title');
+            if (title.nextSibling) {
+                feed.insertBefore(item, title.nextSibling);
+            } else {
+                feed.appendChild(item);
+            }
+        }
+
+        function startMonitorSimulation() {
+            if (monitorInterval) clearInterval(monitorInterval);
+            let step = 0;
+            const moves = [
+                () => moveAgent(monitorAgents[2]),
+                () => moveAgent(monitorAgents[0]),
+                () => moveAgent(monitorAgents[2]),
+                () => moveAgent(monitorAgents[1]),
+                () => moveAgent(monitorAgents[3]),
+                () => moveAgent(monitorAgents[0]),
+                () => moveAgent(monitorAgents[1]),
+                () => moveAgent(monitorAgents[2]),
+            ];
+            monitorInterval = setInterval(() => {
+                if (step < moves.length) {
+                    moves[step]();
+                    step++;
+                } else {
+                    clearInterval(monitorInterval);
+                    monitorInterval = null;
+                }
+            }, 3200);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('monitorOverlay').classList.contains('active')) {
+                closeMonitor();
+            }
+        });
     </script>
 </body>
 </html>
