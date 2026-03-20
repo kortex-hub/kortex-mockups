@@ -359,10 +359,13 @@
             background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
             border: 1px solid #3d3e4f;
             border-radius: 16px;
-            width: 560px;
-            max-width: 90vw;
+            width: 680px;
+            max-width: 92vw;
+            max-height: 88vh;
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .new-project-modal-header {
@@ -403,6 +406,22 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .new-project-modal-body::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .new-project-modal-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .new-project-modal-body::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
         }
 
         .np-step { display: none; }
@@ -769,6 +788,218 @@
             width: 14px;
             height: 14px;
         }
+
+        /* ── Step Progress Indicator ── */
+        .np-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 24px 0;
+            margin-bottom: -8px;
+        }
+
+        .np-stepper-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4b5563;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .np-stepper-item.active {
+            color: #c4b5fd;
+        }
+
+        .np-stepper-item.done {
+            color: #34d399;
+        }
+
+        .np-stepper-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #4b5563;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .np-stepper-item.active .np-stepper-dot {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+        }
+
+        .np-stepper-item.done .np-stepper-dot {
+            border-color: #34d399;
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .np-stepper-line {
+            flex: 1;
+            height: 1px;
+            background: #3d3e4f;
+            margin: 0 8px;
+            min-width: 12px;
+            transition: background 0.2s;
+        }
+
+        .np-stepper-line.done {
+            background: rgba(52, 211, 153, 0.4);
+        }
+
+        /* ── Clone Location (Step 3 enhancement) ── */
+        .np-clone-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .np-clone-hint {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* ── Asset Picker (Steps 4 & 5) ── */
+        .np-picker-intro {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .np-picker-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .np-picker-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3d3e4f;
+            border-radius: 11px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .np-picker-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.04);
+        }
+
+        .np-picker-card.selected {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .np-picker-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+            transition: all 0.15s;
+        }
+
+        .np-picker-card.selected .np-picker-check {
+            border-color: #8b5cf6;
+            background: #8b5cf6;
+        }
+
+        .np-picker-check svg {
+            width: 12px;
+            height: 12px;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .np-picker-card.selected .np-picker-check svg {
+            opacity: 1;
+        }
+
+        .np-picker-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .np-picker-icon svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+        }
+
+        .np-picker-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .np-picker-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+
+        .np-picker-desc {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .np-picker-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        .np-picker-badge.recommended {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .np-picker-badge.optional {
+            background: rgba(255, 255, 255, 0.04);
+            color: #6b7280;
+            border: 1px solid #3d3e4f;
+        }
+
+        .np-picker-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 8px;
+            margin-bottom: -2px;
+        }
     </style>
 </head>
 <body class="projects-page">
@@ -988,6 +1219,23 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
+            <div class="np-stepper" id="npStepper" style="display:none; padding-top:16px; padding-bottom:8px;">
+                <div class="np-stepper-item active" id="npStepInd1">
+                    <span class="np-stepper-dot">1</span> Source
+                </div>
+                <div class="np-stepper-line" id="npStepLine1"></div>
+                <div class="np-stepper-item" id="npStepInd3">
+                    <span class="np-stepper-dot">2</span> Review
+                </div>
+                <div class="np-stepper-line" id="npStepLine3"></div>
+                <div class="np-stepper-item" id="npStepInd4">
+                    <span class="np-stepper-dot">3</span> MCP Servers
+                </div>
+                <div class="np-stepper-line" id="npStepLine4"></div>
+                <div class="np-stepper-item" id="npStepInd5">
+                    <span class="np-stepper-dot">4</span> Skills
+                </div>
+            </div>
             <div class="new-project-modal-body">
                 <!-- Step 1: Provide a path or git repo -->
                 <div class="np-step active" id="npStep1">
@@ -1006,7 +1254,7 @@
                     <div class="np-or-divider">or</div>
 
                     <div class="np-git-input-wrapper">
-                        <input type="text" class="np-git-input" id="npGitInput" placeholder="https://github.com/org/repo.git" oninput="updateNextBtn()">
+                        <input type="text" class="np-git-input" id="npGitInput" placeholder="https://github.com/org/repo" oninput="updateNextBtn()">
                     </div>
                 </div>
 
@@ -1055,6 +1303,226 @@
                             <span class="np-branch-tag" id="npDetectedBranch">main</span>
                         </div>
                     </div>
+
+                    <div class="np-clone-section" id="npCloneSection" style="display:none;">
+                        <label class="np-field-label">Clone To</label>
+                        <div class="np-path-input-wrapper">
+                            <input type="text" class="np-path-input" id="npCloneDir" placeholder="~/Dev/my-project">
+                            <button class="np-browse-btn" onclick="simulateCloneBrowse()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                Browse
+                            </button>
+                        </div>
+                        <div class="np-clone-hint">The repository will be cloned to this directory.</div>
+                    </div>
+                </div>
+
+                <!-- Step 4: MCP Server Selection -->
+                <div class="np-step" id="npStep4">
+                    <p class="np-picker-intro">
+                        Based on the project analysis, we recommend the following MCP servers. Select the ones you want to enable for this project.
+                    </p>
+
+                    <div class="np-picker-section-label">Recommended</div>
+                    <div class="np-picker-grid" id="npMcpGrid">
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #24292e, #40464e);">
+                                <svg viewBox="0 0 24 24" fill="#e5e7eb"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">GitHub</div>
+                                <div class="np-picker-desc">Repository access, PRs, issues, code search, and CI/CD actions</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Recommended</span>
+                        </div>
+
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Filesystem</div>
+                                <div class="np-picker-desc">Read, write, and manage project files and directory structure</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Recommended</span>
+                        </div>
+
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Fetch</div>
+                                <div class="np-picker-desc">HTTP requests for API documentation, npm registry, and web resources</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Recommended</span>
+                        </div>
+                    </div>
+
+                    <div class="np-picker-section-label">Available</div>
+                    <div class="np-picker-grid">
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Terminal</div>
+                                <div class="np-picker-desc">Execute shell commands, run scripts, and manage processes</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Playwright</div>
+                                <div class="np-picker-desc">Browser automation for testing Electron UI and web components</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Sentry</div>
+                                <div class="np-picker-desc">Error monitoring, crash reporting, and performance tracking</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Skills Selection -->
+                <div class="np-step" id="npStep5">
+                    <p class="np-picker-intro">
+                        We detected the following technologies in <strong style="color:#e5e7eb">Kortex</strong>. Pick the skills that agents should use when working in this project.
+                    </p>
+
+                    <div class="np-picker-section-label">Recommended for this project</div>
+                    <div class="np-picker-grid" id="npSkillsGrid">
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #3178c6, #235a97);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">TypeScript Development</div>
+                                <div class="np-picker-desc">Type-safe coding patterns, generics, decorators, and module resolution</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Detected</span>
+                        </div>
+
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #ff3e00, #cc3200);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Svelte Components</div>
+                                <div class="np-picker-desc">Reactive UI components, stores, lifecycle hooks, and Svelte 4 patterns</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Detected</span>
+                        </div>
+
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #47848f, #2b6cb0);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Electron Development</div>
+                                <div class="np-picker-desc">Main/renderer process architecture, IPC communication, and native APIs</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Detected</span>
+                        </div>
+
+                        <div class="np-picker-card selected" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Tailwind CSS</div>
+                                <div class="np-picker-desc">Utility-first CSS framework, custom theme configuration, and responsive design</div>
+                            </div>
+                            <span class="np-picker-badge recommended">Detected</span>
+                        </div>
+                    </div>
+
+                    <div class="np-picker-section-label">Additional skills</div>
+                    <div class="np-picker-grid">
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">AI/LLM Integration</div>
+                                <div class="np-picker-desc">Prompt engineering, model API patterns, and streaming response handling</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Debugging & Testing</div>
+                                <div class="np-picker-desc">Vitest unit testing, Playwright E2E tests, and debugging strategies</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+
+                        <div class="np-picker-card" onclick="togglePicker(this)">
+                            <div class="np-picker-check">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="np-picker-info">
+                                <div class="np-picker-name">Security Best Practices</div>
+                                <div class="np-picker-desc">Secret management, input validation, CSP, and secure Electron patterns</div>
+                            </div>
+                            <span class="np-picker-badge optional">Optional</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="new-project-modal-footer">
@@ -1072,6 +1540,28 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
                         Back
                     </button>
+                    <button class="np-next-btn" onclick="goToStep(4)">
+                        Configure MCP
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+                <!-- Step 4 footer -->
+                <div id="npFooter4" style="display: none; align-items: center; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button class="np-back-btn" onclick="goToStep(3)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back
+                    </button>
+                    <button class="np-next-btn" onclick="goToStep(5)">
+                        Configure Skills
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+                <!-- Step 5 footer -->
+                <div id="npFooter5" style="display: none; align-items: center; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button class="np-back-btn" onclick="goToStep(4)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back
+                    </button>
                     <button class="np-create-btn" onclick="createProject()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         Create Project
@@ -1082,29 +1572,15 @@
     </div>
 
     <script>
-        const mockAnalysis = {
-            '/home/user/dev/my-project': {
-                name: 'My Project',
-                desc: 'A Node.js web application with Express backend and React frontend. Includes REST API endpoints, authentication middleware, and database integration.',
-                dir: '/home/user/dev/my-project',
-                lang: 'TypeScript / Node.js',
-                remote: 'github.com/user/my-project',
-                branch: 'main'
-            },
-            'default-path': {
-                name: '',
-                desc: '',
-                dir: '',
-                lang: 'Go',
-                remote: '',
-                branch: 'main'
-            },
-            'default-git': {
-                name: '',
-                desc: '',
-                dir: '',
-                lang: '',
-                remote: '',
+        let isFromGit = false;
+
+        const knownRepos = {
+            'github.com/kortex-hub/kortex': {
+                name: 'Kortex',
+                desc: 'An AI-powered developer desktop application built with Electron, TypeScript, and Svelte. Features chat-based AI interactions, MCP server management, and extension support via a modular monorepo.',
+                dir: '~/Dev/kortex',
+                lang: 'TypeScript / Svelte',
+                remote: 'github.com/kortex-hub/kortex',
                 branch: 'main'
             }
         };
@@ -1127,6 +1603,8 @@
 
         function deriveFromGit(url) {
             const cleaned = url.replace(/\.git$/, '').replace(/^https?:\/\//, '');
+            if (knownRepos[cleaned]) return { ...knownRepos[cleaned] };
+
             const parts = cleaned.split('/');
             const repoName = parts[parts.length - 1] || 'repo';
             const prettyName = repoName
@@ -1135,7 +1613,7 @@
             return {
                 name: prettyName,
                 desc: 'Cloned from remote repository. The project structure and dependencies will be analyzed after cloning.',
-                dir: '~/dev/' + repoName,
+                dir: '~/Dev/' + repoName,
                 lang: 'Detecting...',
                 remote: cleaned,
                 branch: 'main'
@@ -1147,6 +1625,7 @@
         }
 
         function openNewProjectModal() {
+            isFromGit = false;
             goToStep(1);
             document.getElementById('npPathInput').value = '';
             document.getElementById('npGitInput').value = '';
@@ -1169,25 +1648,79 @@
             document.querySelectorAll('.np-step').forEach(s => s.classList.remove('active'));
             document.getElementById('npStep' + n).classList.add('active');
 
-            document.getElementById('npFooter1').style.display = (n === 1) ? 'flex' : 'none';
-            document.getElementById('npFooter3').style.display = (n === 3) ? 'flex' : 'none';
+            [1, 3, 4, 5].forEach(f => {
+                const el = document.getElementById('npFooter' + f);
+                if (el) el.style.display = (f === n) ? 'flex' : 'none';
+            });
 
-            const titles = { 1: 'New Project', 2: 'Analyzing...', 3: 'Review Project' };
+            const titles = {
+                1: 'New Project',
+                2: 'Analyzing...',
+                3: 'Review Project',
+                4: 'MCP Servers',
+                5: 'Skills'
+            };
             document.getElementById('npModalTitle').textContent = titles[n] || 'New Project';
+
+            const stepper = document.getElementById('npStepper');
+            stepper.style.display = (n >= 1 && n !== 2) ? 'flex' : 'none';
+
+            updateStepper(n);
+        }
+
+        function updateStepper(currentStep) {
+            const stepMap = [
+                { ind: 'npStepInd1', line: null,          step: 1 },
+                { ind: 'npStepInd3', line: 'npStepLine1', step: 3 },
+                { ind: 'npStepInd4', line: 'npStepLine3', step: 4 },
+                { ind: 'npStepInd5', line: 'npStepLine4', step: 5 }
+            ];
+
+            stepMap.forEach(({ ind, line, step }) => {
+                const el = document.getElementById(ind);
+                el.classList.remove('active', 'done');
+                if (step < currentStep) el.classList.add('done');
+                else if (step === currentStep) el.classList.add('active');
+
+                if (line) {
+                    const lineEl = document.getElementById(line);
+                    lineEl.classList.toggle('done', step <= currentStep);
+                }
+            });
         }
 
         function analyzeProject() {
             goToStep(2);
+            document.getElementById('npStepper').style.display = 'none';
+
+            const analyzeTexts = [
+                'Cloning repository...',
+                'Scanning project structure...',
+                'Detecting languages and frameworks...',
+                'Analyzing dependencies...',
+                'Generating workspace configuration...'
+            ];
+            const textEl = document.querySelector('.np-analyzing-text');
+            let idx = 0;
+            const interval = setInterval(() => {
+                idx++;
+                if (idx < analyzeTexts.length) {
+                    textEl.textContent = analyzeTexts[idx];
+                }
+            }, 400);
 
             setTimeout(() => {
+                clearInterval(interval);
                 const pathVal = document.getElementById('npPathInput').value.trim();
                 const gitVal = document.getElementById('npGitInput').value.trim();
 
                 let info;
                 if (pathVal) {
+                    isFromGit = false;
                     info = deriveFromPath(pathVal);
                     document.getElementById('npDetectedSource').textContent = info.dir;
                 } else {
+                    isFromGit = true;
                     info = deriveFromGit(gitVal);
                     document.getElementById('npDetectedSource').textContent = info.remote;
                 }
@@ -1199,8 +1732,17 @@
                 document.getElementById('npDetectedRemote').textContent = info.remote;
                 document.getElementById('npDetectedBranch').textContent = info.branch;
 
+                const cloneSection = document.getElementById('npCloneSection');
+                if (isFromGit) {
+                    cloneSection.style.display = '';
+                    document.getElementById('npCloneDir').value = info.dir;
+                } else {
+                    cloneSection.style.display = 'none';
+                }
+
+                textEl.textContent = 'Analyzing project...';
                 goToStep(3);
-            }, 1400);
+            }, 2200);
         }
 
         function backToStep1() {
@@ -1211,9 +1753,17 @@
             closeNewProjectModal();
         }
 
+        function togglePicker(el) {
+            el.classList.toggle('selected');
+        }
+
         function simulateBrowse() {
             document.getElementById('npPathInput').value = '/home/user/dev/my-project';
             updateNextBtn();
+        }
+
+        function simulateCloneBrowse() {
+            document.getElementById('npCloneDir').value = '~/Dev/kortex';
         }
 
         function searchProjects(query) {
