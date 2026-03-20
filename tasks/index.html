@@ -147,6 +147,27 @@
             border: 1px solid rgba(139, 92, 246, 0.25);
         }
 
+        .task-item.needs-input {
+            background: rgba(96, 165, 250, 0.06);
+            border: 1px solid rgba(96, 165, 250, 0.18);
+            border-left: 3px solid #60a5fa;
+        }
+
+        .task-item.needs-input:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .task-item.needs-input.active {
+            background: rgba(96, 165, 250, 0.12);
+            border-color: rgba(96, 165, 250, 0.3);
+            border-left: 3px solid #60a5fa;
+        }
+
+        .task-item.needs-input .task-item-status-label {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
         .task-item-agent {
             width: 32px;
             height: 32px;
@@ -237,6 +258,43 @@
         .task-item-status-label {
             font-size: 11px;
             color: #9ca3af;
+        }
+
+        .task-item-git {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #6b7280;
+            overflow: hidden;
+        }
+
+        .task-item-git svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+            color: #f97316;
+            opacity: 0.7;
+        }
+
+        .task-item-git-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .task-item-git-project {
+            color: #9ca3af;
+        }
+
+        .task-item-git-sep {
+            color: #4b5563;
+            margin: 0 1px;
+        }
+
+        .task-item-git-branch {
+            color: #fdba74;
         }
 
         /* ── Center Panel: Conversation ── */
@@ -426,151 +484,383 @@
             border-radius: 3px;
         }
 
-        .task-msg {
+        /* ── Flow View ── */
+        .flow-prompt {
+            padding: 14px 16px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.18);
+            border-radius: 10px;
             margin-bottom: 20px;
-            max-width: 85%;
-        }
-
-        .task-msg.user {
-            margin-left: auto;
-        }
-
-        .task-msg.assistant {
-            margin-right: auto;
-        }
-
-        .task-msg-bubble {
-            padding: 12px 16px;
-            border-radius: 14px;
             font-size: 14px;
             line-height: 1.6;
-        }
-
-        .task-msg.user .task-msg-bubble {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-            color: #f3f4f6;
-            border-bottom-right-radius: 4px;
-        }
-
-        .task-msg.assistant .task-msg-bubble {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
             color: #e5e7eb;
-            border: 1px solid #3d3e4f;
-            border-bottom-left-radius: 4px;
         }
 
-        .task-msg-header {
+        .flow-prompt-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #8b5cf6;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .flow-prompt-label svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Plan / Progress tracker */
+        .flow-plan {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .flow-plan-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .flow-plan-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .flow-plan-progress {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
         }
 
-        .task-msg-avatar {
-            width: 24px;
-            height: 24px;
+        .flow-plan-bar {
+            width: 80px;
+            height: 4px;
+            background: #3d3e4f;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .flow-plan-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399, #10b981);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        .flow-plan-count {
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .flow-plan-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .flow-plan-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 8px;
             border-radius: 6px;
+            transition: background 0.12s;
+        }
+
+        .flow-plan-step:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .flow-plan-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .task-msg-avatar.claude {
-            background: linear-gradient(135deg, #d97706, #f59e0b);
+        .flow-plan-icon svg {
+            width: 11px;
+            height: 11px;
         }
 
-        .task-msg-avatar svg {
-            width: 14px;
-            height: 14px;
-            color: #fff;
+        .flow-plan-icon.done {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
         }
 
-        .task-msg-sender {
-            font-size: 12px;
+        .flow-plan-icon.running {
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+            animation: taskPulse 2s infinite;
+        }
+
+        .flow-plan-icon.queued {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px solid #3d3e4f;
+            color: transparent;
+        }
+
+        .flow-plan-step-text {
+            font-size: 13px;
+            color: #d1d5db;
+            flex: 1;
+        }
+
+        .flow-plan-step.is-done .flow-plan-step-text {
+            color: #6b7280;
+            text-decoration: line-through;
+            text-decoration-color: rgba(107, 114, 128, 0.4);
+        }
+
+        .flow-plan-step.is-running .flow-plan-step-text {
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .flow-plan-step.is-queued .flow-plan-step-text {
+            color: #6b7280;
+        }
+
+        .flow-plan-step-badge {
+            font-size: 10px;
             font-weight: 600;
-            color: #9ca3af;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            flex-shrink: 0;
         }
 
-        .task-msg-time {
-            font-size: 11px;
+        .flow-plan-step-badge.done {
+            background: rgba(52, 211, 153, 0.1);
+            color: #34d399;
+        }
+
+        .flow-plan-step-badge.running {
+            background: rgba(139, 92, 246, 0.12);
+            color: #a78bfa;
+        }
+
+        .flow-plan-step-badge.queued {
+            background: rgba(255, 255, 255, 0.04);
             color: #4b5563;
-            margin-top: 4px;
         }
 
-        /* Tool usage in conversation */
-        .task-tool-block {
-            margin: 8px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #3d3e4f;
+        .flow-step {
+            position: relative;
+            padding-left: 24px;
+            padding-bottom: 20px;
         }
 
-        .task-tool-header {
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 6px;
+            bottom: 0;
+            width: 1px;
+            background: #3d3e4f;
+        }
+
+        .flow-step:last-child::before {
+            display: none;
+        }
+
+        .flow-step-dot {
+            position: absolute;
+            left: 2px;
+            top: 5px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #3d3e4f;
+            border: 2px solid #1a1b23;
+        }
+
+        .flow-step-dot.done {
+            background: #34d399;
+        }
+
+        .flow-step-dot.active {
+            background: #fbbf24;
+            box-shadow: 0 0 6px rgba(251, 191, 36, 0.4);
+            animation: taskPulse 2s infinite;
+        }
+
+        .flow-summary {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d1d5db;
+            margin-bottom: 8px;
+        }
+
+        /* Collapsed tool call row */
+        .flow-tool {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: rgba(6, 182, 212, 0.08);
-            cursor: pointer;
+            gap: 7px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3d3e4f;
+            border-radius: 7px;
             font-size: 12px;
             color: #67e8f9;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.12s;
+            margin-bottom: 6px;
         }
 
-        .task-tool-header svg {
-            width: 14px;
-            height: 14px;
+        .flow-tool:hover {
+            background: rgba(6, 182, 212, 0.06);
+            border-color: rgba(6, 182, 212, 0.25);
         }
 
-        .task-tool-body {
-            padding: 10px 12px;
-            background: rgba(0, 0, 0, 0.2);
+        .flow-tool svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        .flow-tool-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .flow-tool-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .flow-tool-status.done {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+        }
+
+        .flow-tool-status.running {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+        }
+
+        .flow-tool-body {
+            display: none;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid #3d3e4f;
+            border-top: none;
+            border-radius: 0 0 7px 7px;
             font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: #9ca3af;
             line-height: 1.5;
-            max-height: 120px;
-            overflow-y: auto;
+            margin-top: -7px;
+            margin-bottom: 6px;
         }
 
-        /* File diff block */
-        .task-diff-block {
-            margin: 10px 0;
+        .flow-tool-body.expanded {
+            display: block;
+        }
+
+        /* File diff in flow */
+        .flow-diff {
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #3d3e4f;
             font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 12px;
+            font-size: 11px;
+            margin-bottom: 8px;
         }
 
-        .task-diff-header {
+        .flow-diff-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: rgba(139, 92, 246, 0.08);
+            gap: 7px;
+            padding: 7px 10px;
+            background: rgba(139, 92, 246, 0.06);
             color: #c4b5fd;
             font-weight: 500;
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        .task-diff-line {
+        .flow-diff-header svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .flow-diff-header .flow-diff-stats {
+            margin-left: auto;
+            display: flex;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .flow-diff-header .diff-adds { color: #34d399; }
+        .flow-diff-header .diff-dels { color: #f87171; }
+
+        .flow-diff-body {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .flow-diff-line {
             padding: 1px 12px;
             line-height: 1.6;
         }
 
-        .task-diff-line.add {
-            background: rgba(52, 211, 153, 0.1);
+        .flow-diff-line.add {
+            background: rgba(52, 211, 153, 0.08);
             color: #6ee7b7;
         }
 
-        .task-diff-line.remove {
-            background: rgba(248, 113, 113, 0.1);
+        .flow-diff-line.remove {
+            background: rgba(248, 113, 113, 0.08);
             color: #fca5a5;
         }
 
-        .task-diff-line.context {
-            color: #6b7280;
+        .flow-diff-line.ctx {
+            color: #4b5563;
+        }
+
+        /* Follow-up prompt in flow */
+        .flow-followup {
+            padding: 10px 14px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #e5e7eb;
+            margin-bottom: 20px;
+            margin-top: 4px;
+        }
+
+        .flow-followup-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #8b5cf6;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
         }
 
         /* Input Area */
@@ -647,6 +937,178 @@
 
         .task-input-btn.send:hover {
             box-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
+        }
+
+        .task-input-btn.voice {
+            color: #9ca3af;
+        }
+
+        .task-input-btn.voice:hover {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        .task-input-btn.voice.recording {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            animation: voicePulse 1.5s ease infinite;
+        }
+
+        @keyframes voicePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+        }
+
+        /* Voice recording overlay */
+        .voice-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border-radius: 14px;
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .voice-overlay.active {
+            display: flex;
+        }
+
+        .voice-visualizer {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 32px;
+        }
+
+        .voice-bar {
+            width: 3px;
+            border-radius: 2px;
+            background: #f87171;
+            animation: voiceBar 0.8s ease-in-out infinite alternate;
+        }
+
+        .voice-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .voice-bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+        .voice-bar:nth-child(3) { height: 24px; animation-delay: 0.2s; }
+        .voice-bar:nth-child(4) { height: 12px; animation-delay: 0.3s; }
+        .voice-bar:nth-child(5) { height: 20px; animation-delay: 0.15s; }
+        .voice-bar:nth-child(6) { height: 28px; animation-delay: 0.25s; }
+        .voice-bar:nth-child(7) { height: 10px; animation-delay: 0.05s; }
+        .voice-bar:nth-child(8) { height: 22px; animation-delay: 0.35s; }
+        .voice-bar:nth-child(9) { height: 14px; animation-delay: 0.12s; }
+        .voice-bar:nth-child(10) { height: 18px; animation-delay: 0.22s; }
+        .voice-bar:nth-child(11) { height: 8px; animation-delay: 0.08s; }
+        .voice-bar:nth-child(12) { height: 26px; animation-delay: 0.18s; }
+
+        @keyframes voiceBar {
+            0% { transform: scaleY(0.4); opacity: 0.5; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        .voice-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #e5e7eb;
+        }
+
+        .voice-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f87171;
+            animation: voicePulse 1.5s ease infinite;
+        }
+
+        .voice-timer {
+            font-size: 12px;
+            color: #6b7280;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .voice-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .voice-cancel-btn {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .voice-cancel-btn:hover {
+            background: rgba(248, 113, 113, 0.1);
+            border-color: rgba(248, 113, 113, 0.3);
+            color: #f87171;
+        }
+
+        .voice-stop-btn {
+            padding: 6px 14px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .voice-stop-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .voice-stop-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Transcribing state */
+        .voice-overlay.transcribing .voice-visualizer {
+            opacity: 0.3;
+        }
+
+        .voice-overlay.transcribing .voice-bar {
+            animation: none;
+            transform: scaleY(0.3);
+            opacity: 0.3;
+        }
+
+        .voice-transcribing-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .voice-overlay.transcribing .voice-transcribing-spinner {
+            display: block;
+        }
+
+        .voice-overlay.transcribing .voice-status-dot {
+            background: #8b5cf6;
+            animation: none;
         }
 
         .task-input-bottom {
@@ -1693,7 +2155,6 @@
                     <div class="tasks-section-label">Running</div>
 
                     <div class="task-item active" onclick="selectTask(this, 'refactor-auth')">
-                        <div class="task-item-agent claude">Cl</div>
                         <div class="task-item-body">
                             <div class="task-item-goal">Refactor authentication module to use JWT tokens</div>
                             <div class="task-item-meta">
@@ -1701,11 +2162,14 @@
                                 <span class="task-item-status-label">Running</span>
                                 <span class="task-item-time">12m</span>
                             </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">feat/jwt-auth</span></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="task-item" onclick="selectTask(this, 'add-dark-mode')">
-                        <div class="task-item-agent cursor">Cu</div>
                         <div class="task-item-body">
                             <div class="task-item-goal">Add dark mode toggle to settings page</div>
                             <div class="task-item-meta">
@@ -1713,11 +2177,14 @@
                                 <span class="task-item-status-label">Running</span>
                                 <span class="task-item-time">34m</span>
                             </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/frontend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">feat/dark-mode</span></span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="task-item" onclick="selectTask(this, 'fix-memory-leak')">
-                        <div class="task-item-agent goose">Go</div>
+                    <div class="task-item needs-input" onclick="selectTask(this, 'fix-memory-leak')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Fix memory leak in WebSocket connection handler</div>
                             <div class="task-item-meta">
@@ -1725,13 +2192,16 @@
                                 <span class="task-item-status-label">Waiting for input</span>
                                 <span class="task-item-time">1h</span>
                             </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/realtime-svc</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">fix/ws-memory-leak</span></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="tasks-section-label">Paused</div>
 
                     <div class="task-item" onclick="selectTask(this, 'api-docs')">
-                        <div class="task-item-agent claude">Cl</div>
                         <div class="task-item-body">
                             <div class="task-item-goal">Generate OpenAPI docs for REST endpoints</div>
                             <div class="task-item-meta">
@@ -1739,13 +2209,16 @@
                                 <span class="task-item-status-label">Paused</span>
                                 <span class="task-item-time">3h</span>
                             </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">docs/openapi-spec</span></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="tasks-section-label">Completed today</div>
 
                     <div class="task-item" onclick="selectTask(this, 'update-deps')">
-                        <div class="task-item-agent cursor">Cu</div>
                         <div class="task-item-body">
                             <div class="task-item-goal">Update npm dependencies and fix breaking changes</div>
                             <div class="task-item-meta">
@@ -1753,17 +2226,24 @@
                                 <span class="task-item-status-label">Completed</span>
                                 <span class="task-item-time">2h ago</span>
                             </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/frontend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">chore/update-deps</span></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="task-item" onclick="selectTask(this, 'dockerfile')">
-                        <div class="task-item-agent claude">Cl</div>
                         <div class="task-item-body">
                             <div class="task-item-goal">Create multi-stage Dockerfile for production</div>
                             <div class="task-item-meta">
                                 <div class="task-status-dot completed"></div>
                                 <span class="task-item-status-label">Completed</span>
                                 <span class="task-item-time">5h ago</span>
+                            </div>
+                            <div class="task-item-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span class="task-item-git-text"><span class="task-item-git-project">acme/backend</span><span class="task-item-git-sep">/</span><span class="task-item-git-branch">infra/docker-prod</span></span>
                             </div>
                         </div>
                     </div>
@@ -1793,66 +2273,74 @@
                     </div>
                 </div>
 
-                <!-- Context Bar -->
-                <div class="task-context-bar">
-                    <span class="context-bar-label">Context</span>
-                    <div class="context-pill file">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        src/auth/handler.ts
-                        <span class="context-pill-remove" onclick="removeContext(this)">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </span>
-                    </div>
-                    <div class="context-pill file">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        src/middleware/auth.ts
-                        <span class="context-pill-remove" onclick="removeContext(this)">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </span>
-                    </div>
-                    <div class="context-pill mcp">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        GitHub MCP
-                        <span class="context-pill-remove" onclick="removeContext(this)">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </span>
-                    </div>
-                    <div class="context-pill git">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                        feat/jwt-auth
-                        <span class="context-pill-remove" onclick="removeContext(this)">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Messages -->
+                <!-- Flow View -->
                 <div class="task-messages" id="taskMessages">
-                    <!-- User message -->
-                    <div class="task-msg user">
-                        <div class="task-msg-bubble">
-                            Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.
+
+                    <!-- Initial prompt -->
+                    <div class="flow-prompt">
+                        <div class="flow-prompt-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Your prompt
                         </div>
-                        <div class="task-msg-time">10:22 AM</div>
+                        Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.
                     </div>
 
-                    <!-- Assistant message with tool usage -->
-                    <div class="task-msg assistant">
-                        <div class="task-msg-header">
-                            <div class="task-msg-avatar claude">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <!-- Plan / Progress -->
+                    <div class="flow-plan">
+                        <div class="flow-plan-header">
+                            <div class="flow-plan-title">Plan</div>
+                            <div class="flow-plan-progress">
+                                <div class="flow-plan-bar"><div class="flow-plan-bar-fill" style="width: 60%"></div></div>
+                                <span class="flow-plan-count">3 / 5</span>
                             </div>
-                            <span class="task-msg-sender">Claude</span>
                         </div>
-                        <div class="task-msg-bubble">
-                            I'll analyze the current authentication setup and refactor it to use JWT tokens. Let me start by examining the existing code.
-
-                            <div class="task-tool-block">
-                                <div class="task-tool-header">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                                    Read file: src/auth/handler.ts
+                        <div class="flow-plan-steps">
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                                 </div>
-                                <div class="task-tool-body">export class AuthHandler {
+                                <span class="flow-plan-step-text">Analyze existing auth handler and middleware</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span class="flow-plan-step-text">Refactor auth handler to use JWT signing</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span class="flow-plan-step-text">Update middleware for Bearer token verification</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-running">
+                                <div class="flow-plan-icon running">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1.5s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <span class="flow-plan-step-text">Add refresh token endpoint with rotation</span>
+                                <span class="flow-plan-step-badge running">running</span>
+                            </div>
+                            <div class="flow-plan-step is-queued">
+                                <div class="flow-plan-icon queued"></div>
+                                <span class="flow-plan-step-text">Update route handlers and add tests</span>
+                                <span class="flow-plan-step-badge queued">queued</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Analyzed codebase -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Analyzed the existing authentication setup to understand the current session-based implementation.</div>
+                        <div class="flow-tool" onclick="toggleFlowTool(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="flow-tool-name">Read src/auth/handler.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                        <div class="flow-tool-body" id="flowTool1">export class AuthHandler {
   private sessionStore: SessionStore;
 
   async login(req: Request): Promise&lt;Response&gt; {
@@ -1860,84 +2348,75 @@
     return res.cookie('sid', session.id);
   }
 }</div>
-                            </div>
-
-                            I can see the current implementation uses session-based auth with cookies. I'll now refactor this to use JWT tokens with proper signing and verification.
+                        <div class="flow-tool" onclick="toggleFlowTool(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="flow-tool-name">Read src/middleware/auth.ts</span>
+                            <span class="flow-tool-status done">done</span>
                         </div>
-                        <div class="task-msg-time">10:22 AM</div>
+                        <div class="flow-tool" onclick="toggleFlowTool(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="flow-tool-name">Read src/routes/api.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
                     </div>
 
-                    <!-- Assistant message with file diff -->
-                    <div class="task-msg assistant">
-                        <div class="task-msg-header">
-                            <div class="task-msg-avatar claude">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <!-- Step 2: Refactored auth handler -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Replaced session-based login with JWT token signing. Added <code>jwtSecret</code> and <code>tokenExpiry</code> configuration.</div>
+                        <div class="flow-diff">
+                            <div class="flow-diff-header" onclick="toggleFlowDiff(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                src/auth/handler.ts
+                                <span class="flow-diff-stats">
+                                    <span class="diff-adds">+6</span>
+                                    <span class="diff-dels">-3</span>
+                                </span>
                             </div>
-                            <span class="task-msg-sender">Claude</span>
-                        </div>
-                        <div class="task-msg-bubble">
-                            Here are the changes to the auth handler:
-
-                            <div class="task-diff-block">
-                                <div class="task-diff-header">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                                    src/auth/handler.ts
-                                </div>
-                                <div class="task-diff-line remove">- private sessionStore: SessionStore;</div>
-                                <div class="task-diff-line add">+ private jwtSecret: string;</div>
-                                <div class="task-diff-line add">+ private tokenExpiry: string = '24h';</div>
-                                <div class="task-diff-line context">  </div>
-                                <div class="task-diff-line remove">-  async login(req: Request): Promise&lt;Response&gt; {</div>
-                                <div class="task-diff-line remove">-    const session = await this.sessionStore.create(req.body);</div>
-                                <div class="task-diff-line remove">-    return res.cookie('sid', session.id);</div>
-                                <div class="task-diff-line add">+  async login(req: Request): Promise&lt;Response&gt; {</div>
-                                <div class="task-diff-line add">+    const user = await this.validateCredentials(req.body);</div>
-                                <div class="task-diff-line add">+    const token = jwt.sign({ sub: user.id }, this.jwtSecret, {</div>
-                                <div class="task-diff-line add">+      expiresIn: this.tokenExpiry</div>
-                                <div class="task-diff-line add">+    });</div>
-                                <div class="task-diff-line add">+    return res.json({ token });</div>
-                            </div>
-
-                            I've also updated the middleware to verify JWT tokens from the Authorization header. Now updating the remaining route handlers...
-
-                            <div class="task-tool-block">
-                                <div class="task-tool-header">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                    Write file: src/middleware/auth.ts
-                                </div>
-                                <div class="task-tool-body">Updated JWT verification middleware with Bearer token parsing and proper error handling.</div>
-                            </div>
-                        </div>
-                        <div class="task-msg-time">10:24 AM</div>
-                    </div>
-
-                    <!-- User follow-up -->
-                    <div class="task-msg user">
-                        <div class="task-msg-bubble">
-                            Good, but also add refresh token support with a separate endpoint.
-                        </div>
-                        <div class="task-msg-time">10:25 AM</div>
-                    </div>
-
-                    <!-- Assistant working indicator -->
-                    <div class="task-msg assistant">
-                        <div class="task-msg-header">
-                            <div class="task-msg-avatar claude">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                            </div>
-                            <span class="task-msg-sender">Claude</span>
-                        </div>
-                        <div class="task-msg-bubble">
-                            Adding refresh token support. I'll create a separate <code>/auth/refresh</code> endpoint with rotating refresh tokens stored securely...
-
-                            <div class="task-tool-block">
-                                <div class="task-tool-header" style="color: #fbbf24;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    Writing src/auth/refresh.ts...
-                                </div>
+                            <div class="flow-diff-body">
+                                <div class="flow-diff-line remove">- private sessionStore: SessionStore;</div>
+                                <div class="flow-diff-line add">+ private jwtSecret: string;</div>
+                                <div class="flow-diff-line add">+ private tokenExpiry: string = '24h';</div>
+                                <div class="flow-diff-line ctx"> </div>
+                                <div class="flow-diff-line remove">-   const session = await this.sessionStore.create(req.body);</div>
+                                <div class="flow-diff-line remove">-   return res.cookie('sid', session.id);</div>
+                                <div class="flow-diff-line add">+   const user = await this.validateCredentials(req.body);</div>
+                                <div class="flow-diff-line add">+   const token = jwt.sign({ sub: user.id }, this.jwtSecret, {</div>
+                                <div class="flow-diff-line add">+     expiresIn: this.tokenExpiry</div>
+                                <div class="flow-diff-line add">+   });</div>
+                                <div class="flow-diff-line add">+   return res.json({ token });</div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Step 3: Updated middleware -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Updated the auth middleware to verify JWT tokens from the <code>Authorization: Bearer</code> header instead of reading session cookies.</div>
+                        <div class="flow-tool" onclick="toggleFlowTool(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="flow-tool-name">Edited src/middleware/auth.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                    </div>
+
+                    <!-- Follow-up prompt -->
+                    <div class="flow-followup">
+                        <div class="flow-followup-label">Follow-up</div>
+                        Good, but also add refresh token support with a separate endpoint.
+                    </div>
+
+                    <!-- Step 4: Adding refresh token (in progress) -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot active"></div>
+                        <div class="flow-summary">Adding refresh token support with a dedicated <code>/auth/refresh</code> endpoint and rotating token strategy...</div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span class="flow-tool-name">Writing src/auth/refresh.ts</span>
+                            <span class="flow-tool-status running">running</span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Input Area -->
@@ -1987,11 +2466,45 @@
                         <button class="task-input-btn" title="Attach context" onclick="toggleAttachMenu()">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         </button>
-                        <textarea class="task-input-field" placeholder="Describe your goal or type @ to attach context..." rows="1" oninput="handleInput(this)" onkeydown="handleKeydown(event)"></textarea>
+                        <textarea class="task-input-field" id="taskInputField" placeholder="Describe your goal or type @ to attach context..." rows="1" oninput="handleInput(this)" onkeydown="handleKeydown(event)"></textarea>
                         <div class="task-input-actions">
+                            <button class="task-input-btn voice" id="voiceBtn" title="Voice input" onclick="startVoiceRecording()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                            </button>
                             <button class="task-input-btn send" title="Send">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                             </button>
+                        </div>
+
+                        <!-- Voice recording overlay -->
+                        <div class="voice-overlay" id="voiceOverlay">
+                            <div class="voice-visualizer">
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                                <div class="voice-bar"></div>
+                            </div>
+                            <div class="voice-status">
+                                <div class="voice-status-dot"></div>
+                                <span id="voiceStatusText">Listening...</span>
+                                <div class="voice-transcribing-spinner"></div>
+                            </div>
+                            <div class="voice-timer" id="voiceTimer">0:00</div>
+                            <div class="voice-actions">
+                                <button class="voice-cancel-btn" onclick="cancelVoiceRecording()">Cancel</button>
+                                <button class="voice-stop-btn" onclick="stopVoiceRecording()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                                    Stop &amp; transcribe
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="task-input-bottom">
@@ -2008,7 +2521,7 @@
             <!-- Right Panel: Task Context -->
             <div class="tasks-right-panel" id="rightPanel">
                 <div class="right-panel-header">
-                    <span class="right-panel-title">Task Context</span>
+                    <span class="right-panel-title">Agent Details</span>
                     <button class="right-panel-close" onclick="toggleRightPanel()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
@@ -2434,6 +2947,18 @@
             if (e.key === 'Escape') closeNewAgentModal();
         });
 
+        function toggleFlowTool(el) {
+            const body = el.nextElementSibling;
+            if (body && body.classList.contains('flow-tool-body')) {
+                body.classList.toggle('expanded');
+            }
+        }
+
+        function toggleFlowDiff(el) {
+            const body = el.nextElementSibling;
+            if (body) body.style.display = body.style.display === 'none' ? 'block' : 'none';
+        }
+
         function pauseTask() {}
         function stopTask() {}
         function toggleAttachMenu() {
@@ -2442,6 +2967,61 @@
         }
         function toggleModelSelector() {}
         function openAssetPicker() {}
+
+        // Voice recording mock
+        let voiceTimerInterval = null;
+        let voiceSeconds = 0;
+
+        function startVoiceRecording() {
+            const overlay = document.getElementById('voiceOverlay');
+            const btn = document.getElementById('voiceBtn');
+            overlay.classList.add('active');
+            overlay.classList.remove('transcribing');
+            btn.classList.add('recording');
+            document.getElementById('voiceStatusText').textContent = 'Listening...';
+            voiceSeconds = 0;
+            updateVoiceTimer();
+            voiceTimerInterval = setInterval(() => {
+                voiceSeconds++;
+                updateVoiceTimer();
+            }, 1000);
+        }
+
+        function updateVoiceTimer() {
+            const m = Math.floor(voiceSeconds / 60);
+            const s = voiceSeconds % 60;
+            document.getElementById('voiceTimer').textContent = m + ':' + String(s).padStart(2, '0');
+        }
+
+        function cancelVoiceRecording() {
+            clearInterval(voiceTimerInterval);
+            document.getElementById('voiceOverlay').classList.remove('active', 'transcribing');
+            document.getElementById('voiceBtn').classList.remove('recording');
+        }
+
+        function stopVoiceRecording() {
+            clearInterval(voiceTimerInterval);
+            const overlay = document.getElementById('voiceOverlay');
+            overlay.classList.add('transcribing');
+            document.getElementById('voiceStatusText').textContent = 'Transcribing...';
+            document.getElementById('voiceBtn').classList.remove('recording');
+
+            setTimeout(() => {
+                overlay.classList.remove('active', 'transcribing');
+                const field = document.getElementById('taskInputField');
+                const transcribed = 'Also add refresh token rotation and make sure the tokens are stored securely using httpOnly cookies.';
+                typeText(field, transcribed, 0);
+            }, 2000);
+        }
+
+        function typeText(el, text, i) {
+            if (i <= text.length) {
+                el.value = text.substring(0, i);
+                el.style.height = 'auto';
+                el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+                setTimeout(() => typeText(el, text, i + 1), 18);
+            }
+        }
     </script>
 </body>
 </html>
