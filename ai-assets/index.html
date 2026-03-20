@@ -971,12 +971,59 @@
             padding: 8px 0 0;
             margin-top: 8px;
             border-top: 1px solid rgba(61, 62, 79, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .assets-section-header:first-child {
             border-top: none;
             margin-top: 0;
         }
+
+        .section-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header-link {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            text-transform: none;
+            letter-spacing: 0;
+            transition: color 0.15s;
+        }
+
+        .section-header-link:hover { color: #c4b5fd; }
+
+        .section-create-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #8b5cf6;
+            text-decoration: none;
+            text-transform: none;
+            letter-spacing: 0;
+            padding: 3px 10px;
+            border-radius: 6px;
+            border: 1px dashed rgba(139, 92, 246, 0.3);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .section-create-btn:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            color: #c4b5fd;
+        }
+
+        .section-create-btn svg { width: 12px; height: 12px; }
     </style>
 </head>
 <body class="ai-assets-page">
@@ -1153,7 +1200,15 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                 <input type="text" placeholder="Search assets..." oninput="searchAssets(this.value)">
                             </div>
-                            <button class="assets-import-btn">
+                            <a href="../knowledges/index.html" class="assets-import-btn" id="createKbBtn" style="display:none; text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Knowledge Base
+                            </a>
+                            <a href="../skills/index.html" class="assets-import-btn" id="createSkillBtn" style="display:none; text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Skill
+                            </a>
+                            <button class="assets-import-btn" id="importBtn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                 Import
                             </button>
@@ -1172,7 +1227,12 @@
                     <!-- Asset Cards Grid -->
                     <div class="assets-grid" id="assetsGrid">
                         <!-- MCP / Tools -->
-                        <div class="assets-section-header" data-type="mcp">Tools (MCP Servers)</div>
+                        <div class="assets-section-header" data-type="mcp">
+                            <span>Tools (MCP Servers)</span>
+                            <div class="section-header-actions">
+                                <a href="../mcp/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
 
                         <div class="asset-card" data-type="mcp" data-source="prebuilt" onclick="openAssetDetail('github-mcp')">
                             <div class="asset-card-header">
@@ -1305,7 +1365,16 @@
                         </div>
 
                         <!-- Skills -->
-                        <div class="assets-section-header" data-type="skill">Skills</div>
+                        <div class="assets-section-header" data-type="skill">
+                            <span>Skills</span>
+                            <div class="section-header-actions">
+                                <a href="../skills/index.html" class="section-create-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    New Skill
+                                </a>
+                                <a href="../skills/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
 
                         <div class="asset-card" data-type="skill" data-source="prebuilt" onclick="openAssetDetail('kubernetes-skill')">
                             <div class="asset-card-header">
@@ -1396,7 +1465,16 @@
                         </div>
 
                         <!-- Knowledge -->
-                        <div class="assets-section-header" data-type="knowledge">Knowledge Bases</div>
+                        <div class="assets-section-header" data-type="knowledge">
+                            <span>Knowledge Bases</span>
+                            <div class="section-header-actions">
+                                <a href="../knowledges/index.html" class="section-create-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    New Knowledge Base
+                                </a>
+                                <a href="../knowledges/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
 
                         <div class="asset-card" data-type="knowledge" data-source="local" onclick="openAssetDetail('api-docs-kb')">
                             <div class="asset-card-header">
@@ -1734,18 +1812,22 @@
             labelEl.querySelector('.assets-active-label-text').textContent = label.text;
             labelEl.querySelector('.assets-active-label-count').textContent = '(' + label.count + ')';
 
+            document.getElementById('createKbBtn').style.display = cat === 'knowledge' ? '' : 'none';
+            document.getElementById('createSkillBtn').style.display = cat === 'skill' ? '' : 'none';
+            document.getElementById('importBtn').style.display = (cat === 'knowledge' || cat === 'skill') ? 'none' : '';
+
             const cards = document.querySelectorAll('.asset-card');
             const headers = document.querySelectorAll('.assets-section-header');
 
             if (cat === 'all') {
                 cards.forEach(c => c.style.display = '');
-                headers.forEach(h => h.style.display = '');
+                headers.forEach(h => h.style.display = 'flex');
             } else {
                 cards.forEach(c => {
                     c.style.display = c.dataset.type === cat ? '' : 'none';
                 });
                 headers.forEach(h => {
-                    h.style.display = h.dataset.type === cat ? '' : 'none';
+                    h.style.display = h.dataset.type === cat ? 'flex' : 'none';
                 });
             }
         }
@@ -1837,7 +1919,13 @@
         function searchAssets(query) {}
 
         function openAssetDetail(id) {
-            window.location.href = 'details.html?id=' + id;
+            if (id.endsWith('-skill')) {
+                window.location.href = '../skills/details.html?id=' + id;
+            } else if (id.endsWith('-kb')) {
+                window.location.href = '../knowledges/details.html?env=' + id;
+            } else {
+                window.location.href = 'details.html?id=' + id;
+            }
         }
     </script>
 </body>
