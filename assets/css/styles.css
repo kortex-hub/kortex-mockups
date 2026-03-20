@@ -5811,3 +5811,17 @@ body.openshift-connected tr.internal-asset {
 body.openshift-connected .tab.internal-tab {
     display: inline-flex;
 }
+
+/* ── Tasks Page: full-bleed three-panel layout ── */
+body.tasks-page .main-content {
+    padding: 0;
+}
+
+body.tasks-page .main-content > .header {
+    display: none;
+}
+
+/* ── AI Assets Page ── */
+body.ai-assets-page .content {
+    padding: 32px 48px;
+}

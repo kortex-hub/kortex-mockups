@@ -921,6 +921,22 @@
                                 </div>
                             </button>
 
+                            <button class="cli-demo-btn" onclick="runDemo('sub-agents-openshift')">
+                                <div class="cli-demo-btn-icon" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="8" r="4"/>
+                                        <circle cx="5" cy="19" r="3"/>
+                                        <circle cx="19" cy="19" r="3"/>
+                                        <line x1="12" y1="12" x2="5" y2="16"/>
+                                        <line x1="12" y1="12" x2="19" y2="16"/>
+                                    </svg>
+                                </div>
+                                <div class="cli-demo-btn-content">
+                                    <div class="cli-demo-btn-title">Build with Sub-Agents on OpenShift</div>
+                                    <div class="cli-demo-btn-desc">Claude Code spawns parallel sub-agents to build an app faster</div>
+                                </div>
+                            </button>
+
                             <button class="cli-demo-btn" onclick="runDemo('openshift-connect')">
                                 <div class="cli-demo-btn-icon" style="background: rgba(238, 68, 51, 0.15); color: #ee4433;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -3358,6 +3374,220 @@
             cliInput.focus();
         }
 
+        async function runSubAgentsDemo() {
+            const tab = getCurrentTab();
+            const cliInput = getCliInput();
+            const terminalBody = getTerminalBody();
+
+            if (tab.isProcessing) return;
+            tab.isProcessing = true;
+            updateTab(activeTabId, { status: 'running' });
+
+            const enterHint = '<span style="color: #67e8f9; font-style: italic;">  ↵ Press Enter to continue...</span>';
+
+            // ── Step 1: kortex init ──
+            const cmd1 = 'kortex init --name my-project --agent claude-code';
+            cliInput.disabled = false;
+            await typeCommand(cmd1);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+
+            addOutput(`~/slemeur $ ${cmd1}`);
+            addOutput('');
+
+            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            await sleep(500);
+            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/slemeur/my-project';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
+            await sleep(600);
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at ./.kortex/';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
+            await sleep(1000);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Starting Claude Code agent...', 'info');
+            await sleep(900);
+            terminalBody.lastChild.innerHTML = '✓ Claude Code agent initialized';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutputHTML('<span class="spinner"></span>Connecting to Sonnet 4...', 'info');
+            await sleep(800);
+            terminalBody.lastChild.innerHTML = '✓ Connected to Sonnet 4';
+            terminalBody.lastChild.className = 'cli-output-line success';
+
+            addOutput('');
+            addOutput('Initialized workspace WKS_7X8K2M9N with name my-project', 'success');
+            addOutput('');
+            addOutput('  Workspace ID:    WKS_7X8K2M9N', 'info');
+            addOutput('  Name:            my-project', 'info');
+            addOutput('  Agent:           Claude Code (Anthropic)', 'info');
+            addOutput('  Directory:       ~/slemeur/my-project', 'info');
+            addOutput('  Configuration:   ./.kortex/', 'info');
+            addOutput('');
+            addOutput('Attaching to workspace session...', 'muted');
+            await sleep(1200);
+
+            // ── Step 2: Jump directly into Claude Code ──
+            clearTerminal();
+            updateTab(activeTabId, { name: 'claude-code: my-project', type: 'claude-code' });
+
+            const promptEl = getPromptEl();
+            if (promptEl) {
+                promptEl.textContent = '>';
+                promptEl.style.color = '#f59e0b';
+            }
+            getCurrentTab().promptText = '>';
+            getCurrentTab().promptColor = '#f59e0b';
+
+            addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
+            addOutput('│                                                                                │');
+            addOutputHTML(`│   <span style="color: #e5e7eb;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
+            addOutputHTML(`│                                    <span style="color: #9ca3af;">Run /init to create a CLAUDE.md file with</span>    │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #9ca3af;">instructions for Claude</span>                        │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #9ca3af;">Run /install-github-app to tag @claude right</span>  │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #9ca3af;">from your Github issues and PRs</span>                │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
+            addOutputHTML(`│                                    <span style="color: #9ca3af;">• Refactored UserService component</span>             │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Sonnet 4 · Claude Max</span>           <span style="color: #9ca3af;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #9ca3af;">• Added unit tests for API endpoints</span>           │`);
+            addOutput('│                                                                                │');
+            addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+
+            window.claudeCodeMode = true;
+
+            // ── Step 3: Type the user prompt ──
+            const userPrompt = 'Build a new inventory management API that will run on OpenShift. Use the product spec in docs/spec.md as the reference.';
+            cliInput.disabled = false;
+            await typeCommand(userPrompt);
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+            cliInput.disabled = true;
+            cliInput.value = '';
+
+            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">❯</span> <span style="color: #e5e7eb;">${userPrompt}</span>`);
+            addOutput('');
+
+            // ── Step 4: Claude Code responds — reading the spec first ──
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">I\'ll build the inventory management API for OpenShift. Let me start by reading the spec.</span>');
+            addOutput('');
+            await sleep(800);
+
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #67e8f9;">Read</span> <span style="color: #6b7280;">docs/spec.md</span>');
+            await sleep(600);
+
+            addOutputHTML('  <span style="color: #6b7280;"># Inventory Management API</span>');
+            addOutputHTML('  <span style="color: #6b7280;">## Requirements</span>');
+            addOutputHTML('  <span style="color: #6b7280;">- REST API with CRUD operations for products, warehouses, stock levels</span>');
+            addOutputHTML('  <span style="color: #6b7280;">- OAuth2 authentication with OpenShift service accounts</span>');
+            addOutputHTML('  <span style="color: #6b7280;">- PostgreSQL storage, Redis caching</span>');
+            addOutputHTML('  <span style="color: #6b7280;">- OpenShift deployment with Helm chart</span>');
+            addOutputHTML('  <span style="color: #6b7280;">- 90%+ test coverage target</span>');
+            addOutput('');
+            await sleep(500);
+
+            // Claude decides to spawn sub-agents
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">This is a substantial project with independent concerns. I\'ll spin up sub-agents to work on these in parallel so we can move faster.</span>');
+            addOutput('');
+            await sleep(600);
+
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+
+            // Spawning sub-agents — Claude Code's own decision
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #c4b5fd; font-weight: 500;">Task</span> <span style="color: #9ca3af;">Starting 3 sub-agents on OpenShift...</span>');
+            addOutput('');
+            await sleep(500);
+
+            addOutputHTML('  <span style="color: #67e8f9;">┌─ Sub-agent 1 · </span><span style="color: #e5e7eb; font-weight: 500;">Spec & Data Models</span> <span style="color: #6b7280;">pod/kortex-sub-a3f8 (Running)</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;">"Analyze docs/spec.md and create database schemas, data models,</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;"> and OpenAPI specification for all endpoints"</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>');
+            await sleep(500);
+            addOutputHTML('  <span style="color: #a78bfa;">┌─ Sub-agent 2 · </span><span style="color: #e5e7eb; font-weight: 500;">Authentication</span> <span style="color: #6b7280;">pod/kortex-sub-b7e1 (Running)</span>');
+            addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;">"Implement OAuth2 auth layer with OpenShift service account</span>');
+            addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;"> integration, JWT validation middleware, and RBAC policies"</span>');
+            addOutputHTML('  <span style="color: #a78bfa;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
+            addOutputHTML('  <span style="color: #a78bfa;">│</span>');
+            await sleep(500);
+            addOutputHTML('  <span style="color: #6ee7b7;">┌─ Sub-agent 3 · </span><span style="color: #e5e7eb; font-weight: 500;">Application & Deployment</span> <span style="color: #6b7280;">pod/kortex-sub-c9d2 (Running)</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;">"Build the Express.js API with route handlers, service layer,</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;"> Postgres/Redis clients, and Helm chart for OpenShift"</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
+            addOutput('');
+            await sleep(1000);
+
+            addOutputHTML(enterHint);
+            await waitForEnter();
+            terminalBody.lastChild.remove();
+
+            // Sub-agent 1 completes
+            addOutputHTML('  <span style="color: #67e8f9;">└─ Sub-agent 1 · Spec & Data Models</span> <span style="color: #22c55e;">✓ Completed</span> <span style="color: #6b7280;">(8.2s)</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: src/models/product.ts, src/models/warehouse.ts, src/models/stock.ts</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: db/migrations/001_initial_schema.sql, docs/openapi.yaml</span>');
+            await sleep(600);
+
+            // Sub-agent 2 completes
+            addOutputHTML('  <span style="color: #a78bfa;">└─ Sub-agent 2 · Authentication</span> <span style="color: #22c55e;">✓ Completed</span> <span style="color: #6b7280;">(9.7s)</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: src/auth/oauth2.ts, src/middleware/jwt.ts, src/auth/rbac.ts</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: src/auth/__tests__/oauth2.test.ts, config/service-account.yaml</span>');
+            await sleep(600);
+
+            // Sub-agent 3 completes
+            addOutputHTML('  <span style="color: #6ee7b7;">└─ Sub-agent 3 · Application & Deployment</span> <span style="color: #22c55e;">✓ Completed</span> <span style="color: #6b7280;">(11.4s)</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: src/routes/*.ts, src/services/*.ts, src/clients/postgres.ts</span>');
+            addOutputHTML('    <span style="color: #6b7280;">Created: helm/Chart.yaml, helm/values.yaml, helm/templates/*.yaml</span>');
+            addOutput('');
+            await sleep(500);
+
+            // Claude integrates the results
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">All three sub-agents finished. Let me integrate their work and wire everything together.</span>');
+            addOutput('');
+            await sleep(500);
+
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #22c55e;">Write</span> <span style="color: #6b7280;">src/app.ts</span> <span style="color: #6b7280;">— wiring routes, auth middleware, and database clients</span>');
+            await sleep(400);
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #22c55e;">Write</span> <span style="color: #6b7280;">Dockerfile</span> <span style="color: #6b7280;">— multi-stage build targeting OpenShift</span>');
+            await sleep(300);
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #67e8f9;">Shell</span> <span style="color: #6b7280;">npm test -- --coverage</span>');
+            await sleep(500);
+            addOutputHTML('  <span style="color: #22c55e;">Tests:    42 passed, 0 failed</span>');
+            addOutputHTML('  <span style="color: #22c55e;">Coverage: 94.2% statements</span>');
+            addOutput('');
+            await sleep(500);
+
+            // Final summary from Claude
+            addOutputHTML(`<span style="color: #f59e0b;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Inventory Management API built and ready for OpenShift</span>                       │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">3 sub-agents ran in parallel on OpenShift pods (11.4s wall time)</span>             │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">42 tests passing, 94.2% coverage</span>                                            │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Project structure: 28 files across src/, db/, helm/, docs/</span>                    │`);
+            addOutputHTML(`│   <span style="color: #9ca3af;">Deploy with:</span> <span style="color: #67e8f9;">helm install inventory-api ./helm -n my-project</span>                   │`);
+            addOutputHTML(`│                                                                                │`);
+            addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
+            addOutput('');
+            addOutput('  What would you like me to work on next?', 'muted');
+            addOutput('');
+
+            tab.isProcessing = false;
+            updateTab(activeTabId, { status: 'idle' });
+            cliInput.disabled = false;
+            cliInput.focus();
+        }
+
         async function runDevSpacesWorkspaceDemo() {
             const terminalBody = getTerminalBody();
 
@@ -4014,6 +4244,9 @@
             switch (demoId) {
                 case 'workspace-exploration':
                     await runWorkspaceExplorationDemo();
+                    return;
+                case 'sub-agents-openshift':
+                    await runSubAgentsDemo();
                     return;
                 case 'openshift-connect':
                     command = 'kortex openshift connect';

@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Tasks</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .tasks-layout {
+            display: flex;
+            flex: 1;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── Left Panel: Task List ── */
+        .tasks-left-panel {
+            width: 300px;
+            min-width: 260px;
+            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
+            border-right: 1px solid #3d3e4f;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tasks-left-header {
+            padding: 20px 16px 12px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .tasks-left-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .tasks-left-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .new-task-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .new-task-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .new-task-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .tasks-filters {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .tasks-filter-btn {
+            flex: 1;
+            padding: 6px 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tasks-filter-btn.active {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c4b5fd;
+        }
+
+        .tasks-filter-btn:hover:not(.active) {
+            color: #9ca3af;
+        }
+
+        .tasks-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .tasks-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .tasks-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .tasks-list::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 3px;
+        }
+
+        .tasks-section-label {
+            padding: 10px 10px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+            position: relative;
+        }
+
+        .task-item:hover {
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .task-item.active {
+            background: rgba(139, 92, 246, 0.14);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+
+        .task-item-agent {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .task-item-agent.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #fff;
+        }
+
+        .task-item-agent.cursor {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #fff;
+        }
+
+        .task-item-agent.goose {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #fff;
+        }
+
+        .task-item-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-item-goal {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .task-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .task-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .task-status-dot.running {
+            background: #34d399;
+            box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
+            animation: taskPulse 2s infinite;
+        }
+
+        .task-status-dot.paused {
+            background: #fbbf24;
+        }
+
+        .task-status-dot.completed {
+            background: #6b7280;
+        }
+
+        .task-status-dot.waiting {
+            background: #60a5fa;
+            animation: taskPulse 2.5s infinite;
+        }
+
+        @keyframes taskPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .task-item-time {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .task-item-status-label {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        /* ── Center Panel: Conversation ── */
+        .tasks-center-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0f0f14;
+            min-width: 0;
+        }
+
+        .task-conv-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1a1b23 0%, #1e1f2b 100%);
+            border-bottom: 1px solid #3d3e4f;
+            min-height: 56px;
+        }
+
+        .task-conv-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-conv-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-conv-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .task-conv-status.running {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .task-conv-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .task-conv-action-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .task-conv-action-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            color: #e5e7eb;
+        }
+
+        .task-conv-action-btn.active {
+            background: rgba(139, 92, 246, 0.25);
+            color: #c4b5fd;
+        }
+
+        /* Context Bar */
+        .task-context-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 24px;
+            background: rgba(139, 92, 246, 0.04);
+            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            flex-wrap: wrap;
+        }
+
+        .context-bar-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-right: 4px;
+        }
+
+        .context-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: default;
+            transition: all 0.15s ease;
+        }
+
+        .context-pill svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .context-pill .context-pill-remove {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.15s;
+            margin-left: 2px;
+        }
+
+        .context-pill .context-pill-remove:hover {
+            opacity: 1;
+        }
+
+        .context-pill.file {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .context-pill.knowledge {
+            background: rgba(16, 185, 129, 0.12);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .context-pill.mcp {
+            background: rgba(6, 182, 212, 0.12);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .context-pill.git {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fdba74;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .context-pill.profile {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        /* Messages */
+        .task-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+
+        .task-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .task-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .task-messages::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
+        }
+
+        .task-msg {
+            margin-bottom: 20px;
+            max-width: 85%;
+        }
+
+        .task-msg.user {
+            margin-left: auto;
+        }
+
+        .task-msg.assistant {
+            margin-right: auto;
+        }
+
+        .task-msg-bubble {
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .task-msg.user .task-msg-bubble {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            color: #f3f4f6;
+            border-bottom-right-radius: 4px;
+        }
+
+        .task-msg.assistant .task-msg-bubble {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            color: #e5e7eb;
+            border: 1px solid #3d3e4f;
+            border-bottom-left-radius: 4px;
+        }
+
+        .task-msg-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .task-msg-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .task-msg-avatar.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .task-msg-avatar svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+        }
+
+        .task-msg-sender {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+
+        .task-msg-time {
+            font-size: 11px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+
+        /* Tool usage in conversation */
+        .task-tool-block {
+            margin: 8px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #3d3e4f;
+        }
+
+        .task-tool-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(6, 182, 212, 0.08);
+            cursor: pointer;
+            font-size: 12px;
+            color: #67e8f9;
+            font-weight: 500;
+        }
+
+        .task-tool-header svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .task-tool-body {
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        /* File diff block */
+        .task-diff-block {
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #3d3e4f;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+        }
+
+        .task-diff-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(139, 92, 246, 0.08);
+            color: #c4b5fd;
+            font-weight: 500;
+        }
+
+        .task-diff-line {
+            padding: 1px 12px;
+            line-height: 1.6;
+        }
+
+        .task-diff-line.add {
+            background: rgba(52, 211, 153, 0.1);
+            color: #6ee7b7;
+        }
+
+        .task-diff-line.remove {
+            background: rgba(248, 113, 113, 0.1);
+            color: #fca5a5;
+        }
+
+        .task-diff-line.context {
+            color: #6b7280;
+        }
+
+        /* Input Area */
+        .task-input-area {
+            padding: 16px 24px 20px;
+            border-top: 1px solid #3d3e4f;
+            background: linear-gradient(0deg, #1a1b23 0%, #151620 100%);
+        }
+
+        .task-input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 10px 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .task-input-wrapper:focus-within {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .task-input-field {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #e5e7eb;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            min-height: 22px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .task-input-field::placeholder {
+            color: #4b5563;
+        }
+
+        .task-input-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .task-input-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .task-input-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+        }
+
+        .task-input-btn.send {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .task-input-btn.send:hover {
+            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
+        }
+
+        .task-input-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0 4px;
+        }
+
+        .task-input-hint {
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        .task-input-hint kbd {
+            padding: 1px 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 10px;
+        }
+
+        .task-model-selector {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            color: #9ca3af;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .task-model-selector:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            color: #c4b5fd;
+        }
+
+        .task-model-selector svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ── Right Panel: Task Context (collapsible) ── */
+        .tasks-right-panel {
+            width: 340px;
+            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
+            border-left: 1px solid #3d3e4f;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: width 0.25s ease, opacity 0.2s ease;
+        }
+
+        .tasks-right-panel.collapsed {
+            width: 0;
+            min-width: 0;
+            border-left: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .right-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .right-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .right-panel-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .right-panel-close:hover {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+        }
+
+        .right-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 18px;
+        }
+
+        .right-panel-body::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .right-panel-body::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 3px;
+        }
+
+        .rp-section {
+            margin-bottom: 20px;
+        }
+
+        .rp-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .rp-goal-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #e5e7eb;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .rp-goal-input:focus {
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        .rp-agent-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .rp-agent-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .rp-agent-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .rp-agent-info {
+            flex: 1;
+        }
+
+        .rp-agent-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .rp-agent-model {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 1px;
+        }
+
+        .rp-agent-change {
+            font-size: 11px;
+            color: #8b5cf6;
+            cursor: pointer;
+        }
+
+        .rp-asset-category {
+            margin-bottom: 12px;
+        }
+
+        .rp-asset-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .rp-asset-category-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .rp-asset-category-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rp-asset-category-icon svg {
+            width: 11px;
+            height: 11px;
+        }
+
+        .rp-asset-category-icon.skill { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; }
+        .rp-asset-category-icon.mcp { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
+        .rp-asset-category-icon.knowledge { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+        .rp-asset-category-icon.profile { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+
+        .rp-asset-category-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            letter-spacing: 0.02em;
+        }
+
+        .rp-asset-category-count {
+            font-size: 10px;
+            color: #4b5563;
+            margin-left: auto;
+        }
+
+        .rp-asset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .rp-asset-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #d1d5db;
+            cursor: default;
+            transition: background 0.15s;
+        }
+
+        .rp-asset-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .rp-asset-item svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .rp-asset-item-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rp-asset-item-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .rp-asset-item-badge.active {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .rp-asset-item-badge.available {
+            background: rgba(107, 114, 128, 0.15);
+            color: #6b7280;
+        }
+
+        .rp-assets-footer {
+            margin-top: 10px;
+        }
+
+        .rp-add-asset {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            border: 1px dashed #3d3e4f;
+            background: none;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .rp-add-asset:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            color: #c4b5fd;
+        }
+
+        .rp-file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #9ca3af;
+            transition: background 0.15s;
+        }
+
+        .rp-file-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .rp-file-item svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .rp-file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .rp-file-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .rp-file-badge.modified {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .rp-file-badge.added {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .rp-git-branch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(249, 115, 22, 0.15);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #fdba74;
+            margin-bottom: 8px;
+        }
+
+        .rp-git-branch svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .rp-git-commit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .rp-git-hash {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* @ Mention Dropdown */
+        .mention-dropdown {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 14px;
+            right: 14px;
+            margin-bottom: 6px;
+            background: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .mention-dropdown.visible {
+            display: block;
+        }
+
+        .mention-section-label {
+            padding: 8px 14px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .mention-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .mention-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .mention-item-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mention-item-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .mention-item-icon.file { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+        .mention-item-icon.knowledge { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+        .mention-item-icon.mcp { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
+        .mention-item-icon.git { background: rgba(249, 115, 22, 0.15); color: #fdba74; }
+
+        .mention-item-text {
+            font-size: 13px;
+            color: #e5e7eb;
+        }
+
+        .mention-item-desc {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* ── New Agent Modal ── */
+        .new-agent-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .new-agent-overlay.show {
+            display: flex;
+        }
+
+        .new-agent-modal {
+            width: 600px;
+            background: linear-gradient(145deg, #1e1f2b 0%, #181922 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+            animation: modalSlideIn 0.2s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .new-agent-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            z-index: 1;
+        }
+
+        .new-agent-close:hover {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+        }
+
+        /* Main input area */
+        .na-main {
+            position: relative;
+            padding: 28px 24px 16px;
+        }
+
+        .na-input-wrapper {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 14px 16px;
+            transition: border-color 0.2s;
+        }
+
+        .na-input-wrapper:focus-within {
+            border-color: rgba(139, 92, 246, 0.45);
+        }
+
+        .na-input-field {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            color: #e5e7eb;
+            font-size: 15px;
+            line-height: 1.5;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .na-input-field::placeholder {
+            color: #4b5563;
+        }
+
+        /* Defaults bar — compact row of pre-selected options */
+        .na-defaults-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 0 0;
+            flex-wrap: wrap;
+        }
+
+        .na-default-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .na-default-pill:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .na-default-pill svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        .na-default-pill .na-pill-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .na-default-pill .na-pill-chevron {
+            opacity: 0.4;
+        }
+
+        .na-defaults-spacer {
+            flex: 1;
+        }
+
+        .na-start-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .na-start-btn:hover {
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .na-start-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        /* Configure toggle */
+        .na-configure-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 24px;
+            margin-bottom: 4px;
+        }
+
+        .na-configure-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 0;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .na-configure-btn:hover {
+            color: #c4b5fd;
+        }
+
+        .na-configure-btn svg {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.2s;
+        }
+
+        .na-configure-btn.open svg {
+            transform: rotate(180deg);
+        }
+
+        .na-configure-line {
+            flex: 1;
+            height: 1px;
+            background: #3d3e4f;
+        }
+
+        /* Expandable config panel */
+        .na-config-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 24px;
+        }
+
+        .na-config-panel.open {
+            max-height: 600px;
+            padding: 12px 24px 20px;
+        }
+
+        .na-config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .na-config-section {
+            min-width: 0;
+        }
+
+        .na-config-section.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .na-config-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        /* Agent cards in config */
+        .na-agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .na-agent-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.12s;
+            border: 1px solid transparent;
+        }
+
+        .na-agent-option:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .na-agent-option.selected {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+
+        .na-agent-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .na-agent-option-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #d1d5db;
+            flex: 1;
+        }
+
+        .na-agent-option.selected .na-agent-option-name {
+            color: #e5e7eb;
+        }
+
+        .na-agent-option-check {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1.5px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .na-agent-option.selected .na-agent-option-check {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .na-agent-option-check svg {
+            width: 8px;
+            height: 8px;
+            color: #fff;
+            opacity: 0;
+        }
+
+        .na-agent-option.selected .na-agent-option-check svg {
+            opacity: 1;
+        }
+
+        /* Model options in config */
+        .na-model-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .na-model-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.12s;
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+            border: 1px solid transparent;
+        }
+
+        .na-model-option:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .na-model-option.selected {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.25);
+            color: #e5e7eb;
+        }
+
+        .na-model-option svg {
+            width: 13px;
+            height: 13px;
+            opacity: 0.5;
+        }
+
+        .na-model-option.selected svg {
+            opacity: 0.8;
+            color: #a78bfa;
+        }
+
+        /* Runtime options in config */
+        .na-runtime-list {
+            display: flex;
+            gap: 6px;
+        }
+
+        .na-runtime-option {
+            flex: 1;
+            padding: 10px 8px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.12s;
+        }
+
+        .na-runtime-option:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .na-runtime-option.selected {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .na-runtime-option-icon {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .na-runtime-option-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .na-runtime-option.selected .na-runtime-option-name {
+            color: #e5e7eb;
+        }
+
+        .na-runtime-option-desc {
+            font-size: 10px;
+            color: #4b5563;
+            margin-top: 1px;
+        }
+
+        /* Profile & Assets in config */
+        .na-asset-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .na-asset-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.12s;
+            border: 1px solid transparent;
+        }
+
+        .na-asset-chip.skill { background: rgba(52, 211, 153, 0.1); color: #6ee7b7; border-color: rgba(52, 211, 153, 0.12); }
+        .na-asset-chip.mcp { background: rgba(6, 182, 212, 0.1); color: #67e8f9; border-color: rgba(6, 182, 212, 0.12); }
+        .na-asset-chip.knowledge { background: rgba(59, 130, 246, 0.1); color: #93c5fd; border-color: rgba(59, 130, 246, 0.12); }
+        .na-asset-chip.profile { background: rgba(139, 92, 246, 0.1); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.12); }
+
+        .na-asset-chip.selected { box-shadow: 0 0 0 1px currentColor; }
+
+        .na-asset-chip svg { width: 11px; height: 11px; }
+
+        /* Footer hint */
+        .na-footer-hint {
+            padding: 10px 24px 16px;
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        .na-footer-hint kbd {
+            padding: 1px 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 10px;
+        }
+
+        /* Empty state for new task */
+        .task-empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .task-empty-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .task-empty-icon svg {
+            width: 28px;
+            height: 28px;
+            color: #8b5cf6;
+        }
+
+        .task-empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        .task-empty-desc {
+            font-size: 14px;
+            color: #6b7280;
+            max-width: 380px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .task-suggestions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .task-suggestion-card {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .task-suggestion-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .task-suggestion-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .task-suggestion-desc {
+            font-size: 11px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="tasks-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <div class="tasks-layout">
+            <!-- Left Panel: Task List -->
+            <div class="tasks-left-panel">
+                <div class="tasks-left-header">
+                    <div class="tasks-left-header-row">
+                        <div class="tasks-left-title">Agents</div>
+                        <button class="new-task-btn" onclick="createNewTask()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            New
+                        </button>
+                    </div>
+                    <div class="tasks-filters">
+                        <button class="tasks-filter-btn active" onclick="filterTasks('active', this)">Active</button>
+                        <button class="tasks-filter-btn" onclick="filterTasks('completed', this)">Completed</button>
+                        <button class="tasks-filter-btn" onclick="filterTasks('all', this)">All</button>
+                    </div>
+                </div>
+
+                <div class="tasks-list">
+                    <div class="tasks-section-label">Running</div>
+
+                    <div class="task-item active" onclick="selectTask(this, 'refactor-auth')">
+                        <div class="task-item-agent claude">Cl</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Refactor authentication module to use JWT tokens</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot running"></div>
+                                <span class="task-item-status-label">Running</span>
+                                <span class="task-item-time">12m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="task-item" onclick="selectTask(this, 'add-dark-mode')">
+                        <div class="task-item-agent cursor">Cu</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Add dark mode toggle to settings page</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot running"></div>
+                                <span class="task-item-status-label">Running</span>
+                                <span class="task-item-time">34m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="task-item" onclick="selectTask(this, 'fix-memory-leak')">
+                        <div class="task-item-agent goose">Go</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Fix memory leak in WebSocket connection handler</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot waiting"></div>
+                                <span class="task-item-status-label">Waiting for input</span>
+                                <span class="task-item-time">1h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tasks-section-label">Paused</div>
+
+                    <div class="task-item" onclick="selectTask(this, 'api-docs')">
+                        <div class="task-item-agent claude">Cl</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Generate OpenAPI docs for REST endpoints</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot paused"></div>
+                                <span class="task-item-status-label">Paused</span>
+                                <span class="task-item-time">3h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tasks-section-label">Completed today</div>
+
+                    <div class="task-item" onclick="selectTask(this, 'update-deps')">
+                        <div class="task-item-agent cursor">Cu</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Update npm dependencies and fix breaking changes</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot completed"></div>
+                                <span class="task-item-status-label">Completed</span>
+                                <span class="task-item-time">2h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="task-item" onclick="selectTask(this, 'dockerfile')">
+                        <div class="task-item-agent claude">Cl</div>
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Create multi-stage Dockerfile for production</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot completed"></div>
+                                <span class="task-item-status-label">Completed</span>
+                                <span class="task-item-time">5h ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel: Conversation -->
+            <div class="tasks-center-panel">
+                <div class="task-conv-header">
+                    <div class="task-conv-header-left">
+                        <span class="task-conv-title">Refactor authentication module to use JWT tokens</span>
+                        <div class="task-conv-status running">
+                            <div class="task-status-dot running"></div>
+                            Running
+                        </div>
+                    </div>
+                    <div class="task-conv-header-actions">
+                        <button class="task-conv-action-btn" title="Pause task" onclick="pauseTask()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        </button>
+                        <button class="task-conv-action-btn" title="Stop task" onclick="stopTask()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+                        </button>
+                        <button class="task-conv-action-btn active" title="Toggle context panel" onclick="toggleRightPanel()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Context Bar -->
+                <div class="task-context-bar">
+                    <span class="context-bar-label">Context</span>
+                    <div class="context-pill file">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        src/auth/handler.ts
+                        <span class="context-pill-remove" onclick="removeContext(this)">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span>
+                    </div>
+                    <div class="context-pill file">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        src/middleware/auth.ts
+                        <span class="context-pill-remove" onclick="removeContext(this)">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span>
+                    </div>
+                    <div class="context-pill mcp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        GitHub MCP
+                        <span class="context-pill-remove" onclick="removeContext(this)">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span>
+                    </div>
+                    <div class="context-pill git">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                        feat/jwt-auth
+                        <span class="context-pill-remove" onclick="removeContext(this)">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="task-messages" id="taskMessages">
+                    <!-- User message -->
+                    <div class="task-msg user">
+                        <div class="task-msg-bubble">
+                            Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.
+                        </div>
+                        <div class="task-msg-time">10:22 AM</div>
+                    </div>
+
+                    <!-- Assistant message with tool usage -->
+                    <div class="task-msg assistant">
+                        <div class="task-msg-header">
+                            <div class="task-msg-avatar claude">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            </div>
+                            <span class="task-msg-sender">Claude</span>
+                        </div>
+                        <div class="task-msg-bubble">
+                            I'll analyze the current authentication setup and refactor it to use JWT tokens. Let me start by examining the existing code.
+
+                            <div class="task-tool-block">
+                                <div class="task-tool-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                    Read file: src/auth/handler.ts
+                                </div>
+                                <div class="task-tool-body">export class AuthHandler {
+  private sessionStore: SessionStore;
+
+  async login(req: Request): Promise&lt;Response&gt; {
+    const session = await this.sessionStore.create(req.body);
+    return res.cookie('sid', session.id);
+  }
+}</div>
+                            </div>
+
+                            I can see the current implementation uses session-based auth with cookies. I'll now refactor this to use JWT tokens with proper signing and verification.
+                        </div>
+                        <div class="task-msg-time">10:22 AM</div>
+                    </div>
+
+                    <!-- Assistant message with file diff -->
+                    <div class="task-msg assistant">
+                        <div class="task-msg-header">
+                            <div class="task-msg-avatar claude">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            </div>
+                            <span class="task-msg-sender">Claude</span>
+                        </div>
+                        <div class="task-msg-bubble">
+                            Here are the changes to the auth handler:
+
+                            <div class="task-diff-block">
+                                <div class="task-diff-header">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                    src/auth/handler.ts
+                                </div>
+                                <div class="task-diff-line remove">- private sessionStore: SessionStore;</div>
+                                <div class="task-diff-line add">+ private jwtSecret: string;</div>
+                                <div class="task-diff-line add">+ private tokenExpiry: string = '24h';</div>
+                                <div class="task-diff-line context">  </div>
+                                <div class="task-diff-line remove">-  async login(req: Request): Promise&lt;Response&gt; {</div>
+                                <div class="task-diff-line remove">-    const session = await this.sessionStore.create(req.body);</div>
+                                <div class="task-diff-line remove">-    return res.cookie('sid', session.id);</div>
+                                <div class="task-diff-line add">+  async login(req: Request): Promise&lt;Response&gt; {</div>
+                                <div class="task-diff-line add">+    const user = await this.validateCredentials(req.body);</div>
+                                <div class="task-diff-line add">+    const token = jwt.sign({ sub: user.id }, this.jwtSecret, {</div>
+                                <div class="task-diff-line add">+      expiresIn: this.tokenExpiry</div>
+                                <div class="task-diff-line add">+    });</div>
+                                <div class="task-diff-line add">+    return res.json({ token });</div>
+                            </div>
+
+                            I've also updated the middleware to verify JWT tokens from the Authorization header. Now updating the remaining route handlers...
+
+                            <div class="task-tool-block">
+                                <div class="task-tool-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Write file: src/middleware/auth.ts
+                                </div>
+                                <div class="task-tool-body">Updated JWT verification middleware with Bearer token parsing and proper error handling.</div>
+                            </div>
+                        </div>
+                        <div class="task-msg-time">10:24 AM</div>
+                    </div>
+
+                    <!-- User follow-up -->
+                    <div class="task-msg user">
+                        <div class="task-msg-bubble">
+                            Good, but also add refresh token support with a separate endpoint.
+                        </div>
+                        <div class="task-msg-time">10:25 AM</div>
+                    </div>
+
+                    <!-- Assistant working indicator -->
+                    <div class="task-msg assistant">
+                        <div class="task-msg-header">
+                            <div class="task-msg-avatar claude">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            </div>
+                            <span class="task-msg-sender">Claude</span>
+                        </div>
+                        <div class="task-msg-bubble">
+                            Adding refresh token support. I'll create a separate <code>/auth/refresh</code> endpoint with rotating refresh tokens stored securely...
+
+                            <div class="task-tool-block">
+                                <div class="task-tool-header" style="color: #fbbf24;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Writing src/auth/refresh.ts...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="task-input-area">
+                    <div class="task-input-wrapper" style="position: relative;">
+                        <div class="mention-dropdown" id="mentionDropdown">
+                            <div class="mention-section-label">Files</div>
+                            <div class="mention-item">
+                                <div class="mention-item-icon file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+                                <div>
+                                    <div class="mention-item-text">src/auth/handler.ts</div>
+                                    <div class="mention-item-desc">Authentication handler</div>
+                                </div>
+                            </div>
+                            <div class="mention-item">
+                                <div class="mention-item-icon file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+                                <div>
+                                    <div class="mention-item-text">src/routes/api.ts</div>
+                                    <div class="mention-item-desc">API route definitions</div>
+                                </div>
+                            </div>
+                            <div class="mention-section-label">Knowledge</div>
+                            <div class="mention-item">
+                                <div class="mention-item-icon knowledge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                <div>
+                                    <div class="mention-item-text">API Documentation KB</div>
+                                    <div class="mention-item-desc">REST API specs and patterns</div>
+                                </div>
+                            </div>
+                            <div class="mention-section-label">MCP Servers</div>
+                            <div class="mention-item">
+                                <div class="mention-item-icon mcp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+                                <div>
+                                    <div class="mention-item-text">GitHub MCP</div>
+                                    <div class="mention-item-desc">GitHub integration tools</div>
+                                </div>
+                            </div>
+                            <div class="mention-section-label">Git</div>
+                            <div class="mention-item">
+                                <div class="mention-item-icon git"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></div>
+                                <div>
+                                    <div class="mention-item-text">feat/jwt-auth</div>
+                                    <div class="mention-item-desc">Current branch</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="task-input-btn" title="Attach context" onclick="toggleAttachMenu()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <textarea class="task-input-field" placeholder="Describe your goal or type @ to attach context..." rows="1" oninput="handleInput(this)" onkeydown="handleKeydown(event)"></textarea>
+                        <div class="task-input-actions">
+                            <button class="task-input-btn send" title="Send">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="task-input-bottom">
+                        <span class="task-input-hint">Type <kbd>@</kbd> to attach context &middot; <kbd>Enter</kbd> to send</span>
+                        <div class="task-model-selector" onclick="toggleModelSelector()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Claude 3.5 Sonnet
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Task Context -->
+            <div class="tasks-right-panel" id="rightPanel">
+                <div class="right-panel-header">
+                    <span class="right-panel-title">Task Context</span>
+                    <button class="right-panel-close" onclick="toggleRightPanel()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+                <div class="right-panel-body">
+                    <!-- Goal -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Goal</div>
+                        <textarea class="rp-goal-input">Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.</textarea>
+                    </div>
+
+                    <!-- Agent -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Agent</div>
+                        <div class="rp-agent-card">
+                            <div class="rp-agent-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
+                            <div class="rp-agent-info">
+                                <div class="rp-agent-name">Claude</div>
+                                <div class="rp-agent-model">Claude 3.5 Sonnet</div>
+                            </div>
+                            <span class="rp-agent-change">Change</span>
+                        </div>
+                    </div>
+
+                    <!-- Attached Assets by Category -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Assets</div>
+
+                        <!-- MCP Servers -->
+                        <div class="rp-asset-category">
+                            <div class="rp-asset-category-header">
+                                <div class="rp-asset-category-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                </div>
+                                <span class="rp-asset-category-label">MCP Servers</span>
+                                <span class="rp-asset-category-count">2</span>
+                            </div>
+                            <div class="rp-asset-list">
+                                <div class="rp-asset-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    <span class="rp-asset-item-name">GitHub MCP</span>
+                                    <span class="rp-asset-item-badge active">active</span>
+                                </div>
+                                <div class="rp-asset-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    <span class="rp-asset-item-name">Filesystem MCP</span>
+                                    <span class="rp-asset-item-badge active">active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills -->
+                        <div class="rp-asset-category">
+                            <div class="rp-asset-category-header">
+                                <div class="rp-asset-category-icon skill">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                </div>
+                                <span class="rp-asset-category-label">Skills</span>
+                                <span class="rp-asset-category-count">2</span>
+                            </div>
+                            <div class="rp-asset-list">
+                                <div class="rp-asset-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    <span class="rp-asset-item-name">code-review</span>
+                                    <span class="rp-asset-item-badge active">active</span>
+                                </div>
+                                <div class="rp-asset-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    <span class="rp-asset-item-name">jwt-auth-patterns</span>
+                                    <span class="rp-asset-item-badge active">active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Knowledge Bases -->
+                        <div class="rp-asset-category">
+                            <div class="rp-asset-category-header">
+                                <div class="rp-asset-category-icon knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                </div>
+                                <span class="rp-asset-category-label">Knowledge Bases</span>
+                                <span class="rp-asset-category-count">1</span>
+                            </div>
+                            <div class="rp-asset-list">
+                                <div class="rp-asset-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    <span class="rp-asset-item-name">API Docs KB</span>
+                                    <span class="rp-asset-item-badge active">active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rp-assets-footer">
+                            <button class="rp-add-asset" onclick="openAssetPicker()">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Add asset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Files Changed -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Files Changed (3)</div>
+                        <div class="rp-file-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="rp-file-name">src/auth/handler.ts</span>
+                            <span class="rp-file-badge modified">M</span>
+                        </div>
+                        <div class="rp-file-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="rp-file-name">src/middleware/auth.ts</span>
+                            <span class="rp-file-badge modified">M</span>
+                        </div>
+                        <div class="rp-file-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="rp-file-name">src/auth/refresh.ts</span>
+                            <span class="rp-file-badge added">A</span>
+                        </div>
+                    </div>
+
+                    <!-- Git Context -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Git Context</div>
+                        <div class="rp-git-branch">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                            feat/jwt-auth
+                        </div>
+                        <div class="rp-git-commit">
+                            <span class="rp-git-hash">a3f82d1</span>
+                            <span>Initial auth setup</span>
+                        </div>
+                        <div class="rp-git-commit">
+                            <span class="rp-git-hash">b7e14c9</span>
+                            <span>Add user model</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Agent Modal -->
+    <div class="new-agent-overlay" id="newAgentOverlay" onclick="if(event.target===this) closeNewAgentModal()">
+        <div class="new-agent-modal">
+            <button class="new-agent-close" onclick="closeNewAgentModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+
+            <!-- Primary input area -->
+            <div class="na-main">
+                <div class="na-input-wrapper">
+                    <textarea class="na-input-field" id="naInputField" placeholder="What should the agent do?" rows="2" oninput="autoResize(this)"></textarea>
+                </div>
+
+                <!-- Defaults bar: compact pills showing current selections -->
+                <div class="na-defaults-bar">
+                    <div class="na-default-pill" onclick="toggleConfigure()" title="Claude Code">
+                        <span class="na-pill-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</span>
+                        Claude Code
+                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="na-default-pill" onclick="toggleConfigure()" title="Claude 4 Sonnet">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        Claude 4 Sonnet
+                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="na-default-pill" onclick="toggleConfigure()" title="Local">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Local
+                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="na-default-pill" onclick="toggleConfigure()" title="Backend Engineer profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Backend Engineer
+                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="na-defaults-spacer"></div>
+                    <button class="na-start-btn" onclick="launchAgent()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Start
+                    </button>
+                </div>
+            </div>
+
+            <!-- Configure toggle line -->
+            <div class="na-configure-toggle">
+                <button class="na-configure-btn" id="naConfigureBtn" onclick="toggleConfigure()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    Configure
+                </button>
+                <div class="na-configure-line"></div>
+            </div>
+
+            <!-- Expandable config panel -->
+            <div class="na-config-panel" id="naConfigPanel">
+                <div class="na-config-grid">
+                    <!-- Coding Agent -->
+                    <div class="na-config-section">
+                        <div class="na-config-label">Coding Agent</div>
+                        <div class="na-agent-list">
+                            <div class="na-agent-option selected" onclick="selectAgent(this, 'Claude Code')">
+                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
+                                <span class="na-agent-option-name">Claude Code</span>
+                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            </div>
+                            <div class="na-agent-option" onclick="selectAgent(this, 'Cursor')">
+                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Cu</div>
+                                <span class="na-agent-option-name">Cursor</span>
+                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            </div>
+                            <div class="na-agent-option" onclick="selectAgent(this, 'OpenCode')">
+                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #10b981, #059669);">OC</div>
+                                <span class="na-agent-option-name">OpenCode</span>
+                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            </div>
+                            <div class="na-agent-option" onclick="selectAgent(this, 'Goose')">
+                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #ec4899, #db2777);">Go</div>
+                                <span class="na-agent-option-name">Goose</span>
+                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Model -->
+                    <div class="na-config-section">
+                        <div class="na-config-label">Model</div>
+                        <div class="na-model-list">
+                            <div class="na-model-option" onclick="selectModel(this, 'Claude 3.5 Haiku')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                Claude 3.5 Haiku
+                            </div>
+                            <div class="na-model-option selected" onclick="selectModel(this, 'Claude 4 Sonnet')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                Claude 4 Sonnet
+                            </div>
+                            <div class="na-model-option" onclick="selectModel(this, 'Claude 4 Opus')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                Claude 4 Opus
+                            </div>
+                            <div class="na-model-option" onclick="selectModel(this, 'GPT-4.1')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                GPT-4.1
+                            </div>
+                            <div class="na-model-option" onclick="selectModel(this, 'Gemini 2.5 Pro')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+                                Gemini 2.5 Pro
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Where to run -->
+                    <div class="na-config-section">
+                        <div class="na-config-label">Where to run</div>
+                        <div class="na-runtime-list">
+                            <div class="na-runtime-option selected" onclick="selectRuntime(this, 'Local')">
+                                <div class="na-runtime-option-icon">&#128187;</div>
+                                <div class="na-runtime-option-name">Local</div>
+                                <div class="na-runtime-option-desc">This machine</div>
+                            </div>
+                            <div class="na-runtime-option" onclick="selectRuntime(this, 'Remote')">
+                                <div class="na-runtime-option-icon">&#9729;&#65039;</div>
+                                <div class="na-runtime-option-name">Remote</div>
+                                <div class="na-runtime-option-desc">Cloud sandbox</div>
+                            </div>
+                            <div class="na-runtime-option" onclick="selectRuntime(this, 'OpenShift')">
+                                <div class="na-runtime-option-icon">&#9881;&#65039;</div>
+                                <div class="na-runtime-option-name">OpenShift</div>
+                                <div class="na-runtime-option-desc">Enterprise</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile & Assets -->
+                    <div class="na-config-section">
+                        <div class="na-config-label">Profile &amp; Assets</div>
+                        <div class="na-asset-chips">
+                            <div class="na-asset-chip profile selected" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Backend Engineer
+                            </div>
+                            <div class="na-asset-chip profile" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Frontend Dev
+                            </div>
+                            <div class="na-asset-chip skill selected" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                code-review
+                            </div>
+                            <div class="na-asset-chip mcp selected" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                GitHub MCP
+                            </div>
+                            <div class="na-asset-chip mcp" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                Filesystem MCP
+                            </div>
+                            <div class="na-asset-chip knowledge selected" onclick="toggleAsset(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                API Docs KB
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="na-footer-hint">
+                Press <kbd>Enter</kbd> to start &middot; Click pills above to change defaults
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script>
+        function selectTask(el, taskId) {
+            document.querySelectorAll('.task-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function filterTasks(filter, btn) {
+            document.querySelectorAll('.tasks-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function toggleRightPanel() {
+            const panel = document.getElementById('rightPanel');
+            panel.classList.toggle('collapsed');
+            const btn = document.querySelector('.task-conv-action-btn[title="Toggle context panel"]');
+            btn.classList.toggle('active');
+        }
+
+        function removeContext(el) {
+            el.closest('.context-pill').remove();
+        }
+
+        function handleInput(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+
+            const val = textarea.value;
+            const dropdown = document.getElementById('mentionDropdown');
+            if (val.endsWith('@') || (val.includes('@') && !val.endsWith(' '))) {
+                dropdown.classList.add('visible');
+            } else {
+                dropdown.classList.remove('visible');
+            }
+        }
+
+        function handleKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+            }
+        }
+
+        function createNewTask() {
+            document.getElementById('newAgentOverlay').classList.add('show');
+            setTimeout(() => document.getElementById('naInputField').focus(), 100);
+        }
+
+        function closeNewAgentModal() {
+            document.getElementById('newAgentOverlay').classList.remove('show');
+            document.getElementById('naConfigPanel').classList.remove('open');
+            document.getElementById('naConfigureBtn').classList.remove('open');
+        }
+
+        function toggleConfigure() {
+            document.getElementById('naConfigPanel').classList.toggle('open');
+            document.getElementById('naConfigureBtn').classList.toggle('open');
+        }
+
+        function selectAgent(el, name) {
+            el.closest('.na-agent-list').querySelectorAll('.na-agent-option').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            const pills = document.querySelectorAll('.na-defaults-bar .na-default-pill');
+            const agentPill = pills[0];
+            if (agentPill) {
+                const icon = el.querySelector('.na-agent-dot');
+                agentPill.querySelector('.na-pill-icon').style.background = icon.style.background;
+                agentPill.querySelector('.na-pill-icon').textContent = icon.textContent;
+                agentPill.childNodes.forEach(n => { if (n.nodeType === 3 && n.textContent.trim()) n.textContent = '\n                        ' + name + '\n                    '; });
+            }
+        }
+
+        function selectModel(el, name) {
+            el.closest('.na-model-list').querySelectorAll('.na-model-option').forEach(m => m.classList.remove('selected'));
+            el.classList.add('selected');
+            const pills = document.querySelectorAll('.na-defaults-bar .na-default-pill');
+            if (pills[1]) {
+                const textNodes = Array.from(pills[1].childNodes).filter(n => n.nodeType === 3 && n.textContent.trim());
+                if (textNodes.length) textNodes[0].textContent = '\n                        ' + name + '\n                    ';
+            }
+        }
+
+        function selectRuntime(el, name) {
+            el.closest('.na-runtime-list').querySelectorAll('.na-runtime-option').forEach(r => r.classList.remove('selected'));
+            el.classList.add('selected');
+            const pills = document.querySelectorAll('.na-defaults-bar .na-default-pill');
+            if (pills[2]) {
+                const textNodes = Array.from(pills[2].childNodes).filter(n => n.nodeType === 3 && n.textContent.trim());
+                if (textNodes.length) textNodes[0].textContent = '\n                        ' + name + '\n                    ';
+            }
+        }
+
+        function toggleAsset(el) {
+            el.classList.toggle('selected');
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        function launchAgent() {
+            closeNewAgentModal();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeNewAgentModal();
+        });
+
+        function pauseTask() {}
+        function stopTask() {}
+        function toggleAttachMenu() {
+            const dropdown = document.getElementById('mentionDropdown');
+            dropdown.classList.toggle('visible');
+        }
+        function toggleModelSelector() {}
+        function openAssetPicker() {}
+    </script>
+</body>
+</html>

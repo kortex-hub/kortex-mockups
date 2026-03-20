@@ -372,97 +372,133 @@
                         </div>
                     </div>
 
-                    <!-- Modules Section -->
+                    <!-- Agent Defaults Section -->
                     <div class="settings-section">
                         <div class="settings-section-header">
-                            <div class="settings-section-icon modules" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="7" height="7"/>
-                                    <rect x="14" y="3" width="7" height="7"/>
-                                    <rect x="14" y="14" width="7" height="7"/>
-                                    <rect x="3" y="14" width="7" height="7"/>
+                                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                    <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+                                    <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="settings-section-title">Modules</h3>
-                                <p class="settings-section-description">Enable or disable optional features and capabilities</p>
+                                <h3 class="settings-section-title">Agent Defaults</h3>
+                                <p class="settings-section-description">Default configuration for new tasks and agents</p>
                             </div>
                         </div>
                         <div class="settings-section-body">
-                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%); border-left: 3px solid #10b981; margin-left: -1px;">
+                            <div class="settings-item">
                                 <div class="settings-item-info">
-                                    <h4 class="settings-item-label">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                            <circle cx="12" cy="7" r="4"/>
-                                        </svg>
-                                        Agent Profiles
-                                    </h4>
+                                    <h4 class="settings-item-label">Default Agent</h4>
                                     <p class="settings-item-description">
-                                        Enable pre-configured agent profiles that bundle skills, MCP servers, and behaviors for specific roles.
-                                        Profiles like DevOps Engineer, Platform Engineer, and Security Analyst come with optimized configurations. When disabled, the Profiles tab will be hidden.
+                                        The coding agent to use when creating new tasks.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <div class="settings-toggle active" id="profilesModuleToggle" onclick="toggleSetting(this)"></div>
+                                    <select class="settings-select" id="defaultAgent">
+                                        <option value="claude" selected>Claude</option>
+                                        <option value="cursor">Cursor</option>
+                                        <option value="goose">Goose</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%); border-left: 3px solid #8b5cf6; margin-left: -1px;">
+                            <div class="settings-item">
                                 <div class="settings-item-info">
-                                    <h4 class="settings-item-label">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="9"/>
-                                            <polygon points="12,6 14,10 12,9 10,10"/>
-                                            <polygon points="12,18 14,14 12,15 10,14"/>
-                                            <polygon points="6,12 10,14 9,12 10,10"/>
-                                            <polygon points="18,12 14,14 15,12 14,10"/>
-                                        </svg>
-                                        Agent Skills
-                                    </h4>
+                                    <h4 class="settings-item-label">Default Profile</h4>
                                     <p class="settings-item-description">
-                                        Enable modular skill capabilities for agents. Skills provide domain-specific expertise like Kubernetes management, 
-                                        OpenShift deployment, and custom workflows. When disabled, the Skills tab and agent skill assignments will be hidden.
+                                        The agent profile to apply by default when starting a new task. Profiles bundle skills, MCP servers, and instructions.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <div class="settings-toggle active" id="skillsModuleToggle" onclick="toggleSetting(this)"></div>
+                                    <select class="settings-select" id="defaultProfile">
+                                        <option value="devops" selected>DevOps Engineer</option>
+                                        <option value="backend">Backend Developer</option>
+                                        <option value="security">Security Analyst</option>
+                                        <option value="fullstack">Full Stack</option>
+                                        <option value="none">None (Start Fresh)</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.05) 0%, transparent 100%); border-left: 3px solid #fb923c; margin-left: -1px;">
+                            <div class="settings-item">
                                 <div class="settings-item-info">
-                                    <h4 class="settings-item-label">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-                                        </svg>
-                                        Bridge
-                                    </h4>
+                                    <h4 class="settings-item-label">Default File Access</h4>
                                     <p class="settings-item-description">
-                                        Enable the Bridge module to connect and orchestrate between different AI systems and external services. 
-                                        When disabled, the Bridge tab and related integration features will be hidden.
+                                        The default file system access level for agents in new tasks.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <div class="settings-toggle active" id="bridgeModuleToggle" onclick="toggleSetting(this)"></div>
+                                    <select class="settings-select" id="defaultFileAccess">
+                                        <option value="workspace" selected>Working Directory Only</option>
+                                        <option value="home">Home Directory</option>
+                                        <option value="custom">Custom Paths</option>
+                                        <option value="full">Full System Access</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%); border-left: 3px solid #3b82f6; margin-left: -1px;">
+                            <div class="settings-item">
                                 <div class="settings-item-info">
-                                    <h4 class="settings-item-label">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="7" height="7"/>
-                                            <rect x="14" y="3" width="7" height="7"/>
-                                            <rect x="14" y="14" width="7" height="7"/>
-                                            <rect x="3" y="14" width="7" height="7"/>
-                                        </svg>
-                                        MCP Tools
-                                    </h4>
+                                    <h4 class="settings-item-label">Require Confirmation for File Writes</h4>
                                     <p class="settings-item-description">
-                                        Enable Model Context Protocol (MCP) server connections to extend agent capabilities with external tools. 
-                                        When disabled, the Tools tab and MCP server configurations will be hidden.
+                                        Ask for confirmation before agents write or modify files.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <div class="settings-toggle active" id="mcpModuleToggle" onclick="toggleSetting(this)"></div>
+                                    <div class="settings-toggle active" id="confirmWrites" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Auto-execute Commands</h4>
+                                    <p class="settings-item-description">
+                                        Allow agents to execute shell commands without manual approval.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="autoExecute" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network & Security Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Network & Security</h3>
+                                <p class="settings-section-description">Default network policies and security settings for agents</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default Network Policy</h4>
+                                    <p class="settings-item-description">
+                                        The default network access policy for agent tasks.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="networkPolicy">
+                                        <option value="allow" selected>Allow All</option>
+                                        <option value="deny">Deny by Default</option>
+                                        <option value="restricted">Restricted (Allowlist)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Bridge Orchestration</h4>
+                                    <p class="settings-item-description">
+                                        Enable inter-agent communication and orchestration between different AI systems and external services.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="bridgeEnabled" onclick="toggleSetting(this)"></div>
                                 </div>
                             </div>
                             <div class="settings-item" style="background: linear-gradient(135deg, rgba(238, 0, 0, 0.05) 0%, transparent 100%); border-left: 3px solid #ee0000; margin-left: -1px;">
@@ -476,8 +512,7 @@
                                         OpenShift AI Connection
                                     </h4>
                                     <p class="settings-item-description">
-                                        Enable connection to Red Hat OpenShift AI for centralized model serving, knowledge bases, and enterprise AI features. 
-                                        When disabled, the OpenShift AI status bar and connection options will be hidden.
+                                        Enable connection to Red Hat OpenShift AI for centralized model serving, knowledge bases, and enterprise AI assets.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
@@ -820,14 +855,20 @@
         }
 
         function saveSettings() {
-            // Gather all settings
             const settings = {
                 modules: {
-                    profilesEnabled: document.getElementById('profilesModuleToggle').classList.contains('active'),
-                    skillsEnabled: document.getElementById('skillsModuleToggle').classList.contains('active'),
-                    bridgeEnabled: document.getElementById('bridgeModuleToggle').classList.contains('active'),
-                    mcpEnabled: document.getElementById('mcpModuleToggle').classList.contains('active'),
                     openshiftAIEnabled: document.getElementById('openshiftAIModuleToggle').classList.contains('active')
+                },
+                agentDefaults: {
+                    defaultAgent: document.getElementById('defaultAgent').value,
+                    defaultProfile: document.getElementById('defaultProfile').value,
+                    defaultFileAccess: document.getElementById('defaultFileAccess').value,
+                    confirmWrites: document.getElementById('confirmWrites').classList.contains('active'),
+                    autoExecute: document.getElementById('autoExecute').classList.contains('active')
+                },
+                network: {
+                    networkPolicy: document.getElementById('networkPolicy').value,
+                    bridgeEnabled: document.getElementById('bridgeEnabled').classList.contains('active')
                 },
                 integrations: {
                     github: {
@@ -888,11 +929,6 @@
 
         function resetSettings() {
             if (confirm('Reset all settings to their default values?')) {
-                // Reset toggles
-                document.getElementById('profilesModuleToggle').classList.add('active');
-                document.getElementById('skillsModuleToggle').classList.add('active');
-                document.getElementById('bridgeModuleToggle').classList.add('active');
-                document.getElementById('mcpModuleToggle').classList.add('active');
                 document.getElementById('openshiftAIModuleToggle').classList.add('active');
                 document.getElementById('devspacesToggle').classList.add('active');
                 document.getElementById('autoStartDevspaces').classList.remove('active');
@@ -901,21 +937,25 @@
                 document.getElementById('compactMode').classList.remove('active');
                 document.getElementById('debugMode').classList.remove('active');
                 document.getElementById('experimentalFeatures').classList.remove('active');
+                document.getElementById('confirmWrites').classList.add('active');
+                document.getElementById('autoExecute').classList.remove('active');
+                document.getElementById('bridgeEnabled').classList.add('active');
 
-                // Reset integration toggles
                 document.getElementById('githubEnabled').classList.remove('active');
                 document.getElementById('jiraEnabled').classList.remove('active');
                 document.querySelector('.github-fields').style.display = 'none';
                 document.querySelector('.jira-fields').style.display = 'none';
 
-                // Reset inputs
                 document.getElementById('devspacesUrl').value = '';
                 document.getElementById('devspacesTemplate').value = 'universal';
                 document.getElementById('defaultModel').value = 'granite-3.1';
+                document.getElementById('defaultAgent').value = 'claude';
+                document.getElementById('defaultProfile').value = 'devops';
+                document.getElementById('defaultFileAccess').value = 'workspace';
+                document.getElementById('networkPolicy').value = 'allow';
                 document.getElementById('theme').value = 'dark';
                 document.getElementById('apiEndpoint').value = '';
 
-                // Reset integration inputs
                 document.getElementById('githubUrl').value = 'https://github.com';
                 document.getElementById('githubToken').value = '';
                 document.getElementById('githubOrg').value = '';
@@ -924,7 +964,6 @@
                 document.getElementById('jiraToken').value = '';
                 document.getElementById('jiraProject').value = '';
 
-                // Clear localStorage
                 localStorage.removeItem('kortexSettings');
             }
         }
@@ -936,33 +975,23 @@
                 try {
                     const settings = JSON.parse(saved);
                     
-                    // Apply Modules settings
                     if (settings.modules) {
-                        if (settings.modules.profilesEnabled) {
-                            document.getElementById('profilesModuleToggle').classList.add('active');
-                        } else {
-                            document.getElementById('profilesModuleToggle').classList.remove('active');
-                        }
-                        if (settings.modules.skillsEnabled) {
-                            document.getElementById('skillsModuleToggle').classList.add('active');
-                        } else {
-                            document.getElementById('skillsModuleToggle').classList.remove('active');
-                        }
-                        if (settings.modules.bridgeEnabled) {
-                            document.getElementById('bridgeModuleToggle').classList.add('active');
-                        } else {
-                            document.getElementById('bridgeModuleToggle').classList.remove('active');
-                        }
-                        if (settings.modules.mcpEnabled) {
-                            document.getElementById('mcpModuleToggle').classList.add('active');
-                        } else {
-                            document.getElementById('mcpModuleToggle').classList.remove('active');
-                        }
-                        if (settings.modules.openshiftAIEnabled) {
-                            document.getElementById('openshiftAIModuleToggle').classList.add('active');
-                        } else {
+                        if (settings.modules.openshiftAIEnabled === false) {
                             document.getElementById('openshiftAIModuleToggle').classList.remove('active');
                         }
+                    }
+
+                    if (settings.agentDefaults) {
+                        if (settings.agentDefaults.defaultAgent) document.getElementById('defaultAgent').value = settings.agentDefaults.defaultAgent;
+                        if (settings.agentDefaults.defaultProfile) document.getElementById('defaultProfile').value = settings.agentDefaults.defaultProfile;
+                        if (settings.agentDefaults.defaultFileAccess) document.getElementById('defaultFileAccess').value = settings.agentDefaults.defaultFileAccess;
+                        if (settings.agentDefaults.confirmWrites === false) document.getElementById('confirmWrites').classList.remove('active');
+                        if (settings.agentDefaults.autoExecute) document.getElementById('autoExecute').classList.add('active');
+                    }
+
+                    if (settings.network) {
+                        if (settings.network.networkPolicy) document.getElementById('networkPolicy').value = settings.network.networkPolicy;
+                        if (settings.network.bridgeEnabled === false) document.getElementById('bridgeEnabled').classList.remove('active');
                     }
                     
                     // Apply DevSpaces settings
