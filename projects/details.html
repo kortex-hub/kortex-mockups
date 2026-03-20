@@ -147,7 +147,6 @@
         .pd-nav-icon.secrets { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .pd-nav-icon.workspace { background: linear-gradient(135deg, #a855f7, #9333ea); }
         .pd-nav-icon.history { background: linear-gradient(135deg, #f97316, #ea580c); }
-        .pd-nav-icon.chat-history { background: linear-gradient(135deg, #ec4899, #db2777); }
 
         .pd-nav-count {
             margin-left: auto;
@@ -876,6 +875,363 @@
             color: #e5e7eb;
             font-weight: 600;
         }
+
+        /* ── Network Policy Section ── */
+        .pd-np-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .pd-np-mode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .pd-np-mode-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        .pd-np-mode-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #4b5563;
+        }
+        .pd-np-mode-card.selected {
+            background: rgba(139, 92, 246, 0.06);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .pd-np-mode-radio {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pd-np-mode-card.selected .pd-np-mode-radio {
+            border-color: #8b5cf6;
+        }
+        .pd-np-mode-radio-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #8b5cf6;
+        }
+
+        .pd-np-mode-content {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .pd-np-mode-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pd-np-mode-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+        .pd-np-mode-icon.allow {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+        }
+        .pd-np-mode-icon.deny {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        .pd-np-mode-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+        .pd-np-mode-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Host list */
+        .pd-np-host-list {
+            padding: 4px 8px;
+        }
+        .pd-np-host-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .pd-np-host-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .pd-np-host-item:hover .pd-block-item-remove {
+            opacity: 1;
+        }
+        .pd-np-host-item + .pd-np-host-item {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .pd-np-host-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .pd-np-host-dot.allowed { background: #34d399; }
+        .pd-np-host-dot.blocked { background: #f87171; }
+
+        .pd-np-host-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .pd-np-host-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        .pd-np-host-note {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .pd-np-host-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .pd-np-host-badge.default {
+            background: rgba(255, 255, 255, 0.04);
+            color: #6b7280;
+        }
+        .pd-np-host-badge.custom {
+            background: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+        }
+
+        /* Add host row */
+        .pd-np-add-row {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .pd-np-add-row.show {
+            display: flex;
+        }
+        .pd-np-add-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 7px;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #e5e7eb;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            outline: none;
+        }
+        .pd-np-add-input:focus {
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        .pd-np-add-input::placeholder {
+            color: #4b5563;
+            font-family: inherit;
+        }
+        .pd-np-add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 7px 14px;
+            background: rgba(52, 211, 153, 0.12);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 7px;
+            color: #6ee7b7;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .pd-np-add-btn:hover {
+            background: rgba(52, 211, 153, 0.2);
+        }
+        .pd-np-add-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+        .pd-np-cancel-btn {
+            padding: 7px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 7px;
+            color: #6b7280;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .pd-np-cancel-btn:hover {
+            color: #9ca3af;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Activity log */
+        .pd-np-activity-log {
+            display: flex;
+            flex-direction: column;
+        }
+        .pd-np-log-entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.25);
+        }
+        .pd-np-log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .pd-np-log-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pd-np-log-status svg {
+            width: 12px;
+            height: 12px;
+        }
+        .pd-np-log-status.allowed {
+            background: rgba(52, 211, 153, 0.1);
+            color: #34d399;
+        }
+        .pd-np-log-status.blocked {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+        }
+
+        .pd-np-log-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .pd-np-log-url {
+            font-size: 12px;
+            color: #d1d5db;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .pd-np-log-meta {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pd-np-log-agent {
+            color: #a78bfa;
+            font-weight: 500;
+        }
+        .pd-np-log-sep {
+            color: #3d3e4f;
+        }
+        .pd-np-log-time {
+            font-size: 11px;
+            color: #4b5563;
+            flex-shrink: 0;
+        }
+
+        .pd-np-log-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 6px;
+            color: #6ee7b7;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .pd-np-log-action:hover {
+            background: rgba(52, 211, 153, 0.18);
+        }
+        .pd-np-log-action svg {
+            width: 11px;
+            height: 11px;
+        }
+
+        /* YAML preview */
+        .pd-np-yaml-preview {
+            background: #0d0e14;
+            border: 1px solid #2d2e3f;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+        .pd-np-yaml-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #2d2e3f;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .pd-np-yaml-synced {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #34d399;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .pd-np-yaml-synced svg {
+            width: 12px;
+            height: 12px;
+        }
+        .pd-np-yaml-code {
+            padding: 14px;
+            margin: 0;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #d1d5db;
+            overflow-x: auto;
+        }
+
+        .pd-nav-icon.network { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
         /* ── Workspace File Section ── */
         .pd-workspace-toolbar {
@@ -2047,18 +2403,17 @@
                             Secrets &amp; Tokens
                             <span class="pd-nav-count">3</span>
                         </div>
+                        <div class="pd-nav-item" onclick="switchSection('network', this)">
+                            <div class="pd-nav-icon network">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            Network Policy
+                        </div>
                         <div class="pd-nav-item" onclick="switchSection('workspace', this)">
                             <div class="pd-nav-icon workspace">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
                             </div>
                             Workspace File
-                        </div>
-                        <div class="pd-nav-item" onclick="switchSection('chat-history', this)">
-                            <div class="pd-nav-icon chat-history">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            </div>
-                            Chat History
-                            <span class="pd-nav-count">12</span>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('history', this)">
                             <div class="pd-nav-icon history">
@@ -2575,6 +2930,279 @@
                     </div>
 
                     <!-- Workspace File Section -->
+                    <!-- Network Policy Section -->
+                    <div class="pd-section" id="section-network">
+                        <h1 class="pd-section-title">Network Policy</h1>
+
+                        <div class="pd-secrets-note" style="border-color: rgba(139, 92, 246, 0.15); background: rgba(139, 92, 246, 0.04);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div class="pd-secrets-note-text">
+                                <strong>Project-scoped network policy.</strong> Controls what external hosts agents can reach when running tasks in this project. Agents operating inside sandboxed workspaces will have their HTTP/HTTPS traffic filtered according to these rules.
+                            </div>
+                        </div>
+
+                        <!-- Policy Mode -->
+                        <div class="pd-overview-card">
+                            <div class="pd-overview-card-title">Policy Mode</div>
+                            <p class="pd-np-desc">Choose the default behavior for outbound network requests from agent sandboxes.</p>
+                            <div class="pd-np-mode-grid">
+                                <div class="pd-np-mode-card" onclick="selectNetworkMode(this, 'allow')">
+                                    <div class="pd-np-mode-radio"></div>
+                                    <div class="pd-np-mode-content">
+                                        <div class="pd-np-mode-icon allow">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                        <div class="pd-np-mode-info">
+                                            <div class="pd-np-mode-name">Allow Mode</div>
+                                            <div class="pd-np-mode-desc">Permit all traffic except explicitly blocked hosts. Best for development environments.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pd-np-mode-card selected" onclick="selectNetworkMode(this, 'deny')">
+                                    <div class="pd-np-mode-radio"><div class="pd-np-mode-radio-dot"></div></div>
+                                    <div class="pd-np-mode-content">
+                                        <div class="pd-np-mode-icon deny">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                        <div class="pd-np-mode-info">
+                                            <div class="pd-np-mode-name">Deny Mode</div>
+                                            <div class="pd-np-mode-desc">Block all traffic except explicitly allowed hosts. Recommended for production or sensitive projects.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Allowed Hosts -->
+                        <div class="pd-asset-block">
+                            <div class="pd-block-header">
+                                <div class="pd-block-title-row">
+                                    <div class="pd-block-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <h3 class="pd-block-title">Allowed Hosts</h3>
+                                    <span class="pd-block-count">5 hosts</span>
+                                </div>
+                                <button class="pd-block-add-btn" onclick="toggleAddHost('allowed')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add Host
+                                </button>
+                            </div>
+                            <div class="pd-np-add-row" id="addAllowedHostRow">
+                                <input type="text" class="pd-np-add-input" placeholder="e.g., api.example.com:443 or *.example.com" id="newAllowedHostInput">
+                                <button class="pd-np-add-btn" onclick="addAllowedHostEntry()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Add
+                                </button>
+                                <button class="pd-np-cancel-btn" onclick="toggleAddHost('allowed')">Cancel</button>
+                            </div>
+                            <div class="pd-np-host-list" id="allowedHostList">
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot allowed"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">github.com</div>
+                                        <div class="pd-np-host-note">Git operations, API access</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot allowed"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">pkg.go.dev</div>
+                                        <div class="pd-np-host-note">Go package documentation</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot allowed"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">registry.npmjs.org</div>
+                                        <div class="pd-np-host-note">npm package registry</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot allowed"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">proxy.golang.org</div>
+                                        <div class="pd-np-host-note">Go module proxy</div>
+                                    </div>
+                                    <span class="pd-np-host-badge custom">custom</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot allowed"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">sum.golang.org</div>
+                                        <div class="pd-np-host-note">Go checksum database</div>
+                                    </div>
+                                    <span class="pd-np-host-badge custom">custom</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blocked CIDR Ranges -->
+                        <div class="pd-asset-block">
+                            <div class="pd-block-header">
+                                <div class="pd-block-title-row">
+                                    <div class="pd-block-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                    </div>
+                                    <h3 class="pd-block-title">Blocked CIDR Ranges</h3>
+                                    <span class="pd-block-count">4 ranges</span>
+                                </div>
+                            </div>
+                            <div class="pd-np-host-list">
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot blocked"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">10.0.0.0/8</div>
+                                        <div class="pd-np-host-note">Private network (Class A)</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot blocked"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">172.16.0.0/12</div>
+                                        <div class="pd-np-host-note">Private network (Class B)</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot blocked"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">192.168.0.0/16</div>
+                                        <div class="pd-np-host-note">Private network (Class C)</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                </div>
+                                <div class="pd-np-host-item">
+                                    <div class="pd-np-host-dot blocked"></div>
+                                    <div class="pd-np-host-info">
+                                        <div class="pd-np-host-name">169.254.0.0/16</div>
+                                        <div class="pd-np-host-note">Link-local addresses</div>
+                                    </div>
+                                    <span class="pd-np-host-badge default">default</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Network Activity -->
+                        <div class="pd-overview-card">
+                            <div class="pd-overview-card-title">Recent Agent Network Activity</div>
+                            <div class="pd-np-activity-log">
+                                <div class="pd-np-log-entry">
+                                    <div class="pd-np-log-status blocked">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </div>
+                                    <div class="pd-np-log-info">
+                                        <div class="pd-np-log-url">GET https://auth.example.com/.well-known/jwks.json</div>
+                                        <div class="pd-np-log-meta">
+                                            <span class="pd-np-log-agent">JWT Auth Refactor</span>
+                                            <span class="pd-np-log-sep">&middot;</span>
+                                            <span>Blocked by deny policy</span>
+                                        </div>
+                                    </div>
+                                    <div class="pd-np-log-time">2m ago</div>
+                                    <button class="pd-np-log-action" onclick="quickAllowHost('auth.example.com', this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Allow
+                                    </button>
+                                </div>
+                                <div class="pd-np-log-entry">
+                                    <div class="pd-np-log-status allowed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-np-log-info">
+                                        <div class="pd-np-log-url">GET https://github.com/api/v3/repos/acme/backend</div>
+                                        <div class="pd-np-log-meta">
+                                            <span class="pd-np-log-agent">JWT Auth Refactor</span>
+                                            <span class="pd-np-log-sep">&middot;</span>
+                                            <span>200 OK</span>
+                                        </div>
+                                    </div>
+                                    <div class="pd-np-log-time">5m ago</div>
+                                </div>
+                                <div class="pd-np-log-entry">
+                                    <div class="pd-np-log-status allowed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-np-log-info">
+                                        <div class="pd-np-log-url">GET https://proxy.golang.org/github.com/golang-jwt/jwt/v5/@latest</div>
+                                        <div class="pd-np-log-meta">
+                                            <span class="pd-np-log-agent">JWT Auth Refactor</span>
+                                            <span class="pd-np-log-sep">&middot;</span>
+                                            <span>200 OK</span>
+                                        </div>
+                                    </div>
+                                    <div class="pd-np-log-time">8m ago</div>
+                                </div>
+                                <div class="pd-np-log-entry">
+                                    <div class="pd-np-log-status allowed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-np-log-info">
+                                        <div class="pd-np-log-url">GET https://registry.npmjs.org/jsonwebtoken</div>
+                                        <div class="pd-np-log-meta">
+                                            <span class="pd-np-log-agent">Dark Mode Toggle</span>
+                                            <span class="pd-np-log-sep">&middot;</span>
+                                            <span>200 OK</span>
+                                        </div>
+                                    </div>
+                                    <div class="pd-np-log-time">12m ago</div>
+                                </div>
+                                <div class="pd-np-log-entry">
+                                    <div class="pd-np-log-status blocked">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </div>
+                                    <div class="pd-np-log-info">
+                                        <div class="pd-np-log-url">POST https://hooks.slack.com/services/T0123/B456</div>
+                                        <div class="pd-np-log-meta">
+                                            <span class="pd-np-log-agent">Update Dependencies</span>
+                                            <span class="pd-np-log-sep">&middot;</span>
+                                            <span>Blocked by deny policy</span>
+                                        </div>
+                                    </div>
+                                    <div class="pd-np-log-time">1h ago</div>
+                                    <button class="pd-np-log-action" onclick="quickAllowHost('hooks.slack.com', this)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Allow
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AgentDev Workspace Sync -->
+                        <div class="pd-overview-card" style="border-color: rgba(139, 92, 246, 0.15);">
+                            <div class="pd-overview-card-title">Workspace File Sync</div>
+                            <p class="pd-np-desc">Network policy settings are synced to the <code style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 12px;">agentdev-workspace.yaml</code> file under <code style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 12px;">agentConfig.permissions</code>. Changes here will update the workspace file automatically.</p>
+                            <div class="pd-np-yaml-preview">
+                                <div class="pd-np-yaml-header">
+                                    <span>agentdev-workspace.yaml</span>
+                                    <span class="pd-np-yaml-synced">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Synced
+                                    </span>
+                                </div>
+                                <pre class="pd-np-yaml-code"><span class="y-key">agentConfig</span>:
+  <span class="y-key">permissions</span>:
+    <span class="y-key">networkAccess</span>: <span class="y-str">limited</span>
+    <span class="y-key">policyMode</span>: <span class="y-str">deny</span>
+    <span class="y-key">allowedHosts</span>:
+      - <span class="y-str">"github.com"</span>
+      - <span class="y-str">"pkg.go.dev"</span>
+      - <span class="y-str">"registry.npmjs.org"</span>
+      - <span class="y-str">"proxy.golang.org"</span>
+      - <span class="y-str">"sum.golang.org"</span></pre>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="pd-section" id="section-workspace">
                         <h1 class="pd-section-title">AgentDev Workspace</h1>
 
@@ -2633,13 +3261,13 @@
                         </div>
                     </div>
 
-                    <!-- Chat History Section -->
-                    <div class="pd-section" id="section-chat-history">
+                    <!-- Agent History Section (with Session Replay) -->
+                    <div class="pd-section" id="section-history">
 
                         <!-- Session List View -->
                         <div id="chatHistoryList">
                             <div class="pd-chat-list-header">
-                                <h1 class="pd-section-title">Chat History</h1>
+                                <h1 class="pd-section-title">Agent History</h1>
                                 <div class="pd-chat-filter-bar">
                                     <button class="pd-chat-filter active">All</button>
                                     <button class="pd-chat-filter">Claude Code</button>
@@ -2657,7 +3285,7 @@
                                         <div class="pd-chat-session-meta">
                                             <span class="pd-chat-session-meta-item">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                                8m 32s
+                                                2m 14s
                                             </span>
                                             <span class="pd-chat-session-meta-item">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
@@ -2673,9 +3301,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <span class="pd-chat-session-status completed">
+                                    <span class="pd-chat-session-status running">
                                         <span class="pd-history-status-dot"></span>
-                                        Completed
+                                        Running
                                     </span>
                                     <button class="pd-chat-session-replay-btn" onclick="event.stopPropagation(); openReplay(0)">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -3389,163 +4017,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Agent History Section -->
-                    <div class="pd-section" id="section-history">
-                        <h1 class="pd-section-title">Agent History</h1>
-
-                        <div class="pd-history-card">
-                            <table class="pd-history-table">
-                                <thead>
-                                    <tr>
-                                        <th>Goal</th>
-                                        <th>Status</th>
-                                        <th>Agent</th>
-                                        <th>Started</th>
-                                        <th>Duration</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=jwt-auth'">
-                                        <td class="pd-history-goal">Refactor authentication module to use JWT tokens</td>
-                                        <td>
-                                            <span class="pd-history-status running">
-                                                <span class="pd-history-status-dot"></span>
-                                                Running
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                                Claude Code
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">2 min ago</td>
-                                        <td class="pd-history-duration">2m 14s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=api-tests'">
-                                        <td class="pd-history-goal">Add integration tests for user endpoints</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                                Claude Code
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">1 hour ago</td>
-                                        <td class="pd-history-duration">8m 32s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=db-migration'">
-                                        <td class="pd-history-goal">Create database migration for user preferences table</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Cu</div>
-                                                Cursor
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">3 hours ago</td>
-                                        <td class="pd-history-duration">4m 18s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=dockerfile'">
-                                        <td class="pd-history-goal">Optimize Dockerfile for production with multi-stage build</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                                Claude Code
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">Yesterday</td>
-                                        <td class="pd-history-duration">12m 05s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=rate-limit'">
-                                        <td class="pd-history-goal">Implement rate limiting middleware</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #10b981, #059669);">OC</div>
-                                                OpenCode
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">Yesterday</td>
-                                        <td class="pd-history-duration">6m 45s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=openapi'">
-                                        <td class="pd-history-goal">Generate OpenAPI spec from route handlers</td>
-                                        <td>
-                                            <span class="pd-history-status failed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Failed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                                Claude Code
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">2 days ago</td>
-                                        <td class="pd-history-duration">15m 22s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=logging'">
-                                        <td class="pd-history-goal">Set up structured logging with correlation IDs</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Cu</div>
-                                                Cursor
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">3 days ago</td>
-                                        <td class="pd-history-duration">9m 11s</td>
-                                    </tr>
-                                    <tr onclick="window.location.href='../tasks/index.html?task=k8s-manifest'">
-                                        <td class="pd-history-goal">Create Kubernetes deployment manifests</td>
-                                        <td>
-                                            <span class="pd-history-status completed">
-                                                <span class="pd-history-status-dot"></span>
-                                                Completed
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="pd-history-agent">
-                                                <div class="pd-history-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                                Claude Code
-                                            </div>
-                                        </td>
-                                        <td class="pd-history-time">5 days ago</td>
-                                        <td class="pd-history-duration">7m 38s</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
@@ -3883,6 +4354,74 @@ agentConfig:
             const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
             currentEventIndex = Math.round(pct * (totalEvents - 1));
             updateReplayState();
+        }
+
+        /* ── Network Policy Functions ── */
+        function selectNetworkMode(el, mode) {
+            document.querySelectorAll('.pd-np-mode-card').forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('.pd-np-mode-radio').innerHTML = '';
+            });
+            el.classList.add('selected');
+            el.querySelector('.pd-np-mode-radio').innerHTML = '<div class="pd-np-mode-radio-dot"></div>';
+        }
+
+        function toggleAddHost(type) {
+            const row = document.getElementById('addAllowedHostRow');
+            row.classList.toggle('show');
+            if (row.classList.contains('show')) {
+                document.getElementById('newAllowedHostInput').focus();
+            }
+        }
+
+        function addAllowedHostEntry() {
+            const input = document.getElementById('newAllowedHostInput');
+            const val = input.value.trim();
+            if (!val) return;
+
+            const list = document.getElementById('allowedHostList');
+            const item = document.createElement('div');
+            item.className = 'pd-np-host-item';
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(-4px)';
+            item.innerHTML = `
+                <div class="pd-np-host-dot allowed"></div>
+                <div class="pd-np-host-info">
+                    <div class="pd-np-host-name">${val}</div>
+                    <div class="pd-np-host-note">Added just now</div>
+                </div>
+                <span class="pd-np-host-badge custom">custom</span>
+                <button class="pd-block-item-remove" title="Remove" onclick="this.closest('.pd-np-host-item').remove()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            `;
+            list.appendChild(item);
+
+            requestAnimationFrame(() => {
+                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            });
+
+            input.value = '';
+            toggleAddHost('allowed');
+        }
+
+        function quickAllowHost(host, btn) {
+            btn.style.transition = 'all 0.3s ease';
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Allowed';
+            btn.style.background = 'rgba(52, 211, 153, 0.2)';
+            btn.style.borderColor = 'rgba(52, 211, 153, 0.3)';
+            btn.style.pointerEvents = 'none';
+
+            const entry = btn.closest('.pd-np-log-entry');
+            const status = entry.querySelector('.pd-np-log-status');
+            status.className = 'pd-np-log-status allowed';
+            status.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+
+            const meta = entry.querySelector('.pd-np-log-meta');
+            const spans = meta.querySelectorAll('span:not(.pd-np-log-agent):not(.pd-np-log-sep)');
+            spans.forEach(s => { s.textContent = 'Allowed (just now)'; s.style.color = '#34d399'; });
         }
     </script>
 </body>
