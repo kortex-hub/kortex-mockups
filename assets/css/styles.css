@@ -20,6 +20,7 @@ body {
 /* Left Sidebar Navigation */
 .sidebar {
     width: 80px;
+    min-width: 80px;
     height: 100vh;
     background-color: #252631;
     display: flex;
@@ -28,7 +29,11 @@ body {
     padding: 16px 0;
     border-right: 1px solid #3d3e4f;
     position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
+.sidebar::-webkit-scrollbar { width: 0; }
 
 .nav-item {
     display: flex;

@@ -5,6 +5,17 @@
 
 const sidebarHTML = `
 <nav class="sidebar">
+    <!-- Overview -->
+    <a href="../index.html" class="nav-item" data-section="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9" rx="1"/>
+            <rect x="14" y="3" width="7" height="5" rx="1"/>
+            <rect x="14" y="12" width="7" height="9" rx="1"/>
+            <rect x="3" y="16" width="7" height="5" rx="1"/>
+        </svg>
+        <span>Overview</span>
+    </a>
+
     <!-- Agents -->
     <a href="../tasks/index.html" class="nav-item" data-section="tasks">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -13,6 +24,14 @@ const sidebarHTML = `
             <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
         </svg>
         <span>Agents</span>
+    </a>
+
+    <!-- Projects -->
+    <a href="../projects/index.html" class="nav-item" data-section="projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Projects</span>
     </a>
 
     <!-- AI Assets -->

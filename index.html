@@ -6,119 +6,510 @@
     <title>Kortex</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        .welcome-container {
+        .dash-layout {
             display: flex;
             flex: 1;
-            align-items: center;
-            justify-content: center;
-            background-color: #1a1b23;
-            padding-bottom: 28px;
+            height: calc(100vh - 32px);
+            overflow: hidden;
         }
 
-        .welcome-content {
-            text-align: center;
-            max-width: 600px;
-            padding: 40px;
+        .dash-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 44px 48px;
+            min-width: 0;
         }
 
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 32px;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            border-radius: 24px;
+        .dash-content::-webkit-scrollbar { width: 6px; }
+        .dash-content::-webkit-scrollbar-track { background: transparent; }
+        .dash-content::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.15); border-radius: 3px; }
+
+        /* ── Greeting ── */
+        .dash-greeting {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 48px;
-            font-weight: bold;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 32px;
         }
 
-        .welcome-title {
-            font-size: 36px;
+        .dash-greeting-text h1 {
+            font-size: 26px;
             font-weight: 700;
             color: #e5e7eb;
-            margin-bottom: 16px;
+            margin: 0 0 6px;
         }
 
-        .welcome-subtitle {
-            font-size: 18px;
-            color: #9ca3af;
-            margin-bottom: 40px;
-            line-height: 1.6;
+        .dash-greeting-text h1 span {
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .nav-buttons {
+        .dash-greeting-text p {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .dash-new-task-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-new-task-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139,92,246,0.4);
+        }
+
+        .dash-new-task-btn svg { width: 16px; height: 16px; }
+
+        /* ── Stat Cards Row ── */
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .dash-stat-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 0 0 80px;
+            opacity: 0.06;
+        }
+
+        .dash-stat-card.agents::after { background: #8b5cf6; }
+        .dash-stat-card.tasks::after { background: #10b981; }
+        .dash-stat-card.assets::after { background: #3b82f6; }
+        .dash-stat-card.health::after { background: #f59e0b; }
+
+        .dash-stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .dash-stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .dash-stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-stat-icon svg { width: 16px; height: 16px; color: #fff; }
+        .dash-stat-icon.agents { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-stat-icon.tasks { background: linear-gradient(135deg, #10b981, #059669); }
+        .dash-stat-icon.assets { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-stat-icon.health { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .dash-stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .dash-stat-detail {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .dash-stat-detail .up { color: #34d399; }
+        .dash-stat-detail .neutral { color: #6b7280; }
+
+        /* ── Two-Column Layout ── */
+        .dash-columns {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        /* ── Active Agents ── */
+        .dash-section {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .dash-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(61,62,79,0.5);
+        }
+
+        .dash-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dash-section-title .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
+        }
+
+        .dash-section-link {
+            font-size: 12px;
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .dash-section-link:hover { color: #c4b5fd; }
+
+        .dash-agent-list {
+            padding: 8px;
+        }
+
+        .dash-agent-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .dash-agent-item:hover { background: rgba(139,92,246,0.06); }
+
+        .dash-agent-item + .dash-agent-item {
+            border-top: 1px solid rgba(61,62,79,0.3);
+        }
+
+        .dash-agent-status-ring {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .dash-agent-status-ring.running {
+            background: conic-gradient(#8b5cf6 0deg, #8b5cf6 var(--progress, 180deg), rgba(139,92,246,0.15) var(--progress, 180deg), rgba(139,92,246,0.15) 360deg);
+        }
+
+        .dash-agent-status-ring.paused {
+            background: conic-gradient(#f59e0b 0deg, #f59e0b var(--progress, 120deg), rgba(245,158,11,0.15) var(--progress, 120deg), rgba(245,158,11,0.15) 360deg);
+        }
+
+        .dash-agent-status-ring-inner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #252631;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-agent-status-ring-inner svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .dash-agent-status-ring.running .dash-agent-status-ring-inner svg { color: #8b5cf6; }
+        .dash-agent-status-ring.paused .dash-agent-status-ring-inner svg { color: #f59e0b; }
+
+        .dash-agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-agent-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dash-agent-task {
+            font-size: 12px;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dash-agent-right {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-width: 600px;
-            margin: 0 auto;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
         }
 
-        .nav-button {
+        .dash-agent-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .dash-agent-badge.running {
+            background: rgba(139,92,246,0.15);
+            color: #c4b5fd;
+        }
+
+        .dash-agent-badge.paused {
+            background: rgba(245,158,11,0.15);
+            color: #fbbf24;
+        }
+
+        .dash-agent-badge.waiting {
+            background: rgba(59,130,246,0.12);
+            color: #93c5fd;
+        }
+
+        .dash-agent-time {
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        /* ── Activity Feed ── */
+        .dash-activity-list {
+            padding: 8px 16px;
+        }
+
+        .dash-activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .dash-activity-item + .dash-activity-item {
+            border-top: 1px solid rgba(61,62,79,0.3);
+        }
+
+        .dash-activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dash-activity-icon svg { width: 14px; height: 14px; color: #fff; }
+        .dash-activity-icon.completed { background: linear-gradient(135deg, #10b981, #059669); }
+        .dash-activity-icon.pr { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-activity-icon.deploy { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .dash-activity-icon.alert { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .dash-activity-icon.asset { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-activity-icon.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .dash-activity-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-activity-text {
+            font-size: 13px;
+            color: #e5e7eb;
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+
+        .dash-activity-text strong { color: #c4b5fd; font-weight: 600; }
+
+        .dash-activity-time {
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        /* ── Quick Actions Row ── */
+        .dash-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .dash-quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 24px 16px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-quick-action:hover {
+            border-color: rgba(139,92,246,0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .dash-quick-action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-quick-action-icon svg { width: 20px; height: 20px; color: #fff; }
+
+        .dash-quick-action-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            text-align: center;
+        }
+
+        .dash-quick-action-desc {
+            font-size: 11px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* ── Resource Meters ── */
+        .dash-resource-row {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px 20px;
+        }
+
+        .dash-resource-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 16px 24px;
-            background-color: #252631;
-            border: 2px solid #3d3e4f;
-            border-radius: 12px;
-            color: #e5e7eb;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.2s ease;
         }
 
-        .nav-button:hover {
-            background-color: #7c3aed;
-            border-color: #8b5cf6;
-            transform: translateY(-2px);
-        }
-
-        .nav-button svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .nav-button-label {
-            flex: 1;
-            text-align: left;
-        }
-
-        .nav-button-desc {
+        .dash-resource-label {
             font-size: 12px;
             color: #9ca3af;
-            margin-top: 4px;
+            width: 70px;
+            flex-shrink: 0;
         }
 
-        .nav-button:hover .nav-button-desc {
-            color: rgba(255, 255, 255, 0.7);
+        .dash-resource-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 3px;
+            overflow: hidden;
         }
 
-        .nav-button.primary {
-            border-color: rgba(139, 92, 246, 0.4);
-            background: linear-gradient(145deg, #252631 0%, rgba(139, 92, 246, 0.08) 100%);
+        .dash-resource-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
         }
+
+        .dash-resource-bar.cpu { background: linear-gradient(90deg, #8b5cf6, #c084fc); }
+        .dash-resource-bar.memory { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .dash-resource-bar.tokens { background: linear-gradient(90deg, #10b981, #34d399); }
+
+        .dash-resource-value {
+            font-size: 12px;
+            color: #e5e7eb;
+            font-weight: 600;
+            width: 40px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* ── Hide default header ── */
+        body.dashboard-page .main-content > .header { display: none; }
+        body.dashboard-page .main-content { padding: 0; }
     </style>
 </head>
-<body>
+<body class="dashboard-page">
     <div class="app-container">
         <!-- Sidebar (inline for landing page) -->
         <nav class="sidebar">
-            <!-- Agents -->
+            <a href="index.html" class="nav-item active" data-section="dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="9" rx="1"/>
+                    <rect x="14" y="3" width="7" height="5" rx="1"/>
+                    <rect x="14" y="12" width="7" height="9" rx="1"/>
+                    <rect x="3" y="16" width="7" height="5" rx="1"/>
+                </svg>
+                <span>Overview</span>
+            </a>
             <a href="tasks/index.html" class="nav-item" data-section="tasks">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
                     <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
                     <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
                 </svg>
-                <span>Agents</span>
+                <span>Tasks</span>
             </a>
-
-            <!-- AI Assets -->
+            <a href="projects/index.html" class="nav-item" data-section="projects">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>Projects</span>
+            </a>
             <a href="ai-assets/index.html" class="nav-item" data-section="ai-assets">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7" rx="1"/>
@@ -128,16 +519,12 @@
                 </svg>
                 <span>AI Assets</span>
             </a>
-
-            <!-- Flows -->
             <a href="flows/index.html" class="nav-item" data-section="flows">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
                 </svg>
                 <span>Flows</span>
             </a>
-
-            <!-- Extensions -->
             <a href="extensions/index.html" class="nav-item" data-section="extensions">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2v6.5l5.5-3.25"/>
@@ -151,10 +538,7 @@
                 </svg>
                 <span>Extensions</span>
             </a>
-
             <div class="nav-spacer"></div>
-
-            <!-- Settings -->
             <a href="settings/index.html" class="nav-item" data-section="settings">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="3"/>
@@ -164,70 +548,275 @@
             </a>
         </nav>
 
-        <div class="welcome-container">
-        <div class="welcome-content">
-            <div class="logo">K</div>
-            <h1 class="welcome-title">Welcome to Kortex</h1>
-            <p class="welcome-subtitle">
-                Your goal-oriented agentic development platform. Describe what you want to build, 
-                and let AI agents handle the rest.
-            </p>
-            
-            <div class="nav-buttons">
-                <a href="tasks/index.html" class="nav-button primary">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-                        <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
-                        <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
-                    </svg>
-                    <div class="nav-button-label">
-                        <div>Agents</div>
-                        <div class="nav-button-desc">Start a new task or continue working with your agents</div>
-                    </div>
-                </a>
+        <main class="main-content">
+            <div class="dash-layout">
+                <div class="dash-content">
 
-                <a href="ai-assets/index.html" class="nav-button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7" rx="1"/>
-                        <rect x="14" y="3" width="7" height="7" rx="1"/>
-                        <rect x="3" y="14" width="7" height="7" rx="1"/>
-                        <rect x="14" y="14" width="7" height="7" rx="1"/>
-                    </svg>
-                    <div class="nav-button-label">
-                        <div>AI Assets</div>
-                        <div class="nav-button-desc">Browse and manage Tools, Skills, Knowledge, and Profiles</div>
+                    <!-- Greeting -->
+                    <div class="dash-greeting">
+                        <div class="dash-greeting-text">
+                            <h1>Good afternoon, <span>Sebastien</span></h1>
+                            <p>3 agents working &middot; 2 tasks awaiting review &middot; System healthy</p>
+                        </div>
+                        <a href="tasks/index.html" class="dash-new-task-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            New Task
+                        </a>
                     </div>
-                </a>
 
-                <a href="flows/index.html" class="nav-button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-                    </svg>
-                    <div class="nav-button-label">
-                        <div>Flows</div>
-                        <div class="nav-button-desc">Create and manage agentic workflows</div>
-                    </div>
-                </a>
+                    <!-- Stat Cards -->
+                    <div class="dash-stats">
+                        <div class="dash-stat-card agents">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">Active Agents</span>
+                                <div class="dash-stat-icon agents">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">3</div>
+                            <div class="dash-stat-detail"><span class="up">2 running</span> &middot; 1 paused</div>
+                        </div>
 
-                <a href="extensions/index.html" class="nav-button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2v6.5l5.5-3.25"/>
-                        <path d="M17.5 5.25L12 8.5l5.5 3.25"/>
-                        <path d="M17.5 11.75L12 8.5V15"/>
-                        <path d="M12 15l-5.5-3.25"/>
-                        <path d="M6.5 11.75L12 8.5 6.5 5.25"/>
-                        <path d="M6.5 5.25L12 8.5V2"/>
-                        <path d="M12 15v7"/>
-                        <path d="M5 17.5L12 22l7-4.5"/>
-                    </svg>
-                    <div class="nav-button-label">
-                        <div>Extensions</div>
-                        <div class="nav-button-desc">Extend Kortex with plugins and integrations</div>
+                        <div class="dash-stat-card tasks">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">Tasks Today</span>
+                                <div class="dash-stat-icon tasks">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">12</div>
+                            <div class="dash-stat-detail"><span class="up">8 completed</span> &middot; 4 in progress</div>
+                        </div>
+
+                        <div class="dash-stat-card assets">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">AI Assets</span>
+                                <div class="dash-stat-icon assets">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">11</div>
+                            <div class="dash-stat-detail">5 tools &middot; 4 skills &middot; 2 KBs</div>
+                        </div>
+
+                        <div class="dash-stat-card health">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">System Health</span>
+                                <div class="dash-stat-icon health">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value" style="color: #34d399;">Healthy</div>
+                            <div class="dash-stat-detail">All services operational</div>
+                        </div>
                     </div>
-                </a>
+
+                    <!-- Two-Column: Active Agents + Activity Feed -->
+                    <div class="dash-columns">
+                        <!-- Active Agents -->
+                        <div class="dash-section">
+                            <div class="dash-section-header">
+                                <div class="dash-section-title">
+                                    <span class="live-dot"></span>
+                                    Active Agents
+                                </div>
+                                <a href="tasks/index.html" class="dash-section-link">View all tasks &rarr;</a>
+                            </div>
+                            <div class="dash-agent-list">
+                                <div class="dash-agent-item" onclick="window.location.href='tasks/index.html'">
+                                    <div class="dash-agent-status-ring running" style="--progress: 252deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Migrate auth service to OAuth2</div>
+                                        <div class="dash-agent-task">Refactoring token validation &middot; DevOps Engineer profile</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge running">Running</span>
+                                        <span class="dash-agent-time">12m ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="dash-agent-item" onclick="window.location.href='tasks/index.html'">
+                                    <div class="dash-agent-status-ring running" style="--progress: 130deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Write integration tests for payment API</div>
+                                        <div class="dash-agent-task">Generating test fixtures &middot; Backend Developer profile</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge running">Running</span>
+                                        <span class="dash-agent-time">4m ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="dash-agent-item" onclick="window.location.href='tasks/index.html'">
+                                    <div class="dash-agent-status-ring paused" style="--progress: 200deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Optimize database queries</div>
+                                        <div class="dash-agent-task">Awaiting review of proposed index changes</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge waiting">Needs Review</span>
+                                        <span class="dash-agent-time">28m ago</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Resource Usage -->
+                            <div style="border-top: 1px solid rgba(61,62,79,0.5);">
+                                <div class="dash-section-header">
+                                    <div class="dash-section-title">Resource Usage</div>
+                                </div>
+                                <div class="dash-resource-row">
+                                    <div class="dash-resource-item">
+                                        <span class="dash-resource-label">CPU</span>
+                                        <div class="dash-resource-bar-bg">
+                                            <div class="dash-resource-bar cpu" style="width: 42%;"></div>
+                                        </div>
+                                        <span class="dash-resource-value">42%</span>
+                                    </div>
+                                    <div class="dash-resource-item">
+                                        <span class="dash-resource-label">Memory</span>
+                                        <div class="dash-resource-bar-bg">
+                                            <div class="dash-resource-bar memory" style="width: 67%;"></div>
+                                        </div>
+                                        <span class="dash-resource-value">67%</span>
+                                    </div>
+                                    <div class="dash-resource-item">
+                                        <span class="dash-resource-label">Tokens</span>
+                                        <div class="dash-resource-bar-bg">
+                                            <div class="dash-resource-bar tokens" style="width: 23%;"></div>
+                                        </div>
+                                        <span class="dash-resource-value">23K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Feed -->
+                        <div class="dash-section">
+                            <div class="dash-section-header">
+                                <div class="dash-section-title">Recent Activity</div>
+                            </div>
+                            <div class="dash-activity-list">
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon completed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Fix CORS headers</strong> completed successfully &mdash; 3 files modified</div>
+                                        <div class="dash-activity-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon pr">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text">PR <strong>#247</strong> opened for <strong>Add rate limiting middleware</strong></div>
+                                        <div class="dash-activity-time">18 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon deploy">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>staging</strong> deployment triggered via OpenShift MCP</div>
+                                        <div class="dash-activity-time">34 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon alert">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text">Agent paused &mdash; <strong>Optimize database queries</strong> needs your review</div>
+                                        <div class="dash-activity-time">28 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon asset">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Ansible MCP</strong> installed and configured</div>
+                                        <div class="dash-activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon completed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Update Dockerfile</strong> completed &mdash; Hummingbird base image applied</div>
+                                        <div class="dash-activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon error">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Tekton pipeline</strong> build failed &mdash; missing secret <code style="font-size:11px; background:rgba(239,68,68,0.1); padding:1px 5px; border-radius:3px; color:#f87171;">registry-creds</code></div>
+                                        <div class="dash-activity-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="dash-quick-actions">
+                        <a href="tasks/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">New Task</div>
+                            <div class="dash-quick-action-desc">Start a new agent task</div>
+                        </a>
+                        <a href="ai-assets/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Browse Assets</div>
+                            <div class="dash-quick-action-desc">Tools, Skills & Knowledge</div>
+                        </a>
+                        <a href="flows/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Create Flow</div>
+                            <div class="dash-quick-action-desc">Build an agentic workflow</div>
+                        </a>
+                        <a href="settings/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H3a2 2 0 0 1 0-4h.09"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Settings</div>
+                            <div class="dash-quick-action-desc">Configure agents & defaults</div>
+                        </a>
+                    </div>
+
+                </div>
             </div>
-        </div>
-        </div>
+        </main>
 
         <!-- Global Status Bar -->
         <div class="global-status-bar" id="globalStatusBar">

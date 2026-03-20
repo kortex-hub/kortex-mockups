@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Projects</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .projects-page-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .projects-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px;
+            min-width: 0;
+        }
+
+        .projects-main::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .projects-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .projects-main::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
+        }
+
+        /* ── Header ── */
+        .projects-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .projects-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .projects-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .projects-count {
+            font-size: 13px;
+            color: #6b7280;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            border: 1px solid #3d3e4f;
+        }
+
+        .projects-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .projects-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            min-width: 260px;
+            transition: border-color 0.2s ease;
+        }
+
+        .projects-search:focus-within {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .projects-search svg {
+            width: 16px;
+            height: 16px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .projects-search input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #e5e7eb;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .projects-search input::placeholder {
+            color: #4b5563;
+        }
+
+        .new-project-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .new-project-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .new-project-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ── Projects Grid ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+        }
+
+        .project-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .project-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .project-card-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #fff;
+        }
+
+        .project-card-title-area {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .project-card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .project-card-path {
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-card-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .project-card-status-dot.active {
+            background: #34d399;
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+        }
+
+        .project-card-status-dot.idle {
+            background: #4b5563;
+        }
+
+        .project-card-git {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .project-card-git svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            color: #6b7280;
+        }
+
+        .project-card-git-remote {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-card-branch {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #c4b5fd;
+            flex-shrink: 0;
+        }
+
+        .project-card-assets {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .project-asset-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .project-asset-tag svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .project-asset-tag.skills {
+            background: rgba(52, 211, 153, 0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(52, 211, 153, 0.15);
+        }
+
+        .project-asset-tag.mcp {
+            background: rgba(6, 182, 212, 0.1);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, 0.15);
+        }
+
+        .project-asset-tag.knowledge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        .project-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid rgba(61, 62, 79, 0.4);
+        }
+
+        .project-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .project-card-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .project-card-meta-item svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .project-card-agents-badge {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .project-card-agents-badge.running {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .project-card-agents-badge.idle {
+            background: rgba(255, 255, 255, 0.04);
+            color: #6b7280;
+            border: 1px solid #3d3e4f;
+        }
+
+        /* ── New Project Modal ── */
+        .new-project-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .new-project-overlay.show {
+            display: flex;
+        }
+
+        .new-project-modal {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            width: 560px;
+            max-width: 90vw;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .new-project-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .new-project-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .new-project-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.04);
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .new-project-modal-close:hover {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+        }
+
+        .new-project-modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .np-step { display: none; }
+        .np-step.active { display: flex; flex-direction: column; gap: 18px; }
+
+        /* Step 1: single prominent input */
+        .np-step1-prompt {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
+
+        .np-path-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .np-path-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .np-path-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .np-path-input::placeholder {
+            color: #4b5563;
+            font-family: inherit;
+        }
+
+        .np-browse-btn {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            color: #9ca3af;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .np-browse-btn:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .np-browse-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .np-or-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #4b5563;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .np-or-divider::before,
+        .np-or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #3d3e4f;
+        }
+
+        .np-git-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .np-git-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .np-git-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .np-git-input::placeholder {
+            color: #4b5563;
+            font-family: inherit;
+        }
+
+        /* Step 2: analysis / confirmation */
+        .np-analyzing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 30px 0;
+        }
+
+        .np-analyzing-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: npSpin 0.8s linear infinite;
+        }
+
+        @keyframes npSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .np-analyzing-text {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        /* Step 3: review detected info */
+        .np-detected-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(52, 211, 153, 0.06);
+            border: 1px solid rgba(52, 211, 153, 0.15);
+            border-radius: 10px;
+            margin-bottom: 2px;
+        }
+
+        .np-detected-header svg {
+            width: 18px;
+            height: 18px;
+            color: #34d399;
+            flex-shrink: 0;
+        }
+
+        .np-detected-header-text {
+            font-size: 13px;
+            color: #34d399;
+            font-weight: 500;
+        }
+
+        .np-detected-source {
+            font-size: 12px;
+            color: #6b7280;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            margin-left: auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 240px;
+        }
+
+        .np-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .np-field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .np-field-input {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 9px;
+            color: #e5e7eb;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .np-field-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .np-field-input::placeholder {
+            color: #4b5563;
+        }
+
+        .np-field-input.mono {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 13px;
+        }
+
+        textarea.np-field-input {
+            resize: vertical;
+            min-height: 56px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .np-field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .np-detected-git-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: 8px;
+        }
+
+        .np-detected-git-info svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .np-detected-git-info span {
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #c4b5fd;
+        }
+
+        .np-detected-git-info .np-branch-tag {
+            margin-left: auto;
+            padding: 2px 8px;
+            background: rgba(139, 92, 246, 0.12);
+            border-radius: 4px;
+            font-size: 11px;
+            color: #c4b5fd;
+        }
+
+        .new-project-modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 16px 24px;
+            border-top: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .np-cancel-btn {
+            padding: 8px 18px;
+            background: none;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .np-cancel-btn:hover {
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+
+        .np-back-btn {
+            padding: 8px 18px;
+            background: none;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .np-back-btn:hover {
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+
+        .np-back-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .np-next-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .np-next-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .np-next-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .np-next-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .np-create-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .np-create-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .np-create-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body class="projects-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="projects-page-layout">
+                <div class="projects-main">
+                    <div class="projects-header">
+                        <div class="projects-header-left">
+                            <h1 class="projects-title">Projects</h1>
+                            <span class="projects-count">4 projects</span>
+                        </div>
+                        <div class="projects-header-actions">
+                            <div class="projects-search">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" placeholder="Search projects..." oninput="searchProjects(this.value)">
+                            </div>
+                            <button class="new-project-btn" onclick="openNewProjectModal()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Project
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="projects-grid" id="projectsGrid">
+                        <!-- Project 1: Kortex Backend -->
+                        <div class="project-card" onclick="openProject('kortex-backend')">
+                            <div class="project-card-header">
+                                <div class="project-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                </div>
+                                <div class="project-card-title-area">
+                                    <div class="project-card-name">Kortex Backend</div>
+                                    <div class="project-card-path">~/dev/kortex-backend</div>
+                                </div>
+                                <div class="project-card-status-dot active" title="1 agent running"></div>
+                            </div>
+
+                            <div class="project-card-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                <span class="project-card-git-remote">github.com/acme/kortex-backend</span>
+                                <span class="project-card-branch">main</span>
+                            </div>
+
+                            <div class="project-card-assets">
+                                <span class="project-asset-tag skills">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    3 Skills
+                                </span>
+                                <span class="project-asset-tag mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    2 MCP
+                                </span>
+                                <span class="project-asset-tag knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                    1 KB
+                                </span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <div class="project-card-meta">
+                                    <div class="project-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        Active 2 min ago
+                                    </div>
+                                </div>
+                                <span class="project-card-agents-badge running">1 agent running</span>
+                            </div>
+                        </div>
+
+                        <!-- Project 2: Frontend App -->
+                        <div class="project-card" onclick="openProject('frontend-app')">
+                            <div class="project-card-header">
+                                <div class="project-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                </div>
+                                <div class="project-card-title-area">
+                                    <div class="project-card-name">Frontend App</div>
+                                    <div class="project-card-path">~/dev/kortex-frontend</div>
+                                </div>
+                                <div class="project-card-status-dot active" title="2 agents running"></div>
+                            </div>
+
+                            <div class="project-card-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                <span class="project-card-git-remote">github.com/acme/kortex-frontend</span>
+                                <span class="project-card-branch">feat/dashboard</span>
+                            </div>
+
+                            <div class="project-card-assets">
+                                <span class="project-asset-tag skills">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    2 Skills
+                                </span>
+                                <span class="project-asset-tag mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    1 MCP
+                                </span>
+                                <span class="project-asset-tag knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                    2 KB
+                                </span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <div class="project-card-meta">
+                                    <div class="project-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        Active 15 min ago
+                                    </div>
+                                </div>
+                                <span class="project-card-agents-badge running">2 agents running</span>
+                            </div>
+                        </div>
+
+                        <!-- Project 3: Infrastructure -->
+                        <div class="project-card" onclick="openProject('infra-platform')">
+                            <div class="project-card-header">
+                                <div class="project-card-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                </div>
+                                <div class="project-card-title-area">
+                                    <div class="project-card-name">Infrastructure Platform</div>
+                                    <div class="project-card-path">~/dev/infra-platform</div>
+                                </div>
+                                <div class="project-card-status-dot idle" title="No agents running"></div>
+                            </div>
+
+                            <div class="project-card-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                <span class="project-card-git-remote">gitlab.corp.example.com/platform/infra</span>
+                                <span class="project-card-branch">main</span>
+                            </div>
+
+                            <div class="project-card-assets">
+                                <span class="project-asset-tag skills">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    4 Skills
+                                </span>
+                                <span class="project-asset-tag mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    3 MCP
+                                </span>
+                                <span class="project-asset-tag knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                    1 KB
+                                </span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <div class="project-card-meta">
+                                    <div class="project-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        Last active 3 days ago
+                                    </div>
+                                </div>
+                                <span class="project-card-agents-badge idle">No agents</span>
+                            </div>
+                        </div>
+
+                        <!-- Project 4: API Gateway -->
+                        <div class="project-card" onclick="openProject('api-gateway')">
+                            <div class="project-card-header">
+                                <div class="project-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                </div>
+                                <div class="project-card-title-area">
+                                    <div class="project-card-name">API Gateway</div>
+                                    <div class="project-card-path">~/dev/api-gateway</div>
+                                </div>
+                                <div class="project-card-status-dot idle" title="No agents running"></div>
+                            </div>
+
+                            <div class="project-card-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                <span class="project-card-git-remote">github.com/acme/api-gateway</span>
+                                <span class="project-card-branch">develop</span>
+                            </div>
+
+                            <div class="project-card-assets">
+                                <span class="project-asset-tag skills">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    2 Skills
+                                </span>
+                                <span class="project-asset-tag mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    2 MCP
+                                </span>
+                            </div>
+
+                            <div class="project-card-footer">
+                                <div class="project-card-meta">
+                                    <div class="project-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        Last active 1 week ago
+                                    </div>
+                                </div>
+                                <span class="project-card-agents-badge idle">No agents</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Project Modal -->
+    <div class="new-project-overlay" id="newProjectOverlay" onclick="if(event.target===this) closeNewProjectModal()">
+        <div class="new-project-modal">
+            <div class="new-project-modal-header">
+                <span class="new-project-modal-title" id="npModalTitle">New Project</span>
+                <button class="new-project-modal-close" onclick="closeNewProjectModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="new-project-modal-body">
+                <!-- Step 1: Provide a path or git repo -->
+                <div class="np-step active" id="npStep1">
+                    <div class="np-step1-prompt">
+                        Point Kortex to a local working directory or a git repository, and we'll analyze your project automatically.
+                    </div>
+
+                    <div class="np-path-input-wrapper">
+                        <input type="text" class="np-path-input" id="npPathInput" placeholder="/home/user/dev/my-project" oninput="updateNextBtn()">
+                        <button class="np-browse-btn" onclick="simulateBrowse()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            Browse
+                        </button>
+                    </div>
+
+                    <div class="np-or-divider">or</div>
+
+                    <div class="np-git-input-wrapper">
+                        <input type="text" class="np-git-input" id="npGitInput" placeholder="https://github.com/org/repo.git" oninput="updateNextBtn()">
+                    </div>
+                </div>
+
+                <!-- Step 2: Analyzing (transient) -->
+                <div class="np-step" id="npStep2">
+                    <div class="np-analyzing">
+                        <div class="np-analyzing-spinner"></div>
+                        <div class="np-analyzing-text">Analyzing project...</div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review detected info -->
+                <div class="np-step" id="npStep3">
+                    <div class="np-detected-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="np-detected-header-text">Project analyzed</span>
+                        <span class="np-detected-source" id="npDetectedSource">~/dev/my-project</span>
+                    </div>
+
+                    <div class="np-field">
+                        <label class="np-field-label">Project Name</label>
+                        <input type="text" class="np-field-input" id="npDetectedName" value="">
+                    </div>
+
+                    <div class="np-field">
+                        <label class="np-field-label">Description</label>
+                        <textarea class="np-field-input" id="npDetectedDesc" rows="2"></textarea>
+                    </div>
+
+                    <div class="np-field-row">
+                        <div class="np-field">
+                            <label class="np-field-label">Working Directory</label>
+                            <input type="text" class="np-field-input mono" id="npDetectedDir" value="" readonly style="color: #6b7280;">
+                        </div>
+                        <div class="np-field">
+                            <label class="np-field-label">Language / Framework</label>
+                            <input type="text" class="np-field-input" id="npDetectedLang" value="" readonly style="color: #6b7280;">
+                        </div>
+                    </div>
+
+                    <div class="np-field">
+                        <label class="np-field-label">Git Repository</label>
+                        <div class="np-detected-git-info">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            <span id="npDetectedRemote">github.com/org/repo</span>
+                            <span class="np-branch-tag" id="npDetectedBranch">main</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="new-project-modal-footer">
+                <!-- Step 1 footer -->
+                <div id="npFooter1" style="display: flex; align-items: center; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button class="np-cancel-btn" onclick="closeNewProjectModal()">Cancel</button>
+                    <button class="np-next-btn" id="npNextBtn" onclick="analyzeProject()" disabled>
+                        Analyze
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+                <!-- Step 3 footer -->
+                <div id="npFooter3" style="display: none; align-items: center; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button class="np-back-btn" onclick="backToStep1()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back
+                    </button>
+                    <button class="np-create-btn" onclick="createProject()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Create Project
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mockAnalysis = {
+            '/home/user/dev/my-project': {
+                name: 'My Project',
+                desc: 'A Node.js web application with Express backend and React frontend. Includes REST API endpoints, authentication middleware, and database integration.',
+                dir: '/home/user/dev/my-project',
+                lang: 'TypeScript / Node.js',
+                remote: 'github.com/user/my-project',
+                branch: 'main'
+            },
+            'default-path': {
+                name: '',
+                desc: '',
+                dir: '',
+                lang: 'Go',
+                remote: '',
+                branch: 'main'
+            },
+            'default-git': {
+                name: '',
+                desc: '',
+                dir: '',
+                lang: '',
+                remote: '',
+                branch: 'main'
+            }
+        };
+
+        function deriveFromPath(rawPath) {
+            const p = rawPath.replace(/\/+$/, '');
+            const dirName = p.split('/').pop() || 'my-project';
+            const prettyName = dirName
+                .replace(/[-_]+/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+            return {
+                name: prettyName,
+                desc: 'Auto-detected project from local working directory. Contains source code, configuration files, and build scripts.',
+                dir: p.startsWith('/') ? p : '~/' + p,
+                lang: 'TypeScript / Node.js',
+                remote: 'github.com/acme/' + dirName,
+                branch: 'main'
+            };
+        }
+
+        function deriveFromGit(url) {
+            const cleaned = url.replace(/\.git$/, '').replace(/^https?:\/\//, '');
+            const parts = cleaned.split('/');
+            const repoName = parts[parts.length - 1] || 'repo';
+            const prettyName = repoName
+                .replace(/[-_]+/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+            return {
+                name: prettyName,
+                desc: 'Cloned from remote repository. The project structure and dependencies will be analyzed after cloning.',
+                dir: '~/dev/' + repoName,
+                lang: 'Detecting...',
+                remote: cleaned,
+                branch: 'main'
+            };
+        }
+
+        function openProject(slug) {
+            window.location.href = 'details.html?project=' + slug;
+        }
+
+        function openNewProjectModal() {
+            goToStep(1);
+            document.getElementById('npPathInput').value = '';
+            document.getElementById('npGitInput').value = '';
+            updateNextBtn();
+            document.getElementById('newProjectOverlay').classList.add('show');
+            setTimeout(() => document.getElementById('npPathInput').focus(), 100);
+        }
+
+        function closeNewProjectModal() {
+            document.getElementById('newProjectOverlay').classList.remove('show');
+        }
+
+        function updateNextBtn() {
+            const hasPath = document.getElementById('npPathInput').value.trim().length > 0;
+            const hasGit = document.getElementById('npGitInput').value.trim().length > 0;
+            document.getElementById('npNextBtn').disabled = !(hasPath || hasGit);
+        }
+
+        function goToStep(n) {
+            document.querySelectorAll('.np-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('npStep' + n).classList.add('active');
+
+            document.getElementById('npFooter1').style.display = (n === 1) ? 'flex' : 'none';
+            document.getElementById('npFooter3').style.display = (n === 3) ? 'flex' : 'none';
+
+            const titles = { 1: 'New Project', 2: 'Analyzing...', 3: 'Review Project' };
+            document.getElementById('npModalTitle').textContent = titles[n] || 'New Project';
+        }
+
+        function analyzeProject() {
+            goToStep(2);
+
+            setTimeout(() => {
+                const pathVal = document.getElementById('npPathInput').value.trim();
+                const gitVal = document.getElementById('npGitInput').value.trim();
+
+                let info;
+                if (pathVal) {
+                    info = deriveFromPath(pathVal);
+                    document.getElementById('npDetectedSource').textContent = info.dir;
+                } else {
+                    info = deriveFromGit(gitVal);
+                    document.getElementById('npDetectedSource').textContent = info.remote;
+                }
+
+                document.getElementById('npDetectedName').value = info.name;
+                document.getElementById('npDetectedDesc').value = info.desc;
+                document.getElementById('npDetectedDir').value = info.dir;
+                document.getElementById('npDetectedLang').value = info.lang;
+                document.getElementById('npDetectedRemote').textContent = info.remote;
+                document.getElementById('npDetectedBranch').textContent = info.branch;
+
+                goToStep(3);
+            }, 1400);
+        }
+
+        function backToStep1() {
+            goToStep(1);
+        }
+
+        function createProject() {
+            closeNewProjectModal();
+        }
+
+        function simulateBrowse() {
+            document.getElementById('npPathInput').value = '/home/user/dev/my-project';
+            updateNextBtn();
+        }
+
+        function searchProjects(query) {
+            const cards = document.querySelectorAll('.project-card');
+            const q = query.toLowerCase();
+            cards.forEach(card => {
+                const name = card.querySelector('.project-card-name').textContent.toLowerCase();
+                const path = card.querySelector('.project-card-path').textContent.toLowerCase();
+                card.style.display = (!q || name.includes(q) || path.includes(q)) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

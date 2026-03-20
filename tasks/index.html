@@ -10,7 +10,7 @@
         .tasks-layout {
             display: flex;
             flex: 1;
-            height: 100vh;
+            height: calc(100vh - 28px);
             overflow: hidden;
         }
 
@@ -868,6 +868,7 @@
             padding: 16px 24px 20px;
             border-top: 1px solid #3d3e4f;
             background: linear-gradient(0deg, #1a1b23 0%, #151620 100%);
+            flex-shrink: 0;
         }
 
         .task-input-wrapper {
@@ -1257,6 +1258,72 @@
             border-color: rgba(139, 92, 246, 0.4);
         }
 
+        .rp-project-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .rp-project-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .rp-project-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rp-project-icon svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+        }
+
+        .rp-project-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rp-project-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c4b5fd;
+        }
+
+        .rp-project-path {
+            font-size: 10px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #6b7280;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rp-project-link {
+            width: 14px;
+            height: 14px;
+            color: #4b5563;
+            flex-shrink: 0;
+            transition: color 0.15s;
+        }
+
+        .rp-project-card:hover .rp-project-link {
+            color: #c4b5fd;
+        }
+
         .rp-agent-card {
             display: flex;
             align-items: center;
@@ -1581,6 +1648,161 @@
         .mention-item-desc {
             font-size: 11px;
             color: #6b7280;
+        }
+
+        /* ── Project Picker (New Agent Modal) ── */
+        .na-project-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 9px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .na-project-picker:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .na-project-picker-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .na-project-picker-icon svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+        }
+
+        .na-project-picker-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .na-project-picker-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .na-project-picker-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c4b5fd;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .na-project-picker-chevron {
+            width: 16px;
+            height: 16px;
+            color: #6b7280;
+            flex-shrink: 0;
+            transition: transform 0.15s;
+        }
+
+        .na-project-picker.open .na-project-picker-chevron {
+            transform: rotate(180deg);
+        }
+
+        .na-project-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .na-project-dropdown.show {
+            display: block;
+        }
+
+        .na-project-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .na-project-dropdown-item:hover {
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .na-project-dropdown-item.selected {
+            background: rgba(139, 92, 246, 0.12);
+        }
+
+        .na-project-dropdown-item + .na-project-dropdown-item {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .na-project-dropdown-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .na-project-dropdown-dot svg {
+            width: 12px;
+            height: 12px;
+            color: #fff;
+        }
+
+        .na-project-dropdown-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .na-project-dropdown-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .na-project-dropdown-path {
+            font-size: 11px;
+            color: #6b7280;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        }
+
+        .na-project-dropdown-check {
+            width: 16px;
+            height: 16px;
+            color: #8b5cf6;
+            flex-shrink: 0;
+            display: none;
+        }
+
+        .na-project-dropdown-item.selected .na-project-dropdown-check {
+            display: block;
         }
 
         /* ── New Agent Modal ── */
@@ -2533,6 +2755,21 @@
                         <textarea class="rp-goal-input">Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.</textarea>
                     </div>
 
+                    <!-- Project -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Project</div>
+                        <a href="../projects/details.html?project=kortex-backend" class="rp-project-card" style="text-decoration: none;">
+                            <div class="rp-project-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="rp-project-info">
+                                <div class="rp-project-name">Kortex Backend</div>
+                                <div class="rp-project-path">~/dev/kortex-backend</div>
+                            </div>
+                            <svg class="rp-project-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </div>
+
                     <!-- Agent -->
                     <div class="rp-section">
                         <div class="rp-section-title">Agent</div>
@@ -2672,6 +2909,61 @@
 
             <!-- Primary input area -->
             <div class="na-main">
+                <!-- Project Picker -->
+                <div class="na-project-picker" id="naProjectPicker" onclick="toggleProjectDropdown(event)">
+                    <div class="na-project-picker-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="na-project-picker-info">
+                        <div class="na-project-picker-label">Project</div>
+                        <div class="na-project-picker-name" id="naSelectedProjectName">Kortex Backend</div>
+                    </div>
+                    <svg class="na-project-picker-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+
+                    <div class="na-project-dropdown" id="naProjectDropdown">
+                        <div class="na-project-dropdown-item selected" onclick="selectProject(event, this, 'Kortex Backend', '#8b5cf6')">
+                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="na-project-dropdown-info">
+                                <div class="na-project-dropdown-name">Kortex Backend</div>
+                                <div class="na-project-dropdown-path">~/dev/kortex-backend</div>
+                            </div>
+                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'Frontend App', '#06b6d4')">
+                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="na-project-dropdown-info">
+                                <div class="na-project-dropdown-name">Frontend App</div>
+                                <div class="na-project-dropdown-path">~/dev/kortex-frontend</div>
+                            </div>
+                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'Infrastructure Platform', '#f97316')">
+                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="na-project-dropdown-info">
+                                <div class="na-project-dropdown-name">Infrastructure Platform</div>
+                                <div class="na-project-dropdown-path">~/dev/infra-platform</div>
+                            </div>
+                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'API Gateway', '#10b981')">
+                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="na-project-dropdown-info">
+                                <div class="na-project-dropdown-name">API Gateway</div>
+                                <div class="na-project-dropdown-path">~/dev/api-gateway</div>
+                            </div>
+                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="na-input-wrapper">
                     <textarea class="na-input-field" id="naInputField" placeholder="What should the agent do?" rows="2" oninput="autoResize(this)"></textarea>
                 </div>
@@ -2938,6 +3230,33 @@
             textarea.style.height = 'auto';
             textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
         }
+
+        function toggleProjectDropdown(event) {
+            event.stopPropagation();
+            const picker = document.getElementById('naProjectPicker');
+            const dropdown = document.getElementById('naProjectDropdown');
+            picker.classList.toggle('open');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectProject(event, el, name, color) {
+            event.stopPropagation();
+            document.querySelectorAll('.na-project-dropdown-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('naSelectedProjectName').textContent = name;
+            const iconEl = document.querySelector('.na-project-picker-icon');
+            iconEl.style.background = `linear-gradient(135deg, ${color}, ${color})`;
+            document.getElementById('naProjectPicker').classList.remove('open');
+            document.getElementById('naProjectDropdown').classList.remove('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            const picker = document.getElementById('naProjectPicker');
+            if (picker && !picker.contains(e.target)) {
+                picker.classList.remove('open');
+                document.getElementById('naProjectDropdown').classList.remove('show');
+            }
+        });
 
         function launchAgent() {
             closeNewAgentModal();
