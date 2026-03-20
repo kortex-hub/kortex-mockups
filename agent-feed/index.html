@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Agent Feed</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .agent-feed-page-layout {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 28px);
+            overflow: hidden;
+        }
+
+        .agent-feed-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 40px 16px;
+            border-bottom: 1px solid #2d2e3f;
+            flex-shrink: 0;
+        }
+
+        .agent-feed-page-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .agent-feed-page-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+
+        .agent-feed-page-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #c4b5fd;
+        }
+
+        .agent-feed-page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e5e7eb;
+            letter-spacing: -0.02em;
+        }
+
+        .agent-feed-page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(52, 211, 153, 0.12);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .agent-feed-page-badge .page-badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #34d399;
+            animation: pulse-green 2s infinite;
+        }
+
+        .agent-feed-page-tabs {
+            display: flex;
+            gap: 2px;
+            padding: 0 40px;
+            border-bottom: 1px solid #2d2e3f;
+            flex-shrink: 0;
+        }
+
+        .agent-feed-page-tabs .agent-feed-tab {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .agent-feed-page-tabs .agent-feed-tab:hover {
+            color: #9ca3af;
+        }
+
+        .agent-feed-page-tabs .agent-feed-tab.active {
+            color: #c4b5fd;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .agent-feed-page-stream {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 40px;
+        }
+
+        .agent-feed-page-stream::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .agent-feed-page-stream::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .agent-feed-page-stream::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 3px;
+        }
+
+        .agent-feed-page-stream .feed-card {
+            max-width: 960px;
+        }
+    </style>
+</head>
+<body class="agent-feed-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <div class="agent-feed-page-layout">
+            <div class="agent-feed-page-header">
+                <div class="agent-feed-page-header-left">
+                    <div class="agent-feed-page-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 11a9 9 0 0 1 9 9"/>
+                            <path d="M4 4a16 16 0 0 1 16 16"/>
+                            <circle cx="5" cy="19" r="1"/>
+                        </svg>
+                    </div>
+                    <h1 class="agent-feed-page-title">Agent Feed</h1>
+                    <div class="agent-feed-page-badge">
+                        <div class="page-badge-dot"></div>
+                        <span id="pageFeedBadge">loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-feed-page-tabs">
+                <button class="agent-feed-tab active" data-feed-tab="all" onclick="window.agentFeedPage.filterTab('all', this)">All Activity</button>
+                <button class="agent-feed-tab" data-feed-tab="needs-input" onclick="window.agentFeedPage.filterTab('needs-input', this)">Needs Input</button>
+                <button class="agent-feed-tab" data-feed-tab="running" onclick="window.agentFeedPage.filterTab('running', this)">Running</button>
+                <button class="agent-feed-tab" data-feed-tab="completed" onclick="window.agentFeedPage.filterTab('completed', this)">Completed</button>
+            </div>
+
+            <div class="agent-feed-page-stream" id="agentFeedPageStream"></div>
+        </div>
+    </div>
+
+    <script src="../assets/js/agent-feed.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function waitForFeed(cb, tries) {
+                if (window.agentFeed && window.agentFeed._renderInto) { cb(); return; }
+                if (tries > 20) return;
+                setTimeout(function () { waitForFeed(cb, (tries || 0) + 1); }, 50);
+            }
+            waitForFeed(function () {
+                var stream = document.getElementById('agentFeedPageStream');
+                var badge = document.getElementById('pageFeedBadge');
+
+                window.agentFeedPage = {
+                    filterTab: function (tab, btn) {
+                        document.querySelectorAll('.agent-feed-page-tabs .agent-feed-tab').forEach(function (t) { t.classList.remove('active'); });
+                        btn.classList.add('active');
+                        window.agentFeed._renderInto(stream, badge, tab);
+                    }
+                };
+
+                window.agentFeed._renderInto(stream, badge, 'all');
+            });
+        });
+    </script>
+</body>
+</html>

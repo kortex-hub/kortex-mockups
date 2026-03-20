@@ -26,6 +26,16 @@ const sidebarHTML = `
         <span>Agents</span>
     </a>
 
+    <!-- Agent Feed -->
+    <a href="../agent-feed/index.html" class="nav-item" data-section="agent-feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11a9 9 0 0 1 9 9"/>
+            <path d="M4 4a16 16 0 0 1 16 16"/>
+            <circle cx="5" cy="19" r="1"/>
+        </svg>
+        <span>Agent Feed</span>
+    </a>
+
     <!-- Projects -->
     <a href="../projects/index.html" class="nav-item" data-section="projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -90,7 +100,7 @@ const sidebarHTML = `
             </svg>
             <span>Ready</span>
         </div>
-        <div class="status-bar-item" style="cursor: pointer; padding: 4px 10px; background: rgba(52, 211, 153, 0.1); border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2);">
+        <div class="status-bar-item agents-status" onclick="window.location.href='../agent-feed/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(52, 211, 153, 0.1); border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2);" title="Open Agent Feed">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <circle cx="12" cy="12" r="6"/>
@@ -242,4 +252,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const script = document.createElement('script');
     script.src = '../assets/js/openshift-ai.js';
     document.body.appendChild(script);
+
 });
