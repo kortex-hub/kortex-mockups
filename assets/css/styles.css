@@ -5990,13 +5990,13 @@ body.openshift-connected .tab.internal-tab {
 }
 
 .feed-card.needs-input {
-    border-color: rgba(96, 165, 250, 0.3);
-    border-left: 3px solid #60a5fa;
-    background: rgba(96, 165, 250, 0.04);
+    border-color: #2d2e3f;
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .feed-card.needs-input:hover {
-    background: rgba(96, 165, 250, 0.07);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #3d3e4f;
 }
 
 .feed-card-top {
@@ -6063,13 +6063,13 @@ body.openshift-connected .tab.internal-tab {
 }
 
 .feed-status-dot.running { background: #34d399; box-shadow: 0 0 6px rgba(52, 211, 153, 0.5); }
-.feed-status-dot.waiting { background: #60a5fa; box-shadow: 0 0 6px rgba(96, 165, 250, 0.5); animation: pulse-blue 2s infinite; }
+.feed-status-dot.waiting { background: #f87171; box-shadow: 0 0 6px rgba(248, 113, 113, 0.5); animation: pulse-red 2s infinite; }
 .feed-status-dot.paused { background: #fbbf24; }
 .feed-status-dot.completed { background: #6b7280; }
 
-@keyframes pulse-blue {
-    0%, 100% { box-shadow: 0 0 6px rgba(96, 165, 250, 0.4); }
-    50% { box-shadow: 0 0 12px rgba(96, 165, 250, 0.8); }
+@keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 6px rgba(248, 113, 113, 0.4); }
+    50% { box-shadow: 0 0 12px rgba(248, 113, 113, 0.8); }
 }
 
 .feed-card-status {
@@ -6078,7 +6078,7 @@ body.openshift-connected .tab.internal-tab {
 }
 
 .feed-card-status.running { color: #34d399; }
-.feed-card-status.waiting { color: #60a5fa; }
+.feed-card-status.waiting { color: #fca5a5; }
 .feed-card-status.paused { color: #fbbf24; }
 .feed-card-status.completed { color: #6b7280; }
 
@@ -6124,10 +6124,12 @@ body.openshift-connected .tab.internal-tab {
 .feed-card-git svg {
     width: 11px;
     height: 11px;
-    opacity: 0.5;
+    flex-shrink: 0;
+    color: #f97316;
+    opacity: 0.7;
 }
 
-.feed-card-git-branch { color: #8b5cf6; }
+.feed-card-git-branch { color: #fdba74; }
 
 /* Progress bar */
 .feed-card-progress {
@@ -6152,7 +6154,7 @@ body.openshift-connected .tab.internal-tab {
 }
 
 .feed-progress-fill.running { background: linear-gradient(90deg, #34d399, #6ee7b7); }
-.feed-progress-fill.waiting { background: linear-gradient(90deg, #60a5fa, #93c5fd); }
+.feed-progress-fill.waiting { background: linear-gradient(90deg, #f87171, #fca5a5); }
 .feed-progress-fill.paused { background: linear-gradient(90deg, #fbbf24, #fcd34d); }
 .feed-progress-fill.completed { background: linear-gradient(90deg, #6b7280, #9ca3af); }
 
@@ -6200,79 +6202,110 @@ body.openshift-connected .tab.internal-tab {
 /* Input needed card section */
 .feed-card-question {
     margin-top: 10px;
-    padding: 12px 14px;
-    background: rgba(96, 165, 250, 0.06);
-    border: 1px solid rgba(96, 165, 250, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.2);
     border-radius: 10px;
+    background: rgba(239, 68, 68, 0.04);
+    overflow: hidden;
+}
+
+.feed-card-question-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(239, 68, 68, 0.06);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.12);
+}
+
+.feed-card-question-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: rgba(239, 68, 68, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.feed-card-question-icon svg {
+    width: 14px;
+    height: 14px;
+    stroke: #f87171;
 }
 
 .feed-card-question-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    color: #60a5fa;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    color: #fca5a5;
 }
 
-.feed-card-question-label svg {
-    width: 13px;
-    height: 13px;
+.feed-card-question-body {
+    padding: 12px 14px;
 }
 
 .feed-card-question-text {
     font-size: 13px;
     color: #d1d5db;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    line-height: 1.6;
+    margin-bottom: 12px;
 }
 
 .feed-card-question-text code {
-    padding: 1px 5px;
-    background: rgba(139, 92, 246, 0.15);
+    padding: 1px 6px;
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11px;
     color: #c4b5fd;
-    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 .feed-card-actions {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
 .feed-action-btn {
-    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
     border-radius: 7px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease;
     border: none;
 }
 
+.feed-action-btn svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
 .feed-action-btn.primary {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    color: #fff;
+    background: rgba(52, 211, 153, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(52, 211, 153, 0.25);
 }
 
 .feed-action-btn.primary:hover {
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
-    transform: translateY(-1px);
+    background: rgba(52, 211, 153, 0.25);
+    border-color: rgba(52, 211, 153, 0.4);
 }
 
 .feed-action-btn.secondary {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #d1d5db;
+    background: rgba(255, 255, 255, 0.04);
+    color: #9ca3af;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .feed-action-btn.secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    color: #d1d5db;
 }
 
 .feed-action-btn.danger {
@@ -6289,23 +6322,24 @@ body.openshift-connected .tab.internal-tab {
 .feed-reply-row {
     display: flex;
     gap: 8px;
-    margin-top: 8px;
+    align-items: center;
 }
 
 .feed-reply-input {
     flex: 1;
-    padding: 7px 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 7px;
     color: #e5e7eb;
     font-size: 12px;
+    font-family: inherit;
     outline: none;
     transition: border-color 0.15s ease;
 }
 
 .feed-reply-input:focus {
-    border-color: rgba(139, 92, 246, 0.5);
+    border-color: rgba(139, 92, 246, 0.4);
 }
 
 .feed-reply-input::placeholder {
@@ -6313,28 +6347,27 @@ body.openshift-connected .tab.internal-tab {
 }
 
 .feed-reply-send {
-    padding: 7px 14px;
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
     transition: all 0.15s ease;
 }
 
 .feed-reply-send:hover {
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
-    transform: translateY(-1px);
+    background: rgba(139, 92, 246, 0.2);
 }
 
 .feed-reply-send svg {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
 }
 
 /* Status bar active state when feed is open */

@@ -173,19 +173,24 @@
             var replyHTML = '';
             if (agent.question.allowReply) {
                 replyHTML = '<div class="feed-reply-row">' +
-                    '<input type="text" class="feed-reply-input" placeholder="Type a response..." onclick="event.stopPropagation();" onkeydown="if(event.key===\'Enter\'){window.agentFeed.handleReply(\'' + agent.id + '\', this); event.stopPropagation();}">' +
+                    '<input type="text" class="feed-reply-input" placeholder="Or type a response..." onclick="event.stopPropagation();" onkeydown="if(event.key===\'Enter\'){window.agentFeed.handleReply(\'' + agent.id + '\', this); event.stopPropagation();}">' +
                     '<button class="feed-reply-send" onclick="window.agentFeed.handleReply(\'' + agent.id + '\', this.previousElementSibling); event.stopPropagation();">' +
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
-                    'Send</button></div>';
+                    '</button></div>';
             }
 
             questionHTML = '<div class="feed-card-question">' +
-                '<div class="feed-card-question-label">' +
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
-                'Agent needs your input</div>' +
+                '<div class="feed-card-question-header">' +
+                '<div class="feed-card-question-icon">' +
+                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+                '</div>' +
+                '<span class="feed-card-question-label">Agent needs your input</span>' +
+                '</div>' +
+                '<div class="feed-card-question-body">' +
                 '<div class="feed-card-question-text">' + agent.question.text + '</div>' +
                 '<div class="feed-card-actions">' + optionBtns + '</div>' +
-                replyHTML + '</div>';
+                replyHTML +
+                '</div></div>';
         }
 
         var pauseResumeBtn = '';
@@ -262,6 +267,13 @@
 
     window.agentFeed = {
         _renderInto: renderInto,
+        _agents: feedAgents,
+
+        updateAgent: function (agentId, updates) {
+            var agent = feedAgents.find(function (a) { return a.id === agentId; });
+            if (!agent) return;
+            Object.keys(updates).forEach(function (k) { agent[k] = updates[k]; });
+        },
 
         handleAction: function (agentId, action) {
             var card = document.querySelector('[data-feed-status][onclick*="' + agentId + '"]');

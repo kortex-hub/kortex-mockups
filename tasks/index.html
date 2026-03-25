@@ -283,12 +283,53 @@
         }
 
         .tasks-section-label {
-            padding: 10px 10px 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 10px 7px;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+        }
+        .tasks-section-label .section-count {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #6b7280;
+            letter-spacing: 0;
+        }
+        .tasks-section-label.section-running {
+            color: #34d399;
+        }
+        .tasks-section-label.section-running .section-count {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+        .tasks-section-label.section-needs-input {
+            color: #f87171;
+        }
+        .tasks-section-label.section-needs-input .section-count {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            animation: countPulse 2s ease-in-out infinite;
+        }
+        @keyframes countPulse {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 8px rgba(248, 113, 113, 0.4); }
+        }
+        .tasks-section-label.section-paused {
+            color: #fbbf24;
+        }
+        .tasks-section-label.section-paused .section-count {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+        }
+        .tasks-section-label.section-completed {
+            color: #6b7280;
         }
 
         .task-item {
@@ -313,24 +354,52 @@
         }
 
         .task-item.needs-input {
-            background: rgba(96, 165, 250, 0.06);
-            border: 1px solid rgba(96, 165, 250, 0.18);
-            border-left: 3px solid #60a5fa;
+            background: rgba(248, 113, 113, 0.06);
+            border: 1px solid rgba(248, 113, 113, 0.22);
+            border-left: 3px solid #f87171;
+            animation: needsInputGlow 3s ease-in-out infinite;
+        }
+        @keyframes needsInputGlow {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: inset 0 0 12px rgba(248, 113, 113, 0.08), 0 0 12px rgba(248, 113, 113, 0.06); }
         }
 
         .task-item.needs-input:hover {
-            background: rgba(96, 165, 250, 0.1);
+            background: rgba(248, 113, 113, 0.1);
         }
 
         .task-item.needs-input.active {
-            background: rgba(96, 165, 250, 0.12);
-            border-color: rgba(96, 165, 250, 0.3);
-            border-left: 3px solid #60a5fa;
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.35);
+            border-left: 3px solid #f87171;
         }
 
         .task-item.needs-input .task-item-status-label {
-            color: #60a5fa;
+            color: #fca5a5;
             font-weight: 600;
+        }
+
+        .task-item.needs-input .task-item-goal {
+            color: #fef2f2;
+        }
+
+        .task-item-attention-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(248, 113, 113, 0.15);
+            color: #fca5a5;
+            margin-left: auto;
+        }
+        .task-item-attention-badge svg {
+            width: 10px;
+            height: 10px;
         }
 
         .task-item-agent {
@@ -1722,11 +1791,14 @@
         /* ── Right Panel: Task Context (collapsible) ── */
         .tasks-right-panel {
             width: 340px;
+            min-width: 280px;
+            max-width: 600px;
             background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-left: 1px solid #3d3e4f;
+            border-left: none;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
             transition: width 0.25s ease, opacity 0.2s ease;
         }
 
@@ -1736,6 +1808,36 @@
             border-left: none;
             opacity: 0;
             pointer-events: none;
+        }
+
+        .tasks-right-panel.resizing {
+            transition: none;
+        }
+
+        .right-resize-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            cursor: col-resize;
+            z-index: 10;
+            background: #3d3e4f;
+            transition: background 0.15s ease;
+        }
+
+        .right-resize-handle:hover,
+        .right-resize-handle.dragging {
+            background: #8b5cf6;
+        }
+
+        .right-resize-handle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -3px;
+            right: -3px;
+            bottom: 0;
         }
 
         .right-panel-header {
@@ -1769,6 +1871,790 @@
         .right-panel-close:hover {
             background: rgba(248, 113, 113, 0.15);
             color: #f87171;
+        }
+
+        .right-panel-tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 18px;
+            border-bottom: 1px solid #3d3e4f;
+            flex-shrink: 0;
+        }
+
+        .rp-tab {
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .rp-tab:hover {
+            color: #9ca3af;
+        }
+
+        .rp-tab.active {
+            color: #c4b5fd;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .rp-tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 18px;
+        }
+
+        .rp-tab-content.active {
+            display: block;
+        }
+
+        .rp-tab-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .rp-tab-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 3px;
+        }
+
+        /* ── Sandbox Visualization ── */
+        .sandbox-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #0a0a0f;
+            margin: -16px -18px;
+            padding: 20px 18px;
+        }
+
+        .sandbox-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .sandbox-subtitle {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .sandbox-layers {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sandbox-layer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 6px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sandbox-layer:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .sandbox-layer.active {
+            border-color: rgba(139,92,246,0.35);
+            background: rgba(139,92,246,0.06);
+            box-shadow: 0 0 16px rgba(139,92,246,0.08);
+        }
+
+        .sandbox-layer-visual {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .sandbox-layer-visual svg {
+            width: 24px;
+            height: 24px;
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+
+        .sandbox-layer.active .sandbox-layer-visual {
+            background: rgba(139,92,246,0.12);
+            border-color: rgba(139,92,246,0.3);
+        }
+
+        .sandbox-layer.active .sandbox-layer-visual svg {
+            color: #c4b5fd;
+        }
+
+        .sandbox-layer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .sandbox-layer-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .sandbox-layer.active .sandbox-layer-name {
+            color: #e5e7eb;
+        }
+
+        .sandbox-layer-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        .sandbox-layer.active .sandbox-layer-tags {
+            max-height: 60px;
+            opacity: 1;
+        }
+
+        .sandbox-tag {
+            font-size: 9px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #9ca3af;
+            padding: 2px 5px;
+            border: 1px solid #3d3e4f;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* 3D Cube Visualization */
+        .sandbox-cube-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+            perspective: 600px;
+            margin: 8px 0;
+        }
+
+        .sandbox-cube-scene {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-20deg) rotateY(-30deg);
+            animation: sandbox-rotate 20s linear infinite;
+        }
+
+        @keyframes sandbox-rotate {
+            from { transform: rotateX(-20deg) rotateY(-30deg); }
+            to   { transform: rotateX(-20deg) rotateY(330deg); }
+        }
+
+        .sandbox-cube {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sandbox-cube .face {
+            position: absolute;
+            border: 1px solid rgba(196, 181, 253, 0.12);
+            background: rgba(139, 92, 246, 0.02);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sandbox-cube.cube-outer {
+            width: 140px;
+            height: 140px;
+            margin-left: -70px;
+            margin-top: -70px;
+        }
+
+        .sandbox-cube.cube-outer .face {
+            width: 140px;
+            height: 140px;
+        }
+
+        .sandbox-cube.cube-outer .face.front  { transform: translateZ(70px); }
+        .sandbox-cube.cube-outer .face.back   { transform: translateZ(-70px) rotateY(180deg); }
+        .sandbox-cube.cube-outer .face.left   { transform: translateX(-70px) rotateY(-90deg); }
+        .sandbox-cube.cube-outer .face.right  { transform: translateX(70px) rotateY(90deg); }
+        .sandbox-cube.cube-outer .face.top    { transform: translateY(-70px) rotateX(90deg); }
+        .sandbox-cube.cube-outer .face.bottom { transform: translateY(70px) rotateX(-90deg); }
+
+        .sandbox-cube.cube-mid {
+            width: 100px;
+            height: 100px;
+            margin-left: -50px;
+            margin-top: -50px;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .sandbox-cube.cube-mid .face {
+            width: 100px;
+            height: 100px;
+            border-color: rgba(196, 181, 253, 0.18);
+            background: rgba(139, 92, 246, 0.03);
+        }
+
+        .sandbox-cube.cube-mid .face.front  { transform: translateZ(50px); }
+        .sandbox-cube.cube-mid .face.back   { transform: translateZ(-50px) rotateY(180deg); }
+        .sandbox-cube.cube-mid .face.left   { transform: translateX(-50px) rotateY(-90deg); }
+        .sandbox-cube.cube-mid .face.right  { transform: translateX(50px) rotateY(90deg); }
+        .sandbox-cube.cube-mid .face.top    { transform: translateY(-50px) rotateX(90deg); }
+        .sandbox-cube.cube-mid .face.bottom { transform: translateY(50px) rotateX(-90deg); }
+
+        .sandbox-cube.cube-inner {
+            width: 56px;
+            height: 56px;
+            margin-left: -28px;
+            margin-top: -28px;
+            opacity: 0;
+            transform: scale(0.3);
+        }
+
+        .sandbox-cube.cube-inner .face {
+            width: 56px;
+            height: 56px;
+            border-color: rgba(196, 181, 253, 0.25);
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .sandbox-cube.cube-inner .face.front  { transform: translateZ(28px); }
+        .sandbox-cube.cube-inner .face.back   { transform: translateZ(-28px) rotateY(180deg); }
+        .sandbox-cube.cube-inner .face.left   { transform: translateX(-28px) rotateY(-90deg); }
+        .sandbox-cube.cube-inner .face.right  { transform: translateX(28px) rotateY(90deg); }
+        .sandbox-cube.cube-inner .face.top    { transform: translateY(-28px) rotateX(90deg); }
+        .sandbox-cube.cube-inner .face.bottom { transform: translateY(28px) rotateX(-90deg); }
+
+        /* Layer states */
+        .sandbox-container[data-layer="0"] .cube-outer .face {
+            border-color: rgba(196, 181, 253, 0.2);
+            background: rgba(139, 92, 246, 0.04);
+        }
+
+        .sandbox-container[data-layer="1"] .cube-mid,
+        .sandbox-container[data-layer="2"] .cube-mid {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .sandbox-container[data-layer="1"] .cube-outer .face {
+            border-color: rgba(196, 181, 253, 0.08);
+            background: rgba(139, 92, 246, 0.01);
+        }
+
+        .sandbox-container[data-layer="1"] .cube-mid .face {
+            border-color: rgba(196, 181, 253, 0.22);
+            background: rgba(139, 92, 246, 0.04);
+        }
+
+        .sandbox-container[data-layer="2"] .cube-inner {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .sandbox-container[data-layer="2"] .cube-outer .face {
+            border-color: rgba(196, 181, 253, 0.06);
+            background: rgba(139, 92, 246, 0.005);
+        }
+
+        .sandbox-container[data-layer="2"] .cube-mid .face {
+            border-color: rgba(196, 181, 253, 0.1);
+            background: rgba(139, 92, 246, 0.02);
+        }
+
+        .sandbox-container[data-layer="2"] .cube-inner .face {
+            border-color: rgba(196, 181, 253, 0.3);
+            background: rgba(139, 92, 246, 0.07);
+        }
+
+        /* Description */
+        .sandbox-description {
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #6b7280;
+            padding: 0 8px;
+            min-height: 52px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Navigation */
+        .sandbox-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding-top: 12px;
+        }
+
+        .sandbox-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .sandbox-nav-btn:hover:not(:disabled) {
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .sandbox-nav-btn:disabled {
+            opacity: 0.25;
+            cursor: default;
+        }
+
+        .sandbox-nav-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .sandbox-dots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sandbox-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3d3e4f;
+            transition: all 0.3s ease;
+        }
+
+        .sandbox-dot.active {
+            width: 18px;
+            border-radius: 4px;
+            background: #9ca3af;
+        }
+
+        /* Sandbox Activities */
+        .sandbox-activities {
+            margin-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 20px;
+        }
+
+        .sandbox-activities-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .sandbox-activities-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #e5e7eb;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .sandbox-activities-count {
+            font-size: 10px;
+            color: #6b7280;
+            background: rgba(255,255,255,0.04);
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .sandbox-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sandbox-activity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: sa-fadein 0.4s ease both;
+        }
+
+        .sandbox-activity:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        @keyframes sa-fadein {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sandbox-activity:nth-child(2) { animation-delay: 0.06s; }
+        .sandbox-activity:nth-child(3) { animation-delay: 0.12s; }
+        .sandbox-activity:nth-child(4) { animation-delay: 0.18s; }
+        .sandbox-activity:nth-child(5) { animation-delay: 0.24s; }
+
+        /* Activity illustration canvas */
+        .sa-illust {
+            width: 56px;
+            height: 40px;
+            flex-shrink: 0;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Sandbox boundary in illustration */
+        .sa-illust .sa-boundary {
+            position: absolute;
+            right: 14px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: rgba(139,92,246,0.4);
+            border-radius: 1px;
+        }
+
+        .sa-illust .sa-boundary::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid rgba(139,92,246,0.3);
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        /* Packet dot for network activities */
+        .sa-illust .sa-packet {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+        }
+
+        /* Network out blocked */
+        .sa-illust.sa-net-blocked .sa-packet {
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239,68,68,0.5);
+            animation: sa-packet-blocked 2.4s ease-in-out infinite;
+        }
+
+        .sa-illust.sa-net-blocked .sa-boundary {
+            animation: sa-boundary-flash-red 2.4s ease-in-out infinite;
+        }
+
+        @keyframes sa-packet-blocked {
+            0%   { left: 8px; opacity: 1; }
+            35%  { left: 32px; opacity: 1; }
+            42%  { left: 28px; opacity: 1; }
+            50%  { left: 8px; opacity: 0.3; }
+            100% { left: 8px; opacity: 1; }
+        }
+
+        @keyframes sa-boundary-flash-red {
+            0%   { background: rgba(139,92,246,0.4); }
+            35%  { background: rgba(239,68,68,0.8); box-shadow: 0 0 8px rgba(239,68,68,0.3); }
+            50%  { background: rgba(139,92,246,0.4); box-shadow: none; }
+            100% { background: rgba(139,92,246,0.4); }
+        }
+
+        /* Network out allowed */
+        .sa-illust.sa-net-allowed .sa-packet {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34,197,94,0.5);
+            animation: sa-packet-allowed 2.4s ease-in-out infinite;
+        }
+
+        .sa-illust.sa-net-allowed .sa-boundary {
+            animation: sa-boundary-flash-green 2.4s ease-in-out infinite;
+        }
+
+        @keyframes sa-packet-allowed {
+            0%   { left: 8px; opacity: 1; }
+            35%  { left: 32px; opacity: 1; }
+            55%  { left: 48px; opacity: 0.6; }
+            70%  { left: 48px; opacity: 0; }
+            100% { left: 8px; opacity: 1; }
+        }
+
+        @keyframes sa-boundary-flash-green {
+            0%   { background: rgba(139,92,246,0.4); }
+            35%  { background: rgba(34,197,94,0.6); box-shadow: 0 0 8px rgba(34,197,94,0.2); }
+            55%  { background: rgba(139,92,246,0.4); box-shadow: none; }
+            100% { background: rgba(139,92,246,0.4); }
+        }
+
+        /* File write */
+        .sa-illust.sa-file-write .sa-file-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+            border: 1.5px solid rgba(250,204,21,0.5);
+            border-radius: 2px;
+            background: rgba(250,204,21,0.08);
+        }
+
+        .sa-illust.sa-file-write .sa-file-icon::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            height: 1.5px;
+            background: rgba(250,204,21,0.4);
+            box-shadow: 0 3px 0 rgba(250,204,21,0.3), 0 6px 0 rgba(250,204,21,0.2);
+        }
+
+        .sa-illust.sa-file-write .sa-write-cursor {
+            position: absolute;
+            left: 13px;
+            top: 22px;
+            width: 8px;
+            height: 1.5px;
+            background: #facc15;
+            border-radius: 1px;
+            animation: sa-write-blink 1.2s ease-in-out infinite;
+        }
+
+        @keyframes sa-write-blink {
+            0%, 100% { opacity: 1; width: 8px; }
+            50% { opacity: 0.3; width: 4px; }
+        }
+
+        /* Exec blocked */
+        .sa-illust.sa-exec-blocked .sa-exec-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid rgba(239,68,68,0.5);
+            border-radius: 2px;
+            background: rgba(239,68,68,0.1);
+        }
+
+        .sa-illust.sa-exec-blocked .sa-shield {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+        }
+
+        .sa-illust.sa-exec-blocked .sa-shield svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sa-illust.sa-exec-blocked .sa-exec-arrow {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            width: 10px;
+            height: 1.5px;
+            background: rgba(239,68,68,0.6);
+            transform: translateY(-50%);
+            animation: sa-exec-push 2s ease-in-out infinite;
+        }
+
+        .sa-illust.sa-exec-blocked .sa-exec-arrow::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: -2.5px;
+            border: 3px solid transparent;
+            border-left: 4px solid rgba(239,68,68,0.6);
+        }
+
+        @keyframes sa-exec-push {
+            0%   { left: 24px; opacity: 1; }
+            35%  { left: 28px; opacity: 1; }
+            42%  { left: 24px; opacity: 0.5; }
+            100% { left: 24px; opacity: 1; }
+        }
+
+        /* DNS resolution */
+        .sa-illust.sa-dns .sa-dns-dot {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 6px rgba(96,165,250,0.4);
+            animation: sa-dns-pulse 2s ease-in-out infinite;
+        }
+
+        .sa-illust.sa-dns .sa-dns-wave {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 50%;
+            animation: sa-dns-ripple 2s ease-out infinite;
+        }
+
+        .sa-illust.sa-dns .sa-dns-wave:nth-child(3) {
+            animation-delay: 0.3s;
+            left: 18px;
+        }
+
+        @keyframes sa-dns-pulse {
+            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+            50% { opacity: 0.6; transform: translateY(-50%) scale(0.8); }
+        }
+
+        @keyframes sa-dns-ripple {
+            0%   { transform: translateY(-50%) scale(0.5); opacity: 0.6; }
+            100% { transform: translateY(-50%) scale(2.2); opacity: 0; }
+        }
+
+        /* Port listen */
+        .sa-illust.sa-port .sa-port-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #a78bfa;
+            box-shadow: 0 0 6px rgba(167,139,250,0.4);
+        }
+
+        .sa-illust.sa-port .sa-port-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(167,139,250,0.3);
+            border-radius: 50%;
+            animation: sa-port-ring-pulse 2.5s ease-out infinite;
+        }
+
+        .sa-illust.sa-port .sa-port-ring:nth-child(2) { animation-delay: 0.4s; }
+        .sa-illust.sa-port .sa-port-ring:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes sa-port-ring-pulse {
+            0%   { width: 6px; height: 6px; opacity: 0.6; }
+            100% { width: 34px; height: 34px; opacity: 0; }
+        }
+
+        /* Activity info */
+        .sa-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sa-info-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #d1d5db;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sa-info-detail {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 2px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .sa-info-time {
+            font-size: 9px;
+            color: #4b5563;
+            margin-top: 2px;
+        }
+
+        /* Activity status badge */
+        .sa-badge {
+            flex-shrink: 0;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sa-badge.sa-blocked {
+            color: #fca5a5;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+
+        .sa-badge.sa-allowed {
+            color: #86efac;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.12);
+        }
+
+        .sa-badge.sa-filtered {
+            color: #93c5fd;
+            background: rgba(96,165,250,0.1);
+            border: 1px solid rgba(96,165,250,0.12);
         }
 
         .right-panel-body {
@@ -2933,6 +3819,10 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
         }
+        .live-monitor-btn.active {
+            background: rgba(16, 185, 129, 0.16);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
         .live-monitor-btn .lm-pulse {
             width: 7px;
             height: 7px;
@@ -2948,228 +3838,26 @@
         .live-monitor-btn .lm-label { flex: 1; }
         .live-monitor-btn svg { width: 14px; height: 14px; opacity: 0.5; }
 
-        /* ── Monitoring Overlay ── */
-        .monitor-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 2000;
-            background: rgba(10, 10, 18, 0.85);
-            backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
+        /* ── List Transition Animations ── */
+        .task-item.lm-exiting {
+            animation: lm-item-exit 0.4s ease-in forwards;
         }
-        .monitor-overlay.active {
-            display: flex;
+        @keyframes lm-item-exit {
+            to { opacity: 0; transform: translateX(-20px) scale(0.95); max-height: 0; padding: 0 12px; margin: 0; overflow: hidden; }
         }
-        .monitor-panel {
-            width: 820px;
-            max-height: 88vh;
-            background: linear-gradient(170deg, #1e1f2e 0%, #171822 100%);
-            border: 1px solid #3d3e4f;
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
-            animation: monitor-enter 0.25s ease-out;
+        .task-item.lm-entering {
+            animation: lm-item-enter 0.45s ease-out;
         }
-        @keyframes monitor-enter {
-            from { opacity: 0; transform: translateY(12px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes lm-item-enter {
+            from { opacity: 0; transform: translateX(20px) scale(0.95); }
+            to   { opacity: 1; transform: translateX(0) scale(1); }
         }
-        .monitor-header {
-            display: flex;
-            align-items: center;
-            padding: 18px 22px;
-            border-bottom: 1px solid #3d3e4f;
+        .task-item.lm-flash {
+            animation: lm-item-flash 1s ease-out;
         }
-        .monitor-header-left {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .monitor-header-left .lm-pulse { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: lm-pulse 2s ease-in-out infinite; }
-        .monitor-header-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #e5e7eb;
-        }
-        .monitor-header-badge {
-            font-size: 11px;
-            font-weight: 500;
-            color: #6ee7b7;
-            background: rgba(16, 185, 129, 0.12);
-            padding: 3px 9px;
-            border-radius: 20px;
-        }
-        .monitor-close-btn {
-            background: none;
-            border: none;
-            color: #6b7280;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 6px;
-            transition: all 0.15s;
-        }
-        .monitor-close-btn:hover { color: #e5e7eb; background: rgba(255,255,255,0.06); }
-        .monitor-close-btn svg { width: 18px; height: 18px; }
-
-        /* ── Pipeline Stages ── */
-        .monitor-pipeline {
-            display: flex;
-            align-items: stretch;
-            gap: 0;
-            padding: 24px 22px 18px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
-        }
-        .mp-stage {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-        .mp-stage-label {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #6b7280;
-            margin-bottom: 12px;
-        }
-        .mp-stage-box {
-            width: 100%;
-            min-height: 72px;
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px dashed rgba(61, 62, 79, 0.6);
-            border-radius: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 8px;
-            position: relative;
-            transition: border-color 0.3s, background 0.3s;
-        }
-        .mp-stage-box.has-agents {
-            border-style: solid;
-            border-color: rgba(139, 92, 246, 0.25);
-            background: rgba(139, 92, 246, 0.04);
-        }
-        .mp-stage-arrow {
-            position: absolute;
-            right: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
-            color: #3d3e4f;
-        }
-        .mp-stage-arrow svg { width: 18px; height: 18px; }
-        .mp-stage:last-child .mp-stage-arrow { display: none; }
-
-        /* Agent dots inside stages */
-        .mp-agent {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 700;
-            color: #fff;
-            cursor: default;
-            position: relative;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-        }
-        .mp-agent.moving {
-            animation: mp-agent-move 0.6s ease-in-out;
-        }
-        @keyframes mp-agent-move {
-            0%   { transform: scale(1); }
-            30%  { transform: scale(0.6) translateX(20px); opacity: 0.4; }
-            70%  { transform: scale(0.6) translateX(-20px); opacity: 0.4; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .mp-agent-tooltip {
-            display: none;
-            position: absolute;
-            bottom: calc(100% + 6px);
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            background: #2a2b3d;
-            color: #e5e7eb;
-            font-size: 11px;
-            font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            pointer-events: none;
-        }
-        .mp-agent:hover .mp-agent-tooltip { display: block; }
-
-        /* ── Activity Feed ── */
-        .monitor-feed {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px 22px 18px;
-        }
-        .monitor-feed::-webkit-scrollbar { width: 5px; }
-        .monitor-feed::-webkit-scrollbar-track { background: transparent; }
-        .monitor-feed::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.15); border-radius: 3px; }
-        .monitor-feed-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 10px;
-        }
-        .mf-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 9px 0;
-            border-bottom: 1px solid rgba(61,62,79,0.25);
-            animation: mf-fadein 0.35s ease-out;
-        }
-        @keyframes mf-fadein {
-            from { opacity: 0; transform: translateY(-6px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .mf-item:last-child { border-bottom: none; }
-        .mf-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8px;
-            font-weight: 700;
-            color: #fff;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-        .mf-content { flex: 1; min-width: 0; }
-        .mf-text {
-            font-size: 13px;
-            color: #d1d5db;
-            line-height: 1.4;
-        }
-        .mf-text strong { color: #e5e7eb; font-weight: 600; }
-        .mf-text .mf-stage-name {
-            color: #c4b5fd;
-            font-weight: 600;
-        }
-        .mf-time {
-            font-size: 11px;
-            color: #4b5563;
-            margin-top: 2px;
+        @keyframes lm-item-flash {
+            0%  { box-shadow: 0 0 0 2px rgba(248,113,113,0.6); }
+            100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
         }
     </style>
 </head>
@@ -3229,16 +3917,22 @@
                     </div>
                 </div>
 
-                <div class="tasks-list">
-                    <div class="tasks-section-label">Running</div>
+                <div class="tasks-list" id="tasksList">
+                    <div class="tasks-section-label section-needs-input" id="sectionNeedsInput">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Needs your input <span class="section-count" id="countNeedsInput">2</span>
+                    </div>
 
-                    <div class="task-item active" data-project="Kortex Backend" onclick="selectTask(this, 'refactor-auth')">
+                    <div class="task-item needs-input active" data-project="Kortex Backend" data-task-id="refactor-auth" onclick="selectTask(this, 'refactor-auth')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Refactor authentication module to use JWT tokens</div>
                             <div class="task-item-meta">
-                                <div class="task-status-dot" style="background: #f87171; box-shadow: 0 0 6px rgba(248, 113, 113, 0.4);"></div>
-                                <span class="task-item-status-label" style="color: #fca5a5;">Blocked</span>
-                                <span class="task-item-time">12m</span>
+                                <div class="task-status-dot" style="background: #f87171; box-shadow: 0 0 6px rgba(248, 113, 113, 0.4); animation: taskPulse 2s infinite;"></div>
+                                <span class="task-item-status-label" style="color: #fca5a5;">Blocked — network</span>
+                                <span class="task-item-attention-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    Action
+                                </span>
                             </div>
                             <div class="task-item-context">
                                 <div class="task-item-project">
@@ -3253,7 +3947,36 @@
                         </div>
                     </div>
 
-                    <div class="task-item" data-project="Frontend App" onclick="selectTask(this, 'add-dark-mode')">
+                    <div class="task-item needs-input" data-project="API Gateway" data-task-id="fix-memory-leak" onclick="selectTask(this, 'fix-memory-leak')">
+                        <div class="task-item-body">
+                            <div class="task-item-goal">Fix memory leak in WebSocket connection handler</div>
+                            <div class="task-item-meta">
+                                <div class="task-status-dot waiting"></div>
+                                <span class="task-item-status-label">Waiting for input</span>
+                                <span class="task-item-attention-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    Action
+                                </span>
+                            </div>
+                            <div class="task-item-context">
+                                <div class="task-item-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    <span class="task-item-project-name">API Gateway</span>
+                                </div>
+                                <div class="task-item-git">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    <span class="task-item-git-text"><span class="task-item-git-branch">fix/ws-memory-leak</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tasks-section-label section-running" id="sectionRunning">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Running <span class="section-count" id="countRunning">1</span>
+                    </div>
+
+                    <div class="task-item" data-project="Frontend App" data-task-id="add-dark-mode" onclick="selectTask(this, 'add-dark-mode')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Add dark mode toggle to settings page</div>
                             <div class="task-item-meta">
@@ -3274,30 +3997,12 @@
                         </div>
                     </div>
 
-                    <div class="task-item needs-input" data-project="API Gateway" onclick="selectTask(this, 'fix-memory-leak')">
-                        <div class="task-item-body">
-                            <div class="task-item-goal">Fix memory leak in WebSocket connection handler</div>
-                            <div class="task-item-meta">
-                                <div class="task-status-dot waiting"></div>
-                                <span class="task-item-status-label">Waiting for input</span>
-                                <span class="task-item-time">1h</span>
-                            </div>
-                            <div class="task-item-context">
-                                <div class="task-item-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    <span class="task-item-project-name">API Gateway</span>
-                                </div>
-                                <div class="task-item-git">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    <span class="task-item-git-text"><span class="task-item-git-branch">fix/ws-memory-leak</span></span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tasks-section-label section-paused" id="sectionPaused">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        Paused <span class="section-count" id="countPaused">1</span>
                     </div>
 
-                    <div class="tasks-section-label">Paused</div>
-
-                    <div class="task-item" data-project="Kortex Backend" onclick="selectTask(this, 'api-docs')">
+                    <div class="task-item" data-project="Kortex Backend" data-task-id="api-docs" onclick="selectTask(this, 'api-docs')">
                         <div class="task-item-body">
                             <div class="task-item-goal">Generate OpenAPI docs for REST endpoints</div>
                             <div class="task-item-meta">
@@ -3318,7 +4023,10 @@
                         </div>
                     </div>
 
-                    <div class="tasks-section-label">Completed today</div>
+                    <div class="tasks-section-label section-completed" id="sectionCompleted">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        Completed today <span class="section-count" id="countCompleted">2</span>
+                    </div>
 
                     <div class="task-item" data-project="Frontend App" onclick="selectTask(this, 'update-deps')">
                         <div class="task-item-body">
@@ -3363,7 +4071,7 @@
                     </div>
                 </div>
 
-                <button class="live-monitor-btn" onclick="openMonitor()">
+                <button class="live-monitor-btn" id="liveMonitorBtn" onclick="toggleLiveMonitor()">
                     <span class="lm-pulse"></span>
                     <span class="lm-label">Live Monitoring</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -3387,7 +4095,7 @@
                         <button class="task-conv-action-btn" title="Stop task" onclick="stopTask()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
                         </button>
-                        <button class="task-conv-action-btn active" title="Toggle context panel" onclick="toggleRightPanel()">
+                        <button class="task-conv-action-btn" title="Toggle context panel" onclick="toggleRightPanel()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
                         </button>
                     </div>
@@ -3704,14 +4412,23 @@
             </div>
 
             <!-- Right Panel: Task Context -->
-            <div class="tasks-right-panel" id="rightPanel">
+            <div class="tasks-right-panel collapsed" id="rightPanel">
+                <div class="right-resize-handle" id="rightResizeHandle"></div>
                 <div class="right-panel-header">
                     <span class="right-panel-title">Agent Details</span>
                     <button class="right-panel-close" onclick="toggleRightPanel()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
-                <div class="right-panel-body">
+                <div class="right-panel-tabs">
+                    <button class="rp-tab active" data-rp-tab="overview" onclick="switchRpTab('overview', this)">Overview</button>
+                    <button class="rp-tab" data-rp-tab="context" onclick="switchRpTab('context', this)">Context</button>
+                    <button class="rp-tab" data-rp-tab="changes" onclick="switchRpTab('changes', this)">Changes</button>
+                    <button class="rp-tab" data-rp-tab="sandbox" onclick="switchRpTab('sandbox', this)">Sandbox</button>
+                </div>
+
+                <!-- Tab: Overview -->
+                <div class="rp-tab-content active" id="rpTabOverview">
                     <!-- Goal -->
                     <div class="rp-section">
                         <div class="rp-section-title">Goal</div>
@@ -3746,6 +4463,42 @@
                         </div>
                     </div>
 
+                    <!-- Network Policy -->
+                    <div class="rp-section">
+                        <div class="rp-section-title">Network Policy</div>
+                        <div class="rp-network-policy" id="rpNetworkPolicy">
+                            <div class="rp-network-policy-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                <span class="rp-network-policy-label">1 blocked request</span>
+                                <span class="rp-network-policy-mode">deny mode</span>
+                            </div>
+                            <div class="rp-network-hosts">
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot allowed"></div>
+                                    <span class="rp-network-host-name">github.com</span>
+                                    <span class="rp-network-host-status allowed">allowed</span>
+                                </div>
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot allowed"></div>
+                                    <span class="rp-network-host-name">registry.npmjs.org</span>
+                                    <span class="rp-network-host-status allowed">allowed</span>
+                                </div>
+                                <div class="rp-network-host">
+                                    <div class="rp-network-host-dot blocked"></div>
+                                    <span class="rp-network-host-name">auth.example.com</span>
+                                    <span class="rp-network-host-status blocked">blocked</span>
+                                </div>
+                            </div>
+                            <a href="../sessions/settings.html" class="rp-network-configure-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                Configure network settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Context -->
+                <div class="rp-tab-content" id="rpTabContext">
                     <!-- Attached Assets by Category -->
                     <div class="rp-section">
                         <div class="rp-section-title">Assets</div>
@@ -3821,40 +4574,10 @@
                             </button>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Network Policy -->
-                    <div class="rp-section">
-                        <div class="rp-section-title">Network Policy</div>
-                        <div class="rp-network-policy" id="rpNetworkPolicy">
-                            <div class="rp-network-policy-header">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                <span class="rp-network-policy-label">1 blocked request</span>
-                                <span class="rp-network-policy-mode">deny mode</span>
-                            </div>
-                            <div class="rp-network-hosts">
-                                <div class="rp-network-host">
-                                    <div class="rp-network-host-dot allowed"></div>
-                                    <span class="rp-network-host-name">github.com</span>
-                                    <span class="rp-network-host-status allowed">allowed</span>
-                                </div>
-                                <div class="rp-network-host">
-                                    <div class="rp-network-host-dot allowed"></div>
-                                    <span class="rp-network-host-name">registry.npmjs.org</span>
-                                    <span class="rp-network-host-status allowed">allowed</span>
-                                </div>
-                                <div class="rp-network-host">
-                                    <div class="rp-network-host-dot blocked"></div>
-                                    <span class="rp-network-host-name">auth.example.com</span>
-                                    <span class="rp-network-host-status blocked">blocked</span>
-                                </div>
-                            </div>
-                            <a href="../sessions/settings.html" class="rp-network-configure-link">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                                Configure network settings
-                            </a>
-                        </div>
-                    </div>
-
+                <!-- Tab: Changes -->
+                <div class="rp-tab-content" id="rpTabChanges">
                     <!-- Files Changed -->
                     <div class="rp-section">
                         <div class="rp-section-title">Files Changed (3)</div>
@@ -3892,6 +4615,206 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tab: Sandbox -->
+                <div class="rp-tab-content" id="rpTabSandbox">
+                    <div class="sandbox-container" data-layer="0" id="sandboxContainer">
+                        <div class="sandbox-title">Sandbox</div>
+                        <div class="sandbox-subtitle">Each agent runs in an ephemeral microVM with layered isolation.</div>
+
+                        <div class="sandbox-cube-area">
+                            <div class="sandbox-cube-scene" id="sandboxCubeScene">
+                                <div class="sandbox-cube cube-outer">
+                                    <div class="face front"></div>
+                                    <div class="face back"></div>
+                                    <div class="face left"></div>
+                                    <div class="face right"></div>
+                                    <div class="face top"></div>
+                                    <div class="face bottom"></div>
+                                </div>
+                                <div class="sandbox-cube cube-mid">
+                                    <div class="face front"></div>
+                                    <div class="face back"></div>
+                                    <div class="face left"></div>
+                                    <div class="face right"></div>
+                                    <div class="face top"></div>
+                                    <div class="face bottom"></div>
+                                </div>
+                                <div class="sandbox-cube cube-inner">
+                                    <div class="face front"></div>
+                                    <div class="face back"></div>
+                                    <div class="face left"></div>
+                                    <div class="face right"></div>
+                                    <div class="face top"></div>
+                                    <div class="face bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sandbox-description" id="sandboxDesc">
+                            Each agent gets a short-lived microVM with its own kernel. The VM is destroyed after the task completes — nothing persists.
+                        </div>
+
+                        <div class="sandbox-nav">
+                            <button class="sandbox-nav-btn" id="sandboxBack" onclick="sandboxNav(-1)" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                                Back
+                            </button>
+                            <div class="sandbox-dots">
+                                <div class="sandbox-dot active" data-dot="0"></div>
+                                <div class="sandbox-dot" data-dot="1"></div>
+                                <div class="sandbox-dot" data-dot="2"></div>
+                            </div>
+                            <button class="sandbox-nav-btn" id="sandboxDeeper" onclick="sandboxNav(1)">
+                                Deeper
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="sandbox-layers" id="sandboxLayers">
+                            <div class="sandbox-layer active" data-sandbox-layer="0" onclick="goToSandboxLayer(0)">
+                                <div class="sandbox-layer-visual">
+                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="4" y="8" width="24" height="16" rx="2" stroke-opacity="0.6"/>
+                                        <rect x="7" y="11" width="8" height="4" rx="1" stroke-opacity="0.4"/>
+                                        <rect x="7" y="17" width="5" height="4" rx="1" stroke-opacity="0.4"/>
+                                        <circle cx="24" cy="13" r="1.5" fill="currentColor" opacity="0.5"/>
+                                        <circle cx="24" cy="19" r="1.5" fill="currentColor" opacity="0.3"/>
+                                    </svg>
+                                </div>
+                                <div class="sandbox-layer-info">
+                                    <span class="sandbox-layer-name">microVM</span>
+                                    <div class="sandbox-layer-tags">
+                                        <span class="sandbox-tag">ephemeral</span>
+                                        <span class="sandbox-tag">dedicated kernel</span>
+                                        <span class="sandbox-tag">memory isolation</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sandbox-layer" data-sandbox-layer="1" onclick="goToSandboxLayer(1)">
+                                <div class="sandbox-layer-visual">
+                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M6 8h20l-2 18H8L6 8z" stroke-opacity="0.6"/>
+                                        <path d="M6 8l3 -4h14l3 4" stroke-opacity="0.4"/>
+                                        <line x1="16" y1="12" x2="16" y2="22" stroke-opacity="0.3"/>
+                                        <line x1="11" y1="12" x2="12" y2="22" stroke-opacity="0.2"/>
+                                        <line x1="21" y1="12" x2="20" y2="22" stroke-opacity="0.2"/>
+                                    </svg>
+                                </div>
+                                <div class="sandbox-layer-info">
+                                    <span class="sandbox-layer-name">Filesystem</span>
+                                    <div class="sandbox-layer-tags">
+                                        <span class="sandbox-tag">overlay mount</span>
+                                        <span class="sandbox-tag">read-only rootfs</span>
+                                        <span class="sandbox-tag">tmpfs scratch</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sandbox-layer" data-sandbox-layer="2" onclick="goToSandboxLayer(2)">
+                                <div class="sandbox-layer-visual">
+                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M16 3l11 6v14l-11 6L5 23V9l11-6z" stroke-opacity="0.6"/>
+                                        <path d="M16 3v26" stroke-opacity="0.2"/>
+                                        <path d="M5 9l11 6 11-6" stroke-opacity="0.3"/>
+                                        <circle cx="16" cy="16" r="3" stroke-opacity="0.4"/>
+                                    </svg>
+                                </div>
+                                <div class="sandbox-layer-info">
+                                    <span class="sandbox-layer-name">Syscall Filter</span>
+                                    <div class="sandbox-layer-tags">
+                                        <span class="sandbox-tag">seccomp</span>
+                                        <span class="sandbox-tag">landlock</span>
+                                        <span class="sandbox-tag">capabilities</span>
+                                        <span class="sandbox-tag">namespaces</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sandboxing Activities -->
+                        <div class="sandbox-activities">
+                            <div class="sandbox-activities-header">
+                                <span class="sandbox-activities-title">Sandboxing Activities</span>
+                                <span class="sandbox-activities-count" id="saCount">5 events</span>
+                            </div>
+                            <div class="sandbox-activity-list" id="saList">
+
+                                <div class="sandbox-activity">
+                                    <div class="sa-illust sa-net-blocked">
+                                        <div class="sa-boundary"></div>
+                                        <div class="sa-packet"></div>
+                                    </div>
+                                    <div class="sa-info">
+                                        <div class="sa-info-label">Outbound request blocked</div>
+                                        <div class="sa-info-detail">→ api.external-service.io:443</div>
+                                        <div class="sa-info-time">2s ago</div>
+                                    </div>
+                                    <span class="sa-badge sa-blocked">Blocked</span>
+                                </div>
+
+                                <div class="sandbox-activity">
+                                    <div class="sa-illust sa-net-allowed">
+                                        <div class="sa-boundary"></div>
+                                        <div class="sa-packet"></div>
+                                    </div>
+                                    <div class="sa-info">
+                                        <div class="sa-info-label">HTTPS request allowed</div>
+                                        <div class="sa-info-detail">→ registry.npmjs.org:443</div>
+                                        <div class="sa-info-time">5s ago</div>
+                                    </div>
+                                    <span class="sa-badge sa-allowed">Allowed</span>
+                                </div>
+
+                                <div class="sandbox-activity">
+                                    <div class="sa-illust sa-exec-blocked">
+                                        <div class="sa-exec-icon"></div>
+                                        <div class="sa-exec-arrow"></div>
+                                        <div class="sa-shield">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="sa-info">
+                                        <div class="sa-info-label">Process exec denied</div>
+                                        <div class="sa-info-detail">seccomp: /usr/bin/curl</div>
+                                        <div class="sa-info-time">8s ago</div>
+                                    </div>
+                                    <span class="sa-badge sa-blocked">Blocked</span>
+                                </div>
+
+                                <div class="sandbox-activity">
+                                    <div class="sa-illust sa-file-write">
+                                        <div class="sa-file-icon"></div>
+                                        <div class="sa-write-cursor"></div>
+                                        <div class="sa-boundary"></div>
+                                    </div>
+                                    <div class="sa-info">
+                                        <div class="sa-info-label">File write to scratch</div>
+                                        <div class="sa-info-detail">tmpfs: /tmp/build/out.js</div>
+                                        <div class="sa-info-time">12s ago</div>
+                                    </div>
+                                    <span class="sa-badge sa-allowed">Allowed</span>
+                                </div>
+
+                                <div class="sandbox-activity">
+                                    <div class="sa-illust sa-dns">
+                                        <div class="sa-dns-dot"></div>
+                                        <div class="sa-dns-wave"></div>
+                                        <div class="sa-dns-wave"></div>
+                                        <div class="sa-boundary"></div>
+                                    </div>
+                                    <div class="sa-info">
+                                        <div class="sa-info-label">DNS resolution filtered</div>
+                                        <div class="sa-info-detail">lookup: malware-c2.evil.net</div>
+                                        <div class="sa-info-time">15s ago</div>
+                                    </div>
+                                    <span class="sa-badge sa-filtered">Filtered</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -3903,267 +4826,178 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
 
-            <!-- Primary input area -->
-            <div class="na-main">
-                <!-- Project Picker -->
-                <div class="na-project-picker" id="naProjectPicker" onclick="toggleProjectDropdown(event)">
-                    <div class="na-project-picker-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <div class="na-body">
+                <div class="na-input-card">
+                    <!-- Project selector row -->
+                    <div class="na-project-row" id="naProjectRow">
+                        <div class="na-project-trigger" onclick="toggleProjectDropdown(event)">
+                            <div class="na-project-icon" id="naProjectIcon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <span class="na-project-name" id="naSelectedProjectName">Kortex Backend</span>
+                            <svg class="na-project-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <div class="na-dropdown na-project-dropdown" id="naProjectDropdown">
+                            <div class="na-dropdown-item selected" onclick="selectProject(event, this, 'Kortex Backend', '#8b5cf6')">
+                                <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                                <div class="na-dropdown-text"><div class="na-dropdown-label">Kortex Backend</div><div class="na-dropdown-sub">~/dev/kortex-backend</div></div>
+                                <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="na-dropdown-item" onclick="selectProject(event, this, 'Frontend App', '#06b6d4')">
+                                <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                                <div class="na-dropdown-text"><div class="na-dropdown-label">Frontend App</div><div class="na-dropdown-sub">~/dev/kortex-frontend</div></div>
+                                <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="na-dropdown-item" onclick="selectProject(event, this, 'Infrastructure Platform', '#f97316')">
+                                <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #f97316, #ea580c);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                                <div class="na-dropdown-text"><div class="na-dropdown-label">Infrastructure Platform</div><div class="na-dropdown-sub">~/dev/infra-platform</div></div>
+                                <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="na-dropdown-item" onclick="selectProject(event, this, 'API Gateway', '#10b981')">
+                                <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #10b981, #059669);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                                <div class="na-dropdown-text"><div class="na-dropdown-label">API Gateway</div><div class="na-dropdown-sub">~/dev/api-gateway</div></div>
+                                <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                        </div>
                     </div>
-                    <div class="na-project-picker-info">
-                        <div class="na-project-picker-label">Project</div>
-                        <div class="na-project-picker-name" id="naSelectedProjectName">Kortex Backend</div>
-                    </div>
-                    <svg class="na-project-picker-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
 
-                    <div class="na-project-dropdown" id="naProjectDropdown">
-                        <div class="na-project-dropdown-item selected" onclick="selectProject(event, this, 'Kortex Backend', '#8b5cf6')">
-                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <!-- Goal textarea -->
+                    <div class="na-input-area">
+                        <textarea class="na-input-field" id="naInputField" placeholder="What should the agent do?" rows="3" oninput="autoResize(this)"></textarea>
+                    </div>
+
+                    <!-- Config selectors + Start -->
+                    <div class="na-config-bar">
+                        <div class="na-selector" id="naSelectorAgent" onclick="toggleSelector(event, 'Agent')">
+                            <span class="na-selector-icon" id="naAgentIcon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</span>
+                            <span class="na-selector-label" id="naAgentLabel">Claude Code</span>
+                            <svg class="na-selector-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            <div class="na-dropdown" id="naDropdownAgent">
+                                <div class="na-dropdown-item selected" onclick="selectAgent(event, this, 'Claude Code', '#d97706', '#f59e0b', 'Cl')">
+                                    <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
+                                    <div class="na-dropdown-label">Claude Code</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectAgent(event, this, 'Cursor', '#06b6d4', '#0891b2', 'Cu')">
+                                    <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Cu</div>
+                                    <div class="na-dropdown-label">Cursor</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectAgent(event, this, 'OpenCode', '#10b981', '#059669', 'OC')">
+                                    <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #10b981, #059669);">OC</div>
+                                    <div class="na-dropdown-label">OpenCode</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectAgent(event, this, 'Goose', '#ec4899', '#db2777', 'Go')">
+                                    <div class="na-dropdown-dot" style="background: linear-gradient(135deg, #ec4899, #db2777);">Go</div>
+                                    <div class="na-dropdown-label">Goose</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
                             </div>
-                            <div class="na-project-dropdown-info">
-                                <div class="na-project-dropdown-name">Kortex Backend</div>
-                                <div class="na-project-dropdown-path">~/dev/kortex-backend</div>
-                            </div>
-                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
-                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'Frontend App', '#06b6d4')">
-                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+
+                        <div class="na-selector" id="naSelectorModel" onclick="toggleSelector(event, 'Model')">
+                            <svg class="na-selector-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            <span class="na-selector-label" id="naModelLabel">Claude 4 Sonnet</span>
+                            <svg class="na-selector-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            <div class="na-dropdown" id="naDropdownModel">
+                                <div class="na-dropdown-item" onclick="selectModel(event, this, 'Claude 3.5 Haiku')">
+                                    <svg class="na-dropdown-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                    <div class="na-dropdown-label">Claude 3.5 Haiku</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item selected" onclick="selectModel(event, this, 'Claude 4 Sonnet')">
+                                    <svg class="na-dropdown-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                    <div class="na-dropdown-label">Claude 4 Sonnet</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectModel(event, this, 'Claude 4 Opus')">
+                                    <svg class="na-dropdown-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                    <div class="na-dropdown-label">Claude 4 Opus</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectModel(event, this, 'GPT-4.1')">
+                                    <svg class="na-dropdown-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                    <div class="na-dropdown-label">GPT-4.1</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectModel(event, this, 'Gemini 2.5 Pro')">
+                                    <svg class="na-dropdown-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+                                    <div class="na-dropdown-label">Gemini 2.5 Pro</div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
                             </div>
-                            <div class="na-project-dropdown-info">
-                                <div class="na-project-dropdown-name">Frontend App</div>
-                                <div class="na-project-dropdown-path">~/dev/kortex-frontend</div>
-                            </div>
-                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
-                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'Infrastructure Platform', '#f97316')">
-                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #f97316, #ea580c);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+
+                        <div class="na-selector" id="naSelectorRuntime" onclick="toggleSelector(event, 'Runtime')">
+                            <svg class="na-selector-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <span class="na-selector-label" id="naRuntimeLabel">Local</span>
+                            <svg class="na-selector-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            <div class="na-dropdown" id="naDropdownRuntime">
+                                <div class="na-dropdown-item selected" onclick="selectRuntime(event, this, 'Local')">
+                                    <div class="na-dropdown-runtime-icon">&#128187;</div>
+                                    <div class="na-dropdown-text"><div class="na-dropdown-label">Local</div><div class="na-dropdown-sub">This machine</div></div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectRuntime(event, this, 'Remote')">
+                                    <div class="na-dropdown-runtime-icon">&#9729;&#65039;</div>
+                                    <div class="na-dropdown-text"><div class="na-dropdown-label">Remote</div><div class="na-dropdown-sub">Cloud sandbox</div></div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="na-dropdown-item" onclick="selectRuntime(event, this, 'OpenShift')">
+                                    <div class="na-dropdown-runtime-icon">&#9881;&#65039;</div>
+                                    <div class="na-dropdown-text"><div class="na-dropdown-label">OpenShift</div><div class="na-dropdown-sub">Enterprise cluster</div></div>
+                                    <svg class="na-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
                             </div>
-                            <div class="na-project-dropdown-info">
-                                <div class="na-project-dropdown-name">Infrastructure Platform</div>
-                                <div class="na-project-dropdown-path">~/dev/infra-platform</div>
-                            </div>
-                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
-                        <div class="na-project-dropdown-item" onclick="selectProject(event, this, 'API Gateway', '#10b981')">
-                            <div class="na-project-dropdown-dot" style="background: linear-gradient(135deg, #10b981, #059669);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                            </div>
-                            <div class="na-project-dropdown-info">
-                                <div class="na-project-dropdown-name">API Gateway</div>
-                                <div class="na-project-dropdown-path">~/dev/api-gateway</div>
-                            </div>
-                            <svg class="na-project-dropdown-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
+
+                        <div class="na-config-spacer"></div>
+
+                        <button class="na-start-btn" onclick="launchAgent()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            Start
+                        </button>
                     </div>
                 </div>
 
-                <div class="na-input-wrapper">
-                    <textarea class="na-input-field" id="naInputField" placeholder="What should the agent do?" rows="2" oninput="autoResize(this)"></textarea>
-                </div>
-
-                <!-- Defaults bar: compact pills showing current selections -->
-                <div class="na-defaults-bar">
-                    <div class="na-default-pill" onclick="toggleConfigure()" title="Claude Code">
-                        <span class="na-pill-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</span>
-                        Claude Code
-                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                <!-- Attached assets -->
+                <div class="na-assets-section">
+                    <div class="na-assets-header">
+                        <span class="na-assets-title">Attached</span>
+                        <div class="na-assets-line"></div>
                     </div>
-                    <div class="na-default-pill" onclick="toggleConfigure()" title="Claude 4 Sonnet">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                        Claude 4 Sonnet
-                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    </div>
-                    <div class="na-default-pill" onclick="toggleConfigure()" title="Local">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        Local
-                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    </div>
-                    <div class="na-default-pill" onclick="toggleConfigure()" title="Backend Engineer profile">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        Backend Engineer
-                        <svg class="na-pill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    </div>
-                    <div class="na-defaults-spacer"></div>
-                    <button class="na-start-btn" onclick="launchAgent()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                        Start
-                    </button>
-                </div>
-            </div>
-
-            <!-- Configure toggle line -->
-            <div class="na-configure-toggle">
-                <button class="na-configure-btn" id="naConfigureBtn" onclick="toggleConfigure()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                    Configure
-                </button>
-                <div class="na-configure-line"></div>
-            </div>
-
-            <!-- Expandable config panel -->
-            <div class="na-config-panel" id="naConfigPanel">
-                <div class="na-config-grid">
-                    <!-- Coding Agent -->
-                    <div class="na-config-section">
-                        <div class="na-config-label">Coding Agent</div>
-                        <div class="na-agent-list">
-                            <div class="na-agent-option selected" onclick="selectAgent(this, 'Claude Code')">
-                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #d97706, #f59e0b);">Cl</div>
-                                <span class="na-agent-option-name">Claude Code</span>
-                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            </div>
-                            <div class="na-agent-option" onclick="selectAgent(this, 'Cursor')">
-                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">Cu</div>
-                                <span class="na-agent-option-name">Cursor</span>
-                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            </div>
-                            <div class="na-agent-option" onclick="selectAgent(this, 'OpenCode')">
-                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #10b981, #059669);">OC</div>
-                                <span class="na-agent-option-name">OpenCode</span>
-                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            </div>
-                            <div class="na-agent-option" onclick="selectAgent(this, 'Goose')">
-                                <div class="na-agent-dot" style="background: linear-gradient(135deg, #ec4899, #db2777);">Go</div>
-                                <span class="na-agent-option-name">Goose</span>
-                                <div class="na-agent-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            </div>
+                    <div class="na-assets-list">
+                        <div class="na-asset-tag profile selected" onclick="toggleAsset(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Backend Engineer
                         </div>
-                    </div>
-
-                    <!-- Model -->
-                    <div class="na-config-section">
-                        <div class="na-config-label">Model</div>
-                        <div class="na-model-list">
-                            <div class="na-model-option" onclick="selectModel(this, 'Claude 3.5 Haiku')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                                Claude 3.5 Haiku
-                            </div>
-                            <div class="na-model-option selected" onclick="selectModel(this, 'Claude 4 Sonnet')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                                Claude 4 Sonnet
-                            </div>
-                            <div class="na-model-option" onclick="selectModel(this, 'Claude 4 Opus')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                Claude 4 Opus
-                            </div>
-                            <div class="na-model-option" onclick="selectModel(this, 'GPT-4.1')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                GPT-4.1
-                            </div>
-                            <div class="na-model-option" onclick="selectModel(this, 'Gemini 2.5 Pro')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
-                                Gemini 2.5 Pro
-                            </div>
+                        <div class="na-asset-tag skill selected" onclick="toggleAsset(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            code-review
                         </div>
-                    </div>
-
-                    <!-- Where to run -->
-                    <div class="na-config-section">
-                        <div class="na-config-label">Where to run</div>
-                        <div class="na-runtime-list">
-                            <div class="na-runtime-option selected" onclick="selectRuntime(this, 'Local')">
-                                <div class="na-runtime-option-icon">&#128187;</div>
-                                <div class="na-runtime-option-name">Local</div>
-                                <div class="na-runtime-option-desc">This machine</div>
-                            </div>
-                            <div class="na-runtime-option" onclick="selectRuntime(this, 'Remote')">
-                                <div class="na-runtime-option-icon">&#9729;&#65039;</div>
-                                <div class="na-runtime-option-name">Remote</div>
-                                <div class="na-runtime-option-desc">Cloud sandbox</div>
-                            </div>
-                            <div class="na-runtime-option" onclick="selectRuntime(this, 'OpenShift')">
-                                <div class="na-runtime-option-icon">&#9881;&#65039;</div>
-                                <div class="na-runtime-option-name">OpenShift</div>
-                                <div class="na-runtime-option-desc">Enterprise</div>
-                            </div>
+                        <div class="na-asset-tag mcp selected" onclick="toggleAsset(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            GitHub MCP
                         </div>
-                    </div>
-
-                    <!-- Profile & Assets -->
-                    <div class="na-config-section">
-                        <div class="na-config-label">Profile &amp; Assets</div>
-                        <div class="na-asset-chips">
-                            <div class="na-asset-chip profile selected" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                Backend Engineer
-                            </div>
-                            <div class="na-asset-chip profile" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                Frontend Dev
-                            </div>
-                            <div class="na-asset-chip skill selected" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                                code-review
-                            </div>
-                            <div class="na-asset-chip mcp selected" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                GitHub MCP
-                            </div>
-                            <div class="na-asset-chip mcp" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                Filesystem MCP
-                            </div>
-                            <div class="na-asset-chip knowledge selected" onclick="toggleAsset(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                                API Docs KB
-                            </div>
+                        <div class="na-asset-tag mcp" onclick="toggleAsset(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            Filesystem MCP
                         </div>
+                        <div class="na-asset-tag knowledge selected" onclick="toggleAsset(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            API Docs KB
+                        </div>
+                        <button class="na-add-asset-btn" onclick="event.stopPropagation()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="na-footer-hint">
-                Press <kbd>Enter</kbd> to start &middot; Click pills above to change defaults
-            </div>
-        </div>
-    </div>
-
-    <!-- Live Monitoring Overlay -->
-    <div class="monitor-overlay" id="monitorOverlay" onclick="if(event.target===this) closeMonitor()">
-        <div class="monitor-panel">
-            <div class="monitor-header">
-                <div class="monitor-header-left">
-                    <span class="lm-pulse"></span>
-                    <span class="monitor-header-title">Live Agent Monitoring</span>
-                    <span class="monitor-header-badge">3 active</span>
-                </div>
-                <button class="monitor-close-btn" onclick="closeMonitor()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
-
-            <div class="monitor-pipeline" id="monitorPipeline">
-                <div class="mp-stage" data-stage="planning">
-                    <div class="mp-stage-label">Planning</div>
-                    <div class="mp-stage-box" id="stage-planning"></div>
-                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
-                </div>
-                <div class="mp-stage" data-stage="coding">
-                    <div class="mp-stage-label">Coding</div>
-                    <div class="mp-stage-box" id="stage-coding"></div>
-                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
-                </div>
-                <div class="mp-stage" data-stage="testing">
-                    <div class="mp-stage-label">Testing</div>
-                    <div class="mp-stage-box" id="stage-testing"></div>
-                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
-                </div>
-                <div class="mp-stage" data-stage="review">
-                    <div class="mp-stage-label">Review</div>
-                    <div class="mp-stage-box" id="stage-review"></div>
-                    <span class="mp-stage-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg></span>
-                </div>
-                <div class="mp-stage" data-stage="done">
-                    <div class="mp-stage-label">Done</div>
-                    <div class="mp-stage-box" id="stage-done"></div>
-                </div>
-            </div>
-
-            <div class="monitor-feed" id="monitorFeed">
-                <div class="monitor-feed-title">Activity</div>
+                Press <kbd>Enter</kbd> to start &middot; <kbd>Esc</kbd> to cancel
             </div>
         </div>
     </div>
@@ -4199,6 +5033,43 @@
 
                 function onUp() {
                     handle.classList.remove('dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                }
+
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            });
+        })();
+
+        (function initRightResize() {
+            const handle = document.getElementById('rightResizeHandle');
+            const panel = document.getElementById('rightPanel');
+            if (!handle || !panel) return;
+
+            let startX, startWidth;
+
+            handle.addEventListener('mousedown', function (e) {
+                if (panel.classList.contains('collapsed')) return;
+                e.preventDefault();
+                startX = e.clientX;
+                startWidth = panel.offsetWidth;
+                handle.classList.add('dragging');
+                panel.classList.add('resizing');
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+
+                function onMove(e) {
+                    var dx = startX - e.clientX;
+                    var newWidth = Math.max(280, Math.min(600, startWidth + dx));
+                    panel.style.width = newWidth + 'px';
+                }
+
+                function onUp() {
+                    handle.classList.remove('dragging');
+                    panel.classList.remove('resizing');
                     document.body.style.cursor = '';
                     document.body.style.userSelect = '';
                     document.removeEventListener('mousemove', onMove);
@@ -4296,6 +5167,145 @@
             const btn = document.querySelector('.task-conv-action-btn[title="Toggle context panel"]');
             btn.classList.toggle('active');
         }
+
+        function switchRpTab(tab, btn) {
+            document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.rp-tab-content').forEach(c => c.classList.remove('active'));
+            const tabMap = { overview: 'rpTabOverview', context: 'rpTabContext', changes: 'rpTabChanges', sandbox: 'rpTabSandbox' };
+            document.getElementById(tabMap[tab]).classList.add('active');
+        }
+
+        var currentSandboxLayer = 0;
+        var sandboxDescriptions = [
+            'Each agent gets a short-lived microVM with its own kernel. The VM is destroyed after the task completes\u00a0\u2014 nothing persists.',
+            'The filesystem is an overlay mount on a read-only root. Agent writes go to a tmpfs scratch space that is discarded on exit.',
+            'Syscall-level enforcement via seccomp and Landlock. Only explicitly allowed operations can execute\u00a0\u2014 deny-by-default.'
+        ];
+
+        function goToSandboxLayer(layer) {
+            currentSandboxLayer = layer;
+            var container = document.getElementById('sandboxContainer');
+            container.setAttribute('data-layer', layer);
+
+            document.querySelectorAll('.sandbox-layer').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            document.querySelector('[data-sandbox-layer="' + layer + '"]').classList.add('active');
+
+            document.querySelectorAll('.sandbox-dot').forEach(function(d) { d.classList.remove('active'); });
+            document.querySelector('[data-dot="' + layer + '"]').classList.add('active');
+
+            document.getElementById('sandboxDesc').textContent = sandboxDescriptions[layer];
+
+            document.getElementById('sandboxBack').disabled = (layer === 0);
+            document.getElementById('sandboxDeeper').disabled = (layer === 2);
+
+        }
+
+        function sandboxNav(dir) {
+            var next = currentSandboxLayer + dir;
+            if (next < 0 || next > 2) return;
+            goToSandboxLayer(next);
+        }
+
+        var saNewActivities = [
+            {
+                type: 'sa-net-blocked',
+                illust: '<div class="sa-boundary"></div><div class="sa-packet"></div>',
+                label: 'Outbound connection refused',
+                detail: '→ collector.analytics.io:8443',
+                badge: 'Blocked',
+                badgeClass: 'sa-blocked'
+            },
+            {
+                type: 'sa-net-allowed',
+                illust: '<div class="sa-boundary"></div><div class="sa-packet"></div>',
+                label: 'Git clone allowed',
+                detail: '→ github.com:443',
+                badge: 'Allowed',
+                badgeClass: 'sa-allowed'
+            },
+            {
+                type: 'sa-exec-blocked',
+                illust: '<div class="sa-exec-icon"></div><div class="sa-exec-arrow"></div><div class="sa-shield"><svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>',
+                label: 'Syscall denied: mount',
+                detail: 'seccomp: EPERM',
+                badge: 'Blocked',
+                badgeClass: 'sa-blocked'
+            },
+            {
+                type: 'sa-file-write',
+                illust: '<div class="sa-file-icon"></div><div class="sa-write-cursor"></div><div class="sa-boundary"></div>',
+                label: 'Write to source tree',
+                detail: 'overlay: /app/src/index.ts',
+                badge: 'Allowed',
+                badgeClass: 'sa-allowed'
+            },
+            {
+                type: 'sa-dns',
+                illust: '<div class="sa-dns-dot"></div><div class="sa-dns-wave"></div><div class="sa-dns-wave"></div><div class="sa-boundary"></div>',
+                label: 'DNS query resolved',
+                detail: 'lookup: api.openai.com',
+                badge: 'Filtered',
+                badgeClass: 'sa-filtered'
+            },
+            {
+                type: 'sa-net-blocked',
+                illust: '<div class="sa-boundary"></div><div class="sa-packet"></div>',
+                label: 'Egress to unknown host',
+                detail: '→ 185.143.223.12:4444',
+                badge: 'Blocked',
+                badgeClass: 'sa-blocked'
+            },
+            {
+                type: 'sa-port',
+                illust: '<div class="sa-port-center"></div><div class="sa-port-ring"></div><div class="sa-port-ring"></div><div class="sa-port-ring"></div>',
+                label: 'Port bind on :3000',
+                detail: 'loopback only — sandboxed',
+                badge: 'Allowed',
+                badgeClass: 'sa-allowed'
+            }
+        ];
+
+        var saIdx = 0;
+        var saTotal = 5;
+
+        function addSandboxActivity() {
+            var list = document.getElementById('saList');
+            if (!list) return;
+
+            var act = saNewActivities[saIdx % saNewActivities.length];
+            saIdx++;
+            saTotal++;
+
+            var el = document.createElement('div');
+            el.className = 'sandbox-activity';
+            el.style.animation = 'none';
+            el.innerHTML =
+                '<div class="sa-illust ' + act.type + '">' + act.illust + '</div>' +
+                '<div class="sa-info">' +
+                    '<div class="sa-info-label">' + act.label + '</div>' +
+                    '<div class="sa-info-detail">' + act.detail + '</div>' +
+                    '<div class="sa-info-time">just now</div>' +
+                '</div>' +
+                '<span class="sa-badge ' + act.badgeClass + '">' + act.badge + '</span>';
+
+            list.insertBefore(el, list.firstChild);
+
+            requestAnimationFrame(function() {
+                el.style.animation = 'sa-fadein 0.4s ease both';
+            });
+
+            var countEl = document.getElementById('saCount');
+            if (countEl) countEl.textContent = saTotal + ' events';
+
+            if (list.children.length > 10) {
+                list.removeChild(list.lastChild);
+            }
+        }
+
+        setInterval(addSandboxActivity, 5000);
 
         function removeContext(el) {
             el.closest('.context-pill').remove();
@@ -4699,114 +5709,125 @@
             }
         }
 
-        // ── Live Monitoring ──
-        const monitorAgents = [
-            { id: 'jwt',   initials: 'JA', label: 'JWT Auth Refactor',      color: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', stage: 'coding' },
-            { id: 'dark',  initials: 'DM', label: 'Dark Mode Toggle',       color: 'linear-gradient(135deg, #3b82f6, #2563eb)', stage: 'coding' },
-            { id: 'ws',    initials: 'WS', label: 'WebSocket Memory Fix',   color: 'linear-gradient(135deg, #f59e0b, #d97706)', stage: 'planning' },
-            { id: 'api',   initials: 'AD', label: 'OpenAPI Docs',           color: 'linear-gradient(135deg, #6366f1, #4f46e5)', stage: 'review' },
-            { id: 'deps',  initials: 'UD', label: 'Update Dependencies',    color: 'linear-gradient(135deg, #10b981, #059669)', stage: 'done' },
-        ];
-        const stageOrder = ['planning', 'coding', 'testing', 'review', 'done'];
-        const stageLabels = { planning: 'Planning', coding: 'Coding', testing: 'Testing', review: 'Review', done: 'Done' };
-        let monitorInterval = null;
+        // ── Live Monitoring (in-list simulation) ──
+        let lmInterval = null;
+        let lmRunning = false;
 
-        function openMonitor() {
-            document.getElementById('monitorOverlay').classList.add('active');
-            renderPipeline();
-            addFeedItem(null, 'Monitoring started — showing live agent activity', true);
-            startMonitorSimulation();
+        function toggleLiveMonitor() {
+            const btn = document.getElementById('liveMonitorBtn');
+            if (lmRunning) {
+                stopLiveMonitor();
+                btn.classList.remove('active');
+                btn.querySelector('.lm-label').textContent = 'Live Monitoring';
+            } else {
+                startLiveMonitor();
+                btn.classList.add('active');
+                btn.querySelector('.lm-label').textContent = 'Monitoring…';
+            }
+            lmRunning = !lmRunning;
         }
 
-        function closeMonitor() {
-            document.getElementById('monitorOverlay').classList.remove('active');
-            if (monitorInterval) { clearInterval(monitorInterval); monitorInterval = null; }
+        function stopLiveMonitor() {
+            if (lmInterval) { clearInterval(lmInterval); lmInterval = null; }
         }
 
-        function renderPipeline() {
-            stageOrder.forEach(s => {
-                const box = document.getElementById('stage-' + s);
-                box.innerHTML = '';
-                box.classList.remove('has-agents');
-            });
-            monitorAgents.forEach(a => {
-                const box = document.getElementById('stage-' + a.stage);
-                box.classList.add('has-agents');
-                const dot = document.createElement('div');
-                dot.className = 'mp-agent';
-                dot.id = 'mp-' + a.id;
-                dot.style.background = a.color;
-                dot.innerHTML = a.initials + '<span class="mp-agent-tooltip">' + a.label + '</span>';
-                box.appendChild(dot);
-            });
-        }
-
-        function moveAgent(agent) {
-            const curIdx = stageOrder.indexOf(agent.stage);
-            if (curIdx >= stageOrder.length - 1) return;
-            const nextStage = stageOrder[curIdx + 1];
-            const prevStage = agent.stage;
-            const dot = document.getElementById('mp-' + agent.id);
-            if (dot) { dot.classList.add('moving'); setTimeout(() => dot.classList.remove('moving'), 600); }
-            agent.stage = nextStage;
+        function moveTaskToSection(taskId, targetSectionId, newStatus, newStatusLabel, statusClass, isNeedsInput) {
+            const item = document.querySelector('[data-task-id="' + taskId + '"]');
+            if (!item) return;
+            item.classList.add('lm-exiting');
             setTimeout(() => {
-                renderPipeline();
-                addFeedItem(agent, 'moved from <span class="mf-stage-name">' + stageLabels[prevStage] + '</span> to <span class="mf-stage-name">' + stageLabels[nextStage] + '</span>');
-            }, 300);
+                item.classList.remove('lm-exiting', 'needs-input');
+                const badge = item.querySelector('.task-item-attention-badge');
+
+                const dot = item.querySelector('.task-status-dot');
+                const label = item.querySelector('.task-item-status-label');
+                dot.className = 'task-status-dot ' + statusClass;
+                dot.style = '';
+                label.style = '';
+                label.textContent = newStatusLabel;
+
+                if (isNeedsInput) {
+                    item.classList.add('needs-input');
+                    dot.className = 'task-status-dot';
+                    dot.style = 'background: #f87171; box-shadow: 0 0 6px rgba(248,113,113,0.4); animation: taskPulse 2s infinite;';
+                    label.style = 'color: #fca5a5;';
+                    if (!badge) {
+                        const metaEl = item.querySelector('.task-item-meta');
+                        const ab = document.createElement('span');
+                        ab.className = 'task-item-attention-badge';
+                        ab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Action';
+                        metaEl.appendChild(ab);
+                    }
+                } else if (badge) {
+                    badge.remove();
+                }
+
+                const timeEl = item.querySelector('.task-item-time');
+                if (timeEl) timeEl.textContent = 'now';
+
+                const section = document.getElementById(targetSectionId);
+                let insertBefore = section.nextElementSibling;
+                while (insertBefore && !insertBefore.classList.contains('tasks-section-label')) {
+                    insertBefore = insertBefore.nextElementSibling;
+                }
+                if (insertBefore) {
+                    item.parentNode.insertBefore(item, insertBefore);
+                } else {
+                    section.parentNode.appendChild(item);
+                }
+
+                item.classList.add('lm-entering');
+                if (isNeedsInput) {
+                    setTimeout(() => item.classList.add('lm-flash'), 50);
+                }
+                setTimeout(() => item.classList.remove('lm-entering', 'lm-flash'), 500);
+                updateSectionCounts();
+            }, 420);
         }
 
-        function addFeedItem(agent, message, isSystem) {
-            const feed = document.getElementById('monitorFeed');
-            const item = document.createElement('div');
-            item.className = 'mf-item';
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0');
-            if (isSystem) {
-                item.innerHTML =
-                    '<div class="mf-dot" style="background: rgba(16,185,129,0.2); color: #6ee7b7; font-size: 11px;">&#x25cf;</div>' +
-                    '<div class="mf-content"><div class="mf-text">' + message + '</div><div class="mf-time">' + timeStr + '</div></div>';
-            } else {
-                item.innerHTML =
-                    '<div class="mf-dot" style="background: ' + agent.color + ';">' + agent.initials + '</div>' +
-                    '<div class="mf-content"><div class="mf-text"><strong>' + agent.label + '</strong> ' + message + '</div><div class="mf-time">' + timeStr + '</div></div>';
-            }
-            const title = feed.querySelector('.monitor-feed-title');
-            if (title.nextSibling) {
-                feed.insertBefore(item, title.nextSibling);
-            } else {
-                feed.appendChild(item);
-            }
+        function updateSectionCounts() {
+            const list = document.getElementById('tasksList');
+            let needsInput = 0, running = 0, paused = 0, completed = 0;
+            list.querySelectorAll('.task-item').forEach(item => {
+                const label = item.querySelector('.task-item-status-label');
+                if (!label) return;
+                const text = label.textContent.toLowerCase();
+                if (item.classList.contains('needs-input') || text.includes('waiting') || text.includes('blocked')) needsInput++;
+                else if (text.includes('running')) running++;
+                else if (text.includes('paused')) paused++;
+                else if (text.includes('completed')) completed++;
+            });
+            const cni = document.getElementById('countNeedsInput');
+            const cr  = document.getElementById('countRunning');
+            const cp  = document.getElementById('countPaused');
+            const cc  = document.getElementById('countCompleted');
+            if (cni) cni.textContent = needsInput;
+            if (cr)  cr.textContent = running;
+            if (cp)  cp.textContent = paused;
+            if (cc)  cc.textContent = completed;
         }
 
-        function startMonitorSimulation() {
-            if (monitorInterval) clearInterval(monitorInterval);
+        function startLiveMonitor() {
+            if (lmInterval) clearInterval(lmInterval);
             let step = 0;
-            const moves = [
-                () => moveAgent(monitorAgents[2]),
-                () => moveAgent(monitorAgents[0]),
-                () => moveAgent(monitorAgents[2]),
-                () => moveAgent(monitorAgents[1]),
-                () => moveAgent(monitorAgents[3]),
-                () => moveAgent(monitorAgents[0]),
-                () => moveAgent(monitorAgents[1]),
-                () => moveAgent(monitorAgents[2]),
+            const events = [
+                () => moveTaskToSection('add-dark-mode', 'sectionNeedsInput', 'waiting', 'Needs review', 'waiting', true),
+                () => moveTaskToSection('fix-memory-leak', 'sectionRunning', 'running', 'Running', 'running', false),
+                () => moveTaskToSection('api-docs', 'sectionRunning', 'running', 'Running', 'running', false),
+                () => moveTaskToSection('refactor-auth', 'sectionRunning', 'running', 'Running', 'running', false),
+                () => moveTaskToSection('fix-memory-leak', 'sectionCompleted', 'completed', 'Completed', 'completed', false),
+                () => moveTaskToSection('add-dark-mode', 'sectionRunning', 'running', 'Running', 'running', false),
             ];
-            monitorInterval = setInterval(() => {
-                if (step < moves.length) {
-                    moves[step]();
+            lmInterval = setInterval(() => {
+                if (step < events.length) {
+                    events[step]();
                     step++;
                 } else {
-                    clearInterval(monitorInterval);
-                    monitorInterval = null;
+                    clearInterval(lmInterval);
+                    lmInterval = null;
                 }
-            }, 3200);
+            }, 3500);
         }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('monitorOverlay').classList.contains('active')) {
-                closeMonitor();
-            }
-        });
     </script>
 </body>
 </html>
