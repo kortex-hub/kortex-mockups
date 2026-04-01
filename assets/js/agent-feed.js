@@ -142,14 +142,28 @@
         }
     ];
 
-    function buildActivityIcon(type) {
-        if (type === 'writing') {
-            return '<svg class="activity-spinner" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+    var RING_R = 18;
+    var RING_C = 2 * Math.PI * RING_R; // ~113.1
+
+    function buildProgressRing(agent) {
+        var pct = agent.progress || 0;
+        var offset = RING_C - (pct / 100) * RING_C;
+
+        var centerContent;
+        if (agent.status === 'completed') {
+            centerContent = '<svg class="ring-check" viewBox="0 0 24 24"><polyline points="6 12 10 16 18 8"/></svg>';
+        } else {
+            centerContent = '<span>' + pct + '%</span>';
         }
-        if (type === 'reading') {
-            return '<svg class="activity-spinner" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
-        }
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>';
+
+        return '<div class="feed-progress-ring">' +
+            '<svg viewBox="0 0 44 44">' +
+            '<circle class="ring-track" cx="22" cy="22" r="' + RING_R + '"/>' +
+            '<circle class="ring-fill ' + agent.status + '" cx="22" cy="22" r="' + RING_R + '" ' +
+            'stroke-dasharray="' + RING_C + '" stroke-dashoffset="' + offset + '"/>' +
+            '</svg>' +
+            '<div class="ring-center ' + agent.status + '">' + centerContent + '</div>' +
+            '</div>';
     }
 
     function buildCard(agent) {
@@ -158,8 +172,9 @@
 
         var activityHTML = '';
         if (agent.activity) {
+            var actStroke = agent.activity.type === 'writing' ? '#60a5fa' : '#60a5fa';
             activityHTML = '<div class="feed-card-activity">' +
-                buildActivityIcon(agent.activity.type) +
+                '<svg class="activity-spinner" viewBox="0 0 24 24" fill="none" stroke="' + actStroke + '" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
                 '<span class="feed-card-activity-text">' + agent.activity.text + '</span>' +
                 '</div>';
         }
@@ -173,7 +188,7 @@
             var replyHTML = '';
             if (agent.question.allowReply) {
                 replyHTML = '<div class="feed-reply-row">' +
-                    '<input type="text" class="feed-reply-input" placeholder="Or type a response..." onclick="event.stopPropagation();" onkeydown="if(event.key===\'Enter\'){window.agentFeed.handleReply(\'' + agent.id + '\', this); event.stopPropagation();}">' +
+                    '<input type="text" class="feed-reply-input" placeholder="Or type a response\u2026" onclick="event.stopPropagation();" onkeydown="if(event.key===\'Enter\'){window.agentFeed.handleReply(\'' + agent.id + '\', this); event.stopPropagation();}">' +
                     '<button class="feed-reply-send" onclick="window.agentFeed.handleReply(\'' + agent.id + '\', this.previousElementSibling); event.stopPropagation();">' +
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
                     '</button></div>';
@@ -182,9 +197,9 @@
             questionHTML = '<div class="feed-card-question">' +
                 '<div class="feed-card-question-header">' +
                 '<div class="feed-card-question-icon">' +
-                '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
                 '</div>' +
-                '<span class="feed-card-question-label">Agent needs your input</span>' +
+                '<span class="feed-card-question-label">Needs your input</span>' +
                 '</div>' +
                 '<div class="feed-card-question-body">' +
                 '<div class="feed-card-question-text">' + agent.question.text + '</div>' +
@@ -193,40 +208,42 @@
                 '</div></div>';
         }
 
-        var pauseResumeBtn = '';
+        var controlsHTML = '';
         if (agent.status === 'running') {
-            pauseResumeBtn = '<button class="feed-action-btn secondary" style="padding:4px 8px; font-size:11px;" onclick="window.agentFeed.handleAction(\'' + agent.id + '\', \'pause\'); event.stopPropagation();" title="Pause">' +
-                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>';
+            controlsHTML = '<div class="feed-card-controls">' +
+                '<button class="feed-ctrl-btn" onclick="window.agentFeed.handleAction(\'' + agent.id + '\', \'pause\'); event.stopPropagation();" title="Pause">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>' +
+                '</div>';
         } else if (agent.status === 'paused') {
-            pauseResumeBtn = '<button class="feed-action-btn secondary" style="padding:4px 8px; font-size:11px;" onclick="window.agentFeed.handleAction(\'' + agent.id + '\', \'resume\'); event.stopPropagation();" title="Resume">' +
-                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>';
+            controlsHTML = '<div class="feed-card-controls">' +
+                '<button class="feed-ctrl-btn" onclick="window.agentFeed.handleAction(\'' + agent.id + '\', \'resume\'); event.stopPropagation();" title="Resume">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>' +
+                '</div>';
         }
+
+        var contextLine = '<div class="feed-card-context-line">' +
+            '<span>' + agent.projectName + '</span>' +
+            '<span class="ctx-sep">/</span>' +
+            '<span class="ctx-branch">' + agent.branch + '</span>' +
+            '</div>';
 
         return '<div class="' + cardClass + '" data-feed-status="' + agent.status + '" onclick="window.agentFeed.openAgent(\'' + agent.id + '\')">' +
             '<div class="feed-card-top">' +
             '<div class="feed-card-info">' +
-            '<div class="feed-card-avatar ' + agent.avatar + '">' + agent.avatarLabel + '</div>' +
+            buildProgressRing(agent) +
             '<div class="feed-card-title-row">' +
             '<div class="feed-card-goal">' + agent.goal + '</div>' +
             '<div class="feed-card-meta">' +
-            '<div class="feed-status-dot ' + agent.status + '"></div>' +
-            '<span class="feed-card-status ' + agent.status + '">' + agent.statusLabel + '</span>' +
+            '<span class="feed-status-label ' + agent.status + '">' + agent.statusLabel + '</span>' +
+            '<span class="feed-meta-sep">&middot;</span>' +
+            '<span class="feed-card-steps">' + agent.progressSteps + '</span>' +
+            '<span class="feed-meta-sep">&middot;</span>' +
             '<span class="feed-card-time">' + agent.time + '</span>' +
-            '</div></div></div>' +
-            '<div class="feed-card-context">' +
-            '<div class="feed-card-project">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>' +
-            '<span class="feed-card-project-name">' + agent.projectName + '</span></div>' +
-            '<div class="feed-card-git">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>' +
-            '<span class="feed-card-git-branch">' + agent.branch + '</span></div>' +
-            pauseResumeBtn +
-            '</div></div>' +
-            '<div class="feed-card-progress">' +
-            '<div class="feed-progress-bar">' +
-            '<div class="feed-progress-fill ' + agent.status + '" style="width: ' + agent.progress + '%"></div>' +
             '</div>' +
-            '<span class="feed-progress-label">' + agent.progressSteps + '</span></div>' +
+            contextLine +
+            '</div></div>' +
+            controlsHTML +
+            '</div>' +
             activityHTML + questionHTML + '</div>';
     }
 
@@ -265,8 +282,42 @@
         streamEl.innerHTML = ordered.map(buildCard).join('');
     }
 
+    function renderDualPanels(interactEl, activityEl, badgeEl) {
+        if (badgeEl) {
+            var runCount = feedAgents.filter(function (a) { return a.status === 'running'; }).length;
+            var waitCount = feedAgents.filter(function (a) { return a.status === 'waiting'; }).length;
+            var parts = [];
+            if (runCount > 0) parts.push(runCount + ' running');
+            if (waitCount > 0) parts.push(waitCount + ' needs input');
+            badgeEl.textContent = parts.join(' \u00b7 ') || 'idle';
+        }
+
+        if (interactEl) {
+            var waiting = feedAgents.filter(function (a) { return a.status === 'waiting'; });
+            if (waiting.length === 0) {
+                interactEl.innerHTML = '<div class="feed-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg><div class="feed-empty-text">All clear — no agents need input</div></div>';
+            } else {
+                interactEl.innerHTML = waiting.map(buildCard).join('');
+            }
+        }
+
+        if (activityEl) {
+            var others = feedAgents.filter(function (a) { return a.status !== 'waiting'; });
+            var running = others.filter(function (a) { return a.status === 'running'; });
+            var paused = others.filter(function (a) { return a.status === 'paused'; });
+            var completed = others.filter(function (a) { return a.status === 'completed'; });
+            var ordered = [].concat(running, paused, completed);
+            if (ordered.length === 0) {
+                activityEl.innerHTML = '<div class="feed-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg><div class="feed-empty-text">No activity yet</div></div>';
+            } else {
+                activityEl.innerHTML = ordered.map(buildCard).join('');
+            }
+        }
+    }
+
     window.agentFeed = {
         _renderInto: renderInto,
+        _renderDual: renderDualPanels,
         _agents: feedAgents,
 
         updateAgent: function (agentId, updates) {

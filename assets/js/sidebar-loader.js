@@ -115,6 +115,12 @@ const sidebarHTML = `
             </svg>
             <span style="color: #67e8f9;">CLI</span>
         </div>
+        <div class="status-bar-item status-bar-sandbox" onclick="window.location.href='../sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.2);" title="Open Sandbox Activities">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span style="color: #a78bfa;">Sandbox</span>
+        </div>
     </div>
     <div class="status-bar-right">
         <div class="status-bar-item openshift-status" id="openshiftStatusItem" onclick="window.openOpenshiftAIModal()">

@@ -87,6 +87,7 @@
         .ext-cat-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
         .ext-cat-icon.models { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .ext-cat-icon.agents { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .ext-cat-icon.tools { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
 
         .ext-cat-info { flex: 1; min-width: 0; }
         .ext-cat-name { font-size: 13px; font-weight: 500; color: #e5e7eb; }
@@ -324,6 +325,7 @@
         .ext-card-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
         .ext-card-icon.models { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .ext-card-icon.agents { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .ext-card-icon.tools { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
 
         .ext-card-title-area { flex: 1; min-width: 0; }
 
@@ -348,6 +350,7 @@
         .ext-type-badge.mcp { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
         .ext-type-badge.models { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
         .ext-type-badge.agents { background: rgba(236, 72, 153, 0.15); color: #f9a8d4; }
+        .ext-type-badge.tools { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
 
         .ext-source-badge {
             font-size: 10px;
@@ -461,7 +464,7 @@
                                 <div class="ext-cat-name">All Extensions</div>
                                 <div class="ext-cat-count">Everything in one view</div>
                             </div>
-                            <span class="ext-cat-badge">19</span>
+                            <span class="ext-cat-badge">20</span>
                         </div>
 
                         <div class="ext-cat-item" onclick="filterCategory('skills', this)">
@@ -506,6 +509,17 @@
                                 <div class="ext-cat-count">Autonomous agents</div>
                             </div>
                             <span class="ext-cat-badge">3</span>
+                        </div>
+
+                        <div class="ext-cat-item" onclick="filterCategory('tools', this)">
+                            <div class="ext-cat-icon tools">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            </div>
+                            <div class="ext-cat-info">
+                                <div class="ext-cat-name">Tools</div>
+                                <div class="ext-cat-count">Infrastructure tools</div>
+                            </div>
+                            <span class="ext-cat-badge">1</span>
                         </div>
                     </div>
 
@@ -577,7 +591,7 @@
                     <div class="ext-header">
                         <div class="ext-header-left">
                             <h1 class="ext-title">Extensions</h1>
-                            <span class="ext-count">19 extensions</span>
+                            <span class="ext-count">20 extensions</span>
                         </div>
                         <div class="ext-header-actions">
                             <div class="ext-search">
@@ -597,7 +611,7 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                         </div>
                         <span class="ext-active-label-text">All Extensions</span>
-                        <span class="ext-active-label-count">(19)</span>
+                        <span class="ext-active-label-count">(20)</span>
                     </div>
 
                     <!-- Extension Cards Grid -->
@@ -1059,6 +1073,31 @@
                             </div>
                         </div>
 
+                        <!-- Tools -->
+                        <div class="ext-section-header" data-type="tools"><span>Tools</span></div>
+
+                        <div class="ext-card" data-type="tools" data-source="redhat" onclick="window.location.href='details.html'">
+                            <div class="ext-card-header">
+                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/><path d="M16 21h5v-5"/><path d="M8 21H3v-5"/><path d="m12 2v8.3a4 4 0 0 0 1.172 2.872L21 21"/><path d="m9 15-6 6"/></svg>
+                                </div>
+                                <div class="ext-card-title-area">
+                                    <div class="ext-card-title">Semantic Agent Routing</div>
+                                    <div class="ext-card-badges">
+                                        <span class="ext-type-badge tools">Tool</span>
+                                        <span class="ext-source-badge redhat">Red Hat</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ext-card-desc">Intelligent model routing powered by vLLM Semantic Router. Auto-detects request complexity and routes to local or cloud models for optimal cost and performance.</div>
+                            <div class="ext-card-footer">
+                                <div class="ext-card-meta">
+                                    <div class="ext-card-meta-item">v0.2.0 Athena</div>
+                                </div>
+                                <span class="ext-card-status available">Available</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -1068,11 +1107,12 @@
 
     <script>
         const categoryLabels = {
-            all:    { text: 'All Extensions',  count: 19, bg: 'linear-gradient(135deg, #6b7280, #4b5563)', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
+            all:    { text: 'All Extensions',  count: 20, bg: 'linear-gradient(135deg, #6b7280, #4b5563)', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
             skills: { text: 'Skills',          count: 5,  bg: 'linear-gradient(135deg, #10b981, #059669)', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' },
             mcp:    { text: 'MCP Servers',     count: 5,  bg: 'linear-gradient(135deg, #06b6d4, #0891b2)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
             models: { text: 'Models',          count: 6,  bg: 'linear-gradient(135deg, #f59e0b, #d97706)', icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>' },
-            agents: { text: 'Coding Agents',   count: 3,  bg: 'linear-gradient(135deg, #ec4899, #db2777)', icon: '<path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>' }
+            agents: { text: 'Coding Agents',   count: 3,  bg: 'linear-gradient(135deg, #ec4899, #db2777)', icon: '<path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>' },
+            tools:  { text: 'Tools',           count: 1,  bg: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' }
         };
 
         function filterCategory(cat, el) {

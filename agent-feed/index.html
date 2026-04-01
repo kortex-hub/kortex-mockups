@@ -19,7 +19,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 24px 40px 16px;
+            padding: 20px 32px 16px;
             border-bottom: 1px solid #2d2e3f;
             flex-shrink: 0;
         }
@@ -59,72 +59,146 @@
             align-items: center;
             gap: 6px;
             padding: 4px 12px;
-            background: rgba(52, 211, 153, 0.12);
-            border: 1px solid rgba(52, 211, 153, 0.25);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
-            color: #34d399;
+            font-weight: 500;
+            color: #9ca3af;
         }
 
         .agent-feed-page-badge .page-badge-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #34d399;
-            animation: pulse-green 2s infinite;
+            background: #60a5fa;
+            animation: pulse-blue 2.5s infinite;
         }
 
-        .agent-feed-page-tabs {
+        @keyframes pulse-blue {
+            0%, 100% { box-shadow: 0 0 4px rgba(96, 165, 250, 0.4); }
+            50%       { box-shadow: 0 0 8px rgba(96, 165, 250, 0.7); }
+        }
+
+        /* ── Two-panel layout ── */
+        .af-panels {
+            flex: 1;
             display: flex;
-            gap: 2px;
-            padding: 0 40px;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .af-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .af-panel + .af-panel {
+            border-left: 1px solid #2d2e3f;
+        }
+
+        .af-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
             border-bottom: 1px solid #2d2e3f;
             flex-shrink: 0;
         }
 
-        .agent-feed-page-tabs .agent-feed-tab {
-            padding: 12px 18px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-            border: none;
-            background: none;
-            border-bottom: 2px solid transparent;
-            transition: all 0.15s ease;
+        .af-panel-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .agent-feed-page-tabs .agent-feed-tab:hover {
-            color: #9ca3af;
+        .af-panel-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .agent-feed-page-tabs .agent-feed-tab.active {
-            color: #c4b5fd;
-            border-bottom-color: #8b5cf6;
+        .af-panel-icon svg {
+            width: 14px;
+            height: 14px;
         }
 
-        .agent-feed-page-stream {
+        .af-panel-icon.interact {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .af-panel-icon.interact svg {
+            stroke: #f59e0b;
+        }
+
+        .af-panel-icon.activity {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .af-panel-icon.activity svg {
+            stroke: #60a5fa;
+        }
+
+        .af-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .af-panel-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .af-panel-count.interact {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+        }
+
+        .af-panel-count.activity {
+            background: rgba(96, 165, 250, 0.1);
+            color: #93c5fd;
+        }
+
+        .af-panel-stream {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 40px;
+            padding: 16px 20px;
         }
 
-        .agent-feed-page-stream::-webkit-scrollbar {
-            width: 6px;
+        .af-panel-stream::-webkit-scrollbar {
+            width: 5px;
         }
 
-        .agent-feed-page-stream::-webkit-scrollbar-track {
+        .af-panel-stream::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .agent-feed-page-stream::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.2);
+        .af-panel-stream::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
             border-radius: 3px;
         }
 
-        .agent-feed-page-stream .feed-card {
-            max-width: 960px;
+        .af-panel-stream .feed-card {
+            max-width: none;
+        }
+
+        .af-panel-stream .feed-empty {
+            padding: 40px 20px;
         }
 
         /* ── Live Monitoring Button ── */
@@ -133,47 +207,42 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 9px;
-            color: #6ee7b7;
+            color: #9ca3af;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .af-live-monitor-btn:hover {
-            background: rgba(16, 185, 129, 0.14);
-            border-color: rgba(16, 185, 129, 0.35);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #d1d5db;
         }
         .af-live-monitor-btn.active {
-            background: rgba(16, 185, 129, 0.16);
-            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(96, 165, 250, 0.08);
+            border-color: rgba(96, 165, 250, 0.2);
+            color: #93c5fd;
         }
         .af-live-monitor-btn .af-lm-pulse {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+            background: #6b7280;
+            transition: all 0.3s ease;
+        }
+        .af-live-monitor-btn.active .af-lm-pulse {
+            background: #60a5fa;
+            box-shadow: 0 0 6px rgba(96, 165, 250, 0.5);
             animation: af-lm-pulse 2s ease-in-out infinite;
         }
         @keyframes af-lm-pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
-            50%       { opacity: 0.4; box-shadow: 0 0 2px rgba(16, 185, 129, 0.2); }
+            0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(96, 165, 250, 0.5); }
+            50%       { opacity: 0.4; box-shadow: 0 0 2px rgba(96, 165, 250, 0.2); }
         }
         .af-live-monitor-btn .af-lm-label { white-space: nowrap; }
-
-        /* ── Feed card transition animation ── */
-        .feed-card.af-updating {
-            animation: af-card-flash 0.6s ease-out;
-        }
-        @keyframes af-card-flash {
-            0%   { opacity: 0.3; transform: scale(0.98); }
-            100% { opacity: 1;   transform: scale(1); }
-        }
     </style>
 </head>
 <body class="agent-feed-page">
@@ -202,14 +271,32 @@
                 </button>
             </div>
 
-            <div class="agent-feed-page-tabs">
-                <button class="agent-feed-tab active" data-feed-tab="all" onclick="window.agentFeedPage.filterTab('all', this)">All Activity</button>
-                <button class="agent-feed-tab" data-feed-tab="needs-input" onclick="window.agentFeedPage.filterTab('needs-input', this)">Needs Input</button>
-                <button class="agent-feed-tab" data-feed-tab="running" onclick="window.agentFeedPage.filterTab('running', this)">Running</button>
-                <button class="agent-feed-tab" data-feed-tab="completed" onclick="window.agentFeedPage.filterTab('completed', this)">Completed</button>
+            <div class="af-panels">
+                <div class="af-panel">
+                    <div class="af-panel-header">
+                        <div class="af-panel-header-left">
+                            <div class="af-panel-icon interact">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <span class="af-panel-title">Needs Your Input</span>
+                        </div>
+                        <span class="af-panel-count interact" id="afInteractCount">0</span>
+                    </div>
+                    <div class="af-panel-stream" id="afInteractStream"></div>
+                </div>
+                <div class="af-panel">
+                    <div class="af-panel-header">
+                        <div class="af-panel-header-left">
+                            <div class="af-panel-icon activity">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </div>
+                            <span class="af-panel-title">Activity & Progress</span>
+                        </div>
+                        <span class="af-panel-count activity" id="afActivityCount">0</span>
+                    </div>
+                    <div class="af-panel-stream" id="afActivityStream"></div>
+                </div>
             </div>
-
-            <div class="agent-feed-page-stream" id="agentFeedPageStream"></div>
         </div>
     </div>
 
@@ -236,19 +323,20 @@
             if (afLmInterval) { clearInterval(afLmInterval); afLmInterval = null; }
         }
 
-        function getActiveTab() {
-            var active = document.querySelector('.agent-feed-page-tabs .agent-feed-tab.active');
-            return active ? active.getAttribute('data-feed-tab') : 'all';
-        }
-
-        function reRenderFeed() {
-            var stream = document.getElementById('agentFeedPageStream');
+        function renderFeed() {
+            var interactStream = document.getElementById('afInteractStream');
+            var activityStream = document.getElementById('afActivityStream');
             var badge = document.getElementById('pageFeedBadge');
-            window.agentFeed._renderInto(stream, badge, getActiveTab());
-            stream.querySelectorAll('.feed-card').forEach(function (c) {
-                c.classList.add('af-updating');
-                setTimeout(function () { c.classList.remove('af-updating'); }, 650);
-            });
+            var interactCount = document.getElementById('afInteractCount');
+            var activityCount = document.getElementById('afActivityCount');
+
+            window.agentFeed._renderDual(interactStream, activityStream, badge);
+
+            var agents = window.agentFeed._agents;
+            var wc = agents.filter(function (a) { return a.status === 'waiting'; }).length;
+            var ac = agents.filter(function (a) { return a.status !== 'waiting'; }).length;
+            interactCount.textContent = wc;
+            activityCount.textContent = ac;
         }
 
         function startAfLiveMonitor() {
@@ -268,7 +356,7 @@
                             allowReply: true
                         }
                     });
-                    reRenderFeed();
+                    renderFeed();
                 },
                 function () {
                     window.agentFeed.updateAgent('fix-memory-leak', {
@@ -277,7 +365,7 @@
                         activity: { text: 'Refactoring AsyncPool connection handling', type: 'writing' },
                         question: null
                     });
-                    reRenderFeed();
+                    renderFeed();
                 },
                 function () {
                     window.agentFeed.updateAgent('api-docs', {
@@ -285,7 +373,7 @@
                         activity: { text: 'Scanning route definitions in src/routes/', type: 'reading' },
                         question: null
                     });
-                    reRenderFeed();
+                    renderFeed();
                 },
                 function () {
                     window.agentFeed.updateAgent('refactor-auth', {
@@ -294,7 +382,7 @@
                         activity: { text: 'Writing JWT verification middleware', type: 'writing' },
                         question: null
                     });
-                    reRenderFeed();
+                    renderFeed();
                 },
                 function () {
                     window.agentFeed.updateAgent('fix-memory-leak', {
@@ -302,7 +390,7 @@
                         progress: 100, progressSteps: '4 / 4',
                         activity: null, question: null
                     });
-                    reRenderFeed();
+                    renderFeed();
                 },
                 function () {
                     window.agentFeed.updateAgent('add-dark-mode', {
@@ -311,7 +399,7 @@
                         activity: { text: 'Adding localStorage persistence for theme', type: 'writing' },
                         question: null
                     });
-                    reRenderFeed();
+                    renderFeed();
                 }
             ];
             afLmInterval = setInterval(function () {
@@ -327,23 +415,12 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             function waitForFeed(cb, tries) {
-                if (window.agentFeed && window.agentFeed._renderInto) { cb(); return; }
+                if (window.agentFeed && window.agentFeed._renderDual) { cb(); return; }
                 if (tries > 20) return;
                 setTimeout(function () { waitForFeed(cb, (tries || 0) + 1); }, 50);
             }
             waitForFeed(function () {
-                var stream = document.getElementById('agentFeedPageStream');
-                var badge = document.getElementById('pageFeedBadge');
-
-                window.agentFeedPage = {
-                    filterTab: function (tab, btn) {
-                        document.querySelectorAll('.agent-feed-page-tabs .agent-feed-tab').forEach(function (t) { t.classList.remove('active'); });
-                        btn.classList.add('active');
-                        window.agentFeed._renderInto(stream, badge, tab);
-                    }
-                };
-
-                window.agentFeed._renderInto(stream, badge, 'all');
+                renderFeed();
             });
         });
     </script>

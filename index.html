@@ -51,6 +51,37 @@
             margin: 0;
         }
 
+        .dash-greeting-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dash-setup-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #9ca3af;
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-setup-btn:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .dash-setup-btn svg { width: 16px; height: 16px; }
+
         .dash-new-task-btn {
             display: flex;
             align-items: center;
@@ -523,6 +554,203 @@
             color: #6b7280;
         }
 
+        /* ── Cost Overview ── */
+        .dash-cost-overview {
+            margin-bottom: 28px;
+        }
+
+        .dash-cost-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .dash-cost-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-cost-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .dash-cost-period-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dash-cost-period-tab {
+            padding: 5px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: all 0.15s;
+        }
+
+        .dash-cost-period-tab:hover { color: #e5e7eb; }
+
+        .dash-cost-period-tab.active {
+            background: rgba(139,92,246,0.15);
+            color: #c4b5fd;
+        }
+
+        .dash-cost-link {
+            font-size: 12px;
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .dash-cost-link:hover { color: #c4b5fd; }
+
+        .dash-cost-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr;
+            gap: 16px;
+        }
+
+        .dash-cost-total-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dash-cost-total-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .dash-cost-total-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .dash-cost-total-change {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .dash-cost-total-change .up { color: #f87171; }
+        .dash-cost-total-change .down { color: #34d399; }
+
+        .dash-cost-breakdown {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .dash-cost-breakdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(61,62,79,0.5);
+        }
+
+        .dash-cost-breakdown-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .dash-cost-breakdown-total {
+            font-size: 13px;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+
+        .dash-cost-breakdown-list {
+            padding: 8px 12px;
+        }
+
+        .dash-cost-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 8px;
+        }
+
+        .dash-cost-row + .dash-cost-row {
+            border-top: 1px solid rgba(61,62,79,0.3);
+        }
+
+        .dash-cost-row-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dash-cost-row-icon svg { width: 16px; height: 16px; }
+
+        .dash-cost-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-cost-row-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .dash-cost-row-detail {
+            font-size: 11px;
+            color: #4b5563;
+            margin-top: 1px;
+        }
+
+        .dash-cost-row-bar-wrap {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .dash-cost-row-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .dash-cost-row-bar {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .dash-cost-row-amount {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            text-align: right;
+            min-width: 56px;
+            flex-shrink: 0;
+        }
+
         /* ── Hide default header ── */
         body.dashboard-page .main-content > .header { display: none; }
         body.dashboard-page .main-content { padding: 0; }
@@ -611,10 +839,16 @@
                             <h1>Good afternoon, <span>Sebastien</span></h1>
                             <p>3 agents working &middot; 2 tasks awaiting review &middot; System healthy</p>
                         </div>
-                        <a href="tasks/index.html" class="dash-new-task-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New Task
-                        </a>
+                        <div class="dash-greeting-actions">
+                            <a href="onboarding/index.html" class="dash-setup-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                Run Setup
+                            </a>
+                            <a href="tasks/index.html" class="dash-new-task-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Task
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Stat Cards -->
@@ -850,6 +1084,140 @@
                         </div>
                     </div>
 
+                    <!-- Cost Overview -->
+                    <div class="dash-cost-overview">
+                        <div class="dash-cost-header">
+                            <div class="dash-cost-header-left">
+                                <span class="dash-cost-title">Cost Overview</span>
+                                <div class="dash-cost-period-tabs">
+                                    <button class="dash-cost-period-tab">Today</button>
+                                    <button class="dash-cost-period-tab active">This Week</button>
+                                    <button class="dash-cost-period-tab">This Month</button>
+                                </div>
+                            </div>
+                            <a href="services/index.html" class="dash-cost-link">View services &rarr;</a>
+                        </div>
+
+                        <div class="dash-cost-grid">
+                            <!-- Total Spend -->
+                            <div class="dash-cost-total-card">
+                                <div class="dash-cost-total-label">Total Spend</div>
+                                <div class="dash-cost-total-value">$47.82</div>
+                                <div class="dash-cost-total-change"><span class="up">&uarr; 12%</span> vs last week</div>
+                            </div>
+
+                            <!-- By Provider -->
+                            <div class="dash-cost-breakdown">
+                                <div class="dash-cost-breakdown-header">
+                                    <span class="dash-cost-breakdown-title">By Provider</span>
+                                    <span class="dash-cost-breakdown-total">3 services</span>
+                                </div>
+                                <div class="dash-cost-breakdown-list">
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">OpenAI</div>
+                                            <div class="dash-cost-row-detail">GPT-4o &middot; 184K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:62%; background:#a78bfa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$29.40</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Anthropic</div>
+                                            <div class="dash-cost-row-detail">Claude 3.5 &middot; 97K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:34%; background:#a78bfa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$16.22</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">OpenShift AI (vLLM)</div>
+                                            <div class="dash-cost-row-detail">Granite &middot; 42K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:5%; background:#fb923c;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$2.20</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- By Agent -->
+                            <div class="dash-cost-breakdown">
+                                <div class="dash-cost-breakdown-header">
+                                    <span class="dash-cost-breakdown-title">By Agent</span>
+                                    <span class="dash-cost-breakdown-total">3 agents</span>
+                                </div>
+                                <div class="dash-cost-breakdown-list">
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">DevOps Engineer</div>
+                                            <div class="dash-cost-row-detail">5 tasks &middot; OpenAI + vLLM</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:52%; background:#c4b5fd;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$24.60</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Backend Developer</div>
+                                            <div class="dash-cost-row-detail">4 tasks &middot; OpenAI + Anthropic</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:38%; background:#60a5fa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$18.14</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Security Analyst</div>
+                                            <div class="dash-cost-row-detail">3 tasks &middot; Anthropic</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:11%; background:#f87171;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$5.08</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Quick Actions -->
                     <div class="dash-quick-actions">
                         <a href="tasks/index.html" class="dash-quick-action">
@@ -911,6 +1279,12 @@
                     </svg>
                     <span style="color: #67e8f9;">CLI</span>
                 </div>
+                <div class="status-bar-item status-bar-sandbox" onclick="window.location.href='sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.2);" title="Open Sandbox Activities">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span style="color: #a78bfa;">Sandbox</span>
+                </div>
             </div>
             <div class="status-bar-right">
                 <div class="status-bar-item" id="openshiftStatusItem">
@@ -924,5 +1298,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.dash-cost-period-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.dash-cost-period-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

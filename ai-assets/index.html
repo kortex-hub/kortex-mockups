@@ -83,9 +83,8 @@
         }
 
         .assets-cat-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -93,30 +92,20 @@
         }
 
         .assets-cat-icon svg {
-            width: 17px;
-            height: 17px;
-            color: #fff;
+            width: 18px;
+            height: 18px;
+            color: #6b7280;
         }
 
-        .assets-cat-icon.all {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+        .assets-cat-item.active .assets-cat-icon svg {
+            color: #c4b5fd;
         }
 
-        .assets-cat-icon.mcp {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
-        }
-
-        .assets-cat-icon.skill {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .assets-cat-icon.knowledge {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-        }
-
-        .assets-cat-icon.profile {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        }
+        .assets-cat-icon.all { }
+        .assets-cat-icon.mcp { }
+        .assets-cat-icon.skill { }
+        .assets-cat-icon.knowledge { }
+        .assets-cat-icon.profile { }
 
         /* ── Profiles sidebar section ── */
         .profiles-section-header {
@@ -182,9 +171,8 @@
         }
 
         .profile-sidebar-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -192,9 +180,13 @@
         }
 
         .profile-sidebar-avatar svg {
-            width: 14px;
-            height: 14px;
-            color: #fff;
+            width: 17px;
+            height: 17px;
+            color: #6b7280;
+        }
+
+        .profile-sidebar-item.active .profile-sidebar-avatar svg {
+            color: #c4b5fd;
         }
 
         .profile-sidebar-info {
@@ -273,19 +265,20 @@
         }
 
         .profile-detail-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            background: rgba(139, 92, 246, 0.1);
         }
 
         .profile-detail-avatar svg {
-            width: 26px;
-            height: 26px;
-            color: #fff;
+            width: 22px;
+            height: 22px;
+            color: #a78bfa;
         }
 
         .profile-detail-header-info {
@@ -408,18 +401,16 @@
         }
 
         .profile-block-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .profile-block-icon svg {
-            width: 15px;
-            height: 15px;
-            color: #fff;
+            width: 17px;
+            height: 17px;
         }
 
         .profile-block-title {
@@ -485,9 +476,8 @@
         }
 
         .profile-block-item-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -495,14 +485,13 @@
         }
 
         .profile-block-item-icon svg {
-            width: 17px;
-            height: 17px;
-            color: #fff;
+            width: 18px;
+            height: 18px;
         }
 
-        .profile-block-item-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .profile-block-item-icon.skill { background: linear-gradient(135deg, #10b981, #059669); }
-        .profile-block-item-icon.knowledge { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .profile-block-item-icon.mcp svg { color: #22d3ee; }
+        .profile-block-item-icon.skill svg { color: #34d399; }
+        .profile-block-item-icon.knowledge svg { color: #60a5fa; }
 
         .profile-block-item-info {
             flex: 1;
@@ -780,18 +769,16 @@
         }
 
         .assets-active-label-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 7px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .assets-active-label-icon svg {
-            width: 15px;
-            height: 15px;
-            color: #fff;
+            width: 18px;
+            height: 18px;
         }
 
         .assets-active-label-text {
@@ -837,9 +824,8 @@
         }
 
         .asset-card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -847,15 +833,14 @@
         }
 
         .asset-card-icon svg {
-            width: 22px;
-            height: 22px;
-            color: #fff;
+            width: 20px;
+            height: 20px;
         }
 
-        .asset-card-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .asset-card-icon.skill { background: linear-gradient(135deg, #10b981, #059669); }
-        .asset-card-icon.knowledge { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .asset-card-icon.profile { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .asset-card-icon.mcp svg { color: #22d3ee; }
+        .asset-card-icon.skill svg { color: #34d399; }
+        .asset-card-icon.knowledge svg { color: #60a5fa; }
+        .asset-card-icon.profile svg { color: #a78bfa; }
 
         .asset-card-title-area {
             flex: 1;
@@ -1024,6 +1009,347 @@
         }
 
         .section-create-btn svg { width: 12px; height: 12px; }
+
+        /* ── Summary Dashboard ── */
+        .assets-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .summary-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .summary-stat-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .summary-stat-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-stat-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .summary-stat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .summary-stat-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .summary-category-block {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .summary-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .summary-category-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-category-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-category-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-category-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .summary-category-count {
+            font-size: 12px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .summary-category-link {
+            font-size: 12px;
+            font-weight: 500;
+            color: #8b5cf6;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.15s;
+        }
+
+        .summary-category-link:hover {
+            color: #c4b5fd;
+        }
+
+        .summary-category-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .summary-asset-list {
+            padding: 6px 10px;
+        }
+
+        .summary-asset-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .summary-asset-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .summary-asset-row + .summary-asset-row {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .summary-asset-row:hover + .summary-asset-row {
+            border-top-color: transparent;
+        }
+
+        .summary-asset-row-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-asset-row-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-asset-row-icon.mcp svg { color: #22d3ee; }
+        .summary-asset-row-icon.skill svg { color: #34d399; }
+        .summary-asset-row-icon.knowledge svg { color: #60a5fa; }
+
+        .summary-asset-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-asset-row-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .summary-asset-row-desc {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .summary-asset-row-status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .summary-asset-row-status.installed {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .summary-asset-row-status.available {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .summary-asset-row-status.enabled {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .summary-asset-row-meta {
+            font-size: 11px;
+            color: #4b5563;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .summary-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 14px;
+        }
+
+        .summary-profiles-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .summary-profile-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .summary-profile-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .summary-profile-avatar {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-profile-avatar svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .summary-profile-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-left: 6px;
+        }
+
+        .summary-profile-badge.default {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+        }
+
+        .summary-profile-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .summary-profile-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .summary-profile-chip {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .summary-profile-chip.mcp {
+            background: rgba(6, 182, 212, 0.1);
+            color: #67e8f9;
+        }
+
+        .summary-profile-chip.skill {
+            background: rgba(52, 211, 153, 0.1);
+            color: #6ee7b7;
+        }
+
+        .summary-profile-chip.knowledge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+        }
     </style>
 </head>
 <body class="ai-assets-page">
@@ -1156,7 +1482,7 @@
                         </div>
                         <div class="profiles-list">
                             <div class="profile-sidebar-item" onclick="openProfile('devops-profile', this)">
-                                <div class="profile-sidebar-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                <div class="profile-sidebar-avatar">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
                                 </div>
                                 <div class="profile-sidebar-info">
@@ -1166,7 +1492,7 @@
                                 <span class="profile-sidebar-badge default">Default</span>
                             </div>
                             <div class="profile-sidebar-item" onclick="openProfile('backend-profile', this)">
-                                <div class="profile-sidebar-avatar" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                                <div class="profile-sidebar-avatar">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                                 </div>
                                 <div class="profile-sidebar-info">
@@ -1175,7 +1501,7 @@
                                 </div>
                             </div>
                             <div class="profile-sidebar-item" onclick="openProfile('security-profile', this)">
-                                <div class="profile-sidebar-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                                <div class="profile-sidebar-avatar">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                 </div>
                                 <div class="profile-sidebar-info">
@@ -1215,17 +1541,278 @@
                         </div>
                     </div>
 
-                    <!-- Active category label -->
-                    <div class="assets-active-label" id="activeCategoryLabel">
-                        <div class="assets-active-label-icon" style="background: linear-gradient(135deg, #6b7280, #4b5563);">
+                    <!-- Active category label (hidden on summary) -->
+                    <div class="assets-active-label" id="activeCategoryLabel" style="display: none;">
+                        <div class="assets-active-label-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                         </div>
                         <span class="assets-active-label-text">All Assets</span>
                         <span class="assets-active-label-count">(11)</span>
                     </div>
 
-                    <!-- Asset Cards Grid -->
-                    <div class="assets-grid" id="assetsGrid">
+                    <!-- Summary Dashboard (shown on All Assets) -->
+                    <div class="assets-summary" id="assetsSummary">
+                        <!-- Stats Row -->
+                        <div class="summary-stats-row">
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(2)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">5</div>
+                                    <div class="summary-stat-label">Tools (MCP)</div>
+                                </div>
+                            </div>
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(3)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">4</div>
+                                    <div class="summary-stat-label">Skills</div>
+                                </div>
+                            </div>
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(4)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">2</div>
+                                    <div class="summary-stat-label">Knowledge Bases</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tools Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Tools (MCP)</span>
+                                    <span class="summary-category-count">&mdash; 5 servers</span>
+                                </div>
+                                <a href="../mcp/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('github-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">GitHub MCP</div>
+                                        <div class="summary-asset-row-desc">Repositories, issues, pull requests, and workflows</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">12 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('openshift-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">OpenShift MCP</div>
+                                        <div class="summary-asset-row-desc">Clusters, deployments, services, and routes</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">18 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('ansible-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Ansible MCP</div>
+                                        <div class="summary-asset-row-desc">Playbooks, inventories, and infrastructure automation</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">8 tools</span>
+                                    <span class="summary-asset-row-status available">Available</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('rhel-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">RHEL MCP</div>
+                                        <div class="summary-asset-row-desc">Package management, services, and security</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">15 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('sap-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">SAP Integration</div>
+                                        <div class="summary-asset-row-desc">ERP data access, reporting, and process automation</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">6 tools</span>
+                                    <span class="summary-asset-row-status available">Available</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Skills</span>
+                                    <span class="summary-category-count">&mdash; 4 skills</span>
+                                </div>
+                                <a href="../skills/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('kubernetes-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Kubernetes</div>
+                                        <div class="summary-asset-row-desc">Resource management, deployment strategies, and cluster operations</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">5 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('hummingbird-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Hummingbird Containers</div>
+                                        <div class="summary-asset-row-desc">Minimal, hardened, distroless container images</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">2 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('code-review-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Code Review</div>
+                                        <div class="summary-asset-row-desc">Best practices checks, security analysis, and performance suggestions</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">8 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('tekton-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Tekton Pipelines</div>
+                                        <div class="summary-asset-row-desc">CI/CD pipelines, tasks, and triggers for cloud-native workflows</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">1 task</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Knowledge Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Knowledge Bases</span>
+                                    <span class="summary-category-count">&mdash; 2 bases</span>
+                                </div>
+                                <a href="../knowledges/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('api-docs-kb')">
+                                    <div class="summary-asset-row-icon knowledge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">API Documentation</div>
+                                        <div class="summary-asset-row-desc">REST API specifications, endpoint documentation, and integration patterns</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">42 sources &middot; Milvus</span>
+                                    <span class="summary-asset-row-status installed">Active</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('codebase-kb')">
+                                    <div class="summary-asset-row-icon knowledge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Codebase Context</div>
+                                        <div class="summary-asset-row-desc">Indexed project codebase with semantic search for architecture patterns</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">1,284 files &middot; ChromaDB</span>
+                                    <span class="summary-asset-row-status installed">Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profiles Summary -->
+                        <div>
+                            <div class="summary-section-title">Profiles</div>
+                            <div class="summary-profiles-row">
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(1)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">DevOps Engineer</span>
+                                        <span class="summary-profile-badge default">Default</span>
+                                    </div>
+                                    <div class="summary-profile-desc">CI/CD, infrastructure management, and deployment automation.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">3 Tools</span>
+                                        <span class="summary-profile-chip skill">4 Skills</span>
+                                        <span class="summary-profile-chip knowledge">1 KB</span>
+                                    </div>
+                                </div>
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(2)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">Backend Developer</span>
+                                    </div>
+                                    <div class="summary-profile-desc">API development, database management, and backend architecture.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">2 Tools</span>
+                                        <span class="summary-profile-chip skill">3 Skills</span>
+                                        <span class="summary-profile-chip knowledge">2 KBs</span>
+                                    </div>
+                                </div>
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(3)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">Security Analyst</span>
+                                    </div>
+                                    <div class="summary-profile-desc">Vulnerability scanning, compliance checking, and secure coding.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">2 Tools</span>
+                                        <span class="summary-profile-chip skill">5 Skills</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Asset Cards Grid (hidden on summary, shown on category filter) -->
+                    <div class="assets-grid" id="assetsGrid" style="display: none;">
                         <!-- MCP / Tools -->
                         <div class="assets-section-header" data-type="mcp">
                             <span>Tools (MCP Servers)</span>
@@ -1538,7 +2125,7 @@
                         </div>
 
                         <div class="profile-detail-header" id="profileHeader">
-                            <div class="profile-detail-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                            <div class="profile-detail-avatar">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
                             </div>
                             <div class="profile-detail-header-info">
@@ -1565,8 +2152,8 @@
                             <div class="profile-asset-block">
                                 <div class="profile-block-header">
                                     <div class="profile-block-title-row">
-                                        <div class="profile-block-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                                         </div>
                                         <h3 class="profile-block-title">Tools (MCP)</h3>
                                         <span class="profile-block-count">3 attached</span>
@@ -1620,8 +2207,8 @@
                             <div class="profile-asset-block">
                                 <div class="profile-block-header">
                                     <div class="profile-block-title-row">
-                                        <div class="profile-block-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                                         </div>
                                         <h3 class="profile-block-title">Skills</h3>
                                         <span class="profile-block-count">4 attached</span>
@@ -1687,8 +2274,8 @@
                             <div class="profile-asset-block">
                                 <div class="profile-block-header">
                                     <div class="profile-block-title-row">
-                                        <div class="profile-block-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
                                         </div>
                                         <h3 class="profile-block-title">Knowledge</h3>
                                         <span class="profile-block-count">1 attached</span>
@@ -1723,10 +2310,10 @@
 
     <script>
         const categoryLabels = {
-            all:       { text: 'All Assets',       count: 11, bg: 'linear-gradient(135deg, #6b7280, #4b5563)', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
-            mcp:       { text: 'Tools (MCP)',       count: 5,  bg: 'linear-gradient(135deg, #06b6d4, #0891b2)', icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>' },
-            skill:     { text: 'Skills',            count: 4,  bg: 'linear-gradient(135deg, #10b981, #059669)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
-            knowledge: { text: 'Knowledge Bases',   count: 2,  bg: 'linear-gradient(135deg, #3b82f6, #2563eb)', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>' }
+            all:       { text: 'All Assets',       count: 11, color: '#9ca3af', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
+            mcp:       { text: 'Tools (MCP)',       count: 5,  color: '#22d3ee', icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>' },
+            skill:     { text: 'Skills',            count: 4,  color: '#34d399', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
+            knowledge: { text: 'Knowledge Bases',   count: 2,  color: '#60a5fa', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>' }
         };
 
         const profileData = {
@@ -1801,14 +2388,27 @@
             el.classList.add('active');
 
             document.getElementById('profileDetailView').style.display = 'none';
-            document.getElementById('activeCategoryLabel').style.display = '';
-            document.getElementById('assetsGrid').style.display = '';
             document.querySelector('.assets-header').style.display = '';
+
+            if (cat === 'all') {
+                document.getElementById('assetsSummary').style.display = '';
+                document.getElementById('assetsGrid').style.display = 'none';
+                document.getElementById('activeCategoryLabel').style.display = 'none';
+                document.getElementById('createKbBtn').style.display = 'none';
+                document.getElementById('createSkillBtn').style.display = 'none';
+                document.getElementById('importBtn').style.display = '';
+                document.querySelector('.assets-main').scrollTop = 0;
+                return;
+            }
+
+            document.getElementById('assetsSummary').style.display = 'none';
+            document.getElementById('assetsGrid').style.display = '';
+            document.getElementById('activeCategoryLabel').style.display = '';
 
             const label = categoryLabels[cat];
             const labelEl = document.getElementById('activeCategoryLabel');
-            labelEl.querySelector('.assets-active-label-icon').style.background = label.bg;
-            labelEl.querySelector('.assets-active-label-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + label.icon + '</svg>';
+            labelEl.querySelector('.assets-active-label-icon').style.background = 'none';
+            labelEl.querySelector('.assets-active-label-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="' + label.color + '" stroke-width="2">' + label.icon + '</svg>';
             labelEl.querySelector('.assets-active-label-text').textContent = label.text;
             labelEl.querySelector('.assets-active-label-count').textContent = '(' + label.count + ')';
 
@@ -1819,17 +2419,12 @@
             const cards = document.querySelectorAll('.asset-card');
             const headers = document.querySelectorAll('.assets-section-header');
 
-            if (cat === 'all') {
-                cards.forEach(c => c.style.display = '');
-                headers.forEach(h => h.style.display = 'flex');
-            } else {
-                cards.forEach(c => {
-                    c.style.display = c.dataset.type === cat ? '' : 'none';
-                });
-                headers.forEach(h => {
-                    h.style.display = h.dataset.type === cat ? 'flex' : 'none';
-                });
-            }
+            cards.forEach(c => {
+                c.style.display = c.dataset.type === cat ? '' : 'none';
+            });
+            headers.forEach(h => {
+                h.style.display = h.dataset.type === cat ? 'flex' : 'none';
+            });
         }
 
         function openProfile(profileId, el) {
@@ -1837,6 +2432,7 @@
             document.querySelectorAll('.profile-sidebar-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
 
+            document.getElementById('assetsSummary').style.display = 'none';
             document.getElementById('assetsGrid').style.display = 'none';
             document.getElementById('activeCategoryLabel').style.display = 'none';
             document.querySelector('.assets-header').style.display = 'none';
@@ -1852,8 +2448,8 @@
             badge.className = 'profile-detail-badge ' + p.badgeClass;
 
             const avatar = document.querySelector('.profile-detail-avatar');
-            avatar.style.background = p.color;
-            avatar.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + p.icon + '</svg>';
+            avatar.style.background = 'rgba(139, 92, 246, 0.1)';
+            avatar.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">' + p.icon + '</svg>';
 
             const defaultBtn = document.getElementById('profileSetDefault');
             defaultBtn.style.display = p.badgeClass === 'default' ? 'none' : '';
@@ -1895,9 +2491,6 @@
 
         function closeProfile() {
             document.getElementById('profileDetailView').style.display = 'none';
-            document.getElementById('assetsGrid').style.display = '';
-            document.getElementById('activeCategoryLabel').style.display = '';
-            document.querySelector('.assets-header').style.display = '';
             document.querySelectorAll('.profile-sidebar-item').forEach(i => i.classList.remove('active'));
             const allCat = document.querySelector('.assets-cat-item');
             allCat.classList.add('active');

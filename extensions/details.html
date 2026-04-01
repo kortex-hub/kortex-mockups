@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Semantic Agent Routing</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .extd-layout {
+            padding: 32px 40px;
+            max-width: 960px;
+            overflow-y: auto;
+            height: calc(100vh - 32px);
+        }
+
+        .extd-layout::-webkit-scrollbar { width: 6px; }
+        .extd-layout::-webkit-scrollbar-track { background: transparent; }
+        .extd-layout::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.15); border-radius: 3px; }
+
+        .extd-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+        .extd-breadcrumb a { color: #6b7280; text-decoration: none; transition: color 0.15s; }
+        .extd-breadcrumb a:hover { color: #c4b5fd; }
+        .extd-breadcrumb svg { width: 14px; height: 14px; }
+        .extd-breadcrumb span { color: #e5e7eb; }
+
+        .extd-hero {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .extd-hero-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .extd-hero-icon svg { width: 32px; height: 32px; color: #fff; }
+
+        .extd-hero-info { flex: 1; }
+        .extd-hero-title { font-size: 28px; font-weight: 700; color: #e5e7eb; margin-bottom: 6px; }
+
+        .extd-hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .extd-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .extd-badge.tool { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+        .extd-badge.redhat { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+        .extd-badge.version { background: rgba(255, 255, 255, 0.06); color: #9ca3af; }
+
+        .extd-hero-desc { font-size: 14px; color: #9ca3af; line-height: 1.6; max-width: 640px; }
+
+        .extd-hero-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+
+        .extd-install-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 160px;
+            justify-content: center;
+        }
+        .extd-install-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4); }
+        .extd-install-btn svg { width: 18px; height: 18px; }
+
+        .extd-install-btn.installing {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            cursor: wait;
+        }
+        .extd-install-btn.installed {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .extd-divider {
+            height: 1px;
+            background: #3d3e4f;
+            margin: 28px 0;
+        }
+
+        .extd-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .extd-section-title svg { width: 18px; height: 18px; color: #8b5cf6; }
+
+        .extd-feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .extd-feature-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .extd-feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .extd-feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .extd-feature-icon svg { width: 16px; height: 16px; color: #fff; }
+
+        .extd-feature-card-title { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+        .extd-feature-card-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+
+        .extd-routing-diagram {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .extd-diagram-title { font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+
+        .extd-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .extd-flow-node {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+        .extd-flow-node.client { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .extd-flow-node.router { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .extd-flow-node.local { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .extd-flow-node.cloud { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .extd-flow-node svg { width: 16px; height: 16px; }
+
+        .extd-flow-arrow { color: #4b5563; font-size: 18px; }
+
+        .extd-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .extd-stat {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+        .extd-stat-value { font-size: 28px; font-weight: 700; color: #c4b5fd; margin-bottom: 4px; }
+        .extd-stat-label { font-size: 12px; color: #6b7280; }
+
+        .extd-config-section {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .extd-config-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+        }
+        .extd-config-row:last-child { border-bottom: none; }
+
+        .extd-config-label { font-size: 13px; color: #9ca3af; }
+        .extd-config-value { font-size: 13px; color: #e5e7eb; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+
+        .extd-progress-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .extd-progress-overlay.visible { display: flex; }
+
+        .extd-progress-modal {
+            background: #1e1f2b;
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 32px;
+            width: 480px;
+            max-width: 90vw;
+        }
+
+        .extd-progress-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .extd-progress-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 13px;
+            color: #6b7280;
+            transition: color 0.3s;
+        }
+        .extd-progress-step.active { color: #c4b5fd; }
+        .extd-progress-step.done { color: #34d399; }
+
+        .extd-progress-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+        .extd-progress-step.active .extd-progress-dot { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.2); }
+        .extd-progress-step.done .extd-progress-dot { border-color: #34d399; background: rgba(52, 211, 153, 0.2); }
+        .extd-progress-dot svg { width: 12px; height: 12px; opacity: 0; }
+        .extd-progress-step.done .extd-progress-dot svg { opacity: 1; color: #34d399; }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .extd-spinner { width: 14px; height: 14px; border: 2px solid #3d3e4f; border-top-color: #8b5cf6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .extd-progress-step.active .extd-progress-dot .extd-spinner { display: block; }
+
+        .extd-progress-bar-track {
+            height: 4px;
+            background: #3d3e4f;
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .extd-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .extd-alert {
+            display: none;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #34d399;
+            align-items: center;
+            gap: 10px;
+        }
+        .extd-alert.visible { display: flex; }
+        .extd-alert svg { width: 18px; height: 18px; flex-shrink: 0; }
+    </style>
+</head>
+<body class="extensions-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+            <div class="extd-layout">
+
+                <nav class="extd-breadcrumb">
+                    <a href="index.html">Extensions</a>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    <a href="index.html" onclick="history.back(); return false;">Tools</a>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    <span>Semantic Agent Routing</span>
+                </nav>
+
+                <div class="extd-alert" id="installSuccess">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <span>Semantic Agent Routing has been installed successfully. <strong>"Auto-detects (semantic routing)"</strong> is now available as a model option when creating agents.</span>
+                </div>
+
+                <div class="extd-hero">
+                    <div class="extd-hero-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/><path d="M16 21h5v-5"/><path d="M8 21H3v-5"/><path d="m12 2v8.3a4 4 0 0 0 1.172 2.872L21 21"/><path d="m9 15-6 6"/></svg>
+                    </div>
+                    <div class="extd-hero-info">
+                        <h1 class="extd-hero-title">Semantic Agent Routing</h1>
+                        <div class="extd-hero-meta">
+                            <span class="extd-badge tool">Tool</span>
+                            <span class="extd-badge redhat">Red Hat</span>
+                            <span class="extd-badge version">v0.2.0 Athena</span>
+                        </div>
+                        <p class="extd-hero-desc">Intelligent model routing powered by vLLM Semantic Router. Classifies each agent request by complexity and intent, then routes to the optimal model &mdash; local for routine tasks, cloud for complex reasoning. Reduces token costs by up to 90% while maintaining quality.</p>
+                    </div>
+                    <div class="extd-hero-actions">
+                        <button class="extd-install-btn" id="installBtn" onclick="startInstall()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Install
+                        </button>
+                    </div>
+                </div>
+
+                <div class="extd-routing-diagram">
+                    <div class="extd-diagram-title">How it works</div>
+                    <div class="extd-flow">
+                        <div class="extd-flow-node client">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Agent Request
+                        </div>
+                        <div class="extd-flow-arrow">&rarr;</div>
+                        <div class="extd-flow-node router">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+                            Semantic Router
+                        </div>
+                        <div class="extd-flow-arrow">&rarr;</div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="extd-flow-node local">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                Local Model (routine)
+                            </div>
+                            <div class="extd-flow-node cloud">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                                Cloud Model (complex)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="extd-stats-row">
+                    <div class="extd-stat">
+                        <div class="extd-stat-value">86%</div>
+                        <div class="extd-stat-label">Requests kept local</div>
+                    </div>
+                    <div class="extd-stat">
+                        <div class="extd-stat-value">~45ms</div>
+                        <div class="extd-stat-label">Avg routing latency</div>
+                    </div>
+                    <div class="extd-stat">
+                        <div class="extd-stat-value">90%+</div>
+                        <div class="extd-stat-label">Cost reduction</div>
+                    </div>
+                </div>
+
+                <div class="extd-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    Capabilities
+                </div>
+
+                <div class="extd-feature-grid">
+                    <div class="extd-feature-card">
+                        <div class="extd-feature-card-header">
+                            <div class="extd-feature-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </div>
+                            <div class="extd-feature-card-title">Neural Classification</div>
+                        </div>
+                        <div class="extd-feature-card-desc">8 neural classifiers using mmBERT-32K for intent classification, jailbreak detection, PII detection, and more.</div>
+                    </div>
+                    <div class="extd-feature-card">
+                        <div class="extd-feature-card-header">
+                            <div class="extd-feature-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            </div>
+                            <div class="extd-feature-card-title">HNSW Semantic Cache</div>
+                        </div>
+                        <div class="extd-feature-card-desc">Vector-similarity caching identifies paraphrased duplicates, not just exact-match deduplication.</div>
+                    </div>
+                    <div class="extd-feature-card">
+                        <div class="extd-feature-card-header">
+                            <div class="extd-feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                            </div>
+                            <div class="extd-feature-card-title">11 Selection Algorithms</div>
+                        </div>
+                        <div class="extd-feature-card-desc">From static routing to Elo-based learning, Thompson sampling, and RouterDC for adaptive model selection.</div>
+                    </div>
+                    <div class="extd-feature-card">
+                        <div class="extd-feature-card-header">
+                            <div class="extd-feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="extd-feature-card-title">Safety Classifiers</div>
+                        </div>
+                        <div class="extd-feature-card-desc">Built-in jailbreak detection and PII redaction to protect your models from prompt injection attacks.</div>
+                    </div>
+                </div>
+
+                <div class="extd-divider"></div>
+
+                <div class="extd-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Configuration
+                </div>
+
+                <div class="extd-config-section">
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Router endpoint</div>
+                        <div class="extd-config-value">localhost:8899</div>
+                    </div>
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Protocol</div>
+                        <div class="extd-config-value">OpenAI-compatible (/v1/chat/completions)</div>
+                    </div>
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Default local model</div>
+                        <div class="extd-config-value">Granite Code 34B</div>
+                    </div>
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Cloud fallback</div>
+                        <div class="extd-config-value">Gemini 2.5 Pro</div>
+                    </div>
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Classification pipeline</div>
+                        <div class="extd-config-value">mmBERT-32K (307M params)</div>
+                    </div>
+                    <div class="extd-config-row">
+                        <div class="extd-config-label">Upstream project</div>
+                        <div class="extd-config-value">vLLM Semantic Router (Athena 0.2)</div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="extd-progress-overlay" id="installOverlay">
+        <div class="extd-progress-modal">
+            <div class="extd-progress-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" style="width:22px;height:22px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Installing Semantic Agent Routing
+            </div>
+
+            <div class="extd-progress-step" id="step1">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Pulling container image (vllm-semantic-router:0.2-athena)</span>
+            </div>
+            <div class="extd-progress-step" id="step2">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Downloading neural classifiers (mmBERT-32K)</span>
+            </div>
+            <div class="extd-progress-step" id="step3">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Configuring Envoy proxy &amp; ExtProc routing</span>
+            </div>
+            <div class="extd-progress-step" id="step4">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Registering model backends (local + cloud)</span>
+            </div>
+            <div class="extd-progress-step" id="step5">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Validating routing configuration</span>
+            </div>
+            <div class="extd-progress-step" id="step6">
+                <div class="extd-progress-dot"><div class="extd-spinner" style="display:none;"></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <span>Adding "Auto-detects (semantic routing)" to agent model options</span>
+            </div>
+
+            <div class="extd-progress-bar-track">
+                <div class="extd-progress-bar-fill" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startInstall() {
+            var btn = document.getElementById('installBtn');
+            if (btn.classList.contains('installed') || btn.classList.contains('installing')) return;
+
+            btn.classList.add('installing');
+            btn.innerHTML = '<div class="extd-spinner"></div> Installing...';
+
+            document.getElementById('installOverlay').classList.add('visible');
+
+            var steps = ['step1', 'step2', 'step3', 'step4', 'step5', 'step6'];
+            var delays = [1200, 1800, 1000, 800, 600, 500];
+            var progress = 0;
+
+            function runStep(i) {
+                if (i >= steps.length) {
+                    finishInstall();
+                    return;
+                }
+                var el = document.getElementById(steps[i]);
+                el.classList.add('active');
+                el.querySelector('.extd-spinner').style.display = 'block';
+
+                progress += (100 / steps.length);
+                document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
+
+                setTimeout(function() {
+                    el.classList.remove('active');
+                    el.classList.add('done');
+                    el.querySelector('.extd-spinner').style.display = 'none';
+                    runStep(i + 1);
+                }, delays[i]);
+            }
+
+            runStep(0);
+        }
+
+        function finishInstall() {
+            document.getElementById('progressBar').style.width = '100%';
+
+            setTimeout(function() {
+                document.getElementById('installOverlay').classList.remove('visible');
+
+                var btn = document.getElementById('installBtn');
+                btn.classList.remove('installing');
+                btn.classList.add('installed');
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Installed';
+
+                document.getElementById('installSuccess').classList.add('visible');
+            }, 600);
+        }
+    </script>
+</body>
+</html>

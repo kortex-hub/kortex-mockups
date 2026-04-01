@@ -57,17 +57,16 @@
             height: 40px;
             border-radius: 10px;
             background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 12px;
         }
 
-        .pd-sidebar-project-icon svg {
-            width: 20px;
-            height: 20px;
-            color: #fff;
-        }
 
         .pd-sidebar-project-name {
             font-size: 16px;
@@ -108,26 +107,20 @@
             cursor: pointer;
             transition: all 0.15s ease;
             border: 1px solid transparent;
-            font-size: 13px;
-            font-weight: 500;
-            color: #9ca3af;
         }
 
         .pd-nav-item:hover {
             background: rgba(139, 92, 246, 0.06);
-            color: #e5e7eb;
         }
 
         .pd-nav-item.active {
             background: rgba(139, 92, 246, 0.12);
             border-color: rgba(139, 92, 246, 0.2);
-            color: #c4b5fd;
         }
 
         .pd-nav-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,18 +128,39 @@
         }
 
         .pd-nav-icon svg {
-            width: 15px;
-            height: 15px;
-            color: #fff;
+            width: 18px;
+            height: 18px;
+            color: #6b7280;
         }
 
-        .pd-nav-icon.overview { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .pd-nav-icon.skills { background: linear-gradient(135deg, #10b981, #059669); }
-        .pd-nav-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .pd-nav-icon.knowledge { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .pd-nav-icon.secrets { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .pd-nav-icon.workspace { background: linear-gradient(135deg, #a855f7, #9333ea); }
-        .pd-nav-icon.history { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .pd-nav-item:hover .pd-nav-icon svg {
+            color: #9ca3af;
+        }
+
+        .pd-nav-item.active .pd-nav-icon svg {
+            color: #c4b5fd;
+        }
+
+        .pd-nav-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pd-nav-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .pd-nav-item.active .pd-nav-name {
+            color: #c4b5fd;
+        }
+
+        .pd-nav-desc {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 1px;
+        }
 
         .pd-nav-count {
             margin-left: auto;
@@ -197,6 +211,172 @@
             font-weight: 700;
             color: #e5e7eb;
             margin-bottom: 24px;
+        }
+
+        /* ── Overview Summary Stats ── */
+        .pd-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .pd-summary-stat {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pd-summary-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .pd-summary-stat.agents-running::before {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .pd-summary-stat.total-cost::before {
+            background: linear-gradient(90deg, #8b5cf6, #c4b5fd);
+        }
+
+        .pd-summary-stat.total-tasks::before {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .pd-summary-stat.tokens-used::before {
+            background: linear-gradient(90deg, #f97316, #fb923c);
+        }
+
+        .pd-summary-stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pd-summary-stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pd-summary-stat-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pd-summary-stat-icon svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+        }
+
+        .pd-summary-stat-icon.agents { background: linear-gradient(135deg, #10b981, #059669); }
+        .pd-summary-stat-icon.cost { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .pd-summary-stat-icon.tasks { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .pd-summary-stat-icon.tokens { background: linear-gradient(135deg, #f97316, #ea580c); }
+
+        .pd-summary-stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f3f4f6;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .pd-summary-stat-footer {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .pd-summary-stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .pd-summary-stat-trend.up {
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .pd-summary-stat-trend.neutral {
+            color: #9ca3af;
+            background: rgba(156, 163, 175, 0.1);
+        }
+
+        .pd-summary-stat-trend svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .pd-summary-agents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .pd-summary-agent-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .pd-summary-agent-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pd-pulse 2s ease-in-out infinite;
+        }
+
+        .pd-summary-agent-dot.running { background: #34d399; }
+        .pd-summary-agent-dot.queued { background: #fbbf24; animation: none; }
+
+        @keyframes pd-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .pd-summary-agent-name {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #e5e7eb;
+        }
+
+        .pd-summary-agent-time {
+            font-size: 11px;
+            color: #6b7280;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
         }
 
         /* ── Overview Section ── */
@@ -876,6 +1056,252 @@
             font-weight: 600;
         }
 
+        /* ── Filesystem Section ── */
+        .pd-fs-policy-mode {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .pd-fs-mode-card {
+            flex: 1;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .pd-fs-mode-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .pd-fs-mode-card.selected {
+            background: rgba(139, 92, 246, 0.06);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+
+        .pd-fs-mode-radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pd-fs-mode-card.selected .pd-fs-mode-radio {
+            border-color: #8b5cf6;
+        }
+
+        .pd-fs-mode-radio-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8b5cf6;
+        }
+
+        .pd-fs-mode-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pd-fs-mode-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .pd-fs-mode-icon.strict {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            color: #facc15;
+        }
+
+        .pd-fs-mode-icon.permissive {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .pd-fs-mode-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .pd-fs-mode-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .pd-fs-path-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pd-fs-path-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.15s;
+        }
+
+        .pd-fs-path-item:last-child {
+            border-bottom: none;
+        }
+
+        .pd-fs-path-item:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .pd-fs-path-access {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pd-fs-path-access svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .pd-fs-path-access.rw {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .pd-fs-path-access.ro {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+        }
+
+        .pd-fs-path-access.deny {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .pd-fs-path-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pd-fs-path-name {
+            font-size: 13px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #e5e7eb;
+        }
+
+        .pd-fs-path-note {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .pd-fs-path-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+        }
+
+        .pd-fs-path-badge.rw {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        .pd-fs-path-badge.ro {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+        }
+
+        .pd-fs-path-badge.deny {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+
+        .pd-fs-rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pd-fs-rule-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .pd-fs-rule-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .pd-fs-rule-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pd-fs-rule-label.allow { color: #86efac; }
+        .pd-fs-rule-label.deny { color: #fca5a5; }
+
+        .pd-fs-rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .pd-fs-rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .pd-fs-rule-item svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .pd-fs-rule-item.allow svg { color: #22c55e; }
+        .pd-fs-rule-item.deny svg { color: #ef4444; }
+
         /* ── Network Policy Section ── */
         .pd-np-desc {
             font-size: 13px;
@@ -1230,8 +1656,6 @@
             color: #d1d5db;
             overflow-x: auto;
         }
-
-        .pd-nav-icon.network { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
         /* ── Workspace File Section ── */
         .pd-workspace-toolbar {
@@ -2360,9 +2784,7 @@
                     </a>
 
                     <div class="pd-sidebar-project-info">
-                        <div class="pd-sidebar-project-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        </div>
+                        <div class="pd-sidebar-project-icon">KB</div>
                         <div class="pd-sidebar-project-name">Kortex Backend</div>
                         <div class="pd-sidebar-project-path">~/dev/kortex-backend</div>
                     </div>
@@ -2370,56 +2792,89 @@
                     <div class="pd-nav-title">Sections</div>
                     <div class="pd-nav-list">
                         <div class="pd-nav-item active" onclick="switchSection('overview', this)">
-                            <div class="pd-nav-icon overview">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <div class="pd-nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                             </div>
-                            Overview
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Overview</div>
+                                <div class="pd-nav-desc">Summary & project settings</div>
+                            </div>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('skills', this)">
-                            <div class="pd-nav-icon skills">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                             </div>
-                            Skills
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Skills</div>
+                                <div class="pd-nav-desc">Agent capabilities</div>
+                            </div>
                             <span class="pd-nav-count">3</span>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('mcp', this)">
-                            <div class="pd-nav-icon mcp">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                             </div>
-                            MCP Servers
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">MCP Servers</div>
+                                <div class="pd-nav-desc">Tool connections</div>
+                            </div>
                             <span class="pd-nav-count">2</span>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('knowledge', this)">
-                            <div class="pd-nav-icon knowledge">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
                             </div>
-                            Knowledge
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Knowledge</div>
+                                <div class="pd-nav-desc">RAG & vector stores</div>
+                            </div>
                             <span class="pd-nav-count">1</span>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('secrets', this)">
-                            <div class="pd-nav-icon secrets">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                             </div>
-                            Secrets &amp; Tokens
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Secrets & Tokens</div>
+                                <div class="pd-nav-desc">Credentials & integrations</div>
+                            </div>
                             <span class="pd-nav-count">3</span>
                         </div>
+                        <div class="pd-nav-item" onclick="switchSection('filesystem', this)">
+                            <div class="pd-nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Filesystem</div>
+                                <div class="pd-nav-desc">Paths, mounts & access rules</div>
+                            </div>
+                        </div>
                         <div class="pd-nav-item" onclick="switchSection('network', this)">
-                            <div class="pd-nav-icon network">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             </div>
-                            Network Policy
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Network Policy</div>
+                                <div class="pd-nav-desc">Outbound access rules</div>
+                            </div>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('workspace', this)">
-                            <div class="pd-nav-icon workspace">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
                             </div>
-                            Workspace File
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Workspace File</div>
+                                <div class="pd-nav-desc">AgentDev configuration</div>
+                            </div>
                         </div>
                         <div class="pd-nav-item" onclick="switchSection('history', this)">
-                            <div class="pd-nav-icon history">
+                            <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                             </div>
-                            Agent History
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Agent History</div>
+                                <div class="pd-nav-desc">Past runs & results</div>
+                            </div>
                             <span class="pd-nav-count">8</span>
                         </div>
                     </div>
@@ -2430,6 +2885,81 @@
                     <!-- Overview Section -->
                     <div class="pd-section active" id="section-overview">
                         <h1 class="pd-section-title">Overview</h1>
+
+                        <!-- Summary Stats -->
+                        <div class="pd-summary-strip">
+                            <div class="pd-summary-stat agents-running">
+                                <div class="pd-summary-stat-header">
+                                    <span class="pd-summary-stat-label">Running Agents</span>
+                                    <div class="pd-summary-stat-icon agents">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/></svg>
+                                    </div>
+                                </div>
+                                <div class="pd-summary-stat-value">3</div>
+                                <div class="pd-summary-agents-list">
+                                    <div class="pd-summary-agent-row">
+                                        <div class="pd-summary-agent-dot running"></div>
+                                        <span class="pd-summary-agent-name">JWT Auth Refactor</span>
+                                        <span class="pd-summary-agent-time">12m</span>
+                                    </div>
+                                    <div class="pd-summary-agent-row">
+                                        <div class="pd-summary-agent-dot running"></div>
+                                        <span class="pd-summary-agent-name">Dark Mode Toggle</span>
+                                        <span class="pd-summary-agent-time">4m</span>
+                                    </div>
+                                    <div class="pd-summary-agent-row">
+                                        <div class="pd-summary-agent-dot queued"></div>
+                                        <span class="pd-summary-agent-name">Update Dependencies</span>
+                                        <span class="pd-summary-agent-time">queued</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pd-summary-stat total-cost">
+                                <div class="pd-summary-stat-header">
+                                    <span class="pd-summary-stat-label">Total Cost</span>
+                                    <div class="pd-summary-stat-icon cost">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                    </div>
+                                </div>
+                                <div class="pd-summary-stat-value">$48.37</div>
+                                <div class="pd-summary-stat-footer">
+                                    <span class="pd-summary-stat-trend up">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+                                        +$12.40
+                                    </span>
+                                    <span>past 7 days</span>
+                                </div>
+                            </div>
+
+                            <div class="pd-summary-stat total-tasks">
+                                <div class="pd-summary-stat-header">
+                                    <span class="pd-summary-stat-label">Total Tasks</span>
+                                    <div class="pd-summary-stat-icon tasks">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                    </div>
+                                </div>
+                                <div class="pd-summary-stat-value">127</div>
+                                <div class="pd-summary-stat-footer">
+                                    <span>18 completed today</span>
+                                </div>
+                            </div>
+
+                            <div class="pd-summary-stat tokens-used">
+                                <div class="pd-summary-stat-header">
+                                    <span class="pd-summary-stat-label">Tokens Used</span>
+                                    <div class="pd-summary-stat-icon tokens">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                    </div>
+                                </div>
+                                <div class="pd-summary-stat-value">2.4M</div>
+                                <div class="pd-summary-stat-footer">
+                                    <span class="pd-summary-stat-trend neutral">
+                                        ~384K today
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="pd-overview-card">
                             <div class="pd-overview-card-title">Project Details</div>
@@ -2925,6 +3455,211 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                     Add Integration
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filesystem Section -->
+                    <div class="pd-section" id="section-filesystem">
+                        <h1 class="pd-section-title">Filesystem</h1>
+
+                        <div class="pd-secrets-note" style="border-color: rgba(250, 204, 21, 0.15); background: rgba(250, 204, 21, 0.04);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            <div class="pd-secrets-note-text">
+                                <strong>Project-scoped filesystem policy.</strong> Defines which paths agents can read and write inside the sandboxed environment. This limits the blast radius of mistakes by constraining filesystem access to only declared paths.
+                            </div>
+                        </div>
+
+                        <!-- Policy Mode -->
+                        <div class="pd-overview-card">
+                            <div class="pd-overview-card-title">Access Mode</div>
+                            <p class="pd-np-desc">Choose the default behavior for filesystem operations inside agent sandboxes.</p>
+                            <div class="pd-fs-policy-mode">
+                                <div class="pd-fs-mode-card selected" onclick="selectFsMode(this, 'strict')">
+                                    <div class="pd-fs-mode-radio"><div class="pd-fs-mode-radio-dot"></div></div>
+                                    <div class="pd-fs-mode-icon strict">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="pd-fs-mode-name">Strict Mode</div>
+                                        <div class="pd-fs-mode-desc">Only explicitly declared paths are accessible. All unlisted paths are blocked. Recommended for production.</div>
+                                    </div>
+                                </div>
+                                <div class="pd-fs-mode-card" onclick="selectFsMode(this, 'permissive')">
+                                    <div class="pd-fs-mode-radio"></div>
+                                    <div class="pd-fs-mode-icon permissive">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="pd-fs-mode-name">Permissive Mode</div>
+                                        <div class="pd-fs-mode-desc">Agents can access most paths except explicitly blocked ones. Better for development environments.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rules summary -->
+                        <div class="pd-fs-rules-grid">
+                            <div class="pd-fs-rule-card">
+                                <div class="pd-fs-rule-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span class="pd-fs-rule-label allow">Allowed Operations</span>
+                                </div>
+                                <div class="pd-fs-rule-list">
+                                    <div class="pd-fs-rule-item allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Read declared paths</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Write to read-write paths</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Access /sandbox scratch space</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Write to /tmp</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pd-fs-rule-card">
+                                <div class="pd-fs-rule-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    <span class="pd-fs-rule-label deny">Blocked Operations</span>
+                                </div>
+                                <div class="pd-fs-rule-list">
+                                    <div class="pd-fs-rule-item deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Access unlisted paths</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Traverse with .. (path traversal)</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Write to read-only paths</span>
+                                    </div>
+                                    <div class="pd-fs-rule-item deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Follow symlinks outside sandbox</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Declared Paths -->
+                        <div class="pd-asset-block">
+                            <div class="pd-block-header">
+                                <div class="pd-block-title-row">
+                                    <div class="pd-block-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    </div>
+                                    <h3 class="pd-block-title">Declared Paths</h3>
+                                    <span class="pd-block-count">6 paths</span>
+                                </div>
+                                <button class="pd-block-add-btn" onclick="toggleAddFsPath()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add Path
+                                </button>
+                            </div>
+                            <div class="pd-fs-path-list">
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access rw">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">~/dev/kortex-backend</div>
+                                        <div class="pd-fs-path-note">Project working directory</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge rw">read-write</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access rw">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">/sandbox</div>
+                                        <div class="pd-fs-path-note">Agent scratch workspace</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge rw">read-write</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access rw">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">/tmp</div>
+                                        <div class="pd-fs-path-note">Temporary files</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge rw">read-write</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access ro">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">/usr/local/go</div>
+                                        <div class="pd-fs-path-note">Go toolchain</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge ro">read-only</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access ro">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">/usr/local/bin</div>
+                                        <div class="pd-fs-path-note">System binaries (make, git, etc.)</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge ro">read-only</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                                <div class="pd-fs-path-item">
+                                    <div class="pd-fs-path-access deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </div>
+                                    <div class="pd-fs-path-info">
+                                        <div class="pd-fs-path-name">~/.ssh</div>
+                                        <div class="pd-fs-path-note">SSH keys &mdash; explicitly blocked</div>
+                                    </div>
+                                    <span class="pd-fs-path-badge deny">blocked</span>
+                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Workspace Sync -->
+                        <div class="pd-overview-card" style="border-color: rgba(250, 204, 21, 0.15);">
+                            <div class="pd-overview-card-title">Workspace File Sync</div>
+                            <p class="pd-np-desc">Filesystem policy settings are synced to the <code style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 12px;">agentdev-workspace.yaml</code> file under <code style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 12px;">agentConfig.permissions.filesystem</code>.</p>
+                            <div class="pd-np-yaml-preview">
+                                <div class="pd-np-yaml-header">
+                                    <span>agentdev-workspace.yaml</span>
+                                    <span class="pd-np-yaml-synced">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Synced
+                                    </span>
+                                </div>
+                                <pre class="pd-np-yaml-code"><span class="y-key">agentConfig</span>:
+  <span class="y-key">permissions</span>:
+    <span class="y-key">filesystem</span>:
+      <span class="y-key">mode</span>: <span class="y-str">strict</span>
+      <span class="y-key">readWrite</span>:
+        - <span class="y-str">"~/dev/kortex-backend"</span>
+        - <span class="y-str">"/sandbox"</span>
+        - <span class="y-str">"/tmp"</span>
+      <span class="y-key">readOnly</span>:
+        - <span class="y-str">"/usr/local/go"</span>
+        - <span class="y-str">"/usr/local/bin"</span>
+      <span class="y-key">blocked</span>:
+        - <span class="y-str">"~/.ssh"</span></pre>
                             </div>
                         </div>
                     </div>
@@ -4357,6 +5092,17 @@ agentConfig:
         }
 
         /* ── Network Policy Functions ── */
+        function selectFsMode(el, mode) {
+            document.querySelectorAll('.pd-fs-mode-card').forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('.pd-fs-mode-radio').innerHTML = '';
+            });
+            el.classList.add('selected');
+            el.querySelector('.pd-fs-mode-radio').innerHTML = '<div class="pd-fs-mode-radio-dot"></div>';
+        }
+
+        function toggleAddFsPath() {}
+
         function selectNetworkMode(el, mode) {
             document.querySelectorAll('.pd-np-mode-card').forEach(c => {
                 c.classList.remove('selected');
