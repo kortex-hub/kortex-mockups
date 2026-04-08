@@ -114,6 +114,182 @@
             line-height: 1.6;
         }
 
+        /* Project picker (mirrors Projects tab) */
+        .ca-project-section {
+            margin-bottom: 40px;
+        }
+
+        .ca-project-section-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .ca-project-section-head h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .ca-project-section-head p {
+            font-size: 13px;
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.5;
+            max-width: 520px;
+        }
+
+        .ca-project-browse {
+            flex-shrink: 0;
+            font-size: 12px;
+            font-weight: 500;
+            color: #a78bfa;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            transition: all 0.15s ease;
+        }
+
+        .ca-project-browse:hover {
+            background: rgba(139, 92, 246, 0.08);
+            color: #c4b5fd;
+        }
+
+        .ca-project-none {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 1px dashed #4b5563;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .ca-project-none:hover {
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+
+        .ca-project-none.selected {
+            border-color: rgba(139, 92, 246, 0.45);
+            border-style: solid;
+            background: rgba(139, 92, 246, 0.06);
+            color: #e5e7eb;
+        }
+
+        .ca-project-none-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .ca-project-none.selected .ca-project-none-radio {
+            border-color: #8b5cf6;
+        }
+
+        .ca-project-none.selected .ca-project-none-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8b5cf6;
+        }
+
+        .ca-project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .ca-project-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            color: inherit;
+        }
+
+        .ca-project-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .ca-project-card.selected {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.07);
+            box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.12);
+        }
+
+        .ca-project-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .ca-project-card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+            flex-shrink: 0;
+        }
+
+        .ca-project-card-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ca-project-card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 3px;
+        }
+
+        .ca-project-card-path {
+            font-size: 11px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ca-project-card-meta {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
         /* Configuration Sections */
         .config-section {
             margin-bottom: 40px;
@@ -149,7 +325,12 @@
             height: 24px;
         }
 
-        .config-section-icon.agent {
+        .config-section-icon.session {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.2));
+            color: #a5b4fc;
+        }
+
+        .config-section-icon.coding-agent {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
             color: #a78bfa;
         }
@@ -455,6 +636,199 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        /* Project details–style asset blocks (Skills & MCP) */
+        .ca-pd-asset-section {
+            margin-bottom: 40px;
+        }
+
+        .pd-asset-block {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .pd-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .pd-block-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pd-block-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pd-block-icon svg {
+            width: 15px;
+            height: 15px;
+            color: #fff;
+        }
+
+        .pd-block-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .pd-block-count {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .pd-block-add-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 1px dashed #4b5563;
+            background: transparent;
+            color: #6b7280;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+
+        a.pd-block-add-btn {
+            font-family: inherit;
+        }
+
+        .pd-block-add-btn:hover {
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .pd-block-add-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .pd-block-items {
+            padding: 4px 8px;
+        }
+
+        .pd-block-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.15s;
+        }
+
+        .pd-block-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pd-block-item + .pd-block-item {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .pd-block-item:hover + .pd-block-item {
+            border-top-color: transparent;
+        }
+
+        .pd-block-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pd-block-item-icon svg {
+            width: 17px;
+            height: 17px;
+            color: #fff;
+        }
+
+        .pd-block-item-icon.mcp {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .pd-block-item-icon.skill {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .pd-block-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pd-block-item-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .pd-block-item-meta {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .pd-block-item.ca-pd-selectable {
+            cursor: pointer;
+        }
+
+        .pd-block-item.ca-pd-selectable.selected {
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .pd-block-item.ca-pd-selectable.selected:hover {
+            background: rgba(139, 92, 246, 0.11);
+        }
+
+        .pd-block-item.ca-pd-selectable.selected:hover + .pd-block-item {
+            border-top-color: transparent;
+        }
+
+        .ca-pd-select-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .pd-block-item.ca-pd-selectable.selected .ca-pd-select-check {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-color: #8b5cf6;
+        }
+
+        .ca-pd-select-check svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
+            opacity: 0;
+        }
+
+        .pd-block-item.ca-pd-selectable.selected .ca-pd-select-check svg {
+            opacity: 1;
         }
 
         /* File Access Section */
@@ -866,136 +1240,6 @@
             height: 18px;
         }
 
-        /* Profile Selector Styles */
-        .profile-selector-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
-
-        .profile-selector-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 2px solid #3d3e4f;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .profile-selector-item:hover {
-            border-color: #6b7280;
-            background: rgba(37, 38, 49, 0.8);
-        }
-
-        .profile-selector-item.selected {
-            border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .profile-selector-item.browse-link {
-            border-style: dashed;
-            background: transparent;
-        }
-
-        .profile-selector-item.browse-link:hover {
-            border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.05);
-        }
-
-        .profile-selector-radio {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: 2px solid #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .profile-selector-item.selected .profile-selector-radio {
-            border-color: #8b5cf6;
-        }
-
-        .profile-selector-radio.selected::after,
-        .profile-selector-item.selected .profile-selector-radio::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #8b5cf6;
-        }
-
-        .profile-selector-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .profile-selector-icon svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .profile-selector-icon.empty {
-            background: rgba(107, 114, 128, 0.2);
-            color: #9ca3af;
-        }
-
-        .profile-selector-icon.devops {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #ffffff;
-        }
-
-        .profile-selector-icon.platform {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: #ffffff;
-        }
-
-        .profile-selector-icon.backend {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
-        }
-
-        .profile-selector-icon.security {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
-            color: #ffffff;
-        }
-
-        .profile-selector-icon.browse {
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
-        }
-
-        .profile-selector-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .profile-selector-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #e5e7eb;
-            margin-bottom: 2px;
-        }
-
-        .profile-selector-desc {
-            font-size: 11px;
-            color: #9ca3af;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .agent-grid {
@@ -1011,10 +1255,6 @@
             }
 
             .selectable-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-selector-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -1054,103 +1294,74 @@
                             The session will run in a secure sandbox environment.
                         </p>
 
-                        <!-- Profile Selection Section -->
-                        <div class="config-section" id="profile-selection-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.2)); color: #a5b4fc;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="9" cy="7" r="4"/>
-                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                                    </svg>
+                        <!-- Link to an existing project (same slugs as Projects tab) -->
+                        <div class="ca-project-section" id="project-picker-section">
+                            <div class="ca-project-section-head">
+                                <div>
+                                    <h3>Project</h3>
+                                    <p>Optional: pick a project to load its path, skills, MCP servers, integrations, and access defaults. Matches the projects on the Projects page.</p>
                                 </div>
-                                <div class="config-section-info">
-                                    <h3>Start from a Profile</h3>
-                                    <p>Optionally select a profile to pre-fill your configuration</p>
-                                </div>
+                                <a href="../projects/index.html" class="ca-project-browse">All projects</a>
                             </div>
-
-                            <div class="profile-selector-grid">
-                                <div class="profile-selector-item" onclick="selectProfile(null)">
-                                    <div class="profile-selector-radio selected"></div>
-                                    <div class="profile-selector-icon empty">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"/>
-                                            <line x1="5" y1="12" x2="19" y2="12"/>
-                                        </svg>
+                            <div class="ca-project-none selected" id="caProjectNone" data-project-slug="" role="button" tabindex="0" onclick="selectProjectFromList(null)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectProjectFromList(null);}">
+                                <span class="ca-project-none-radio" aria-hidden="true"></span>
+                                <span>Start without a project — configure everything manually below</span>
+                            </div>
+                            <div class="ca-project-grid" id="caProjectGrid">
+                                <button type="button" class="ca-project-card" data-project-slug="doc-updater" onclick="selectProjectFromList('doc-updater')">
+                                    <div class="ca-project-card-top">
+                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">KB</div>
+                                        <div class="ca-project-card-text">
+                                            <div class="ca-project-card-name">Doc updater</div>
+                                            <div class="ca-project-card-path">~/dev/doc-updater</div>
+                                        </div>
                                     </div>
-                                    <div class="profile-selector-content">
-                                        <div class="profile-selector-name">Start Fresh</div>
-                                        <div class="profile-selector-desc">Configure from scratch</div>
+                                    <div class="ca-project-card-meta">3 skills · 2 MCP · Doc &amp; OpenShift</div>
+                                </button>
+                                <button type="button" class="ca-project-card" data-project-slug="frontend-app" onclick="selectProjectFromList('frontend-app')">
+                                    <div class="ca-project-card-top">
+                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">FA</div>
+                                        <div class="ca-project-card-text">
+                                            <div class="ca-project-card-name">Frontend App</div>
+                                            <div class="ca-project-card-path">~/dev/docs-portal</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="profile-selector-item" onclick="selectProfile('devops-engineer')">
-                                    <div class="profile-selector-radio"></div>
-                                    <div class="profile-selector-icon devops">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="3"/>
-                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06"/>
-                                        </svg>
+                                    <div class="ca-project-card-meta">2 skills · 1 MCP · Docs portal</div>
+                                </button>
+                                <button type="button" class="ca-project-card" data-project-slug="infra-platform" onclick="selectProjectFromList('infra-platform')">
+                                    <div class="ca-project-card-top">
+                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">IP</div>
+                                        <div class="ca-project-card-text">
+                                            <div class="ca-project-card-name">Infrastructure Platform</div>
+                                            <div class="ca-project-card-path">~/dev/infra-platform</div>
+                                        </div>
                                     </div>
-                                    <div class="profile-selector-content">
-                                        <div class="profile-selector-name">DevOps Engineer</div>
-                                        <div class="profile-selector-desc">K8s, OpenShift, CI/CD</div>
+                                    <div class="ca-project-card-meta">4 skills · 3 MCP · Platform ops</div>
+                                </button>
+                                <button type="button" class="ca-project-card" data-project-slug="api-gateway" onclick="selectProjectFromList('api-gateway')">
+                                    <div class="ca-project-card-top">
+                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">AG</div>
+                                        <div class="ca-project-card-text">
+                                            <div class="ca-project-card-name">API Gateway</div>
+                                            <div class="ca-project-card-path">~/dev/api-gateway</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="profile-selector-item" onclick="selectProfile('platform-engineer')">
-                                    <div class="profile-selector-radio"></div>
-                                    <div class="profile-selector-icon platform">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="2" y="2" width="20" height="8" rx="2"/>
-                                            <rect x="2" y="14" width="20" height="8" rx="2"/>
-                                        </svg>
-                                    </div>
-                                    <div class="profile-selector-content">
-                                        <div class="profile-selector-name">Platform Engineer</div>
-                                        <div class="profile-selector-desc">OpenShift, RHEL ops</div>
-                                    </div>
-                                </div>
-                                <div class="profile-selector-item" onclick="selectProfile('backend-developer')">
-                                    <div class="profile-selector-radio"></div>
-                                    <div class="profile-selector-icon backend">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="16 18 22 12 16 6"/>
-                                            <polyline points="8 6 2 12 8 18"/>
-                                        </svg>
-                                    </div>
-                                    <div class="profile-selector-content">
-                                        <div class="profile-selector-name">Backend Developer</div>
-                                        <div class="profile-selector-desc">API dev, code review</div>
-                                    </div>
-                                </div>
-                                <div class="profile-selector-item" onclick="selectProfile('security-analyst')">
-                                    <div class="profile-selector-radio"></div>
-                                    <div class="profile-selector-icon security">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="profile-selector-content">
-                                        <div class="profile-selector-name">Security Analyst</div>
-                                        <div class="profile-selector-desc">Vulnerability scanning</div>
-                                    </div>
-                                </div>
+                                    <div class="ca-project-card-meta">2 skills · 2 MCP · APIs</div>
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Basic Info Section -->
+                        <!-- Session details -->
                         <div class="config-section">
                             <div class="config-section-header">
-                                <div class="config-section-icon agent">
+                                <div class="config-section-icon session">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="12" cy="7" r="4"/>
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                                     </svg>
                                 </div>
                                 <div class="config-section-info">
                                     <h3>Session Details</h3>
-                                    <p>Give your session a name and select the coding agent</p>
+                                    <p>Name your workspace, path, and optional description</p>
                                 </div>
                             </div>
 
@@ -1169,11 +1380,27 @@
                                 <label>Description (optional)</label>
                                 <textarea id="sessionDescription" placeholder="Describe what this session will accomplish..."></textarea>
                             </div>
+                        </div>
+
+                        <!-- Coding agent (separate from session metadata) -->
+                        <div class="config-section" id="coding-agent-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon coding-agent">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Coding Agent</h3>
+                                    <p>Choose which agent runs in this workspace</p>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <label>Select Coding Agent</label>
                                 <div class="agent-grid">
-                                    <div class="agent-card selected" onclick="selectAgent(this, 'claude')">
+                                    <div class="agent-card" data-agent="claude" onclick="selectAgent(this, 'claude')">
                                         <div class="agent-card-check">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                                 <polyline points="20 6 9 17 4 12"/>
@@ -1183,7 +1410,7 @@
                                         <div class="agent-name">Claude</div>
                                         <div class="agent-description">Anthropic's Claude 3.5 Sonnet - excellent for complex reasoning and code generation</div>
                                     </div>
-                                    <div class="agent-card" onclick="selectAgent(this, 'cursor')">
+                                    <div class="agent-card" data-agent="cursor" onclick="selectAgent(this, 'cursor')">
                                         <div class="agent-card-check">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                                 <polyline points="20 6 9 17 4 12"/>
@@ -1193,7 +1420,7 @@
                                         <div class="agent-name">Cursor</div>
                                         <div class="agent-description">Cursor's AI agent - optimized for IDE integration and code editing</div>
                                     </div>
-                                    <div class="agent-card" onclick="selectAgent(this, 'goose')">
+                                    <div class="agent-card" data-agent="goose" onclick="selectAgent(this, 'goose')">
                                         <div class="agent-card-check">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                                 <polyline points="20 6 9 17 4 12"/>
@@ -1207,249 +1434,187 @@
                             </div>
                         </div>
 
-                        <!-- Skills Section (conditionally shown based on settings) -->
-                        <div class="config-section" id="skills-config-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon skills">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
+                        <!-- Skills (project details–style list) -->
+                        <div class="ca-pd-asset-section" id="skills-config-section">
+                            <div class="pd-asset-block">
+                                <div class="pd-block-header">
+                                    <div class="pd-block-title-row">
+                                        <div class="pd-block-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                        </div>
+                                        <h3 class="pd-block-title">Skills</h3>
+                                        <span class="pd-block-count">6 skills</span>
+                                    </div>
+                                    <a href="../skills/index.html" class="pd-block-add-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Add Skill
+                                    </a>
                                 </div>
-                                <div class="config-section-info">
-                                    <h3>Skills</h3>
-                                    <p>Select the capabilities your agent should have</p>
-                                </div>
-                            </div>
-
-                            <div class="selectable-grid">
-                                <!-- Pre-built Skills -->
-                                <div class="selectable-item selected" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
+                                <div class="pd-block-items">
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">Kubernetes</div>
+                                            <div class="pd-block-item-meta">Pre-built &middot; Deploy &amp; manage clusters</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M8 8h8M8 16h8"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">OpenShift</div>
+                                            <div class="pd-block-item-meta">Pre-built &middot; Build &amp; deploy on OCP</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">Kubernetes</div>
-                                        <div class="selectable-desc">Deploy & manage clusters</div>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">Podman</div>
+                                            <div class="pd-block-item-meta">Pre-built &middot; Build &amp; run containers</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="selectable-item selected" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">RHEL</div>
+                                            <div class="pd-block-item-meta">Pre-built &middot; Administer Linux systems</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M8 12h8M8 8h8M8 16h8"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">code-review</div>
+                                            <div class="pd-block-item-meta">Custom &middot; Analyze code quality &amp; security</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">OpenShift</div>
-                                        <div class="selectable-desc">Build & deploy on OCP</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                            <path d="M9 9h6v6H9z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">Podman</div>
-                                        <div class="selectable-desc">Build & run containers</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                            <path d="M2 17l10 5 10-5"/>
-                                            <path d="M2 12l10 5 10-5"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">RHEL</div>
-                                        <div class="selectable-desc">Administer Linux systems</div>
-                                    </div>
-                                </div>
-                                <!-- Custom Skills -->
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="16 18 22 12 16 6"/>
-                                            <polyline points="8 6 2 12 8 18"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">code-review</div>
-                                        <div class="selectable-desc">Analyze code quality & security</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon skill">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">api-docs-generator</div>
-                                        <div class="selectable-desc">Generate API documentation</div>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">api-docs-generator</div>
+                                            <div class="pd-block-item-meta">Custom &middot; Generate API documentation</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- MCP Servers Section (conditionally shown based on settings) -->
-                        <div class="config-section" id="mcp-config-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon mcp">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="7" height="7"/>
-                                        <rect x="14" y="3" width="7" height="7"/>
-                                        <rect x="14" y="14" width="7" height="7"/>
-                                        <rect x="3" y="14" width="7" height="7"/>
-                                    </svg>
+                        <!-- MCP servers (project details–style list) -->
+                        <div class="ca-pd-asset-section" id="mcp-config-section">
+                            <div class="pd-asset-block">
+                                <div class="pd-block-header">
+                                    <div class="pd-block-title-row">
+                                        <div class="pd-block-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        </div>
+                                        <h3 class="pd-block-title">MCP Servers</h3>
+                                        <span class="pd-block-count">6 servers</span>
+                                    </div>
+                                    <a href="../mcp/index.html" class="pd-block-add-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Add Server
+                                    </a>
                                 </div>
-                                <div class="config-section-info">
-                                    <h3>MCP Servers</h3>
-                                    <p>Connect to Model Context Protocol servers for extended capabilities</p>
-                                </div>
-                            </div>
-
-                            <div class="selectable-grid">
-                                <!-- Installed MCP Servers -->
-                                <div class="selectable-item selected" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
+                                <div class="pd-block-items">
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">RHEL MCP</div>
+                                            <div class="pd-block-item-meta">Installed &middot; System management &amp; config</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                            <path d="M2 17l10 5 10-5"/>
-                                            <path d="M2 12l10 5 10-5"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">OpenShift MCP</div>
+                                            <div class="pd-block-item-meta">Installed &middot; Cluster &amp; deployment mgmt</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">RHEL MCP</div>
-                                        <div class="selectable-desc">System management & config</div>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">GitHub MCP</div>
+                                            <div class="pd-block-item-meta">Available &middot; Repos, issues &amp; PRs</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="selectable-item selected" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M12 22V12"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">Ansible MCP</div>
+                                            <div class="pd-block-item-meta">Available &middot; Playbooks &amp; automation</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M8 12h8M8 8h8M8 16h8"/>
-                                        </svg>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">Podman MCP</div>
+                                            <div class="pd-block-item-meta">Available &middot; Containers &amp; pods</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">OpenShift MCP</div>
-                                        <div class="selectable-desc">Cluster & deployment mgmt</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">GitHub MCP</div>
-                                        <div class="selectable-desc">Repos, issues & PRs</div>
-                                    </div>
-                                </div>
-                                <!-- Available MCP Servers -->
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                            <path d="M12 22V12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">Ansible MCP</div>
-                                        <div class="selectable-desc">Playbooks & automation</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                            <path d="M9 9h6v6H9z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">Podman MCP</div>
-                                        <div class="selectable-desc">Containers & pods</div>
-                                    </div>
-                                </div>
-                                <div class="selectable-item" onclick="toggleItem(this)">
-                                    <div class="selectable-checkbox">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                            <polyline points="20 6 9 17 4 12"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-icon mcp">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
-                                        </svg>
-                                    </div>
-                                    <div class="selectable-content">
-                                        <div class="selectable-name">Kubernetes MCP</div>
-                                        <div class="selectable-desc">K8s cluster management</div>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">Kubernetes MCP</div>
+                                            <div class="pd-block-item-meta">Available &middot; K8s cluster management</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1534,7 +1699,7 @@
                             </div>
 
                             <div class="file-access-grid">
-                                <div class="file-access-card selected" onclick="selectFileAccess(this, 'workspace')">
+                                <div class="file-access-card selected" data-file-access="workspace" onclick="selectFileAccess(this, 'workspace')">
                                     <div class="file-access-radio"></div>
                                     <div class="file-access-icon workspace">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1546,7 +1711,7 @@
                                         <p>Agent can only access the specified working directory and its subdirectories.</p>
                                     </div>
                                 </div>
-                                <div class="file-access-card" onclick="selectFileAccess(this, 'home')">
+                                <div class="file-access-card" data-file-access="home" onclick="selectFileAccess(this, 'home')">
                                     <div class="file-access-radio"></div>
                                     <div class="file-access-icon home">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1559,7 +1724,7 @@
                                         <p>Agent can access your entire home directory (~/) and all subdirectories.</p>
                                     </div>
                                 </div>
-                                <div class="file-access-card" onclick="selectFileAccess(this, 'custom')">
+                                <div class="file-access-card" data-file-access="custom" onclick="selectFileAccess(this, 'custom')">
                                     <div class="file-access-radio"></div>
                                     <div class="file-access-icon custom">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1572,7 +1737,7 @@
                                         <p>Specify exact directories the agent can access.</p>
                                     </div>
                                 </div>
-                                <div class="file-access-card" onclick="selectFileAccess(this, 'full')">
+                                <div class="file-access-card" data-file-access="full" onclick="selectFileAccess(this, 'full')">
                                     <div class="file-access-radio"></div>
                                     <div class="file-access-icon full">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1625,7 +1790,7 @@
                         <span class="deployment-target-desc">Choose where to run your coding agent workspace</span>
                     </div>
                     <div class="deployment-options">
-                        <div class="deployment-option selected" onclick="selectDeployment(this, 'local')">
+                        <div class="deployment-option selected" data-deployment="local" onclick="selectDeployment(this, 'local')">
                             <div class="deployment-radio">
                                 <div class="deployment-radio-inner"></div>
                             </div>
@@ -1641,7 +1806,7 @@
                                 <div class="deployment-desc">Run the workspace locally in a secured container on your machine</div>
                             </div>
                         </div>
-                        <div class="deployment-option devspaces-option" id="devspacesOption" onclick="selectDeployment(this, 'devspaces')">
+                        <div class="deployment-option devspaces-option" id="devspacesOption" data-deployment="devspaces" onclick="selectDeployment(this, 'devspaces')">
                             <div class="deployment-radio">
                                 <div class="deployment-radio-inner"></div>
                             </div>
@@ -1684,161 +1849,163 @@
 
     <script src="../assets/js/scripts.js"></script>
     <script>
-        let selectedAgent = 'claude';
+        let selectedAgent = null;
         let selectedFileAccess = 'workspace';
         let selectedDeployment = 'local';
-        let selectedProfile = null;
         let selectedIntegrations = {
             github: false,
             jira: false
         };
 
-        // Profile data for pre-filling configuration
-        const profilesData = {
-            'devops-engineer': {
-                name: 'DevOps Engineer',
-                description: 'DevOps workspace with K8s and OpenShift tools',
-                skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
-                mcpServers: ['OpenShift MCP', 'Kubernetes MCP', 'GitHub MCP'],
-                integrations: ['github', 'jira'],
+        /** Presets keyed like projects/index.html → openProject(slug) and aligned with project details content. */
+        const CREATE_AGENT_PROJECTS = {
+            'doc-updater': {
+                sessionName: 'Doc updater workspace',
+                workingDir: '~/dev/doc-updater',
+                description: 'Automatic documentation updater: when new features land, the agent checks whether project docs need updates before we deploy to OpenShift.',
+                agent: 'claude',
+                skills: ['code-review', 'Kubernetes', 'api-docs-generator'],
+                mcpServers: ['GitHub MCP', 'OpenShift MCP'],
+                integrations: { github: true, jira: true },
                 fileAccess: 'workspace',
                 deployment: 'local'
             },
-            'platform-engineer': {
-                name: 'Platform Engineer',
-                description: 'Platform operations workspace',
-                skills: ['OpenShift', 'RHEL', 'Podman'],
-                mcpServers: ['OpenShift MCP', 'RHEL MCP'],
-                integrations: ['jira'],
+            'frontend-app': {
+                sessionName: 'Frontend App workspace',
+                workingDir: '~/dev/docs-portal',
+                description: 'Documentation portal UI: React app for internal product docs and dashboards.',
+                agent: 'cursor',
+                skills: ['api-docs-generator', 'code-review'],
+                mcpServers: ['GitHub MCP'],
+                integrations: { github: true, jira: false },
+                fileAccess: 'workspace',
+                deployment: 'local'
+            },
+            'infra-platform': {
+                sessionName: 'Infrastructure Platform workspace',
+                workingDir: '~/dev/infra-platform',
+                description: 'Terraform, Ansible, and OpenShift configs for shared internal platform services.',
+                agent: 'claude',
+                skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
+                mcpServers: ['Kubernetes MCP', 'OpenShift MCP', 'Ansible MCP'],
+                integrations: { github: false, jira: true },
                 fileAccess: 'home',
                 deployment: 'local'
             },
-            'backend-developer': {
-                name: 'Backend Developer',
-                description: 'Backend development workspace',
+            'api-gateway': {
+                sessionName: 'API Gateway workspace',
+                workingDir: '~/dev/api-gateway',
+                description: 'Edge API gateway: routing, authentication, and rate limits for microservices.',
+                agent: 'goose',
                 skills: ['code-review', 'api-docs-generator'],
-                mcpServers: ['GitHub MCP', 'RHEL MCP'],
-                integrations: ['github', 'jira'],
-                fileAccess: 'workspace',
-                deployment: 'local'
-            },
-            'security-analyst': {
-                name: 'Security Analyst',
-                description: 'Security analysis workspace',
-                skills: ['code-review', 'RHEL'],
-                mcpServers: ['GitHub MCP'],
-                integrations: ['github'],
+                mcpServers: ['GitHub MCP', 'Kubernetes MCP'],
+                integrations: { github: true, jira: true },
                 fileAccess: 'workspace',
                 deployment: 'local'
             }
         };
 
-        function selectProfile(profileId) {
-            selectedProfile = profileId;
-            
-            // Update UI
-            document.querySelectorAll('.profile-selector-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
+        let selectedProjectSlug = null;
 
-            if (profileId && profilesData[profileId]) {
-                applyProfile(profilesData[profileId]);
+        function updateProjectPickerUI() {
+            const none = document.getElementById('caProjectNone');
+            const cards = document.querySelectorAll('#caProjectGrid .ca-project-card');
+            if (none) {
+                none.classList.toggle('selected', !selectedProjectSlug);
+            }
+            cards.forEach(card => {
+                const slug = card.getAttribute('data-project-slug');
+                card.classList.toggle('selected', slug === selectedProjectSlug);
+            });
+        }
+
+        function selectProjectFromList(slug) {
+            selectedProjectSlug = slug || null;
+            updateProjectPickerUI();
+            if (selectedProjectSlug && CREATE_AGENT_PROJECTS[selectedProjectSlug]) {
+                applyProjectPreset(selectedProjectSlug);
             }
         }
 
-        function applyProfile(profile) {
-            // Set session name suggestion
+        function setPdSelectableRows(sectionId, selectedNames) {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            const nameSet = new Set(selectedNames || []);
+            section.querySelectorAll('.pd-block-item.ca-pd-selectable').forEach(row => {
+                const label = row.querySelector('.pd-block-item-name')?.textContent.trim();
+                if (label && nameSet.has(label)) {
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+            });
+        }
+
+        function applyIntegrationsFromPreset(intMap) {
+            if (!intMap) return;
+            ['github', 'jira'].forEach(key => {
+                const el = document.getElementById(key + '-integration');
+                if (!el) return;
+                const want = intMap[key] === true;
+                const ok = isIntegrationConfigured(key);
+                if (want && ok) {
+                    el.classList.add('selected');
+                    selectedIntegrations[key] = true;
+                } else {
+                    el.classList.remove('selected');
+                    selectedIntegrations[key] = false;
+                }
+            });
+        }
+
+        function applyProjectPreset(slug) {
+            const preset = CREATE_AGENT_PROJECTS[slug];
+            if (!preset) return;
+
             const nameInput = document.getElementById('sessionName');
-            if (nameInput && !nameInput.value) {
-                nameInput.placeholder = `e.g., ${profile.name} Workspace`;
-            }
-
-            // Set description
+            const dirInput = document.getElementById('workingDir');
             const descInput = document.getElementById('sessionDescription');
-            if (descInput && !descInput.value) {
-                descInput.value = profile.description;
-            }
+            if (nameInput) nameInput.value = preset.sessionName;
+            if (dirInput) dirInput.value = preset.workingDir;
+            if (descInput) descInput.value = preset.description;
 
-            // Select skills
             if (isSkillsModuleEnabled()) {
-                const skillsSection = document.getElementById('skills-config-section');
-                if (skillsSection) {
-                    const skillItems = skillsSection.querySelectorAll('.selectable-item');
-                    skillItems.forEach(item => {
-                        const skillName = item.querySelector('.selectable-name')?.textContent;
-                        if (profile.skills.includes(skillName)) {
-                            item.classList.add('selected');
-                        } else {
-                            item.classList.remove('selected');
-                        }
-                    });
-                }
+                setPdSelectableRows('skills-config-section', preset.skills);
             }
-
-            // Select MCP servers
             if (isMcpModuleEnabled()) {
-                const mcpSection = document.getElementById('mcp-config-section');
-                if (mcpSection) {
-                    const mcpItems = mcpSection.querySelectorAll('.selectable-item');
-                    mcpItems.forEach(item => {
-                        const mcpName = item.querySelector('.selectable-name')?.textContent;
-                        if (profile.mcpServers.includes(mcpName)) {
-                            item.classList.add('selected');
-                        } else {
-                            item.classList.remove('selected');
-                        }
-                    });
-                }
+                setPdSelectableRows('mcp-config-section', preset.mcpServers);
             }
 
-            // Select integrations (if configured)
-            if (profile.integrations) {
-                const integrationsSection = document.getElementById('integrations-config-section');
-                if (integrationsSection) {
-                    profile.integrations.forEach(integration => {
-                        if (isIntegrationConfigured(integration)) {
-                            const item = document.getElementById(integration + '-integration');
-                            if (item) {
-                                item.classList.add('selected');
-                                selectedIntegrations[integration] = true;
-                            }
-                        }
-                    });
-                }
+            applyIntegrationsFromPreset(preset.integrations);
+
+            const fa = document.querySelector('.file-access-card[data-file-access="' + preset.fileAccess + '"]');
+            if (fa) {
+                selectFileAccess(fa, preset.fileAccess);
             }
 
-            // Set file access
-            const fileAccessCards = document.querySelectorAll('.file-access-card');
-            fileAccessCards.forEach(card => {
-                card.classList.remove('selected');
-                if (card.onclick && card.onclick.toString().includes(profile.fileAccess)) {
-                    card.classList.add('selected');
-                    selectedFileAccess = profile.fileAccess;
-                }
-            });
+            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + preset.agent + '"]');
+            if (agentCard) {
+                selectAgent(agentCard, preset.agent);
+            }
 
-            // Set deployment target
-            if (profile.deployment === 'devspaces' && isDevSpacesEnabled()) {
-                const devspacesOption = document.getElementById('devspacesOption');
-                if (devspacesOption) {
-                    selectDeployment(devspacesOption, 'devspaces');
+            if (preset.deployment === 'devspaces' && isDevSpacesEnabled()) {
+                const devEl = document.querySelector('.deployment-option[data-deployment="devspaces"]');
+                if (devEl) {
+                    selectDeployment(devEl, 'devspaces');
+                }
+            } else {
+                const loc = document.querySelector('.deployment-option[data-deployment="local"]');
+                if (loc) {
+                    selectDeployment(loc, 'local');
                 }
             }
         }
 
-        // Check for profile parameter in URL
-        function checkProfileParam() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const profileId = urlParams.get('profile');
-            if (profileId && profilesData[profileId]) {
-                // Find and click the profile selector
-                const profileItems = document.querySelectorAll('.profile-selector-item');
-                profileItems.forEach(item => {
-                    if (item.onclick && item.onclick.toString().includes(profileId)) {
-                        item.click();
-                    }
-                });
+        function initProjectFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const p = params.get('project');
+            if (p && CREATE_AGENT_PROJECTS[p]) {
+                selectProjectFromList(p);
             }
         }
 
@@ -2000,7 +2167,7 @@
             initSkillsSection();
             initMcpSection();
             initIntegrationsSection();
-            checkProfileParam();
+            initProjectFromUrl();
         });
 
         function selectAgent(card, agent) {
@@ -2074,12 +2241,23 @@
                 return;
             }
 
+            if (!selectedAgent) {
+                alert('Please select a coding agent');
+                return;
+            }
+
             // Collect selected items
-            const selectedSkills = Array.from(document.querySelectorAll('.config-section:nth-child(2) .selectable-item.selected'))
-                .map(item => item.querySelector('.selectable-name').textContent);
-            
-            const selectedMcpServers = Array.from(document.querySelectorAll('.config-section:nth-child(3) .selectable-item.selected'))
-                .map(item => item.querySelector('.selectable-name').textContent);
+            const skillsSection = document.getElementById('skills-config-section');
+            const selectedSkills = skillsSection
+                ? Array.from(skillsSection.querySelectorAll('.pd-block-item.ca-pd-selectable.selected .pd-block-item-name'))
+                    .map(el => el.textContent.trim())
+                : [];
+
+            const mcpSection = document.getElementById('mcp-config-section');
+            const selectedMcpServers = mcpSection
+                ? Array.from(mcpSection.querySelectorAll('.pd-block-item.ca-pd-selectable.selected .pd-block-item-name'))
+                    .map(el => el.textContent.trim())
+                : [];
 
             // Collect selected integrations
             const enabledIntegrations = Object.keys(selectedIntegrations).filter(key => selectedIntegrations[key]);
@@ -2092,7 +2270,8 @@
                 fileAccess: selectedFileAccess,
                 skills: selectedSkills,
                 mcpServers: selectedMcpServers,
-                integrations: enabledIntegrations
+                integrations: enabledIntegrations,
+                project: selectedProjectSlug
             };
 
             console.log('Starting session with config:', config);
