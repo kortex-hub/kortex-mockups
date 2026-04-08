@@ -1,54 +1,30 @@
 /**
  * Sidebar Component Loader
  * Loads the sidebar component and handles active state management
+ *
+ * Repo root `index.html` redirects to Projects. Subpages omit data-nav-root (default "..").
  */
 
-const sidebarHTML = `
+function getNavRoot() {
+    const explicit = document.body.getAttribute('data-nav-root');
+    if (explicit !== null && explicit !== '') {
+        return explicit.replace(/\/$/, '');
+    }
+    return '..';
+}
+
+function buildSidebarHTML() {
+    const R = getNavRoot();
+    return `
 <nav class="sidebar">
-    <!-- Overview -->
-    <a href="../index.html" class="nav-item" data-section="dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="9" rx="1"/>
-            <rect x="14" y="3" width="7" height="5" rx="1"/>
-            <rect x="14" y="12" width="7" height="9" rx="1"/>
-            <rect x="3" y="16" width="7" height="5" rx="1"/>
-        </svg>
-        <span>Overview</span>
-    </a>
-
-    <!-- Agents -->
-    <a href="../tasks/index.html" class="nav-item" data-section="tasks">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
-            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
-        </svg>
-        <span>Agents</span>
-    </a>
-
-    <!-- Agent Feed -->
-    <a href="../agent-feed/index.html" class="nav-item" data-section="agent-feed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 4a9 9 0 0 0 12 0"/>
-            <path d="M9 7a4.5 4.5 0 0 0 6 0"/>
-            <line x1="12" y1="10" x2="12" y2="8"/>
-            <rect x="3" y="10" width="18" height="12" rx="3"/>
-            <circle cx="8.5" cy="16" r="1.5" fill="currentColor"/>
-            <circle cx="15.5" cy="16" r="1.5" fill="currentColor"/>
-        </svg>
-        <span>Agent Feed</span>
-    </a>
-
-    <!-- Projects -->
-    <a href="../projects/index.html" class="nav-item" data-section="projects">
+    <a href="${R}/projects/index.html" class="nav-item" data-section="projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Projects</span>
     </a>
 
-    <!-- AI Assets -->
-    <a href="../ai-assets/index.html" class="nav-item" data-section="ai-assets">
+    <a href="${R}/ai-assets/index.html" class="nav-item" data-section="ai-assets">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="7" rx="1"/>
             <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -58,8 +34,7 @@ const sidebarHTML = `
         <span>AI Assets</span>
     </a>
 
-    <!-- Services -->
-    <a href="../services/index.html" class="nav-item" data-section="services">
+    <a href="${R}/services/index.html" class="nav-item" data-section="services">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -67,8 +42,68 @@ const sidebarHTML = `
         <span>Services</span>
     </a>
 
-    <!-- Extensions -->
-    <a href="../extensions/index.html" class="nav-item" data-section="extensions">
+    <a href="${R}/chat/index.html" class="nav-item" data-section="chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Chat</span>
+    </a>
+
+    <a href="${R}/sessions/index.html" class="nav-item" data-section="sessions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+        </svg>
+        <span>Agents</span>
+    </a>
+
+    <a href="${R}/profiles/index.html" class="nav-item" data-section="profiles" id="profiles-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Profiles</span>
+    </a>
+
+    <a href="${R}/knowledges/index.html" class="nav-item" data-section="knowledges">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10,9 9,9 8,9"/>
+        </svg>
+        <span>Knowledges</span>
+    </a>
+
+    <a href="${R}/mcp/index.html" class="nav-item" data-section="mcp" id="mcp-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        <span>Tools</span>
+    </a>
+
+    <a href="${R}/skills/index.html" class="nav-item" data-section="skills" id="skills-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        <span>Skills</span>
+    </a>
+
+    <a href="${R}/flows/index.html" class="nav-item" data-section="flows">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+        </svg>
+        <span>Flows</span>
+    </a>
+
+    <a href="${R}/extensions/index.html" class="nav-item" data-section="extensions">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5.5 8.5 9 12l-3.5 3.5L2 12l3.5-3.5Z"/>
             <path d="m12 2 3.5 3.5L12 9 8.5 5.5 12 2Z"/>
@@ -78,10 +113,16 @@ const sidebarHTML = `
         <span>Extensions</span>
     </a>
 
+    <a href="${R}/bridge/index.html" class="nav-item" data-section="bridge" id="bridge-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+        </svg>
+        <span>Bridge</span>
+    </a>
+
     <div class="nav-spacer"></div>
 
-    <!-- Settings -->
-    <a href="../settings/index.html" class="nav-item" data-section="settings">
+    <a href="${R}/settings/index.html" class="nav-item" data-section="settings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -90,7 +131,6 @@ const sidebarHTML = `
     </a>
 </nav>
 
-<!-- Global Status Bar -->
 <div class="global-status-bar" id="globalStatusBar">
     <div class="status-bar-left">
         <div class="status-bar-item">
@@ -100,26 +140,18 @@ const sidebarHTML = `
             </svg>
             <span>Ready</span>
         </div>
-        <div class="status-bar-item agents-status" onclick="window.location.href='../agent-feed/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(52, 211, 153, 0.1); border-radius: 4px; border: 1px solid rgba(52, 211, 153, 0.2);" title="Open Agent Feed">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <circle cx="12" cy="12" r="6"/>
-                <circle cx="12" cy="12" r="2"/>
+        <div class="status-bar-item agents-status" onclick="window.location.href='${R}/sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.2);" title="Sandbox active — host and network isolated">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
-            <span style="color: #34d399;">3 agents running</span>
+            <span style="color: #a78bfa;">Sandbox active</span>
         </div>
-        <div class="status-bar-item status-bar-cli" onclick="window.location.href='../cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
+        <div class="status-bar-item status-bar-cli" onclick="window.location.href='${R}/cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
                 <polyline points="4 17 10 11 4 5"/>
                 <line x1="12" y1="19" x2="20" y2="19"/>
             </svg>
-            <span style="color: #67e8f9;">CLI</span>
-        </div>
-        <div class="status-bar-item status-bar-sandbox" onclick="window.location.href='../sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.2);" title="Open Sandbox Activities">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span style="color: #a78bfa;">Sandbox</span>
+            <span style="color: #67e8f9;">kdn CLI</span>
         </div>
     </div>
     <div class="status-bar-right">
@@ -135,7 +167,6 @@ const sidebarHTML = `
     </div>
 </div>
 
-<!-- OpenShift AI Connection Modal -->
 <div class="openshift-modal-overlay" id="openshiftModalOverlay">
     <div class="openshift-modal">
         <div class="openshift-modal-header">
@@ -185,11 +216,72 @@ const sidebarHTML = `
     </div>
 </div>
 `;
+}
+
+function isProfilesModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.modules && settings.modules.profilesEnabled === false) {
+                return false;
+            }
+        }
+        return true;
+    } catch (e) {
+        return true;
+    }
+}
+
+function isSkillsModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.modules && settings.modules.skillsEnabled === false) {
+                return false;
+            }
+        }
+        return true;
+    } catch (e) {
+        return true;
+    }
+}
+
+function isBridgeModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.network && settings.network.bridgeEnabled === false) {
+                return false;
+            }
+        }
+        return true;
+    } catch (e) {
+        return true;
+    }
+}
+
+function isMcpModuleEnabled() {
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.modules && settings.modules.mcpEnabled === false) {
+                return false;
+            }
+        }
+        return true;
+    } catch (e) {
+        return true;
+    }
+}
 
 // Check if OpenShift AI module is enabled
 function isOpenshiftAIModuleEnabled() {
     try {
-        const saved = localStorage.getItem('kortexSettings');
+        const saved = localStorage.getItem('kaidenSettings');
         if (saved) {
             const settings = JSON.parse(saved);
             if (settings.modules && settings.modules.openshiftAIEnabled === false) {
@@ -210,15 +302,33 @@ function loadSidebar(activeSection) {
         return;
     }
 
-    sidebarContainer.innerHTML = sidebarHTML;
+    sidebarContainer.innerHTML = buildSidebarHTML();
 
-    // Hide OpenShift AI status bar item if module is disabled
+    const profilesNavItem = document.getElementById('profiles-nav-item');
+    if (profilesNavItem && !isProfilesModuleEnabled()) {
+        profilesNavItem.style.display = 'none';
+    }
+
+    const skillsNavItem = document.getElementById('skills-nav-item');
+    if (skillsNavItem && !isSkillsModuleEnabled()) {
+        skillsNavItem.style.display = 'none';
+    }
+
+    const bridgeNavItem = document.getElementById('bridge-nav-item');
+    if (bridgeNavItem && !isBridgeModuleEnabled()) {
+        bridgeNavItem.style.display = 'none';
+    }
+
+    const mcpNavItem = document.getElementById('mcp-nav-item');
+    if (mcpNavItem && !isMcpModuleEnabled()) {
+        mcpNavItem.style.display = 'none';
+    }
+
     const openshiftStatusItem = document.getElementById('openshiftStatusItem');
     if (openshiftStatusItem && !isOpenshiftAIModuleEnabled()) {
         openshiftStatusItem.style.display = 'none';
     }
 
-    // Set active section
     if (activeSection) {
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
@@ -232,20 +342,12 @@ function loadSidebar(activeSection) {
     document.dispatchEvent(new CustomEvent('sidebarLoaded'));
 }
 
-// Auto-load sidebar on page load
 document.addEventListener('DOMContentLoaded', () => {
     const bodyClass = document.body.className;
     let activeSection = bodyClass.split(' ').find(c => c.endsWith('-page'))?.replace('-page', '');
 
-    // Map legacy section names to new ones
     const sectionMap = {
-        'chat': 'tasks',
-        'sessions': 'tasks',
-        'profiles': 'ai-assets',
-        'knowledges': 'ai-assets',
-        'mcp': 'ai-assets',
-        'skills': 'ai-assets',
-        'bridge': 'settings'
+        'tasks': 'projects'
     };
 
     if (activeSection && sectionMap[activeSection]) {
@@ -254,7 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadSidebar(activeSection);
 
-    // Resolve next to this loader so it works from file:// or http(s) at any page depth
     const loaderEl = document.querySelector('script[src*="sidebar-loader.js"]');
     const openshiftSrc = loaderEl && loaderEl.src
         ? loaderEl.src.replace(/sidebar-loader\.js/i, 'openshift-ai.js')
@@ -263,5 +364,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const script = document.createElement('script');
     script.src = openshiftSrc;
     document.body.appendChild(script);
-
 });

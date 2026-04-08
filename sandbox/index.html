@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - Sandbox</title>
+    <title>Kaiden - Sandbox</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
@@ -843,6 +843,20 @@
                         </div>
                     </div>
 
+                    <!-- Sprint-290: forbidden domain + allow/deny -->
+                    <div class="sb-policy-alert" style="margin-bottom:24px;padding:18px 20px;border-radius:14px;border:1px solid rgba(245,158,11,0.35);background:rgba(245,158,11,0.08);">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+                            <div>
+                                <div style="font-size:13px;font-weight:600;color:#fbbf24;margin-bottom:6px;">Policy decision required</div>
+                                <p style="margin:0;font-size:13px;color:#e5e7eb;line-height:1.55;max-width:640px;">The workspace attempted a connection to <strong>telemetry.example.com</strong>, which is outside the allowed set for project <em>doc-updater</em> (deny-by-default network). Separately, <strong>host filesystem</strong> access from the sandbox was blocked.</p>
+                            </div>
+                            <div style="display:flex;gap:10px;flex-shrink:0;">
+                                <button type="button" style="padding:8px 16px;border-radius:8px;border:none;background:#22c55e;color:#052e16;font-weight:600;cursor:pointer;font-size:13px;">Allow once</button>
+                                <button type="button" style="padding:8px 16px;border-radius:8px;border:1px solid rgba(239,68,68,0.6);background:transparent;color:#fca5a5;font-weight:600;cursor:pointer;font-size:13px;">Deny</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Layer Cards -->
                     <div class="sb-layers">
 
@@ -1068,7 +1082,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-net">Network</span>
                                 <span class="sa-badge sa-blocked">Blocked</span>
@@ -1087,7 +1101,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-net">Network</span>
                                 <span class="sa-badge sa-allowed">Allowed</span>
@@ -1129,7 +1143,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-fs">Filesystem</span>
                                 <span class="sa-badge sa-allowed">Allowed</span>
@@ -1212,7 +1226,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-proc">Process</span>
                                 <span class="sa-badge sa-blocked">Blocked</span>
@@ -1315,7 +1329,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-proc">Process</span>
                                 <span class="sa-badge sa-blocked">Blocked</span>
@@ -1335,7 +1349,7 @@
                                 </div>
                                 <div class="sa-agent">
                                     <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
-                                    Agent #1 &middot; Kortex Backend
+                                    Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-priv">Privacy</span>
                                 <span class="sa-badge sa-routed">Routed</span>

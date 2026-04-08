@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - Settings</title>
+    <title>Kaiden - Settings</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
@@ -305,7 +305,7 @@
                             </div>
                             <div>
                                 <h3 class="settings-section-title">Development Environment</h3>
-                                <p class="settings-section-description">Configure how Kortex integrates with development environments</p>
+                                <p class="settings-section-description">Configure how Kaiden integrates with development environments</p>
                             </div>
                         </div>
                         <div class="settings-section-body">
@@ -321,7 +321,7 @@
                                         <span class="settings-badge new">New</span>
                                     </h4>
                                     <p class="settings-item-description">
-                                        Launch Kortex sessions directly in Red Hat DevSpaces cloud development environments. 
+                                        Launch Kaiden sessions directly in Red Hat DevSpaces cloud development environments. 
                                         This enables you to work in pre-configured, containerized workspaces with all your tools ready to go.
                                     </p>
                                 </div>
@@ -533,7 +533,7 @@
                             </div>
                             <div>
                                 <h3 class="settings-section-title">Integrations</h3>
-                                <p class="settings-section-description">Connect external tools and services to extend Kortex capabilities</p>
+                                <p class="settings-section-description">Connect external tools and services to extend Kaiden capabilities</p>
                             </div>
                         </div>
                         <div class="settings-section-body">
@@ -735,7 +735,7 @@
                             </div>
                             <div>
                                 <h3 class="settings-section-title">Appearance</h3>
-                                <p class="settings-section-description">Customize the look and feel of Kortex</p>
+                                <p class="settings-section-description">Customize the look and feel of Kaiden</p>
                             </div>
                         </div>
                         <div class="settings-section-body">
@@ -816,7 +816,7 @@
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <input type="url" class="settings-input" id="apiEndpoint" placeholder="https://api.kortex.ai">
+                                    <input type="url" class="settings-input" id="apiEndpoint" placeholder="https://api.kaiden.ai">
                                 </div>
                             </div>
                         </div>
@@ -908,7 +908,7 @@
             };
 
             // Save to localStorage (mock)
-            localStorage.setItem('kortexSettings', JSON.stringify(settings));
+            localStorage.setItem('kaidenSettings', JSON.stringify(settings));
 
             // Show confirmation
             const btn = document.querySelector('.settings-save-btn');
@@ -964,13 +964,13 @@
                 document.getElementById('jiraToken').value = '';
                 document.getElementById('jiraProject').value = '';
 
-                localStorage.removeItem('kortexSettings');
+                localStorage.removeItem('kaidenSettings');
             }
         }
 
         // Load saved settings on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const saved = localStorage.getItem('kortexSettings');
+            const saved = localStorage.getItem('kaidenSettings');
             if (saved) {
                 try {
                     const settings = JSON.parse(saved);

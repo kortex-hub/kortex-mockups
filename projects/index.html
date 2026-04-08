@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - Projects</title>
+    <title>Kaiden - Projects</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
@@ -1040,24 +1040,24 @@
                     </div>
 
                     <p class="projects-intro">
-                        A <strong>project</strong> represents a codebase or repository that Kortex manages on your behalf. It links a working directory to its git remote, attached skills, MCP servers, and knowledge bases — giving agents the full context they need to work autonomously within that codebase.
+                        A <strong>project</strong> is the unit of policy in Kaiden: <strong>filesystem</strong> scope, <strong>network</strong> (deny-by-default with allowed hosts, or open), <strong>project-scoped tokens</strong> (e.g. GitHub), and <strong>git worktree</strong> rules. After configuration, you start the coding agent from the terminal with <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn workspace start</code>.
                     </p>
 
                     <div class="projects-grid" id="projectsGrid">
-                        <!-- Project 1: Kortex Backend -->
-                        <div class="project-card" onclick="openProject('kortex-backend')">
+                        <!-- Project 1: Doc updater -->
+                        <div class="project-card" onclick="openProject('doc-updater')">
                             <div class="project-card-header">
                                 <div class="project-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">KB</div>
                                 <div class="project-card-title-area">
-                                    <div class="project-card-name">Kortex Backend</div>
-                                    <div class="project-card-path">~/dev/kortex-backend</div>
+                                    <div class="project-card-name">Doc updater</div>
+                                    <div class="project-card-path">~/dev/doc-updater</div>
                                 </div>
                                 <div class="project-card-status-dot active" title="1 agent running"></div>
                             </div>
 
                             <div class="project-card-git">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                                <span class="project-card-git-remote">github.com/acme/kortex-backend</span>
+                                <span class="project-card-git-remote">github.com/acme/doc-updater</span>
                                 <span class="project-card-branch">main</span>
                             </div>
 
@@ -1093,14 +1093,14 @@
                                 <div class="project-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">FA</div>
                                 <div class="project-card-title-area">
                                     <div class="project-card-name">Frontend App</div>
-                                    <div class="project-card-path">~/dev/kortex-frontend</div>
+                                    <div class="project-card-path">~/dev/docs-portal</div>
                                 </div>
                                 <div class="project-card-status-dot active" title="2 agents running"></div>
                             </div>
 
                             <div class="project-card-git">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                                <span class="project-card-git-remote">github.com/acme/kortex-frontend</span>
+                                <span class="project-card-git-remote">github.com/acme/docs-portal</span>
                                 <span class="project-card-branch">feat/dashboard</span>
                             </div>
 
@@ -1247,7 +1247,7 @@
                 <!-- Step 1: Provide a path or git repo -->
                 <div class="np-step active" id="npStep1">
                     <div class="np-step1-prompt">
-                        Point Kortex to a local working directory or a git repository, and we'll analyze your project automatically.
+                        Point Kaiden to a local working directory or a git repository, and we'll analyze your project automatically.
                     </div>
 
                     <div class="np-path-input-wrapper">
@@ -1424,7 +1424,7 @@
                 <!-- Step 5: Skills Selection -->
                 <div class="np-step" id="npStep5">
                     <p class="np-picker-intro">
-                        We detected the following technologies in <strong style="color:#e5e7eb">Kortex</strong>. Pick the skills that agents should use when working in this project.
+                        We detected the following technologies in <strong style="color:#e5e7eb">Kaiden</strong>. Pick the skills that agents should use when working in this project.
                     </p>
 
                     <div class="np-picker-section-label">Recommended for this project</div>
@@ -1582,12 +1582,12 @@
         let isFromGit = false;
 
         const knownRepos = {
-            'github.com/kortex-hub/kortex': {
-                name: 'Kortex',
+            'github.com/kaiden-io/kaiden': {
+                name: 'Kaiden',
                 desc: 'An AI-powered developer desktop application built with Electron, TypeScript, and Svelte. Features chat-based AI interactions, MCP server management, and extension support via a modular monorepo.',
-                dir: '~/Dev/kortex',
+                dir: '~/Dev/kaiden',
                 lang: 'TypeScript / Svelte',
-                remote: 'github.com/kortex-hub/kortex',
+                remote: 'github.com/kaiden-io/kaiden',
                 branch: 'main'
             }
         };
@@ -1770,7 +1770,7 @@
         }
 
         function simulateCloneBrowse() {
-            document.getElementById('npCloneDir').value = '~/Dev/kortex';
+            document.getElementById('npCloneDir').value = '~/Dev/kaiden';
         }
 
         function searchProjects(query) {

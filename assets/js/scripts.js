@@ -1,8 +1,8 @@
-// Global scripts for Kortex application
+// Global scripts for Kaiden application
 
 // Add any global utility functions here
 
-console.log('Kortex application loaded');
+console.log('Kaiden application loaded');
 
 // Knowledge Selector Functions
 function toggleKnowledgeSelector() {

@@ -6,137 +6,129 @@
 (function () {
     const feedAgents = [
         {
-            id: 'fix-memory-leak',
-            goal: 'Fix memory leak in WebSocket connection handler',
+            id: 'telemetry-blocked',
+            goal: 'Forbidden domain: telemetry.example.com',
             status: 'waiting',
-            statusLabel: 'Waiting for input',
-            time: '1h',
-            avatar: 'goose',
-            avatarLabel: 'Go',
-            projectName: 'API Gateway',
-            project: 'acme/realtime-svc',
-            branch: 'fix/ws-memory-leak',
-            progress: 45,
-            progressSteps: '2 / 4',
-            activity: null,
-            question: {
-                text: 'I found two connection pool implementations: <code>LegacyPool</code> in <code>src/pool/legacy.ts</code> and <code>AsyncPool</code> in <code>src/pool/async.ts</code>. Which one should I refactor to fix the leak? Or should I consolidate both into a single implementation?',
-                options: [
-                    { label: 'Refactor AsyncPool', type: 'primary' },
-                    { label: 'Consolidate both', type: 'secondary' },
-                    { label: 'Let me check first', type: 'secondary' }
-                ],
-                allowReply: true
-            }
-        },
-        {
-            id: 'refactor-auth',
-            goal: 'Refactor authentication module to use JWT tokens',
-            status: 'waiting',
-            statusLabel: 'Waiting for input',
-            time: '12m',
+            statusLabel: 'Allow / deny',
+            time: '6m',
             avatar: 'claude',
-            avatarLabel: 'Cl',
-            projectName: 'Kortex Backend',
-            project: 'acme/backend',
-            branch: 'feat/jwt-auth',
-            progress: 55,
-            progressSteps: '3 / 5',
+            avatarLabel: 'Sb',
+            projectName: 'Doc updater',
+            project: 'acme/doc-updater',
+            branch: 'main',
+            progress: 15,
+            progressSteps: 'network',
             activity: null,
             question: {
-                text: '<svg style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg><strong style="color:#fca5a5">Network blocked:</strong> I need to reach <code>auth.example.com</code> to fetch JWKS public keys for JWT verification, but the workspace network policy denied the request. How should I proceed?',
+                text: '<strong style="color:#fbbf24">Sprint demo:</strong> workspace hit a host outside the allow list. Kaiden raised this in the UI; you can <strong>Allow once</strong> or <strong>Deny</strong> to update project network policy.',
                 options: [
-                    { label: 'Allow auth.example.com', type: 'primary' },
-                    { label: 'Allow for session only', type: 'secondary' },
-                    { label: 'Use local key instead', type: 'secondary' }
+                    { label: 'Allow once', type: 'primary' },
+                    { label: 'Add to project', type: 'secondary' },
+                    { label: 'Deny', type: 'secondary' }
                 ],
-                allowReply: true
+                allowReply: false
             }
         },
         {
-            id: 'add-dark-mode',
-            goal: 'Add dark mode toggle to settings page',
+            id: 'host-fs-blocked',
+            goal: 'Host filesystem access denied',
+            status: 'waiting',
+            statusLabel: 'Sandbox',
+            time: '14m',
+            avatar: 'cursor',
+            avatarLabel: 'Sb',
+            projectName: 'Doc updater',
+            project: 'acme/doc-updater',
+            branch: 'main',
+            progress: 10,
+            progressSteps: 'krunAI',
+            activity: null,
+            question: {
+                text: '<strong style="color:#fca5a5">Isolation:</strong> the agent tried to read a path on the host outside declared project roots. Blocked by sandbox (expected proof for the demo).',
+                options: [
+                    { label: 'Open sandbox', type: 'primary' },
+                    { label: 'Dismiss', type: 'secondary' }
+                ],
+                allowReply: false
+            }
+        },
+        {
+            id: 'doc-updater-running',
+            goal: 'Doc updater agent (OpenCode)',
             status: 'running',
-            statusLabel: 'Running',
-            time: '34m',
-            avatar: 'cursor',
-            avatarLabel: 'Cu',
-            projectName: 'Frontend App',
-            project: 'acme/frontend',
-            branch: 'feat/dark-mode',
-            progress: 30,
-            progressSteps: '1 / 4',
-            activity: { text: 'Reading src/components/Settings.tsx', type: 'reading' },
-            question: null
-        },
-        {
-            id: 'api-rate-limit',
-            goal: 'Implement API rate limiting middleware',
-            status: 'waiting',
-            statusLabel: 'Waiting for input',
-            time: '45m',
-            avatar: 'claude',
-            avatarLabel: 'Cl',
-            projectName: 'Kortex Backend',
-            project: 'acme/backend',
-            branch: 'feat/rate-limit',
-            progress: 70,
-            progressSteps: '3 / 4',
-            activity: null,
-            question: {
-                text: 'The rate limiter is ready. Should I use a <code>sliding window</code> or <code>token bucket</code> algorithm? Sliding window is simpler but token bucket handles bursts better.',
-                options: [
-                    { label: 'Sliding window', type: 'primary' },
-                    { label: 'Token bucket', type: 'primary' }
-                ],
-                allowReply: true
-            }
-        },
-        {
-            id: 'api-docs',
-            goal: 'Generate OpenAPI docs for REST endpoints',
-            status: 'paused',
-            statusLabel: 'Paused',
-            time: '3h',
-            avatar: 'cursor',
-            avatarLabel: 'Cu',
-            projectName: 'Kortex Backend',
-            project: 'acme/backend',
-            branch: 'docs/openapi-spec',
-            progress: 55,
-            progressSteps: '3 / 6',
-            activity: null,
-            question: null
-        },
-        {
-            id: 'update-deps',
-            goal: 'Update npm dependencies and fix breaking changes',
-            status: 'completed',
-            statusLabel: 'Completed',
-            time: '2h ago',
-            avatar: 'claude',
-            avatarLabel: 'Cl',
-            projectName: 'Frontend App',
-            project: 'acme/frontend',
-            branch: 'chore/update-deps',
-            progress: 100,
-            progressSteps: '5 / 5',
-            activity: null,
-            question: null
-        },
-        {
-            id: 'dockerfile',
-            goal: 'Create multi-stage Dockerfile for production',
-            status: 'completed',
-            statusLabel: 'Completed',
-            time: '5h ago',
+            statusLabel: 'In terminal',
+            time: 'live',
             avatar: 'goose',
-            avatarLabel: 'Go',
-            projectName: 'Kortex Backend',
-            project: 'acme/backend',
-            branch: 'infra/docker-prod',
+            avatarLabel: 'OC',
+            projectName: 'Doc updater',
+            project: 'acme/doc-updater',
+            branch: 'main',
+            progress: 40,
+            progressSteps: 'CLI',
+            activity: { text: 'User interacting via kdn workspace start — not in-app chat', type: 'reading' },
+            question: null
+        },
+        {
+            id: 'semantic-router',
+            goal: 'Semantic Router extension',
+            status: 'running',
+            statusLabel: 'Configured',
+            time: '2h',
+            avatar: 'claude',
+            avatarLabel: 'Sr',
+            projectName: 'Extensions',
+            project: 'catalog',
+            branch: '—',
             progress: 100,
-            progressSteps: '4 / 4',
+            progressSteps: 'models',
+            activity: { text: 'Local model pool: Granite, Qwen (OpenVINO / Ramalama)', type: 'writing' },
+            question: null
+        },
+        {
+            id: 'openshift-mcp-done',
+            goal: 'OpenShift MCP installed',
+            status: 'completed',
+            statusLabel: 'Ready',
+            time: '1h ago',
+            avatar: 'cursor',
+            avatarLabel: 'Mc',
+            projectName: 'Extensions',
+            project: 'openshift-mcp',
+            branch: '—',
+            progress: 100,
+            progressSteps: '1 / 1',
+            activity: null,
+            question: null
+        },
+        {
+            id: 'onecli-vault',
+            goal: 'onecli credential vault',
+            status: 'completed',
+            statusLabel: 'OK',
+            time: '3h ago',
+            avatar: 'goose',
+            avatarLabel: '1c',
+            projectName: 'Global',
+            project: 'vault',
+            branch: '—',
+            progress: 100,
+            progressSteps: 'vault',
+            activity: null,
+            question: null
+        },
+        {
+            id: 'hummingbird-skills',
+            goal: 'Hummingbird skills catalog',
+            status: 'completed',
+            statusLabel: 'OK',
+            time: '5h ago',
+            avatar: 'claude',
+            avatarLabel: 'Hb',
+            projectName: 'Catalog',
+            project: 'skills',
+            branch: '—',
+            progress: 100,
+            progressSteps: 'ext',
             activity: null,
             question: null
         }
@@ -351,7 +343,7 @@
         },
 
         openAgent: function (agentId) {
-            window.location.href = '../tasks/index.html';
+            window.location.href = '../cli/index.html';
         }
     };
 })();

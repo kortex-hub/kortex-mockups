@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex CLI</title>
+    <title>Kaiden CLI</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <style>
         .cli-page-layout {
@@ -193,7 +193,7 @@
         .cli-tab-icon.codex { color: #10b981; }
         .cli-tab-icon.goose { color: #8b5cf6; }
         .cli-tab-icon.cursor { color: #06b6d4; }
-        .cli-tab-icon.kortex { color: #67e8f9; }
+        .cli-tab-icon.kdn { color: #67e8f9; }
 
         .cli-tab-name {
             flex: 1;
@@ -820,8 +820,8 @@
                             </svg>
                         </div>
                         <div class="cli-header-text">
-                            <h1>Kortex CLI</h1>
-                            <span>Command-line interface for Kortex</span>
+                            <h1>Kaiden CLI — <span style="font-size:0.85em;color:#67e8f9;font-weight:600;">kdn</span></h1>
+                            <span>Primary path: <span style="font-size:12px;color:#a5f3fc;background:rgba(103,232,249,0.12);padding:2px 8px;border-radius:4px;font-family:ui-monospace,monospace;">kdn workspace start</span> &mdash; agent runs here; desktop configures policy</span>
                         </div>
                     </div>
                 </div>
@@ -840,7 +840,7 @@
                                         <polyline points="4 17 10 11 4 5"/>
                                         <line x1="12" y1="19" x2="20" y2="19"/>
                                     </svg>
-                                    Kortex Terminal
+                                    Kaiden Terminal
                                 </div>
                                 <div style="width: 54px;"></div>
                             </div>
@@ -848,11 +848,11 @@
                             <!-- Tabs Bar -->
                             <div class="cli-tabs-bar" id="tabsBar">
                                 <div class="cli-tab active" data-tab-id="tab-1" onclick="if (!event.target.closest('.cli-tab-close')) switchToTab('tab-1')">
-                                    <svg class="cli-tab-icon kortex" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg class="cli-tab-icon kdn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="4 17 10 11 4 5"/>
                                         <line x1="12" y1="19" x2="20" y2="19"/>
                                     </svg>
-                                    <span class="cli-tab-name">kortex</span>
+                                    <span class="cli-tab-name">kdn</span>
                                     <div class="cli-tab-status idle"></div>
                                     <div class="cli-tab-close" onclick="closeTab(event, 'tab-1')">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -882,8 +882,8 @@
  |_|\_\___/|_|   \__\___/_/\_\
                                         </div>
                                         <div class="cli-output-line"></div>
-                                        <div class="cli-output-line info">Welcome to Kortex CLI v1.0.0</div>
-                                        <div class="cli-output-line muted">Type 'help' to see available commands or 'kortex --help' for usage information.</div>
+                                        <div class="cli-output-line info">Welcome to Kaiden CLI v1.0.0</div>
+                                        <div class="cli-output-line muted">Type 'help' to see available commands or 'kdn --help' for usage information.</div>
                                         <div class="cli-output-line"></div>
                                     </div>
                                     <div class="cli-tab-input-line">
@@ -1014,10 +1014,10 @@
                                     </svg>
                                 </div>
                                 <div class="cli-help-commands">
-                                    <code>kortex init</code> - Initialize workspace<br>
-                                    <code>kortex workspace list</code> - List workspaces<br>
-                                    <code>kortex workspace inspect</code> - Inspect resources<br>
-                                    <code>kortex mcp list</code> - List MCP servers<br>
+                                    <code>kdn init</code> - Initialize workspace<br>
+                                    <code>kdn workspace list</code> - List workspaces<br>
+                                    <code>kdn workspace inspect</code> - Inspect resources<br>
+                                    <code>kdn mcp list</code> - List MCP servers<br>
                                     <code>help</code> - Show all commands<br>
                                     <code>clear</code> - Clear terminal<br>
                                     <span style="color: #67e8f9;">Ctrl+T</span> - New tab <span style="color: #67e8f9;">Ctrl+W</span> - Close tab
@@ -1039,7 +1039,7 @@
                             <polyline points="4 17 10 11 4 5"/>
                             <line x1="12" y1="19" x2="20" y2="19"/>
                         </svg>
-                        Kortex CLI Command Reference
+                        Kaiden CLI Command Reference
                     </div>
                     <button class="command-ref-close" onclick="closeCommandReference()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1052,24 +1052,24 @@
                     <div class="command-ref-section highlighted">
                         <h3>Workspace Commands</h3>
                         <div class="command-ref-item">
-                            <code>kortex init [DIR]</code>
+                            <code>kdn init [DIR]</code>
                             <p>Initialize a new workspace in the specified directory</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--name &lt;name&gt;</code> Workspace name (default: directory name)</span>
                                 <span class="param"><code>--agent &lt;type&gt;</code> Agent type: claude-code, codex, goose, cursor</span>
-                                <span class="param"><code>--config &lt;path&gt;</code> Configuration directory (default: DIR/.kortex/)</span>
+                                <span class="param"><code>--config &lt;path&gt;</code> Configuration directory (default: DIR/.kdn/)</span>
                             </div>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex workspace list</code>
+                            <code>kdn workspace list</code>
                             <p>List all running workspaces with context usage</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex workspace info &lt;id&gt;</code>
+                            <code>kdn workspace info &lt;id&gt;</code>
                             <p>Show detailed workspace info and context window</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex workspace inspect &lt;name&gt;</code>
+                            <code>kdn workspace inspect &lt;name&gt;</code>
                             <p>Inspect workspace resources: sandbox image, assets, network & tokens</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--section &lt;name&gt;</code> Show only: sandbox, assets, network, tokens</span>
@@ -1077,11 +1077,11 @@
                             </div>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex workspace ssh &lt;id&gt;</code>
+                            <code>kdn workspace ssh &lt;id&gt;</code>
                             <p>SSH into workspace sandbox environment</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex workspace stop &lt;id&gt;</code>
+                            <code>kdn workspace stop &lt;id&gt;</code>
                             <p>Stop a running workspace</p>
                         </div>
                     </div>
@@ -1089,14 +1089,14 @@
                     <div class="command-ref-section highlighted">
                         <h3>MCP Commands</h3>
                         <div class="command-ref-item">
-                            <code>kortex mcp list</code>
+                            <code>kdn mcp list</code>
                             <p>List connected MCP servers</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--available</code> Show all available MCP servers</span>
                             </div>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex mcp install &lt;name&gt;</code>
+                            <code>kdn mcp install &lt;name&gt;</code>
                             <p>Install MCP server into workspace</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--workspace &lt;id&gt;</code> Target workspace ID</span>
@@ -1107,15 +1107,15 @@
                     <div class="command-ref-section highlighted">
                         <h3>Skill Commands</h3>
                         <div class="command-ref-item">
-                            <code>kortex skill list</code>
+                            <code>kdn skill list</code>
                             <p>List available skills</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex skill info &lt;name&gt;</code>
+                            <code>kdn skill info &lt;name&gt;</code>
                             <p>Show skill details and requirements</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex skill install &lt;name&gt;</code>
+                            <code>kdn skill install &lt;name&gt;</code>
                             <p>Install a skill (validates hardened image requirements)</p>
                         </div>
                     </div>
@@ -1123,7 +1123,7 @@
                     <div class="command-ref-section hidden">
                         <h3>OpenShift AI Commands</h3>
                         <div class="command-ref-item">
-                            <code>kortex openshift connect</code>
+                            <code>kdn openshift connect</code>
                             <p>Connect to OpenShift AI environment</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--url &lt;url&gt;</code> OpenShift AI URL</span>
@@ -1131,19 +1131,19 @@
                             </div>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex openshift status</code>
+                            <code>kdn openshift status</code>
                             <p>Show OpenShift AI connection status</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex openshift mcp list</code>
+                            <code>kdn openshift mcp list</code>
                             <p>List available MCP servers on OpenShift AI</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex openshift mcp connect &lt;name|all&gt;</code>
+                            <code>kdn openshift mcp connect &lt;name|all&gt;</code>
                             <p>Connect to OpenShift AI MCP servers</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex openshift skills</code>
+                            <code>kdn openshift skills</code>
                             <p>List enterprise skills with hardened images</p>
                         </div>
                     </div>
@@ -1151,11 +1151,11 @@
                     <div class="command-ref-section">
                         <h3>Other Commands</h3>
                         <div class="command-ref-item">
-                            <code>kortex status</code>
-                            <p>Show Kortex status</p>
+                            <code>kdn status</code>
+                            <p>Show Kaiden status</p>
                         </div>
                         <div class="command-ref-item">
-                            <code>kortex version</code>
+                            <code>kdn version</code>
                             <p>Show version info</p>
                         </div>
                         <div class="command-ref-item">
@@ -1174,14 +1174,14 @@
         <!-- CLI Status Bar -->
         <div class="global-status-bar" id="globalStatusBar">
             <div class="status-bar-left">
-                <div class="status-bar-item status-bar-ui-mode" onclick="window.location.href='../index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
+                <div class="status-bar-item status-bar-ui-mode" onclick="window.location.href='../projects/index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"/>
                         <rect x="14" y="3" width="7" height="7"/>
                         <rect x="14" y="14" width="7" height="7"/>
                         <rect x="3" y="14" width="7" height="7"/>
                     </svg>
-                    <span style="color: #a78bfa; font-weight: 500;">UI Mode</span>
+                    <span style="color: #a78bfa; font-weight: 500;">Projects</span>
                 </div>
                 <div class="status-bar-item" style="padding-left: 12px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
@@ -1194,7 +1194,7 @@
             <div class="status-bar-right">
                 <div class="status-bar-item">
                     <div class="status-bar-dot" style="background: #22c55e;"></div>
-                    <span>Kortex Connected</span>
+                    <span>Kaiden Connected</span>
                 </div>
             </div>
         </div>
@@ -1206,8 +1206,8 @@
         let tabs = {
             'tab-1': {
                 id: 'tab-1',
-                name: 'kortex',
-                type: 'kortex',
+                name: 'kdn',
+                type: 'kdn',
                 commandHistory: [],
                 historyIndex: -1,
                 isProcessing: false,
@@ -1240,13 +1240,13 @@
         function createNewTab(agentType = null, name = null) {
             tabCounter++;
             const tabId = `tab-${tabCounter}`;
-            const tabName = name || (agentType || 'kortex');
+            const tabName = name || (agentType || 'kdn');
             
             // Create tab data
             tabs[tabId] = {
                 id: tabId,
                 name: tabName,
-                type: agentType || 'kortex',
+                type: agentType || 'kdn',
                 commandHistory: [],
                 historyIndex: -1,
                 isProcessing: false,
@@ -1268,7 +1268,7 @@
                 }
             };
             
-            const iconClass = getIconClass(agentType || 'kortex');
+            const iconClass = getIconClass(agentType || 'kdn');
             tabEl.innerHTML = `
                 <svg class="cli-tab-icon ${iconClass}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="4 17 10 11 4 5"/>
@@ -1301,8 +1301,8 @@
  |_|\\_\\___/|_|   \\__\\___/_/\\_\\
                     </div>
                     <div class="cli-output-line"></div>
-                    <div class="cli-output-line info">Welcome to Kortex CLI v1.0.0</div>
-                    <div class="cli-output-line muted">Type 'help' to see available commands or 'kortex --help' for usage information.</div>
+                    <div class="cli-output-line info">Welcome to Kaiden CLI v1.0.0</div>
+                    <div class="cli-output-line muted">Type 'help' to see available commands or 'kdn --help' for usage information.</div>
                     <div class="cli-output-line"></div>
                 </div>
                 <div class="cli-tab-input-line">
@@ -1328,9 +1328,9 @@
                 'codex': 'codex',
                 'goose': 'goose',
                 'cursor': 'cursor',
-                'kortex': 'kortex'
+                'kdn': 'kdn'
             };
-            return classes[type] || 'kortex';
+            return classes[type] || 'kdn';
         }
 
         // Switch to a specific tab
@@ -1621,50 +1621,50 @@
 
             if (cmd === 'clear') {
                 clearTerminal();
-            } else if (cmd === 'help' || cmd === 'kortex --help' || cmd === 'kortex -h') {
+            } else if (cmd === 'help' || cmd === 'kdn --help' || cmd === 'kdn -h') {
                 await showHelp();
-            } else if (cmd === 'kortex init' || cmd.startsWith('kortex init ')) {
+            } else if (cmd === 'kdn init' || cmd.startsWith('kdn init ')) {
                 const args = parseInitArgs(parts.slice(2));
                 await initWorkspaceDemo(args.dir, args.name, args.agent, args.config);
-            } else if (cmd === 'kortex workspace list' || cmd === 'kortex workspaces') {
+            } else if (cmd === 'kdn workspace list' || cmd === 'kdn workspaces') {
                 await listAgentsDemo();
-            } else if (cmd.startsWith('kortex workspace info ') || cmd === 'kortex workspace info') {
+            } else if (cmd.startsWith('kdn workspace info ') || cmd === 'kdn workspace info') {
                 const agentId = parts[3] || 'agt_7x8k2m9n4p1q';
                 await agentInfoDemo(agentId);
-            } else if (cmd.startsWith('kortex workspace inspect ') || cmd === 'kortex workspace inspect') {
+            } else if (cmd.startsWith('kdn workspace inspect ') || cmd === 'kdn workspace inspect') {
                 const workspaceName = parts[3] || 'my-project';
                 await inspectWorkspaceDemo(workspaceName);
-            } else if (cmd === 'kortex mcp list' || cmd === 'kortex mcp list --available') {
+            } else if (cmd === 'kdn mcp list' || cmd === 'kdn mcp list --available') {
                 await listMcpDemo(cmd.includes('--available'));
-            } else if (cmd.startsWith('kortex mcp install ')) {
+            } else if (cmd.startsWith('kdn mcp install ')) {
                 const args = parseArgs(parts.slice(3));
                 await installMcpDemo(args.name || parts[3], args.workspace);
-            } else if (cmd === 'kortex status') {
+            } else if (cmd === 'kdn status') {
                 await showStatusDemo();
-            } else if (cmd === 'kortex version' || cmd === 'kortex --version') {
-                addOutput('kortex version 1.0.0');
+            } else if (cmd === 'kdn version' || cmd === 'kdn --version') {
+                addOutput('kdn version 1.0.0');
                 addOutput('Build: 2026.03.04-release', 'muted');
-            } else if (cmd.startsWith('kortex workspace ssh ') || cmd === 'kortex workspace ssh') {
+            } else if (cmd.startsWith('kdn workspace ssh ') || cmd === 'kdn workspace ssh') {
                 const agentId = parts[3] || 'agt_7x8k2m9n4p1q';
                 await agentSshDemo(agentId);
-            } else if (cmd === 'kortex skill list' || cmd === 'kortex skills') {
+            } else if (cmd === 'kdn skill list' || cmd === 'kdn skills') {
                 await skillListDemo();
-            } else if (cmd.startsWith('kortex skill info ')) {
+            } else if (cmd.startsWith('kdn skill info ')) {
                 const skillName = parts[3] || 'code-review';
                 await skillInfoDemo(skillName);
-            } else if (cmd.startsWith('kortex skill install ')) {
+            } else if (cmd.startsWith('kdn skill install ')) {
                 const skillName = parts[3] || 'code-review';
                 await skillInstallDemo(skillName);
-            } else if (cmd === 'kortex openshift skills') {
+            } else if (cmd === 'kdn openshift skills') {
                 await openshiftSkillsDemo();
-            } else if (cmd === 'kortex openshift connect' || cmd.startsWith('kortex openshift connect ')) {
+            } else if (cmd === 'kdn openshift connect' || cmd.startsWith('kdn openshift connect ')) {
                 const args = parseArgs(parts.slice(3));
                 await connectOpenshiftDemo(args.url, args.token);
-            } else if (cmd === 'kortex openshift status') {
+            } else if (cmd === 'kdn openshift status') {
                 await openshiftStatusDemo();
-            } else if (cmd === 'kortex openshift mcp list') {
+            } else if (cmd === 'kdn openshift mcp list') {
                 await openshiftMcpListDemo();
-            } else if (cmd === 'kortex openshift mcp connect' || cmd.startsWith('kortex openshift mcp connect ')) {
+            } else if (cmd === 'kdn openshift mcp connect' || cmd.startsWith('kdn openshift mcp connect ')) {
                 const serverName = parts[4] || 'all';
                 await openshiftMcpConnectDemo(serverName);
             } else if (cmd === '' || cmd === undefined) {
@@ -1687,25 +1687,25 @@
                 await sleep(500);
                 
                 if (pendingDemo === 'connect-mcp-step2') {
-                    await typeCommand('kortex mcp install github --workspace agt_7x8k2m9n4p1q');
+                    await typeCommand('kdn mcp install github --workspace agt_7x8k2m9n4p1q');
                 } else if (pendingDemo === 'openshift-mcp-list') {
-                    await typeCommand('kortex mcp list');
+                    await typeCommand('kdn mcp list');
                 }
             }
         }
 
         async function showHelp() {
             addOutput('');
-            addOutput('Kortex CLI - Command Line Interface for Kortex', 'info');
+            addOutput('Kaiden CLI - Command Line Interface for Kaiden', 'info');
             addOutput('');
             addOutput('USAGE:', 'highlight');
-            addOutput('  kortex <command> [subcommand] [options]');
+            addOutput('  kdn <command> [subcommand] [options]');
             addOutput('');
             addOutput('COMMANDS:', 'highlight');
             addOutput('  init [DIR]             Initialize a new workspace');
             addOutput('       --name <name>     Workspace name (default: directory name)');
             addOutput('       --agent <type>    Agent type: claude-code, codex, goose, cursor');
-            addOutput('       --config <path>   Configuration directory (default: DIR/.kortex/)');
+            addOutput('       --config <path>   Configuration directory (default: DIR/.kdn/)');
             addOutput('  workspace list         List all running workspaces with context usage');
             addOutput('  workspace info <id>    Show detailed workspace info and context window');
             addOutput('  workspace inspect <n>  Inspect workspace resources, sandbox, network & tokens');
@@ -1733,7 +1733,7 @@
             addOutput('  openshift mcp connect  Connect to OpenShift AI MCP servers');
             addOutput('  openshift skills       List enterprise skills with hardened images');
             addOutput('');
-            addOutput('  status                 Show Kortex status');
+            addOutput('  status                 Show Kaiden status');
             addOutput('  version                Show version info');
             addOutput('');
             addOutput('AVAILABLE AGENTS:', 'highlight');
@@ -1748,10 +1748,10 @@
             addOutput('  Ctrl+1-9               Switch to tab 1-9');
             addOutput('');
             addOutput('EXAMPLES:', 'highlight');
-            addOutput('  kortex init --name my-project --agent claude-code');
-            addOutput('  kortex init /path/to/project --agent codex');
-            addOutput('  kortex init --name feature/issue-123 --agent goose');
-            addOutput('  kortex mcp install github --workspace agt_123');
+            addOutput('  kdn init --name my-project --agent claude-code');
+            addOutput('  kdn init /path/to/project --agent codex');
+            addOutput('  kdn init --name feature/issue-123 --agent goose');
+            addOutput('  kdn mcp install github --workspace agt_123');
         }
 
         async function initWorkspaceDemo(dir, name, agentType, configPath) {
@@ -1759,7 +1759,7 @@
             // Determine directory and name based on GitHub issue spec
             const workDir = dir || '.';
             const workName = name || (dir ? dir.split('/').pop() : 'project1');
-            const workConfig = configPath || `${workDir}/.kortex/`;
+            const workConfig = configPath || `${workDir}/.kdn/`;
             
             addOutput('');
             
@@ -1772,7 +1772,7 @@
                 addOutput('  [3] Goose           - Block\'s autonomous agent (Claude 3.5 Sonnet)');
                 addOutput('  [4] Cursor Agent    - Cursor\'s AI coding agent (Claude 3.5 Sonnet)');
                 addOutput('');
-                addOutput('Use --agent flag to specify: kortex init --agent claude-code', 'muted');
+                addOutput('Use --agent flag to specify: kdn init --agent claude-code', 'muted');
                 addOutput('');
                 
                 // Simulate user selecting option 1
@@ -1958,7 +1958,7 @@
             addOutput('');
             addOutput('Total: 4 agents (3 running, 1 paused) | Total context: 414K tokens', 'muted');
             addOutput('');
-            addOutput('View details: kortex workspace info <id>', 'muted');
+            addOutput('View details: kdn workspace info <id>', 'muted');
         }
 
         async function agentInfoDemo(agentId) {
@@ -2095,7 +2095,7 @@
                     network: {
                         policy: 'allow',
                         policyDesc: 'default permit, selective block',
-                        proxy: 'http://proxy.kortex.local:8080',
+                        proxy: 'http://proxy.kaiden.local:8080',
                         blockedCidrs: ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'],
                         allowedHosts: ['*.anthropic.com', '*.npmjs.org', 'github.com'],
                         httpsBypass: 'none'
@@ -2125,7 +2125,7 @@
                     network: {
                         policy: 'deny',
                         policyDesc: 'default block, selective allow',
-                        proxy: 'http://proxy.kortex.local:8080',
+                        proxy: 'http://proxy.kaiden.local:8080',
                         blockedCidrs: [],
                         allowedHosts: ['*.anthropic.com', 'api.openai.com', 'github.com', 'registry.npmjs.org'],
                         httpsBypass: 'api.stripe.com'
@@ -2203,7 +2203,7 @@
             
             addOutputHTML('<span class="spinner"></span>Resolving sandbox container...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kortex-sandbox-' + agentId.slice(-8);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kdn-sandbox-' + agentId.slice(-8);
             terminalBody.lastChild.className = 'cli-output-line success';
             
             addOutputHTML('<span class="spinner"></span>Establishing secure tunnel...', 'info');
@@ -2245,14 +2245,14 @@
             addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #22c55e; font-weight: bold;">SSH Session - Agent Sandbox</span>                                                  <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  Agent:       ${agent.name.padEnd(56)}<span style="color: #22c55e;">║</span>`);
-            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   kortex-sandbox-${agentId.slice(-8).padEnd(40)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   kdn-sandbox-${agentId.slice(-8).padEnd(40)}<span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  User:        slemeur                                                          <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  Workdir:     ${agent.path.padEnd(56)}<span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #6b7280;">Type 'exit' to disconnect from sandbox</span>                                       <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╚════════════════════════════════════════════════════════════════════════════════╝</span>`);
             addOutput('');
-            addOutput(`Last login: ${new Date().toLocaleString()} from kortex-cli`, 'muted');
+            addOutput(`Last login: ${new Date().toLocaleString()} from kdn-cli`, 'muted');
             addOutput('');
             
             // Show some sandbox environment info
@@ -2334,7 +2334,7 @@
                 addOutput('');
                 addOutput('Total: 8 MCP servers available', 'muted');
                 addOutput('');
-                addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+                addOutput('Install into workspace: kdn mcp install <name> --workspace <agent-id>', 'muted');
             } else if (openshiftConnected) {
                 addOutputHTML('<span class="spinner"></span>Fetching MCP servers...', 'info');
                 await sleep(500);
@@ -2357,7 +2357,7 @@
                 addOutput('');
                 addOutput('Total: 7 servers (3 local active, 4 from OpenShift AI ready) | 104 tools', 'muted');
                 addOutput('');
-                addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+                addOutput('Install into workspace: kdn mcp install <name> --workspace <agent-id>', 'muted');
             } else {
                 addOutput('CONNECTED MCP SERVERS:', 'highlight');
                 addOutput('');
@@ -2496,7 +2496,7 @@
             addOutput('│ security-audit   │ Security vulnerability scan    │ 6 steps  │');
             addOutput('└──────────────────┴────────────────────────────────┴──────────┘');
             addOutput('');
-            addOutput('Run a flow with: kortex flow run <name>', 'muted');
+            addOutput('Run a flow with: kdn flow run <name>', 'muted');
         }
 
         async function showStatusDemo() {
@@ -2587,7 +2587,7 @@
             addOutputHTML('    <span style="color: #22c55e;">✓</span> quay-registry         <span style="color: #6b7280;">Container images on internal Quay</span>');
             addOutputHTML('    <span style="color: #22c55e;">✓</span> ansible-automation    <span style="color: #6b7280;">Ansible playbook generation</span>');
             addOutput('');
-            addOutput('Run "kortex openshift mcp list" to see MCP server details.', 'muted');
+            addOutput('Run "kdn openshift mcp list" to see MCP server details.', 'muted');
         }
 
         async function openshiftStatusDemo() {
@@ -2595,7 +2595,7 @@
             if (!openshiftConnected) {
                 addOutput('OpenShift AI: Not connected', 'warning');
                 addOutput('');
-                addOutput('Use "kortex openshift connect" to connect to an OpenShift AI environment.', 'muted');
+                addOutput('Use "kdn openshift connect" to connect to an OpenShift AI environment.', 'muted');
                 return;
             }
             
@@ -2620,7 +2620,7 @@
             
             if (!openshiftConnected) {
                 addOutput('Not connected to OpenShift AI.', 'warning');
-                addOutput('Run "kortex openshift connect" first.', 'muted');
+                addOutput('Run "kdn openshift connect" first.', 'muted');
                 
                 // Auto-connect for demo purposes
                 addOutput('');
@@ -2649,8 +2649,8 @@
             addOutput('');
             addOutput('Total: 4 MCP servers available (59 tools)', 'muted');
             addOutput('');
-            addOutput('Connect with: kortex openshift mcp connect <name>', 'muted');
-            addOutput('Connect all:  kortex openshift mcp connect all', 'muted');
+            addOutput('Connect with: kdn openshift mcp connect <name>', 'muted');
+            addOutput('Connect all:  kdn openshift mcp connect all', 'muted');
         }
 
         async function openshiftMcpConnectDemo(serverName) {
@@ -2745,7 +2745,7 @@
             addOutput('');
             addOutput('🔒 = Requires Red Hat Hardened Container Image', 'muted');
             addOutput('');
-            addOutput('View details: kortex skill info <name>', 'muted');
+            addOutput('View details: kdn skill info <name>', 'muted');
         }
 
         async function skillInfoDemo(skillName) {
@@ -2829,7 +2829,7 @@
                     description: 'Automated code review and suggestions',
                     version: '1.2.0',
                     source: 'Local',
-                    author: 'Kortex',
+                    author: 'Kaiden',
                     hardened: false,
                     capabilities: ['Code analysis', 'Style checking', 'Bug detection', 'Performance tips'],
                     requires: []
@@ -2874,7 +2874,7 @@
             }
             
             addOutput('');
-            addOutput(`Install with: kortex skill install ${skill.name}`, 'muted');
+            addOutput(`Install with: kdn skill install ${skill.name}`, 'muted');
         }
 
         async function skillInstallDemo(skillName) {
@@ -2893,7 +2893,7 @@
                 addOutput('  • Access to registry.redhat.io');
                 addOutput('');
                 addOutput('Connect to OpenShift AI first:', 'muted');
-                addOutput('  kortex openshift connect', 'info');
+                addOutput('  kdn openshift connect', 'info');
                 return;
             }
             
@@ -2927,7 +2927,7 @@
             terminalBody.lastChild.innerHTML = '✓ Skill components installed';
             terminalBody.lastChild.className = 'cli-output-line success';
             
-            addOutputHTML('<span class="spinner"></span>Registering with Kortex...', 'info');
+            addOutputHTML('<span class="spinner"></span>Registering with Kaiden...', 'info');
             await sleep(400);
             terminalBody.lastChild.innerHTML = '✓ Skill registered';
             terminalBody.lastChild.className = 'cli-output-line success';
@@ -2981,8 +2981,8 @@
             addOutput('    ✓ Signed with Red Hat GPG key');
             addOutput('    ✓ Red Hat Certified Container');
             addOutput('');
-            addOutput('Install: kortex skill install <name>', 'muted');
-            addOutput('Details: kortex skill info <name>', 'muted');
+            addOutput('Install: kdn skill install <name>', 'muted');
+            addOutput('Details: kdn skill info <name>', 'muted');
         }
 
         async function attachAgentDemo(agentId) {
@@ -3062,8 +3062,8 @@
 
             const enterHint = '<span style="color: #67e8f9; font-style: italic;">  ↵ Press Enter to execute...</span>';
 
-            // ── Step 1: kortex init ──
-            const cmd1 = 'kortex init --name my-project --agent claude-code';
+            // ── Step 1: kdn workspace start (Sprint-290 hero) ──
+            const cmd1 = 'kdn workspace start --project doc-updater';
             cliInput.disabled = false;
             await typeCommand(cmd1);
             addOutputHTML(enterHint);
@@ -3074,43 +3074,33 @@
             addOutput(`~/slemeur $ ${cmd1}`);
             addOutput('');
 
-            addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
+            addOutputHTML('<span class="spinner"></span>Loading project policy (doc-updater)...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Directory verified: ~/slemeur/project1';
+            terminalBody.lastChild.innerHTML = '✓ Filesystem + network deny rules applied';
             terminalBody.lastChild.className = 'cli-output-line success';
 
-            addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
-            await sleep(600);
-            terminalBody.lastChild.innerHTML = '✓ Configuration created at ./.kortex/';
+            addOutputHTML('<span class="spinner"></span>Attaching krunAI sandbox...', 'info');
+            await sleep(700);
+            terminalBody.lastChild.innerHTML = '✓ Sandbox active (host unreachable)';
             terminalBody.lastChild.className = 'cli-output-line success';
 
-            addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
-            await sleep(1000);
-            terminalBody.lastChild.innerHTML = '✓ Sandbox environment ready';
-            terminalBody.lastChild.className = 'cli-output-line success';
-
-            addOutputHTML('<span class="spinner"></span>Starting Claude Code agent...', 'info');
+            addOutputHTML('<span class="spinner"></span>Starting OpenCode agent (local OpenVINO / Ramalama)...', 'info');
             await sleep(900);
-            terminalBody.lastChild.innerHTML = '✓ Claude Code agent initialized';
-            terminalBody.lastChild.className = 'cli-output-line success';
-
-            addOutputHTML('<span class="spinner"></span>Connecting to Claude 3.5 Sonnet...', 'info');
-            await sleep(800);
-            terminalBody.lastChild.innerHTML = '✓ Connected to Claude 3.5 Sonnet';
+            terminalBody.lastChild.innerHTML = '✓ Agent ready — interact below (this session is your chat UI)';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutput('');
-            addOutput('Initialized workspace WKS_7X8K2M9N with name my-project', 'success');
+            addOutput('Workspace WKS_7X8K2M9N — doc updater agent', 'success');
             addOutput('');
             addOutput('  Workspace ID:    WKS_7X8K2M9N', 'info');
-            addOutput('  Name:            my-project', 'info');
-            addOutput('  Agent:           Claude Code (Anthropic)', 'info');
-            addOutput('  Directory:       ~/slemeur/project1', 'info');
-            addOutput('  Configuration:   ./.kortex/', 'info');
+            addOutput('  Project:         doc-updater', 'info');
+            addOutput('  Agent:           OpenCode (demo: local) | Alt: Claude Code (remote)', 'info');
+            addOutput('  Directory:       ~/dev/doc-updater', 'info');
+            addOutput('  Policy:          ./.kdn/', 'info');
             addOutput('');
 
-            // ── Step 2: kortex workspace list ──
-            const cmd2 = 'kortex workspace list';
+            // ── Step 2: kdn workspace list ──
+            const cmd2 = 'kdn workspace list';
             cliInput.disabled = false;
             await typeCommand(cmd2);
             addOutputHTML(enterHint);
@@ -3138,11 +3128,11 @@
             addOutput('');
             addOutput('Total: 4 workspaces (3 running, 1 paused) | Total context: 302K tokens', 'muted');
             addOutput('');
-            addOutput('View details: kortex workspace inspect <name>', 'muted');
+            addOutput('View details: kdn workspace inspect <name>', 'muted');
             addOutput('');
 
-            // ── Step 3: kortex workspace inspect ──
-            const cmd3 = 'kortex workspace inspect my-project';
+            // ── Step 3: kdn workspace inspect ──
+            const cmd3 = 'kdn workspace inspect my-project';
             cliInput.disabled = false;
             await typeCommand(cmd3);
             addOutputHTML(enterHint);
@@ -3176,7 +3166,7 @@
             addOutput('');
             addOutput('NETWORK', 'highlight');
             addOutputHTML('  Policy:         <span style="color: #a78bfa;">allow</span> <span style="color: #6b7280;">(default permit, selective block)</span>');
-            addOutput('  Proxy:          http://proxy.kortex.local:8080', 'muted');
+            addOutput('  Proxy:          http://proxy.kaiden.local:8080', 'muted');
             addOutput('  Blocked CIDRs:  10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16', 'muted');
             addOutput('  Allowed Hosts:  *.anthropic.com, *.npmjs.org, github.com', 'muted');
             addOutput('  HTTPS Bypass:   none', 'muted');
@@ -3187,8 +3177,8 @@
             addOutputHTML('  <span style="color: #f59e0b;">○</span> docker-hub     <span style="color: #6b7280;">not configured</span>');
             addOutput('');
 
-            // ── Step 4: kortex mcp list --available ──
-            const cmd4 = 'kortex mcp list --available';
+            // ── Step 4: kdn mcp list --available ──
+            const cmd4 = 'kdn mcp list --available';
             cliInput.disabled = false;
             await typeCommand(cmd4);
             addOutputHTML(enterHint);
@@ -3220,11 +3210,11 @@
             addOutput('');
             addOutput('Total: 8 MCP servers available', 'muted');
             addOutput('');
-            addOutput('Install into workspace: kortex mcp install <name> --workspace <agent-id>', 'muted');
+            addOutput('Install into workspace: kdn mcp install <name> --workspace <agent-id>', 'muted');
             addOutput('');
 
-            // ── Step 5: kortex mcp install github ──
-            const cmd5 = 'kortex mcp install github --workspace agt_7x8k2m9n4p1q';
+            // ── Step 5: kdn mcp install github ──
+            const cmd5 = 'kdn mcp install github --workspace agt_7x8k2m9n4p1q';
             cliInput.disabled = false;
             await typeCommand(cmd5);
             addOutputHTML(enterHint);
@@ -3280,8 +3270,8 @@
             addOutput('    • create_branch       • merge_pr          • get_commit');
             addOutput('');
 
-            // ── Step 6: kortex workspace ssh ──
-            const cmd6 = 'kortex workspace ssh agt_7x8k2m9n4p1q';
+            // ── Step 6: kdn workspace ssh ──
+            const cmd6 = 'kdn workspace ssh agt_7x8k2m9n4p1q';
             cliInput.disabled = false;
             await typeCommand(cmd6);
             addOutputHTML(enterHint);
@@ -3300,7 +3290,7 @@
 
             addOutputHTML('<span class="spinner"></span>Resolving sandbox container...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kortex-sandbox-n4p1q';
+            terminalBody.lastChild.innerHTML = '✓ Sandbox container found: kdn-sandbox-n4p1q';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutputHTML('<span class="spinner"></span>Establishing secure tunnel...', 'info');
@@ -3339,14 +3329,14 @@
             addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #22c55e; font-weight: bold;">SSH Session - Workspace Sandbox</span>                                              <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  Workspace:   ${'my-project'.padEnd(56)}<span style="color: #22c55e;">║</span>`);
-            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   ${'kortex-sandbox-n4p1q'.padEnd(56)}<span style="color: #22c55e;">║</span>`);
+            addOutputHTML(`<span style="color: #22c55e;">║</span>  Container:   ${'kdn-sandbox-n4p1q'.padEnd(56)}<span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  User:        slemeur                                                          <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  Workdir:     ${agentPath.padEnd(56)}<span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╠════════════════════════════════════════════════════════════════════════════════╣</span>`);
             addOutputHTML(`<span style="color: #22c55e;">║</span>  <span style="color: #6b7280;">Type 'exit' to disconnect from sandbox</span>                                       <span style="color: #22c55e;">║</span>`);
             addOutputHTML(`<span style="color: #22c55e;">╚════════════════════════════════════════════════════════════════════════════════╝</span>`);
             addOutput('');
-            addOutput(`Last login: ${new Date().toLocaleString()} from kortex-cli`, 'muted');
+            addOutput(`Last login: ${new Date().toLocaleString()} from kdn-cli`, 'muted');
             addOutput('');
             addOutput(`[slemeur@${agentName}] $ pwd`);
             addOutput(agentPath.replace('~', '/home/slemeur'));
@@ -3385,8 +3375,8 @@
 
             const enterHint = '<span style="color: #67e8f9; font-style: italic;">  ↵ Press Enter to continue...</span>';
 
-            // ── Step 1: kortex init ──
-            const cmd1 = 'kortex init --name my-project --agent claude-code';
+            // ── Step 1: kdn init ──
+            const cmd1 = 'kdn init --name my-project --agent claude-code';
             cliInput.disabled = false;
             await typeCommand(cmd1);
             addOutputHTML(enterHint);
@@ -3404,7 +3394,7 @@
 
             addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
             await sleep(600);
-            terminalBody.lastChild.innerHTML = '✓ Configuration created at ./.kortex/';
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at ./.kdn/';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
@@ -3429,7 +3419,7 @@
             addOutput('  Name:            my-project', 'info');
             addOutput('  Agent:           Claude Code (Anthropic)', 'info');
             addOutput('  Directory:       ~/slemeur/my-project', 'info');
-            addOutput('  Configuration:   ./.kortex/', 'info');
+            addOutput('  Configuration:   ./.kdn/', 'info');
             addOutput('');
             addOutput('Attaching to workspace session...', 'muted');
             await sleep(1200);
@@ -3509,19 +3499,19 @@
             addOutput('');
             await sleep(500);
 
-            addOutputHTML('  <span style="color: #67e8f9;">┌─ Sub-agent 1 · </span><span style="color: #e5e7eb; font-weight: 500;">Spec & Data Models</span> <span style="color: #6b7280;">pod/kortex-sub-a3f8 (Running)</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">┌─ Sub-agent 1 · </span><span style="color: #e5e7eb; font-weight: 500;">Spec & Data Models</span> <span style="color: #6b7280;">pod/kdn-sub-a3f8 (Running)</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;">"Analyze docs/spec.md and create database schemas, data models,</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;"> and OpenAPI specification for all endpoints"</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>');
             await sleep(500);
-            addOutputHTML('  <span style="color: #a78bfa;">┌─ Sub-agent 2 · </span><span style="color: #e5e7eb; font-weight: 500;">Authentication</span> <span style="color: #6b7280;">pod/kortex-sub-b7e1 (Running)</span>');
+            addOutputHTML('  <span style="color: #a78bfa;">┌─ Sub-agent 2 · </span><span style="color: #e5e7eb; font-weight: 500;">Authentication</span> <span style="color: #6b7280;">pod/kdn-sub-b7e1 (Running)</span>');
             addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;">"Implement OAuth2 auth layer with OpenShift service account</span>');
             addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;"> integration, JWT validation middleware, and RBAC policies"</span>');
             addOutputHTML('  <span style="color: #a78bfa;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
             addOutputHTML('  <span style="color: #a78bfa;">│</span>');
             await sleep(500);
-            addOutputHTML('  <span style="color: #6ee7b7;">┌─ Sub-agent 3 · </span><span style="color: #e5e7eb; font-weight: 500;">Application & Deployment</span> <span style="color: #6b7280;">pod/kortex-sub-c9d2 (Running)</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">┌─ Sub-agent 3 · </span><span style="color: #e5e7eb; font-weight: 500;">Application & Deployment</span> <span style="color: #6b7280;">pod/kdn-sub-c9d2 (Running)</span>');
             addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;">"Build the Express.js API with route handlers, service layer,</span>');
             addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;"> Postgres/Redis clients, and Helm chart for OpenShift"</span>');
             addOutputHTML('  <span style="color: #6ee7b7;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
@@ -3591,8 +3581,8 @@
         async function runDevSpacesWorkspaceDemo() {
             const terminalBody = getTerminalBody();
 
-            // Phase 1: kortex init with DevSpaces sandbox
-            addOutput('$ kortex init --name inventory-api --agent opencode --model qwen2.5-coder --sandbox AgenticDevSpaces', 'command');
+            // Phase 1: kdn init with DevSpaces sandbox
+            addOutput('$ kdn init --name inventory-api --agent opencode --model qwen2.5-coder --sandbox AgenticDevSpaces', 'command');
             addOutput('');
 
             addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
@@ -3602,7 +3592,7 @@
 
             addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kdn/';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutputHTML('<span class="spinner"></span>Connecting to OpenShift cluster...', 'info');
@@ -3741,7 +3731,7 @@
             const terminalBody = getTerminalBody();
             
             // Phase 1: Initialize workspace
-            addOutput('$ kortex init --name rhel-ops --agent claude-code', 'command');
+            addOutput('$ kdn init --name rhel-ops --agent claude-code', 'command');
             addOutput('');
             
             addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
@@ -3751,7 +3741,7 @@
             
             addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kdn/';
             terminalBody.lastChild.className = 'cli-output-line success';
             
             addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
@@ -3769,7 +3759,7 @@
             addOutput('');
             
             // Phase 2: Connect RHEL MCP Server
-            addOutput('$ kortex mcp install rhel-mcp --workspace WKS_RHEL_8X3M', 'command');
+            addOutput('$ kdn mcp install rhel-mcp --workspace WKS_RHEL_8X3M', 'command');
             addOutput('');
             
             addOutputHTML('<span class="spinner"></span>Fetching rhel-mcp from registry...', 'info');
@@ -4048,7 +4038,7 @@
             }
             
             // Phase 2: Initialize workspace with opencode agent and ramalama model provider
-            addOutput('$ kortex init --name local-coding --agent opencode --model-provider ramalama:qwen', 'command');
+            addOutput('$ kdn init --name local-coding --agent opencode --model-provider ramalama:qwen', 'command');
             addOutput('');
             
             addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
@@ -4058,7 +4048,7 @@
             
             addOutputHTML('<span class="spinner"></span>Creating workspace configuration...', 'info');
             await sleep(500);
-            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kortex/';
+            terminalBody.lastChild.innerHTML = '✓ Configuration created at .kdn/';
             terminalBody.lastChild.className = 'cli-output-line success';
             
             addOutputHTML('<span class="spinner"></span>Setting up sandbox environment...', 'info');
@@ -4249,7 +4239,7 @@
                     await runSubAgentsDemo();
                     return;
                 case 'openshift-connect':
-                    command = 'kortex openshift connect';
+                    command = 'kdn openshift connect';
                     window.pendingDemo = 'openshift-mcp-list';
                     break;
                 case 'devspaces-workspace':

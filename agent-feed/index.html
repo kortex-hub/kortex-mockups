@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - Agent Feed</title>
+    <title>Kaiden - Agent Feed</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
@@ -259,7 +259,7 @@
                             <circle cx="5" cy="19" r="1"/>
                         </svg>
                     </div>
-                    <h1 class="agent-feed-page-title">Agent Feed</h1>
+                    <h1 class="agent-feed-page-title">Alerts</h1>
                     <div class="agent-feed-page-badge">
                         <div class="page-badge-dot"></div>
                         <span id="pageFeedBadge">loading...</span>
@@ -344,60 +344,34 @@
             var step = 0;
             var events = [
                 function () {
-                    window.agentFeed.updateAgent('add-dark-mode', {
-                        status: 'waiting', statusLabel: 'Waiting for input', time: 'now',
+                    window.agentFeed.updateAgent('telemetry-blocked', {
+                        status: 'waiting', statusLabel: 'Review', time: 'now',
                         activity: null,
                         question: {
-                            text: 'I\'ve implemented the dark mode toggle. The theme applies globally via a CSS class on <code>&lt;body&gt;</code>. Should I also persist the preference to <code>localStorage</code>, or use a server-side setting?',
+                            text: 'New outbound attempt to <code>cdn.example.net</code> &mdash; not on allow list. Allow once or update project policy?',
                             options: [
-                                { label: 'Use localStorage', type: 'primary' },
-                                { label: 'Server-side setting', type: 'secondary' }
+                                { label: 'Allow once', type: 'primary' },
+                                { label: 'Deny', type: 'secondary' }
                             ],
-                            allowReply: true
+                            allowReply: false
                         }
                     });
                     renderFeed();
                 },
                 function () {
-                    window.agentFeed.updateAgent('fix-memory-leak', {
-                        status: 'running', statusLabel: 'Running', time: 'now',
-                        progress: 60, progressSteps: '3 / 4',
-                        activity: { text: 'Refactoring AsyncPool connection handling', type: 'writing' },
+                    window.agentFeed.updateAgent('doc-updater-running', {
+                        status: 'running', statusLabel: 'In terminal', time: 'now',
+                        progress: 55, progressSteps: 'CLI',
+                        activity: { text: 'OpenCode processing doc sync (output in terminal)', type: 'writing' },
                         question: null
                     });
                     renderFeed();
                 },
                 function () {
-                    window.agentFeed.updateAgent('api-docs', {
-                        status: 'running', statusLabel: 'Running', time: 'now',
-                        activity: { text: 'Scanning route definitions in src/routes/', type: 'reading' },
-                        question: null
-                    });
-                    renderFeed();
-                },
-                function () {
-                    window.agentFeed.updateAgent('refactor-auth', {
-                        status: 'running', statusLabel: 'Running', time: 'now',
-                        progress: 70, progressSteps: '4 / 5',
-                        activity: { text: 'Writing JWT verification middleware', type: 'writing' },
-                        question: null
-                    });
-                    renderFeed();
-                },
-                function () {
-                    window.agentFeed.updateAgent('fix-memory-leak', {
-                        status: 'completed', statusLabel: 'Completed', time: 'just now',
-                        progress: 100, progressSteps: '4 / 4',
+                    window.agentFeed.updateAgent('telemetry-blocked', {
+                        status: 'completed', statusLabel: 'Resolved', time: 'just now',
+                        progress: 100, progressSteps: 'network',
                         activity: null, question: null
-                    });
-                    renderFeed();
-                },
-                function () {
-                    window.agentFeed.updateAgent('add-dark-mode', {
-                        status: 'running', statusLabel: 'Running', time: 'now',
-                        progress: 55, progressSteps: '2 / 4',
-                        activity: { text: 'Adding localStorage persistence for theme', type: 'writing' },
-                        question: null
                     });
                     renderFeed();
                 }

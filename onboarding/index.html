@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex — Setup</title>
+    <title>Kaiden — Setup</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <style>
         body.onboarding-page {
@@ -1197,7 +1197,7 @@
                         <polyline points="2 12 12 17 22 12"/>
                     </svg>
                 </div>
-                Kortex
+                Kaiden
             </div>
 
             <div class="ob-stepper" id="obStepper" style="display:none;">
@@ -1235,27 +1235,27 @@
                         <polyline points="2 12 12 17 22 12"/>
                     </svg>
                 </div>
-                <h2>Welcome to Kortex</h2>
-                <p>Let's get your AI development environment set up. We'll walk through a few quick steps to configure your projects, connect your LLM providers, and discover existing AI assets.</p>
+                <h2>Welcome to Kaiden</h2>
+                <p>Download the installer from <strong>openkaiden.ai</strong> (same idea as podman-desktop.io). This guided flow follows a <strong>Podman Desktop&ndash;style</strong> sequence: extensions (Kaiden CLI, onecli, krunAI, OpenCode, Ramalama, OpenShift MCP, Semantic Router&hellip;), then projects and providers. You will use the coding agent from the terminal with <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code>.</p>
 
                 <div class="ob-welcome-features">
                     <div class="ob-welcome-feat">
                         <div class="ob-welcome-feat-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5.5 8.5 9 12l-3.5 3.5L2 12l3.5-3.5Z"/><path d="m12 2 3.5 3.5L12 9 8.5 5.5 12 2Z"/></svg>
+                        </div>
+                        <span>Extensions</span>
+                    </div>
+                    <div class="ob-welcome-feat">
+                        <div class="ob-welcome-feat-icon green">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                         </div>
                         <span>Projects</span>
                     </div>
                     <div class="ob-welcome-feat">
-                        <div class="ob-welcome-feat-icon green">
+                        <div class="ob-welcome-feat-icon cyan">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         </div>
-                        <span>LLM Providers</span>
-                    </div>
-                    <div class="ob-welcome-feat">
-                        <div class="ob-welcome-feat-icon cyan">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                        </div>
-                        <span>AI Assets</span>
+                        <span>LLM &amp; assets</span>
                     </div>
                 </div>
             </div>
@@ -1263,7 +1263,7 @@
             <!-- ═══ Step 2: Define Projects ═══ -->
             <div class="ob-step" id="obStep2">
                 <h3 class="ob-section-title">Add Your Projects</h3>
-                <p class="ob-section-desc">Point Kortex at your code. You can add local directories or clone from a git repository. We'll analyze each project to detect its language, frameworks, and structure.</p>
+                <p class="ob-section-desc">Point Kaiden at your code. You can add local directories or clone from a git repository. We'll analyze each project to detect its language, frameworks, and structure.</p>
 
                 <div class="ob-project-input-area">
                     <div class="ob-input-row">
@@ -1300,7 +1300,7 @@
             <!-- ═══ Step 3: Configure LLM Providers ═══ -->
             <div class="ob-step" id="obStep3">
                 <h3 class="ob-section-title">Configure LLM Providers</h3>
-                <p class="ob-section-desc">Connect Kortex to language models for AI-powered assistance. Enable local models for privacy-first workflows, or connect remote APIs for maximum capability.</p>
+                <p class="ob-section-desc">Connect Kaiden to language models for AI-powered assistance. Enable local models for privacy-first workflows, or connect remote APIs for maximum capability.</p>
 
                 <div class="ob-provider-section">
                     <div class="ob-provider-section-label">Local Inference</div>
@@ -1568,7 +1568,7 @@
                     </svg>
                 </div>
                 <h2>You're All Set!</h2>
-                <p>Your Kortex environment is configured and ready. You can always adjust these settings later from the Settings page.</p>
+                <p>Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.</p>
 
                 <div class="ob-ready-summary">
                     <div class="ob-ready-stat">
@@ -1636,11 +1636,11 @@
         };
 
         const sampleGitRepos = {
-            'github.com/kortex-hub/kortex': {
-                name: 'Kortex',
+            'github.com/kaiden-io/kaiden': {
+                name: 'Kaiden',
                 lang: 'Rust',
                 framework: 'Cargo workspace',
-                path: 'github.com/kortex-hub/kortex'
+                path: 'github.com/kaiden-io/kaiden'
             }
         };
 
@@ -1703,7 +1703,7 @@
 
         function goNext() {
             if (currentStep === 5) {
-                window.location.href = '../index.html';
+                window.location.href = '../projects/index.html';
                 return;
             }
             goToStep(currentStep + 1);
