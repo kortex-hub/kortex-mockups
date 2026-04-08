@@ -660,7 +660,7 @@
         // Check if modules are enabled
         function isSkillsModuleEnabled() {
             try {
-                const settings = localStorage.getItem('kortexSettings');
+                const settings = localStorage.getItem('kaidenSettings');
                 if (settings) {
                     const parsed = JSON.parse(settings);
                     if (parsed.modules && parsed.modules.skillsEnabled === false) {
@@ -675,7 +675,7 @@
 
         function isMcpModuleEnabled() {
             try {
-                const settings = localStorage.getItem('kortexSettings');
+                const settings = localStorage.getItem('kaidenSettings');
                 if (settings) {
                     const parsed = JSON.parse(settings);
                     if (parsed.modules && parsed.modules.mcpEnabled === false) {

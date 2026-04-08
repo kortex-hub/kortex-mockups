@@ -1842,15 +1842,18 @@
             }
         }
 
-        // Check if DevSpaces is enabled in settings
+        // Check if DevSpaces is enabled in settings (must match settings/index.html → kaidenSettings)
         function isDevSpacesEnabled() {
             try {
-                const settings = localStorage.getItem('kortexSettings');
-                if (settings) {
-                    const parsed = JSON.parse(settings);
-                    return parsed.devspaces?.enabled === true;
+                const raw = localStorage.getItem('kaidenSettings');
+                if (!raw) {
+                    // No saved prefs yet — match Settings UI defaults (DevSpaces toggle starts on)
+                    return true;
                 }
-                // Default to enabled if no settings saved yet
+                const parsed = JSON.parse(raw);
+                if (parsed.devspaces && typeof parsed.devspaces.enabled === 'boolean') {
+                    return parsed.devspaces.enabled;
+                }
                 return true;
             } catch (e) {
                 return true;
@@ -1860,7 +1863,7 @@
         // Check if Skills module is enabled in settings
         function isSkillsModuleEnabled() {
             try {
-                const settings = localStorage.getItem('kortexSettings');
+                const settings = localStorage.getItem('kaidenSettings');
                 if (settings) {
                     const parsed = JSON.parse(settings);
                     if (parsed.modules && parsed.modules.skillsEnabled === false) {
@@ -1876,7 +1879,7 @@
         // Check if MCP module is enabled in settings
         function isMcpModuleEnabled() {
             try {
-                const settings = localStorage.getItem('kortexSettings');
+                const settings = localStorage.getItem('kaidenSettings');
                 if (settings) {
                     const parsed = JSON.parse(settings);
                     if (parsed.modules && parsed.modules.mcpEnabled === false) {
@@ -1924,7 +1927,7 @@
         // Check if an integration is configured in global settings
         function isIntegrationConfigured(integration) {
             try {
-                const settings = localStorage.getItem('kortexSettings');
+                const settings = localStorage.getItem('kaidenSettings');
                 if (settings) {
                     const parsed = JSON.parse(settings);
                     if (parsed.integrations && parsed.integrations[integration]) {
