@@ -3,53 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kortex - MCP Catalog</title>
+    <title>Kortex - MCP Servers</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
-        /* Internal Badge in Card */
-        .mcp-card-badges {
+        .mcp-panel {
+            display: none;
+        }
+
+        .mcp-panel.active {
+            display: block;
+        }
+
+        .mcp-table-wrap {
+            margin-top: 8px;
+        }
+
+        .mcp-servers-table thead th {
+            user-select: none;
+        }
+
+        .mcp-servers-table thead th.sortable {
+            cursor: pointer;
+        }
+
+        .mcp-servers-table thead th.sortable:hover {
+            color: #e5e7eb;
+        }
+
+        .mcp-sort-icon {
+            display: inline-block;
+            margin-left: 4px;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+
+        .mcp-name-cell {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 8px;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .mcp-name-primary {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .mcp-name-id {
+            font-size: 12px;
+            font-family: ui-monospace, monospace;
+            color: #9ca3af;
+        }
+
+        .mcp-desc-cell {
+            font-size: 13px;
+            color: #9ca3af;
+            max-width: 420px;
+            line-height: 1.45;
+        }
+
+        .mcp-status-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .mcp-status-icon.ready {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.28);
+        }
+
+        .mcp-status-icon.install {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .mcp-status-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .mcp-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #4b5563;
+            background: #374151;
+            color: #e5e7eb;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .mcp-action-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+        }
+
+        .mcp-action-btn.primary {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.35);
+            color: #60a5fa;
+        }
+
+        .mcp-action-btn.primary:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        .mcp-action-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .mcp-action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .mcp-registry-toolbar {
+            margin-bottom: 20px;
+        }
+
+        .mcp-registry-list {
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #252631;
+        }
+
+        .mcp-registry-section-label {
+            padding: 12px 16px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .mcp-registry-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            transition: background 0.15s ease;
+        }
+
+        .mcp-registry-row:last-child {
+            border-bottom: none;
+        }
+
+        .mcp-registry-row:hover {
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .mcp-registry-favicon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            flex-shrink: 0;
+        }
+
+        .mcp-registry-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mcp-registry-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .mcp-registry-url {
+            font-size: 13px;
+            color: #60a5fa;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .mcp-registry-url:hover {
+            text-decoration: underline;
         }
 
         .internal-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
+            gap: 4px;
+            padding: 3px 8px;
             background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(234, 88, 12, 0.1) 100%);
             color: #fb923c;
             border: 1px solid rgba(251, 146, 60, 0.3);
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.03em;
+            width: fit-content;
         }
 
         .internal-badge svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        /* Internal MCP Icon Styles */
-        .mcp-card-icon.accounting-icon {
-            background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
-        }
-
-        .mcp-card-icon.sap-icon {
-            background: linear-gradient(135deg, #0066B3 0%, #004E8C 100%);
-        }
-
-        .mcp-card-icon.french-gov-icon {
-            background: linear-gradient(135deg, #000091 0%, #000066 100%);
-        }
-
-        .mcp-card-icon.erp-icon {
-            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+            width: 10px;
+            height: 10px;
         }
 
         @keyframes spin {
@@ -69,529 +241,365 @@
         <!-- MCP Content -->
         <main class="main-content">
             <header class="header">
-                <h1>MCP</h1>
+                <h1>MCP Servers</h1>
             </header>
             
             <div class="content">
-                <!-- MCP Header -->
                 <div class="rag-header">
-                    <h2 class="rag-title">MCP Catalog</h2>
-                    <button class="create-button" onclick="openAddMcpModal()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"/>
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Add MCP Server
-                    </button>
+                    <h2 class="rag-title">MCP Servers</h2>
                 </div>
 
-                <!-- Search -->
                 <div class="search-container">
                     <div class="search-wrapper">
                         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/>
                             <path d="m21 21-4.35-4.35"/>
                         </svg>
-                        <input type="text" class="search-input" placeholder="Search MCP servers..." id="mcpSearch" oninput="filterMcpCards()">
+                        <input type="text" class="search-input" placeholder="Search MCP servers..." id="mcpSearch" oninput="filterMcpRows()">
                     </div>
                 </div>
 
-                <!-- Tabs -->
-                <div class="tabs">
-                    <a href="#" class="tab active" onclick="filterByStatus('all', this)">All</a>
-                    <a href="#" class="tab" onclick="filterByStatus('installed', this)">Installed</a>
-                    <a href="#" class="tab" onclick="filterByStatus('available', this)">Available</a>
-                    <a href="#" class="tab internal-tab" onclick="filterByStatus('internal', this)">Internal</a>
+                <div class="tabs" id="mcpTabs">
+                    <a href="#" class="tab active" data-mcp-tab="ready" onclick="switchMcpTab('ready', this); return false;">Ready</a>
+                    <a href="#" class="tab" data-mcp-tab="install" onclick="switchMcpTab('install', this); return false;">Install</a>
+                    <a href="#" class="tab" data-mcp-tab="registries" onclick="switchMcpTab('registries', this); return false;">Edit registries</a>
                 </div>
 
-                <!-- MCP Cards Grid -->
-                <div class="mcp-catalog-grid" id="mcpCatalogGrid">
-                    
-                    <!-- Corporate Accounting MCP (Internal) -->
-                    <div class="mcp-card internal-asset" data-status="installed" data-internal="true" data-name="corporate-accounting-mcp" onclick="window.location.href='details.html?mcp=corporate-accounting'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon accounting-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#accountingGradient)"/>
-                                    <rect x="35" y="30" width="50" height="60" rx="4" fill="#fff" opacity="0.95"/>
-                                    <line x1="42" y1="45" x2="78" y2="45" stroke="#0891B2" stroke-width="3"/>
-                                    <line x1="42" y1="55" x2="70" y2="55" stroke="#0891B2" stroke-width="3"/>
-                                    <line x1="42" y1="65" x2="74" y2="65" stroke="#0891B2" stroke-width="3"/>
-                                    <line x1="42" y1="75" x2="60" y2="75" stroke="#0891B2" stroke-width="3"/>
-                                    <circle cx="75" cy="75" r="15" fill="#0891B2"/>
-                                    <text x="75" y="80" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">€</text>
-                                    <defs>
-                                        <linearGradient id="accountingGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#0891B2"/>
-                                            <stop offset="100%" stop-color="#0E7490"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-badges">
-                                <div class="internal-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                    Internal
-                                </div>
-                                <div class="mcp-card-status installed">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"/>
-                                    </svg>
-                                    Installed
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">Corporate Accounting MCP</h3>
-                            <p class="mcp-card-description">Internal MCP server for corporate accounting operations. Access financial reports, manage invoices, and handle expense tracking.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v2.4.1</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    8 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn configure" onclick="event.stopPropagation(); window.location.href='details.html?mcp=corporate-accounting'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                                Configure
-                            </button>
-                        </div>
+                <!-- Ready: connected / configured servers -->
+                <div class="mcp-panel active" id="panel-ready" data-mcp-panel="ready">
+                    <div class="mcp-table-wrap">
+                        <table class="rag-table mcp-servers-table" id="table-ready">
+                            <thead>
+                                <tr>
+                                    <th class="status-cell">Status</th>
+                                    <th class="sortable" data-sort-col="1" onclick="sortMcpTable('ready', 1)">Name<span class="mcp-sort-icon" aria-hidden="true">▲</span></th>
+                                    <th class="sortable" data-sort-col="2" onclick="sortMcpTable('ready', 2)">Description<span class="mcp-sort-icon" aria-hidden="true">⇅</span></th>
+                                    <th class="actions-cell" style="text-align:right;width:100px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mcpReadyBody">
+                                <tr class="mcp-server-row internal-asset" data-internal="true" data-search="corporate accounting mcp internal financial reports invoices expense v2.4.1" onclick="window.location.href='details.html?mcp=corporate-accounting'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon ready" title="Ready">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="internal-badge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                                Internal
+                                            </span>
+                                            <span class="mcp-name-primary">Corporate Accounting MCP</span>
+                                            <span class="mcp-name-id">v2.4.1 · 8 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">Internal MCP server for corporate accounting operations. Access financial reports, manage invoices, and handle expense tracking.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn" onclick="event.stopPropagation(); window.location.href='details.html?mcp=corporate-accounting'" title="Configure" aria-label="Configure">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="mcp-server-row internal-asset" data-internal="true" data-search="internal customer database mcp profiles support v2.1.0" onclick="window.location.href='details.html?mcp=internal-customer-database'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon ready" title="Ready">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="internal-badge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                                Internal
+                                            </span>
+                                            <span class="mcp-name-primary">Internal Customer Database MCP</span>
+                                            <span class="mcp-name-id">v2.1.0 · 11 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">MCP server for querying and managing the internal customer database. Access customer profiles, account history, and support records.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn" onclick="event.stopPropagation(); window.location.href='details.html?mcp=internal-customer-database'" title="Configure" aria-label="Configure">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="mcp-server-row" data-search="rhel red hat enterprise linux system management package v1.2.0" onclick="window.location.href='details.html?mcp=rhel'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon ready" title="Ready">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="mcp-name-primary">RHEL MCP</span>
+                                            <span class="mcp-name-id">v1.2.0 · 12 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">Model Context Protocol server for Red Hat Enterprise Linux. Provides system management, package operations, and configuration tools.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn" onclick="event.stopPropagation(); window.location.href='details.html?mcp=rhel'" title="Configure" aria-label="Configure">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="mcp-server-row" data-search="openshift kubernetes cluster deployments v2.1.3" onclick="window.location.href='details.html?mcp=openshift'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon ready" title="Ready">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="mcp-name-primary">OpenShift MCP</span>
+                                            <span class="mcp-name-id">v2.1.3 · 18 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">Model Context Protocol server for Red Hat OpenShift. Manage clusters, deployments, routes, and Kubernetes resources with AI assistance.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn" onclick="event.stopPropagation(); window.location.href='details.html?mcp=openshift'" title="Configure" aria-label="Configure">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!-- Internal Customer Database MCP (Internal) -->
-                    <div class="mcp-card internal-asset" data-status="installed" data-internal="true" data-name="internal-customer-database-mcp" onclick="window.location.href='details.html?mcp=internal-customer-database'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon customer-db-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#customerDbGradient)"/>
-                                    <ellipse cx="60" cy="45" rx="24" ry="10" fill="#fff" opacity="0.9"/>
-                                    <path d="M36 45v12c0 5.52 10.74 10 24 10s24-4.48 24-10V45" stroke="#fff" stroke-width="3" fill="none" opacity="0.9"/>
-                                    <path d="M36 57v12c0 5.52 10.74 10 24 10s24-4.48 24-10V57" stroke="#fff" stroke-width="3" fill="none" opacity="0.9"/>
-                                    <circle cx="50" cy="45" r="3" fill="#1a73e8" opacity="0.8"/>
-                                    <circle cx="60" cy="43" r="3" fill="#1a73e8" opacity="0.8"/>
-                                    <circle cx="70" cy="45" r="3" fill="#1a73e8" opacity="0.8"/>
-                                    <defs>
-                                        <linearGradient id="customerDbGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#1a73e8"/>
-                                            <stop offset="100%" stop-color="#0d47a1"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-badges">
-                                <div class="internal-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                    Internal
-                                </div>
-                                <div class="mcp-card-status installed">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"/>
-                                    </svg>
-                                    Installed
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">Internal Customer Database MCP</h3>
-                            <p class="mcp-card-description">MCP server for querying and managing the internal customer database. Access customer profiles, account history, and support records.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v2.1.0</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    11 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn configure" onclick="event.stopPropagation(); window.location.href='details.html?mcp=internal-customer-database'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                                Configure
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- SAP Integration MCP (Internal) -->
-                    <div class="mcp-card internal-asset" data-status="available" data-internal="true" data-name="sap-integration-mcp" onclick="window.location.href='details.html?mcp=sap-integration'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon sap-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#sapGradient)"/>
-                                    <text x="60" y="70" text-anchor="middle" fill="#fff" font-size="28" font-weight="bold" font-family="Arial">SAP</text>
-                                    <defs>
-                                        <linearGradient id="sapGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#0066B3"/>
-                                            <stop offset="100%" stop-color="#004E8C"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-badges">
-                                <div class="internal-badge">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                    Internal
-                                </div>
-                                <div class="mcp-card-status available">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="12" y1="8" x2="12" y2="16"/>
-                                        <line x1="8" y1="12" x2="16" y2="12"/>
-                                    </svg>
-                                    Available
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">SAP Integration MCP</h3>
-                            <p class="mcp-card-description">Connect to corporate SAP systems. Query business objects, manage purchase orders, and access ERP data through natural language.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v3.1.2</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    22 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn install" onclick="event.stopPropagation(); installMcp('sap-integration')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="7 10 12 15 17 10"/>
-                                    <line x1="12" y1="15" x2="12" y2="3"/>
-                                </svg>
-                                Install
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- RHEL MCP Card -->
-                    <div class="mcp-card" data-status="installed" data-name="rhel-mcp" onclick="window.location.href='details.html?mcp=rhel'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon rhel-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#rhelGradient)"/>
-                                    <path d="M35 75C35 75 40 55 60 50C80 45 85 55 85 55C85 55 90 65 85 75C80 85 60 90 60 90C60 90 40 85 35 75Z" fill="#fff" opacity="0.95"/>
-                                    <path d="M42 72C42 72 46 58 60 54C74 50 78 58 78 58C78 58 82 66 78 74C74 82 60 85 60 85C60 85 50 82 42 72Z" fill="#EE0000"/>
-                                    <ellipse cx="60" cy="42" rx="18" ry="12" fill="#fff" opacity="0.9"/>
-                                    <ellipse cx="60" cy="42" rx="14" ry="9" fill="#EE0000"/>
-                                    <defs>
-                                        <linearGradient id="rhelGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#CC0000"/>
-                                            <stop offset="100%" stop-color="#8B0000"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-status installed">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
-                                Installed
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">RHEL MCP</h3>
-                            <p class="mcp-card-description">Model Context Protocol server for Red Hat Enterprise Linux. Provides system management, package operations, and configuration tools.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v1.2.0</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    12 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn configure" onclick="event.stopPropagation(); window.location.href='details.html?mcp=rhel'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                                Configure
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- OpenShift MCP Card -->
-                    <div class="mcp-card" data-status="installed" data-name="openshift-mcp" onclick="window.location.href='details.html?mcp=openshift'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon openshift-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#openshiftGradient)"/>
-                                    <g transform="translate(25, 30)">
-                                        <path d="M35 5L55 15L55 35L35 45L15 35L15 15L35 5Z" fill="#fff" opacity="0.95"/>
-                                        <path d="M35 10L50 18L50 32L35 40L20 32L20 18L35 10Z" fill="#EE0000"/>
-                                        <path d="M35 15L45 21L45 29L35 35L25 29L25 21L35 15Z" fill="#fff"/>
-                                        <path d="M5 25L12 25L8 20M8 30L12 25" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M65 25L58 25L62 20M62 30L58 25" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </g>
-                                    <defs>
-                                        <linearGradient id="openshiftGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#DB212E"/>
-                                            <stop offset="100%" stop-color="#A30000"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-status installed">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
-                                Installed
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">OpenShift MCP</h3>
-                            <p class="mcp-card-description">Model Context Protocol server for Red Hat OpenShift. Manage clusters, deployments, routes, and Kubernetes resources with AI assistance.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v2.1.3</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    18 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn configure" onclick="event.stopPropagation(); window.location.href='details.html?mcp=openshift'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                                Configure
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- GitHub MCP Card -->
-                    <div class="mcp-card" data-status="installed" data-name="github-mcp" onclick="window.location.href='details.html?mcp=github'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon github-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#githubGradient)"/>
-                                    <path d="M60 25C40.67 25 25 40.67 25 60C25 75.52 35.16 88.62 49.14 93.16C50.94 93.49 51.6 92.39 51.6 91.44C51.6 90.59 51.57 88.33 51.55 85.33C41.55 87.52 39.44 80.52 39.44 80.52C37.81 76.6 35.44 75.5 35.44 75.5C32.14 73.24 35.68 73.28 35.68 73.28C39.32 73.54 41.23 77.02 41.23 77.02C44.48 82.52 49.77 80.89 51.68 79.98C52 77.67 52.9 76.05 53.9 75.12C45.9 74.18 37.52 71.08 37.52 57.48C37.52 53.78 38.92 50.72 41.28 48.33C40.92 47.38 39.68 43.88 41.6 39.15C41.6 39.15 44.65 38.13 51.5 42.58C54.42 41.74 57.54 41.32 60.64 41.31C63.73 41.32 66.86 41.74 69.78 42.58C76.62 38.13 79.66 39.15 79.66 39.15C81.58 43.88 80.35 47.38 79.98 48.33C82.36 50.72 83.74 53.78 83.74 57.48C83.74 71.12 75.34 74.16 67.3 75.07C68.55 76.2 69.66 78.42 69.66 81.77C69.66 86.54 69.62 90.36 69.62 91.44C69.62 92.4 70.26 93.52 72.1 93.15C86.06 88.6 96.2 75.5 96.2 60C96.2 40.67 80.53 25 60 25Z" fill="white"/>
-                                    <defs>
-                                        <linearGradient id="githubGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#333"/>
-                                            <stop offset="100%" stop-color="#1a1a1a"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-status installed">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
-                                Installed
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">GitHub MCP</h3>
-                            <p class="mcp-card-description">Model Context Protocol server for GitHub. Manage repositories, issues, pull requests, and workflows through natural language.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v3.0.1</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    24 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn configure" onclick="event.stopPropagation(); window.location.href='details.html?mcp=github'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                                </svg>
-                                Configure
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Ansible MCP Card (Available) -->
-                    <div class="mcp-card" data-status="available" data-name="ansible-mcp" onclick="window.location.href='details.html?mcp=ansible'">
-                        <div class="mcp-card-header">
-                            <div class="mcp-card-icon ansible-icon">
-                                <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="60" cy="60" r="50" fill="url(#ansibleGradient)"/>
-                                    <path d="M60 28L82 82H72L60 52L44 82H38L60 28Z" fill="white"/>
-                                    <path d="M60 28L82 82H72L60 52" fill="white" opacity="0.9"/>
-                                    <defs>
-                                        <linearGradient id="ansibleGradient" x1="10" y1="10" x2="110" y2="110">
-                                            <stop offset="0%" stop-color="#1A1918"/>
-                                            <stop offset="100%" stop-color="#000"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </div>
-                            <div class="mcp-card-status available">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="12" y1="8" x2="12" y2="16"/>
-                                    <line x1="8" y1="12" x2="16" y2="12"/>
-                                </svg>
-                                Available
-                            </div>
-                        </div>
-                        <div class="mcp-card-body">
-                            <h3 class="mcp-card-title">Ansible MCP</h3>
-                            <p class="mcp-card-description">Model Context Protocol server for Ansible automation. Run playbooks, manage inventories, and orchestrate infrastructure.</p>
-                            <div class="mcp-card-meta">
-                                <span class="mcp-card-version">v1.5.0</span>
-                                <span class="mcp-card-tools">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                    15 tools
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mcp-card-footer">
-                            <button class="mcp-card-btn install" onclick="event.stopPropagation(); installMcp('ansible')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="7 10 12 15 17 10"/>
-                                    <line x1="12" y1="15" x2="12" y2="3"/>
-                                </svg>
-                                Install
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
+
+                <div class="mcp-panel" id="panel-install" data-mcp-panel="install">
+                    <div class="mcp-table-wrap">
+                        <table class="rag-table mcp-servers-table" id="table-install">
+                            <thead>
+                                <tr>
+                                    <th class="status-cell">Status</th>
+                                    <th class="sortable" onclick="sortMcpTable('install', 1)">Name<span class="mcp-sort-icon" aria-hidden="true">▲</span></th>
+                                    <th class="sortable" onclick="sortMcpTable('install', 2)">Description<span class="mcp-sort-icon" aria-hidden="true">⇅</span></th>
+                                    <th class="actions-cell" style="text-align:right;width:100px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mcpInstallBody">
+                                <tr class="mcp-server-row" data-search="com.github.mcp github official server" onclick="window.location.href='details.html?mcp=github'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon install" title="Not installed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="18" height="14" rx="2"/>
+                                                <path d="M7 3v14M3 8h18"/>
+                                                <line x1="14" y1="14" x2="19" y2="19"/><line x1="19" y1="14" x2="14" y2="19"/>
+                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="mcp-name-primary">com.github.mcp</span>
+                                            <span class="mcp-name-id">Catalog</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">GitHub's official MCP Server</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn primary" data-install-btn onclick="event.stopPropagation(); installMcpFromCatalog(this, 'details.html?mcp=github')" title="Install" aria-label="Install">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="mcp-server-row internal-asset" data-internal="true" data-search="com.sap.integration erp business objects purchase orders v3.1.2" onclick="window.location.href='details.html?mcp=sap-integration'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon install" title="Not installed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="18" height="14" rx="2"/>
+                                                <path d="M7 3v14M3 8h18"/>
+                                                <line x1="14" y1="14" x2="19" y2="19"/><line x1="19" y1="14" x2="14" y2="19"/>
+                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="internal-badge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                                Internal
+                                            </span>
+                                            <span class="mcp-name-primary">com.sap.integration</span>
+                                            <span class="mcp-name-id">v3.1.2 · 22 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">Connect to corporate SAP systems. Query business objects, manage purchase orders, and access ERP data through natural language.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn primary" data-install-btn onclick="event.stopPropagation(); installMcpFromCatalog(this, 'details.html?mcp=sap-integration')" title="Install" aria-label="Install">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="mcp-server-row" data-search="com.redhat.ansible ansible automation playbooks inventories v1.5.0" onclick="window.location.href='details.html?mcp=ansible'">
+                                    <td class="status-cell">
+                                        <div class="mcp-status-icon install" title="Not installed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="3" width="18" height="14" rx="2"/>
+                                                <path d="M7 3v14M3 8h18"/>
+                                                <line x1="14" y1="14" x2="19" y2="19"/><line x1="19" y1="14" x2="14" y2="19"/>
+                                            </svg>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mcp-name-cell">
+                                            <span class="mcp-name-primary">com.redhat.ansible</span>
+                                            <span class="mcp-name-id">v1.5.0 · 15 tools</span>
+                                        </div>
+                                    </td>
+                                    <td><div class="mcp-desc-cell">Model Context Protocol server for Ansible automation. Run playbooks, manage inventories, and orchestrate infrastructure.</div></td>
+                                    <td class="actions-cell" style="text-align:right">
+                                        <button type="button" class="mcp-action-btn primary" data-install-btn onclick="event.stopPropagation(); installMcpFromCatalog(this, 'details.html?mcp=ansible')" title="Install" aria-label="Install">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mcp-panel" id="panel-registries" data-mcp-panel="registries">
+                    <div class="mcp-registry-toolbar">
+                        <button type="button" class="create-button" onclick="openAddMcpRegistryModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Add MCP registry
+                        </button>
+                    </div>
+                    <div class="mcp-registry-list" id="mcpRegistryList">
+                        <div class="mcp-registry-section-label">Registry location</div>
+                        <div class="mcp-registry-row" data-search="mcp registry example openkaiden github io">
+                            <div class="mcp-registry-favicon" aria-hidden="true"></div>
+                            <div class="mcp-registry-text">
+                                <div class="mcp-registry-title">MCP Registry example</div>
+                                <a class="mcp-registry-url" href="https://openkaiden.github.io/mcp-registry-online/v1.2.3/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">https://openkaiden.github.io/mcp-registry-online/v1.2.3/</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
 
     <script src="../assets/js/scripts.js"></script>
     <script>
-        let currentFilter = 'all';
+        let currentMcpTab = 'ready';
 
-        function filterMcpCards() {
+        function switchMcpTab(tab, el) {
+            currentMcpTab = tab;
+            document.querySelectorAll('#mcpTabs .tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.mcp-panel').forEach(p => {
+                p.classList.toggle('active', p.getAttribute('data-mcp-panel') === tab);
+            });
+            const search = document.getElementById('mcpSearch');
+            if (search) {
+                search.placeholder = tab === 'registries'
+                    ? 'Search registries...'
+                    : 'Search MCP servers...';
+            }
+            filterMcpRows();
+        }
+
+        function filterMcpRows() {
             const searchInput = document.getElementById('mcpSearch');
-            const filter = searchInput.value.toLowerCase();
-            const cards = document.querySelectorAll('.mcp-card');
+            const filter = (searchInput && searchInput.value.toLowerCase()) || '';
             const isConnected = document.body.classList.contains('openshift-connected');
 
-            cards.forEach(card => {
-                const name = card.dataset.name.toLowerCase();
-                const title = card.querySelector('.mcp-card-title').textContent.toLowerCase();
-                const description = card.querySelector('.mcp-card-description').textContent.toLowerCase();
-                const status = card.dataset.status;
-                const isInternal = card.dataset.internal === 'true';
-                
-                const matchesSearch = name.includes(filter) || title.includes(filter) || description.includes(filter);
-                let matchesStatus = false;
-                
-                if (currentFilter === 'all') {
-                    matchesStatus = true;
-                } else if (currentFilter === 'internal') {
-                    matchesStatus = isInternal;
-                } else {
-                    matchesStatus = status === currentFilter && !isInternal;
-                }
+            if (currentMcpTab === 'registries') {
+                document.querySelectorAll('.mcp-registry-row').forEach(row => {
+                    const hay = (row.dataset.search || row.innerText || '').toLowerCase();
+                    row.style.display = !filter || hay.includes(filter) ? '' : 'none';
+                });
+                return;
+            }
 
-                // Hide internal assets if not connected
+            const tbodyId = currentMcpTab === 'ready' ? 'mcpReadyBody' : 'mcpInstallBody';
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+
+            tbody.querySelectorAll('.mcp-server-row').forEach(row => {
+                const isInternal = row.dataset.internal === 'true';
+                const hay = (row.dataset.search || row.innerText || '').toLowerCase();
+
                 if (isInternal && !isConnected) {
-                    card.style.display = 'none';
-                } else if (matchesSearch && matchesStatus) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
+                    row.style.display = 'none';
+                    return;
                 }
+                row.style.display = !filter || hay.includes(filter) ? '' : 'none';
             });
         }
 
-        function filterByStatus(status, tabElement) {
-            currentFilter = status;
-            
-            // Update active tab
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            tabElement.classList.add('active');
-            
-            filterMcpCards();
-            
-            // Prevent default link behavior
-            event.preventDefault();
+        function sortMcpTable(which, colIdx) {
+            const id = which === 'ready' ? 'mcpReadyBody' : 'mcpInstallBody';
+            const tbody = document.getElementById(id);
+            if (!tbody) return;
+            const rows = Array.from(tbody.querySelectorAll('tr.mcp-server-row'));
+            rows.sort((a, b) => {
+                const ca = a.cells[colIdx];
+                const cb = b.cells[colIdx];
+                const ta = ca ? ca.innerText.trim().toLowerCase() : '';
+                const tb = cb ? cb.innerText.trim().toLowerCase() : '';
+                return ta.localeCompare(tb);
+            });
+            rows.forEach(r => tbody.appendChild(r));
         }
 
-        function installMcp(mcpName) {
-            const card = document.querySelector(`[data-name="${mcpName}-mcp"]`);
-            const statusBadge = card.querySelector('.mcp-card-status');
-            const installBtn = card.querySelector('.mcp-card-btn');
-            
-            // Simulate installation
-            installBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
-                </svg>
-                Installing...
-            `;
-            installBtn.disabled = true;
-            
+        function installMcpFromCatalog(btn, detailsHref) {
+            const row = btn.closest('tr');
+            if (!row || btn.disabled) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>';
+
             setTimeout(() => {
-                card.dataset.status = 'installed';
-                statusBadge.className = 'mcp-card-status installed';
-                statusBadge.innerHTML = `
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    Installed
-                `;
-                installBtn.className = 'mcp-card-btn configure';
-                installBtn.innerHTML = `
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                    </svg>
-                    Configure
-                `;
-                installBtn.disabled = false;
-                installBtn.onclick = function(e) {
-                    e.stopPropagation();
-                    window.location.href = `details.html?mcp=${mcpName}`;
-                };
-                
-                filterMcpCards();
-            }, 2000);
+                const readyBody = document.getElementById('mcpReadyBody');
+                const descEl = row.cells[2] && row.cells[2].querySelector('.mcp-desc-cell');
+                const description = descEl ? descEl.textContent.trim() : '';
+                const internal = row.classList.contains('internal-asset');
+                const nameHtml = row.cells[1] ? row.cells[1].innerHTML : '';
+
+                const tr = document.createElement('tr');
+                tr.className = 'mcp-server-row' + (internal ? ' internal-asset' : '');
+                if (internal) tr.dataset.internal = 'true';
+                tr.dataset.search = ((row.dataset.search || '') + ' ' + description).toLowerCase().trim();
+                tr.onclick = function() { window.location.href = detailsHref; };
+
+                tr.innerHTML =
+                    '<td class="status-cell"><div class="mcp-status-icon ready" title="Ready"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></td>' +
+                    '<td>' + nameHtml + '</td>' +
+                    '<td><div class="mcp-desc-cell">' + escapeHtml(description) + '</div></td>' +
+                    '<td class="actions-cell" style="text-align:right">' +
+                    '<button type="button" class="mcp-action-btn" onclick="event.stopPropagation(); window.location.href=\'' + detailsHref + '\'" title="Configure" aria-label="Configure">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button></td>';
+
+                readyBody.appendChild(tr);
+                row.remove();
+                filterMcpRows();
+            }, 1600);
         }
 
-        function openAddMcpModal() {
-            alert('Add custom MCP server - Feature coming soon!');
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
         }
 
-        // Listen for OpenShift AI connection state changes
-        document.addEventListener('openshiftAIStateChanged', function(e) {
-            filterMcpCards();
+        function openAddMcpRegistryModal() {
+            alert('Add MCP registry — coming soon.');
+        }
+
+        document.addEventListener('openshiftAIStateChanged', function() {
+            filterMcpRows();
         });
 
-        // Initial filter when page loads
         document.addEventListener('sidebarLoaded', function() {
-            setTimeout(filterMcpCards, 100);
+            setTimeout(filterMcpRows, 100);
         });
+
+        document.addEventListener('DOMContentLoaded', filterMcpRows);
     </script>
 </body>
 </html>
