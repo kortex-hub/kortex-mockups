@@ -254,9 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadSidebar(activeSection);
 
-    // Dynamically load the OpenShift AI script
+    // Resolve next to this loader so it works from file:// or http(s) at any page depth
+    const loaderEl = document.querySelector('script[src*="sidebar-loader.js"]');
+    const openshiftSrc = loaderEl && loaderEl.src
+        ? loaderEl.src.replace(/sidebar-loader\.js/i, 'openshift-ai.js')
+        : new URL('../assets/js/openshift-ai.js', document.baseURI).href;
+
     const script = document.createElement('script');
-    script.src = '../assets/js/openshift-ai.js';
+    script.src = openshiftSrc;
     document.body.appendChild(script);
 
 });
