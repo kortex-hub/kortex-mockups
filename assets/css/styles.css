@@ -72,6 +72,12 @@ body {
     margin-bottom: 2px;
 }
 
+/* Model Context Protocol mark (filled); other nav icons use stroke-only paths */
+.nav-item svg.nav-item-icon--mcp {
+    fill: currentColor;
+    stroke: none;
+}
+
 .nav-item span {
     font-size: 10px;
     font-weight: 500;
