@@ -2099,9 +2099,12 @@
         let selectedModelId = null;
         let selectedFileAccess = 'workspace';
         let selectedDeployment = 'local';
-        let selectedIntegrations = {
+        /** Selected vault credential ids (aligned with Secret Vault tab in services/index.html). */
+        let selectedVaultSecrets = {
             github: false,
-            jira: false
+            jira: false,
+            slack: false,
+            'openshift-cluster': false
         };
 
         /** Presets keyed like projects/index.html → openProject(slug) and aligned with project details content. */
@@ -2114,7 +2117,7 @@
                 agent: 'claude',
                 skills: ['code-review', 'Kubernetes', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'OpenShift MCP'],
-                integrations: { github: true, jira: true },
+                vaultSecrets: ['github', 'jira', 'slack'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             },
@@ -2126,7 +2129,7 @@
                 agent: 'cursor',
                 skills: ['api-docs-generator', 'code-review'],
                 mcpServers: ['GitHub MCP'],
-                integrations: { github: true, jira: false },
+                vaultSecrets: ['github', 'slack'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             },
@@ -2138,7 +2141,7 @@
                 agent: 'claude',
                 skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
                 mcpServers: ['Kubernetes MCP', 'OpenShift MCP', 'Ansible MCP'],
-                integrations: { github: false, jira: true },
+                vaultSecrets: ['jira', 'slack', 'openshift-cluster'],
                 fileAccess: 'home',
                 deployment: 'local'
             },
@@ -2150,7 +2153,7 @@
                 agent: 'goose',
                 skills: ['code-review', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'Kubernetes MCP'],
-                integrations: { github: true, jira: true },
+                vaultSecrets: ['github', 'jira', 'slack'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             }
@@ -2192,19 +2195,29 @@
             });
         }
 
-        function applyIntegrationsFromPreset(intMap) {
-            if (!intMap) return;
-            ['github', 'jira'].forEach(key => {
-                const el = document.getElementById(key + '-integration');
-                if (!el) return;
-                const want = intMap[key] === true;
-                const ok = isIntegrationConfigured(key);
-                if (want && ok) {
-                    el.classList.add('selected');
-                    selectedIntegrations[key] = true;
-                } else {
-                    el.classList.remove('selected');
-                    selectedIntegrations[key] = false;
+        function isVaultSecretSelectable(vaultId) {
+            if (vaultId === 'github') return isIntegrationConfigured('github');
+            if (vaultId === 'jira') return isIntegrationConfigured('jira');
+            if (vaultId === 'ansible-aap') return false;
+            return true;
+        }
+
+        function clearVaultSecretSelections() {
+            document.querySelectorAll('#secret-vault-config-section .ca-vault-row.ca-pd-selectable').forEach(r => r.classList.remove('selected'));
+            Object.keys(selectedVaultSecrets).forEach(k => {
+                selectedVaultSecrets[k] = false;
+            });
+        }
+
+        function applyVaultSecretsFromPreset(ids) {
+            clearVaultSecretSelections();
+            (ids || []).forEach(id => {
+                if (!isVaultSecretSelectable(id)) return;
+                const row = document.querySelector('#secret-vault-config-section [data-vault-id="' + id + '"]');
+                if (!row || !row.classList.contains('ca-pd-selectable')) return;
+                row.classList.add('selected');
+                if (Object.prototype.hasOwnProperty.call(selectedVaultSecrets, id)) {
+                    selectedVaultSecrets[id] = true;
                 }
             });
         }
@@ -2227,7 +2240,7 @@
                 setPdSelectableRows('mcp-config-section', preset.mcpServers);
             }
 
-            applyIntegrationsFromPreset(preset.integrations);
+            applyVaultSecretsFromPreset(preset.vaultSecrets);
 
             const fa = document.querySelector('.file-access-card[data-file-access="' + preset.fileAccess + '"]');
             if (fa) {
@@ -2365,57 +2378,51 @@
             }
         }
 
-        // Toggle integration selection
-        function toggleIntegration(item, integration) {
-            const isConfigured = isIntegrationConfigured(integration);
-            
-            if (!isConfigured) {
-                // Show warning if not configured
-                const statusEl = document.getElementById('integration-status');
-                statusEl.style.display = 'block';
+        function toggleVaultSecret(row, vaultId) {
+            if (row.classList.contains('ca-vault-disabled')) return;
+            if (!isVaultSecretSelectable(vaultId)) {
+                const banner = document.getElementById('vault-status-banner');
+                if (banner) banner.style.display = 'block';
                 return;
             }
-
-            item.classList.toggle('selected');
-            selectedIntegrations[integration] = item.classList.contains('selected');
+            row.classList.toggle('selected');
+            if (Object.prototype.hasOwnProperty.call(selectedVaultSecrets, vaultId)) {
+                selectedVaultSecrets[vaultId] = row.classList.contains('selected');
+            }
         }
 
-        // Initialize integrations section
-        function initIntegrationsSection() {
-            const section = document.getElementById('integrations-config-section');
+        function initSecretVaultSection() {
+            const section = document.getElementById('secret-vault-config-section');
             if (!section) return;
 
             const githubConfigured = isIntegrationConfigured('github');
             const jiraConfigured = isIntegrationConfigured('jira');
 
-            // Update GitHub item appearance
-            const githubItem = document.getElementById('github-integration');
-            if (githubItem) {
-                if (githubConfigured) {
-                    githubItem.style.opacity = '1';
-                    githubItem.querySelector('.selectable-desc').textContent = 'Repos, issues & pull requests';
-                } else {
-                    githubItem.style.opacity = '0.6';
-                    githubItem.querySelector('.selectable-desc').textContent = 'Not configured';
+            const rowGh = section.querySelector('[data-vault-id="github"]');
+            if (rowGh) {
+                const meta = rowGh.querySelector('[data-vault-meta]');
+                if (meta) {
+                    meta.textContent = githubConfigured
+                        ? 'Personal access token · Sep 2026 · Active'
+                        : 'Not enabled in Settings — add in Settings, stored in Secret Vault';
                 }
+                rowGh.style.opacity = githubConfigured ? '1' : '0.55';
             }
 
-            // Update JIRA item appearance
-            const jiraItem = document.getElementById('jira-integration');
-            if (jiraItem) {
-                if (jiraConfigured) {
-                    jiraItem.style.opacity = '1';
-                    jiraItem.querySelector('.selectable-desc').textContent = 'Issues & project tracking';
-                } else {
-                    jiraItem.style.opacity = '0.6';
-                    jiraItem.querySelector('.selectable-desc').textContent = 'Not configured';
+            const rowJi = section.querySelector('[data-vault-id="jira"]');
+            if (rowJi) {
+                const meta = rowJi.querySelector('[data-vault-meta]');
+                if (meta) {
+                    meta.textContent = jiraConfigured
+                        ? 'OAuth · Nov 2026 · Active'
+                        : 'Not enabled in Settings — add in Settings, stored in Secret Vault';
                 }
+                rowJi.style.opacity = jiraConfigured ? '1' : '0.55';
             }
 
-            // Show status message if neither is configured
-            if (!githubConfigured && !jiraConfigured) {
-                const statusEl = document.getElementById('integration-status');
-                statusEl.style.display = 'block';
+            const banner = document.getElementById('vault-status-banner');
+            if (banner && !githubConfigured && !jiraConfigured) {
+                banner.style.display = 'block';
             }
         }
 
@@ -2464,7 +2471,7 @@
             initModelProviderCards();
             initSkillsSection();
             initMcpSection();
-            initIntegrationsSection();
+            initSecretVaultSection();
             initProjectFromUrl();
         });
 
@@ -2563,8 +2570,7 @@
                     .map(el => el.textContent.trim())
                 : [];
 
-            // Collect selected integrations
-            const enabledIntegrations = Object.keys(selectedIntegrations).filter(key => selectedIntegrations[key]);
+            const vaultSecretIds = Object.keys(selectedVaultSecrets).filter(key => selectedVaultSecrets[key]);
 
             const config = {
                 name,
@@ -2575,7 +2581,7 @@
                 fileAccess: selectedFileAccess,
                 skills: selectedSkills,
                 mcpServers: selectedMcpServers,
-                integrations: enabledIntegrations,
+                vaultSecrets: vaultSecretIds,
                 project: selectedProjectSlug
             };
 
