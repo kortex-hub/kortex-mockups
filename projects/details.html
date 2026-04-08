@@ -1647,7 +1647,7 @@
 
                     <div class="pd-nav-title">Sections</div>
                     <div class="pd-nav-list">
-                        <div class="pd-nav-item active" onclick="switchSection('overview', this)">
+                        <div class="pd-nav-item active" data-pd-tab="overview" onclick="switchSection('overview')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                             </div>
@@ -1656,7 +1656,7 @@
                                 <div class="pd-nav-desc">Summary & project settings</div>
                             </div>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('skills', this)">
+                        <div class="pd-nav-item" data-pd-tab="skills" onclick="switchSection('skills')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                             </div>
@@ -1666,7 +1666,7 @@
                             </div>
                             <span class="pd-nav-count">3</span>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('mcp', this)">
+                        <div class="pd-nav-item" data-pd-tab="mcp" onclick="switchSection('mcp')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                             </div>
@@ -1676,7 +1676,7 @@
                             </div>
                             <span class="pd-nav-count">2</span>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('knowledge', this)">
+                        <div class="pd-nav-item" data-pd-tab="knowledge" onclick="switchSection('knowledge')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
                             </div>
@@ -1686,7 +1686,7 @@
                             </div>
                             <span class="pd-nav-count">1</span>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('secrets', this)">
+                        <div class="pd-nav-item" data-pd-tab="secrets" onclick="switchSection('secrets')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                             </div>
@@ -1696,7 +1696,7 @@
                             </div>
                             <span class="pd-nav-count">3</span>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('filesystem', this)">
+                        <div class="pd-nav-item" data-pd-tab="filesystem" onclick="switchSection('filesystem')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                             </div>
@@ -1705,7 +1705,7 @@
                                 <div class="pd-nav-desc">Paths, mounts & access rules</div>
                             </div>
                         </div>
-                        <div class="pd-nav-item" onclick="switchSection('network', this)">
+                        <div class="pd-nav-item" data-pd-tab="network" onclick="switchSection('network')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             </div>
@@ -1720,7 +1720,7 @@
                 <!-- Main Content -->
                 <div class="pd-main">
                     <!-- Overview Section -->
-                    <div class="pd-section active" id="section-overview">
+                    <div class="pd-section active" id="section-overview" data-pd-tab="overview">
                         <h1 class="pd-section-title">Overview</h1>
 
                         <!-- Summary Stats -->
@@ -1815,7 +1815,7 @@
                     </div>
 
                     <!-- Skills Section -->
-                    <div class="pd-section" id="section-skills">
+                    <div class="pd-section" id="section-skills" data-pd-tab="skills">
                         <h1 class="pd-section-title">Skills</h1>
 
                         <div class="pd-asset-block">
@@ -1874,7 +1874,7 @@
                     </div>
 
                     <!-- MCP Servers Section -->
-                    <div class="pd-section" id="section-mcp">
+                    <div class="pd-section" id="section-mcp" data-pd-tab="mcp">
                         <h1 class="pd-section-title">MCP Servers</h1>
 
                         <div class="pd-asset-block">
@@ -1921,7 +1921,7 @@
                     </div>
 
                     <!-- Knowledge Bases Section -->
-                    <div class="pd-section" id="section-knowledge">
+                    <div class="pd-section" id="section-knowledge" data-pd-tab="knowledge">
                         <h1 class="pd-section-title">Knowledge Bases</h1>
 
                         <div class="pd-asset-block">
@@ -1956,7 +1956,7 @@
                     </div>
 
                     <!-- Secrets & Integrations Section -->
-                    <div class="pd-section" id="section-secrets">
+                    <div class="pd-section" id="section-secrets" data-pd-tab="secrets">
                         <h1 class="pd-section-title">Secrets & Tokens</h1>
 
                         <div class="pd-secrets-note">
@@ -2265,7 +2265,7 @@
                     </div>
 
                     <!-- Filesystem Section -->
-                    <div class="pd-section" id="section-filesystem">
+                    <div class="pd-section" id="section-filesystem" data-pd-tab="filesystem">
                         <h1 class="pd-section-title">Filesystem</h1>
 
                         <div class="pd-secrets-note" style="border-color: rgba(250, 204, 21, 0.15); background: rgba(250, 204, 21, 0.04);">
@@ -2442,7 +2442,7 @@
                     </div>
 
                     <!-- Network Policy Section -->
-                    <div class="pd-section" id="section-network">
+                    <div class="pd-section" id="section-network" data-pd-tab="network">
                         <h1 class="pd-section-title">Network Policy</h1>
 
                         <div class="pd-secrets-note" style="border-color: rgba(139, 92, 246, 0.15); background: rgba(139, 92, 246, 0.04);">
@@ -2696,21 +2696,98 @@
     </div>
 
     <script>
+        /**
+         * Project details — section navigation schema
+         *
+         * Use the URL hash to open a tab directly, e.g. details.html#skills
+         *
+         * | key        | URL hash    | Content #id           | Nav label            |
+         * |------------|-------------|------------------------|----------------------|
+         * | overview   | #overview   | section-overview       | Overview             |
+         * | skills     | #skills     | section-skills         | Skills               |
+         * | mcp        | #mcp        | section-mcp            | MCP Servers          |
+         * | knowledge  | #knowledge  | section-knowledge      | Knowledge            |
+         * | secrets    | #secrets    | section-secrets        | Secrets & Tokens     |
+         * | filesystem | #filesystem | section-filesystem     | Filesystem           |
+         * | network    | #network    | section-network        | Network Policy       |
+         *
+         * Programmatic: switchSection('mcp') or document.querySelector('[data-pd-tab="mcp"]')
+         */
+        const PD_PROJECT_DETAILS_TABS = {
+            overview:   { hash: '#overview',   sectionId: 'section-overview',   label: 'Overview' },
+            skills:     { hash: '#skills',     sectionId: 'section-skills',     label: 'Skills' },
+            mcp:        { hash: '#mcp',        sectionId: 'section-mcp',        label: 'MCP Servers' },
+            knowledge:  { hash: '#knowledge',  sectionId: 'section-knowledge',  label: 'Knowledge' },
+            secrets:    { hash: '#secrets',    sectionId: 'section-secrets',    label: 'Secrets & Tokens' },
+            filesystem: { hash: '#filesystem', sectionId: 'section-filesystem', label: 'Filesystem' },
+            network:    { hash: '#network',    sectionId: 'section-network',    label: 'Network Policy' }
+        };
+        const PD_PROJECT_DETAILS_TAB_KEYS = new Set(Object.keys(PD_PROJECT_DETAILS_TABS));
+        window.PD_PROJECT_DETAILS_TABS = PD_PROJECT_DETAILS_TABS;
+        window.PD_PROJECT_DETAILS_TAB_KEYS = PD_PROJECT_DETAILS_TAB_KEYS;
+
+        let pdDetailsSyncingHash = false;
+
         function togglePermissions(el) {
             el.classList.toggle('open');
             const permsDiv = el.nextElementSibling;
             if (permsDiv) permsDiv.classList.toggle('open');
         }
 
-        function switchSection(sectionId, navEl) {
-            document.querySelectorAll('.pd-nav-item').forEach(item => item.classList.remove('active'));
-            navEl.classList.add('active');
+        /**
+         * @param {string} sectionId - key from PD_PROJECT_DETAILS_TABS
+         * @param {{ updateHash?: boolean }} [opts] - set updateHash:false when reacting to hashchange
+         */
+        function switchSection(sectionId, opts) {
+            const updateHash = !opts || opts.updateHash !== false;
+            if (!PD_PROJECT_DETAILS_TAB_KEYS.has(sectionId)) {
+                sectionId = 'overview';
+            }
 
-            document.querySelectorAll('.pd-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('section-' + sectionId).classList.add('active');
+            document.querySelectorAll('.pd-nav-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-pd-tab') === sectionId);
+            });
 
-            document.querySelector('.pd-main').scrollTop = 0;
+            document.querySelectorAll('.pd-section').forEach(s => {
+                s.classList.toggle('active', s.getAttribute('data-pd-tab') === sectionId);
+            });
+
+            const main = document.querySelector('.pd-main');
+            if (main) main.scrollTop = 0;
+
+            if (updateHash) {
+                const next = '#' + sectionId;
+                if (location.hash !== next) {
+                    pdDetailsSyncingHash = true;
+                    history.replaceState(null, '', next);
+                    pdDetailsSyncingHash = false;
+                }
+            }
         }
+
+        function projectDetailsTabFromHash() {
+            let key = (location.hash || '').replace(/^#/, '').toLowerCase();
+            if (!key || !PD_PROJECT_DETAILS_TAB_KEYS.has(key)) {
+                key = 'overview';
+            }
+            return key;
+        }
+
+        function initProjectDetailsSectionFromUrl() {
+            switchSection(projectDetailsTabFromHash(), { updateHash: false });
+            if (!location.hash || !PD_PROJECT_DETAILS_TAB_KEYS.has(location.hash.replace(/^#/, '').toLowerCase())) {
+                pdDetailsSyncingHash = true;
+                history.replaceState(null, '', '#overview');
+                pdDetailsSyncingHash = false;
+            }
+        }
+
+        window.addEventListener('hashchange', () => {
+            if (pdDetailsSyncingHash) return;
+            switchSection(projectDetailsTabFromHash(), { updateHash: false });
+        });
+
+        document.addEventListener('DOMContentLoaded', initProjectDetailsSectionFromUrl);
 
         /* ── Network Policy Functions ── */
         function selectFsMode(el, mode) {
