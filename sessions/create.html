@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Create Coding Agent Workspace</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Session Create Page Styles */
+        .create-session-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1b23 0%, #0f0f14 100%);
+        }
+
+        .create-session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 32px;
+            border-bottom: 1px solid #3d3e4f;
+            background: rgba(37, 38, 49, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .create-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .create-breadcrumb a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .create-breadcrumb a:hover {
+            color: #8b5cf6;
+        }
+
+        .create-breadcrumb svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+        }
+
+        .create-breadcrumb span {
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .create-close-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .create-close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+        }
+
+        .create-session-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 32px;
+        }
+
+        .create-session-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .create-session-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .create-session-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 4px;
+        }
+
+        .create-session-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+
+        .create-session-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .create-session-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 8px 0;
+            background: linear-gradient(90deg, #e5e7eb, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .create-session-subtitle {
+            font-size: 15px;
+            color: #9ca3af;
+            margin: 0 0 40px 0;
+            line-height: 1.6;
+        }
+
+        /* Configuration Sections */
+        .config-section {
+            margin-bottom: 40px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .config-section:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .config-section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .config-section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .config-section-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .config-section-icon.agent {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+            color: #a78bfa;
+        }
+
+        .config-section-icon.skills {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            color: #6ee7b7;
+        }
+
+        .config-section-icon.mcp {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(8, 145, 178, 0.2));
+            color: #67e8f9;
+        }
+
+        .config-section-icon.access {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            color: #fcd34d;
+        }
+
+        .config-section-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .config-section-info p {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        /* Basic Info Section */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(37, 38, 49, 0.8);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(37, 38, 49, 1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #6b7280;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Agent Selection Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .agent-card {
+            position: relative;
+            padding: 24px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 92, 246, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .agent-card:hover {
+            border-color: #6b7280;
+            transform: translateY(-2px);
+        }
+
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+
+        .agent-card.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .agent-card.selected::before {
+            opacity: 1;
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+
+        .agent-card-check {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .agent-card.selected .agent-card-check {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-color: #8b5cf6;
+        }
+
+        .agent-card-check svg {
+            width: 14px;
+            height: 14px;
+            color: #ffffff;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .agent-card.selected .agent-card-check svg {
+            opacity: 1;
+        }
+
+        .agent-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .agent-icon.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+        }
+
+        .agent-icon.cursor {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+        }
+
+        .agent-icon.goose {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #ffffff;
+        }
+
+        .agent-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 6px;
+        }
+
+        .agent-description {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        /* Selectable Items Grid */
+        .selectable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .selectable-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .selectable-item:hover {
+            border-color: #6b7280;
+            background: rgba(37, 38, 49, 0.8);
+        }
+
+        .selectable-item.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .selectable-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .selectable-item.selected .selectable-checkbox {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-color: #8b5cf6;
+        }
+
+        .selectable-checkbox svg {
+            width: 12px;
+            height: 12px;
+            color: #ffffff;
+            opacity: 0;
+        }
+
+        .selectable-item.selected .selectable-checkbox svg {
+            opacity: 1;
+        }
+
+        .selectable-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .selectable-icon.skill {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .selectable-icon.mcp {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .selectable-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .selectable-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .selectable-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+
+        .selectable-desc {
+            font-size: 11px;
+            color: #9ca3af;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* File Access Section */
+        .file-access-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .file-access-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-access-card:hover {
+            border-color: #6b7280;
+        }
+
+        .file-access-card.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .file-access-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .file-access-icon.workspace {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .file-access-icon.home {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+        }
+
+        .file-access-icon.custom {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .file-access-icon.full {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .file-access-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .file-access-content {
+            flex: 1;
+        }
+
+        .file-access-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 6px 0;
+        }
+
+        .file-access-content p {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .file-access-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .file-access-card.selected .file-access-radio {
+            border-color: #8b5cf6;
+        }
+
+        .file-access-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .file-access-card.selected .file-access-radio::after {
+            opacity: 1;
+        }
+
+        /* Custom Paths Input */
+        .custom-paths-container {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .custom-paths-container.visible {
+            display: block;
+        }
+
+        .path-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .path-input-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .path-input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(37, 38, 49, 0.8);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .path-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .add-path-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            color: #a78bfa;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-path-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+        }
+
+        .remove-path-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .remove-path-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        /* Deployment Target Section */
+        .deployment-target-section {
+            padding: 24px 32px;
+            border-top: 1px solid #3d3e4f;
+            background: rgba(37, 38, 49, 0.4);
+        }
+
+        .deployment-target-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .deployment-target-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .deployment-target-title svg {
+            width: 20px;
+            height: 20px;
+            color: #a78bfa;
+        }
+
+        .deployment-target-desc {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .deployment-options {
+            display: flex;
+            gap: 16px;
+        }
+
+        .deployment-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: rgba(30, 31, 42, 0.6);
+            border: 2px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .deployment-option:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .deployment-option.selected {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .deployment-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6b7280;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .deployment-option.selected .deployment-radio {
+            border-color: #6366f1;
+        }
+
+        .deployment-radio-inner {
+            width: 10px;
+            height: 10px;
+            background: #6366f1;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .deployment-option.selected .deployment-radio-inner {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .deployment-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .deployment-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .deployment-icon.local {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #fff;
+        }
+
+        .deployment-icon.devspaces {
+            background: linear-gradient(135deg, #EE0000 0%, #A30000 100%);
+            color: #fff;
+        }
+
+        .deployment-content {
+            flex: 1;
+        }
+
+        .deployment-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .deployment-desc {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .deployment-badge {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            padding: 3px 8px;
+            background: linear-gradient(135deg, #EE0000 0%, #A30000 100%);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer Actions */
+        .create-session-footer {
+            padding: 20px 32px;
+            border-top: 1px solid #3d3e4f;
+            background: rgba(37, 38, 49, 0.6);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .footer-info svg {
+            width: 18px;
+            height: 18px;
+            color: #6ee7b7;
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            background: rgba(107, 114, 128, 0.2);
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(107, 114, 128, 0.3);
+        }
+
+        .btn-start {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-start svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Profile Selector Styles */
+        .profile-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .profile-selector-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .profile-selector-item:hover {
+            border-color: #6b7280;
+            background: rgba(37, 38, 49, 0.8);
+        }
+
+        .profile-selector-item.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .profile-selector-item.browse-link {
+            border-style: dashed;
+            background: transparent;
+        }
+
+        .profile-selector-item.browse-link:hover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .profile-selector-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .profile-selector-item.selected .profile-selector-radio {
+            border-color: #8b5cf6;
+        }
+
+        .profile-selector-radio.selected::after,
+        .profile-selector-item.selected .profile-selector-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8b5cf6;
+        }
+
+        .profile-selector-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-selector-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .profile-selector-icon.empty {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+        }
+
+        .profile-selector-icon.devops {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #ffffff;
+        }
+
+        .profile-selector-icon.platform {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+        }
+
+        .profile-selector-icon.backend {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+        }
+
+        .profile-selector-icon.security {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+        }
+
+        .profile-selector-icon.browse {
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+        }
+
+        .profile-selector-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-selector-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+
+        .profile-selector-desc {
+            font-size: 11px;
+            color: #9ca3af;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .file-access-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .selectable-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-selector-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="sessions-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Create Session UI -->
+        <main class="main-content">
+            <div class="create-session-layout">
+                <!-- Header -->
+                <div class="create-session-header">
+                    <div class="create-breadcrumb">
+                        <a href="index.html">Agents</a>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                        <span>New Agent</span>
+                    </div>
+                    <button class="create-close-btn" onclick="window.location.href='index.html'">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Content -->
+                <div class="create-session-content">
+                    <div class="create-session-container">
+                        <h1 class="create-session-title">Create Coding Agent Workspace</h1>
+                        <p class="create-session-subtitle">
+                            Configure your coding agent with the skills, tools, and access permissions it needs. 
+                            The session will run in a secure sandbox environment.
+                        </p>
+
+                        <!-- Profile Selection Section -->
+                        <div class="config-section" id="profile-selection-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.2)); color: #a5b4fc;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Start from a Profile</h3>
+                                    <p>Optionally select a profile to pre-fill your configuration</p>
+                                </div>
+                            </div>
+
+                            <div class="profile-selector-grid">
+                                <div class="profile-selector-item" onclick="selectProfile(null)">
+                                    <div class="profile-selector-radio selected"></div>
+                                    <div class="profile-selector-icon empty">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">Start Fresh</div>
+                                        <div class="profile-selector-desc">Configure from scratch</div>
+                                    </div>
+                                </div>
+                                <div class="profile-selector-item" onclick="selectProfile('devops-engineer')">
+                                    <div class="profile-selector-radio"></div>
+                                    <div class="profile-selector-icon devops">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="3"/>
+                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">DevOps Engineer</div>
+                                        <div class="profile-selector-desc">K8s, OpenShift, CI/CD</div>
+                                    </div>
+                                </div>
+                                <div class="profile-selector-item" onclick="selectProfile('platform-engineer')">
+                                    <div class="profile-selector-radio"></div>
+                                    <div class="profile-selector-icon platform">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="2" width="20" height="8" rx="2"/>
+                                            <rect x="2" y="14" width="20" height="8" rx="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">Platform Engineer</div>
+                                        <div class="profile-selector-desc">OpenShift, RHEL ops</div>
+                                    </div>
+                                </div>
+                                <div class="profile-selector-item" onclick="selectProfile('backend-developer')">
+                                    <div class="profile-selector-radio"></div>
+                                    <div class="profile-selector-icon backend">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="16 18 22 12 16 6"/>
+                                            <polyline points="8 6 2 12 8 18"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">Backend Developer</div>
+                                        <div class="profile-selector-desc">API dev, code review</div>
+                                    </div>
+                                </div>
+                                <div class="profile-selector-item" onclick="selectProfile('security-analyst')">
+                                    <div class="profile-selector-radio"></div>
+                                    <div class="profile-selector-icon security">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">Security Analyst</div>
+                                        <div class="profile-selector-desc">Vulnerability scanning</div>
+                                    </div>
+                                </div>
+                                <a href="../profiles/index.html" class="profile-selector-item browse-link">
+                                    <div class="profile-selector-icon browse">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"/>
+                                            <path d="m21 21-4.35-4.35"/>
+                                        </svg>
+                                    </div>
+                                    <div class="profile-selector-content">
+                                        <div class="profile-selector-name">Browse All</div>
+                                        <div class="profile-selector-desc">View all profiles</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Basic Info Section -->
+                        <div class="config-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon agent">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Session Details</h3>
+                                    <p>Give your session a name and select the coding agent</p>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Session Name</label>
+                                    <input type="text" id="sessionName" placeholder="e.g., Frontend Refactoring">
+                                </div>
+                                <div class="form-group">
+                                    <label>Working Directory</label>
+                                    <input type="text" id="workingDir" placeholder="/path/to/project">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Description (optional)</label>
+                                <textarea id="sessionDescription" placeholder="Describe what this session will accomplish..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Select Coding Agent</label>
+                                <div class="agent-grid">
+                                    <div class="agent-card selected" onclick="selectAgent(this, 'claude')">
+                                        <div class="agent-card-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="agent-icon claude">C</div>
+                                        <div class="agent-name">Claude</div>
+                                        <div class="agent-description">Anthropic's Claude 3.5 Sonnet - excellent for complex reasoning and code generation</div>
+                                    </div>
+                                    <div class="agent-card" onclick="selectAgent(this, 'cursor')">
+                                        <div class="agent-card-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="agent-icon cursor">Cu</div>
+                                        <div class="agent-name">Cursor</div>
+                                        <div class="agent-description">Cursor's AI agent - optimized for IDE integration and code editing</div>
+                                    </div>
+                                    <div class="agent-card" onclick="selectAgent(this, 'goose')">
+                                        <div class="agent-card-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="agent-icon goose">G</div>
+                                        <div class="agent-name">Goose</div>
+                                        <div class="agent-description">Block's Goose agent - great for task automation and workflows</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Section (conditionally shown based on settings) -->
+                        <div class="config-section" id="skills-config-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon skills">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Skills</h3>
+                                    <p>Select the capabilities your agent should have</p>
+                                </div>
+                            </div>
+
+                            <div class="selectable-grid">
+                                <!-- Pre-built Skills -->
+                                <div class="selectable-item selected" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">Kubernetes</div>
+                                        <div class="selectable-desc">Deploy & manage clusters</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item selected" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M8 12h8M8 8h8M8 16h8"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">OpenShift</div>
+                                        <div class="selectable-desc">Build & deploy on OCP</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                            <path d="M9 9h6v6H9z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">Podman</div>
+                                        <div class="selectable-desc">Build & run containers</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                            <path d="M2 17l10 5 10-5"/>
+                                            <path d="M2 12l10 5 10-5"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">RHEL</div>
+                                        <div class="selectable-desc">Administer Linux systems</div>
+                                    </div>
+                                </div>
+                                <!-- Custom Skills -->
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="16 18 22 12 16 6"/>
+                                            <polyline points="8 6 2 12 8 18"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">code-review</div>
+                                        <div class="selectable-desc">Analyze code quality & security</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">api-docs-generator</div>
+                                        <div class="selectable-desc">Generate API documentation</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MCP Servers Section (conditionally shown based on settings) -->
+                        <div class="config-section" id="mcp-config-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>MCP Servers</h3>
+                                    <p>Connect to Model Context Protocol servers for extended capabilities</p>
+                                </div>
+                            </div>
+
+                            <div class="selectable-grid">
+                                <!-- Installed MCP Servers -->
+                                <div class="selectable-item selected" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                            <path d="M2 17l10 5 10-5"/>
+                                            <path d="M2 12l10 5 10-5"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">RHEL MCP</div>
+                                        <div class="selectable-desc">System management & config</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item selected" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M8 12h8M8 8h8M8 16h8"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">OpenShift MCP</div>
+                                        <div class="selectable-desc">Cluster & deployment mgmt</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">GitHub MCP</div>
+                                        <div class="selectable-desc">Repos, issues & PRs</div>
+                                    </div>
+                                </div>
+                                <!-- Available MCP Servers -->
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                            <path d="M12 22V12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">Ansible MCP</div>
+                                        <div class="selectable-desc">Playbooks & automation</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                            <path d="M9 9h6v6H9z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">Podman MCP</div>
+                                        <div class="selectable-desc">Containers & pods</div>
+                                    </div>
+                                </div>
+                                <div class="selectable-item" onclick="toggleItem(this)">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">Kubernetes MCP</div>
+                                        <div class="selectable-desc">K8s cluster management</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Integrations Section -->
+                        <div class="config-section" id="integrations-config-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2)); color: #6ee7b7;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Integrations</h3>
+                                    <p>Connect external tools and services for this workspace</p>
+                                </div>
+                            </div>
+
+                            <div class="selectable-grid">
+                                <!-- GitHub Integration -->
+                                <div class="selectable-item integration-item" id="github-integration" onclick="toggleIntegration(this, 'github')">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon" style="background: rgba(110, 118, 129, 0.15); color: #e5e7eb;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">GitHub</div>
+                                        <div class="selectable-desc">Repos, issues & pull requests</div>
+                                    </div>
+                                </div>
+                                <!-- JIRA Integration -->
+                                <div class="selectable-item integration-item" id="jira-integration" onclick="toggleIntegration(this, 'jira')">
+                                    <div class="selectable-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-icon" style="background: rgba(0, 82, 204, 0.15); color: #60a5fa;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                            <path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.213 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.005 1.005 0 0 0 23.013 0z" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <div class="selectable-content">
+                                        <div class="selectable-name">JIRA</div>
+                                        <div class="selectable-desc">Issues & project tracking</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="integration-status" id="integration-status" style="margin-top: 16px; padding: 12px 16px; background: rgba(251, 146, 60, 0.1); border: 1px solid rgba(251, 146, 60, 0.3); border-radius: 8px; display: none;">
+                                <div style="display: flex; align-items: center; gap: 10px; color: #fb923c; font-size: 13px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="12"/>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                    </svg>
+                                    <span>Some integrations are not configured. <a href="../settings/index.html" style="color: #a78bfa; text-decoration: underline;">Configure in Settings</a></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Access Section -->
+                        <div class="config-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon access">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>File System Access</h3>
+                                    <p>Define which directories the agent can access on your host system</p>
+                                </div>
+                            </div>
+
+                            <div class="file-access-grid">
+                                <div class="file-access-card selected" onclick="selectFileAccess(this, 'workspace')">
+                                    <div class="file-access-radio"></div>
+                                    <div class="file-access-icon workspace">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="file-access-content">
+                                        <h4>Working Directory Only</h4>
+                                        <p>Agent can only access the specified working directory and its subdirectories.</p>
+                                    </div>
+                                </div>
+                                <div class="file-access-card" onclick="selectFileAccess(this, 'home')">
+                                    <div class="file-access-radio"></div>
+                                    <div class="file-access-icon home">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                            <polyline points="9 22 9 12 15 12 15 22"/>
+                                        </svg>
+                                    </div>
+                                    <div class="file-access-content">
+                                        <h4>Home Directory</h4>
+                                        <p>Agent can access your entire home directory (~/) and all subdirectories.</p>
+                                    </div>
+                                </div>
+                                <div class="file-access-card" onclick="selectFileAccess(this, 'custom')">
+                                    <div class="file-access-radio"></div>
+                                    <div class="file-access-icon custom">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="3"/>
+                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
+                                        </svg>
+                                    </div>
+                                    <div class="file-access-content">
+                                        <h4>Custom Paths</h4>
+                                        <p>Specify exact directories the agent can access.</p>
+                                    </div>
+                                </div>
+                                <div class="file-access-card" onclick="selectFileAccess(this, 'full')">
+                                    <div class="file-access-radio"></div>
+                                    <div class="file-access-icon full">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                            <line x1="12" y1="9" x2="12" y2="13"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div class="file-access-content">
+                                        <h4>Full System Access</h4>
+                                        <p>Agent can access the entire filesystem. Use with caution.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="custom-paths-container" id="customPathsContainer">
+                                <div class="path-input-row">
+                                    <input type="text" class="path-input" placeholder="/path/to/allowed/directory">
+                                    <button class="remove-path-btn" onclick="removePath(this)" title="Remove">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"/>
+                                            <line x1="6" y1="6" x2="18" y2="18"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button class="add-path-btn" onclick="addPath()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Add Another Path
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Deployment Target Section (only visible when DevSpaces is enabled) -->
+                <div class="deployment-target-section" id="deploymentTargetSection">
+                    <div class="deployment-target-header">
+                        <div class="deployment-target-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                            Deployment Target
+                        </div>
+                        <span class="deployment-target-desc">Choose where to run your coding agent workspace</span>
+                    </div>
+                    <div class="deployment-options">
+                        <div class="deployment-option selected" onclick="selectDeployment(this, 'local')">
+                            <div class="deployment-radio">
+                                <div class="deployment-radio-inner"></div>
+                            </div>
+                            <div class="deployment-icon local">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                            </div>
+                            <div class="deployment-content">
+                                <div class="deployment-name">Local Sandbox</div>
+                                <div class="deployment-desc">Run the workspace locally in a secured container on your machine</div>
+                            </div>
+                        </div>
+                        <div class="deployment-option devspaces-option" id="devspacesOption" onclick="selectDeployment(this, 'devspaces')">
+                            <div class="deployment-radio">
+                                <div class="deployment-radio-inner"></div>
+                            </div>
+                            <div class="deployment-icon devspaces">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 12h8M8 8h8M8 16h8"/>
+                                </svg>
+                            </div>
+                            <div class="deployment-content">
+                                <div class="deployment-name">Red Hat DevSpaces</div>
+                                <div class="deployment-desc">Run remotely in a cloud-based OpenShift DevSpaces environment</div>
+                            </div>
+                            <div class="deployment-badge">Cloud</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="create-session-footer">
+                    <div class="footer-info">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span class="footer-info-text">Workspace will run in a secured sandbox environment</span>
+                    </div>
+                    <div class="footer-actions">
+                        <button class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
+                        <button class="btn-start" onclick="startSession()">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            Start Workspace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        let selectedAgent = 'claude';
+        let selectedFileAccess = 'workspace';
+        let selectedDeployment = 'local';
+        let selectedProfile = null;
+        let selectedIntegrations = {
+            github: false,
+            jira: false
+        };
+
+        // Profile data for pre-filling configuration
+        const profilesData = {
+            'devops-engineer': {
+                name: 'DevOps Engineer',
+                description: 'DevOps workspace with K8s and OpenShift tools',
+                skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
+                mcpServers: ['OpenShift MCP', 'Kubernetes MCP', 'GitHub MCP'],
+                integrations: ['github', 'jira'],
+                fileAccess: 'workspace',
+                deployment: 'local'
+            },
+            'platform-engineer': {
+                name: 'Platform Engineer',
+                description: 'Platform operations workspace',
+                skills: ['OpenShift', 'RHEL', 'Podman'],
+                mcpServers: ['OpenShift MCP', 'RHEL MCP'],
+                integrations: ['jira'],
+                fileAccess: 'home',
+                deployment: 'local'
+            },
+            'backend-developer': {
+                name: 'Backend Developer',
+                description: 'Backend development workspace',
+                skills: ['code-review', 'api-docs-generator'],
+                mcpServers: ['GitHub MCP', 'RHEL MCP'],
+                integrations: ['github', 'jira'],
+                fileAccess: 'workspace',
+                deployment: 'local'
+            },
+            'security-analyst': {
+                name: 'Security Analyst',
+                description: 'Security analysis workspace',
+                skills: ['code-review', 'RHEL'],
+                mcpServers: ['GitHub MCP'],
+                integrations: ['github'],
+                fileAccess: 'workspace',
+                deployment: 'local'
+            }
+        };
+
+        function selectProfile(profileId) {
+            selectedProfile = profileId;
+            
+            // Update UI
+            document.querySelectorAll('.profile-selector-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+
+            if (profileId && profilesData[profileId]) {
+                applyProfile(profilesData[profileId]);
+            }
+        }
+
+        function applyProfile(profile) {
+            // Set session name suggestion
+            const nameInput = document.getElementById('sessionName');
+            if (nameInput && !nameInput.value) {
+                nameInput.placeholder = `e.g., ${profile.name} Workspace`;
+            }
+
+            // Set description
+            const descInput = document.getElementById('sessionDescription');
+            if (descInput && !descInput.value) {
+                descInput.value = profile.description;
+            }
+
+            // Select skills
+            if (isSkillsModuleEnabled()) {
+                const skillsSection = document.getElementById('skills-config-section');
+                if (skillsSection) {
+                    const skillItems = skillsSection.querySelectorAll('.selectable-item');
+                    skillItems.forEach(item => {
+                        const skillName = item.querySelector('.selectable-name')?.textContent;
+                        if (profile.skills.includes(skillName)) {
+                            item.classList.add('selected');
+                        } else {
+                            item.classList.remove('selected');
+                        }
+                    });
+                }
+            }
+
+            // Select MCP servers
+            if (isMcpModuleEnabled()) {
+                const mcpSection = document.getElementById('mcp-config-section');
+                if (mcpSection) {
+                    const mcpItems = mcpSection.querySelectorAll('.selectable-item');
+                    mcpItems.forEach(item => {
+                        const mcpName = item.querySelector('.selectable-name')?.textContent;
+                        if (profile.mcpServers.includes(mcpName)) {
+                            item.classList.add('selected');
+                        } else {
+                            item.classList.remove('selected');
+                        }
+                    });
+                }
+            }
+
+            // Select integrations (if configured)
+            if (profile.integrations) {
+                const integrationsSection = document.getElementById('integrations-config-section');
+                if (integrationsSection) {
+                    profile.integrations.forEach(integration => {
+                        if (isIntegrationConfigured(integration)) {
+                            const item = document.getElementById(integration + '-integration');
+                            if (item) {
+                                item.classList.add('selected');
+                                selectedIntegrations[integration] = true;
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Set file access
+            const fileAccessCards = document.querySelectorAll('.file-access-card');
+            fileAccessCards.forEach(card => {
+                card.classList.remove('selected');
+                if (card.onclick && card.onclick.toString().includes(profile.fileAccess)) {
+                    card.classList.add('selected');
+                    selectedFileAccess = profile.fileAccess;
+                }
+            });
+
+            // Set deployment target
+            if (profile.deployment === 'devspaces' && isDevSpacesEnabled()) {
+                const devspacesOption = document.getElementById('devspacesOption');
+                if (devspacesOption) {
+                    selectDeployment(devspacesOption, 'devspaces');
+                }
+            }
+        }
+
+        // Check for profile parameter in URL
+        function checkProfileParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const profileId = urlParams.get('profile');
+            if (profileId && profilesData[profileId]) {
+                // Find and click the profile selector
+                const profileItems = document.querySelectorAll('.profile-selector-item');
+                profileItems.forEach(item => {
+                    if (item.onclick && item.onclick.toString().includes(profileId)) {
+                        item.click();
+                    }
+                });
+            }
+        }
+
+        // Check if DevSpaces is enabled in settings
+        function isDevSpacesEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    return parsed.devspaces?.enabled === true;
+                }
+                // Default to enabled if no settings saved yet
+                return true;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if Skills module is enabled in settings
+        function isSkillsModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.skillsEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if MCP module is enabled in settings
+        function isMcpModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.mcpEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Initialize DevSpaces visibility based on settings
+        function initDevSpacesOption() {
+            const deploymentSection = document.getElementById('deploymentTargetSection');
+            
+            if (isDevSpacesEnabled()) {
+                // DevSpaces is enabled - show the deployment target section
+                deploymentSection.style.display = '';
+            } else {
+                // DevSpaces is disabled - hide the entire deployment section
+                deploymentSection.style.display = 'none';
+                
+                // Default to local deployment
+                selectedDeployment = 'local';
+            }
+        }
+
+        // Initialize Skills visibility based on settings
+        function initSkillsSection() {
+            const skillsSection = document.getElementById('skills-config-section');
+            if (skillsSection && !isSkillsModuleEnabled()) {
+                skillsSection.style.display = 'none';
+            }
+        }
+
+        // Initialize MCP visibility based on settings
+        function initMcpSection() {
+            const mcpSection = document.getElementById('mcp-config-section');
+            if (mcpSection && !isMcpModuleEnabled()) {
+                mcpSection.style.display = 'none';
+            }
+        }
+
+        // Check if an integration is configured in global settings
+        function isIntegrationConfigured(integration) {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.integrations && parsed.integrations[integration]) {
+                        return parsed.integrations[integration].enabled === true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Toggle integration selection
+        function toggleIntegration(item, integration) {
+            const isConfigured = isIntegrationConfigured(integration);
+            
+            if (!isConfigured) {
+                // Show warning if not configured
+                const statusEl = document.getElementById('integration-status');
+                statusEl.style.display = 'block';
+                return;
+            }
+
+            item.classList.toggle('selected');
+            selectedIntegrations[integration] = item.classList.contains('selected');
+        }
+
+        // Initialize integrations section
+        function initIntegrationsSection() {
+            const section = document.getElementById('integrations-config-section');
+            if (!section) return;
+
+            const githubConfigured = isIntegrationConfigured('github');
+            const jiraConfigured = isIntegrationConfigured('jira');
+
+            // Update GitHub item appearance
+            const githubItem = document.getElementById('github-integration');
+            if (githubItem) {
+                if (githubConfigured) {
+                    githubItem.style.opacity = '1';
+                    githubItem.querySelector('.selectable-desc').textContent = 'Repos, issues & pull requests';
+                } else {
+                    githubItem.style.opacity = '0.6';
+                    githubItem.querySelector('.selectable-desc').textContent = 'Not configured';
+                }
+            }
+
+            // Update JIRA item appearance
+            const jiraItem = document.getElementById('jira-integration');
+            if (jiraItem) {
+                if (jiraConfigured) {
+                    jiraItem.style.opacity = '1';
+                    jiraItem.querySelector('.selectable-desc').textContent = 'Issues & project tracking';
+                } else {
+                    jiraItem.style.opacity = '0.6';
+                    jiraItem.querySelector('.selectable-desc').textContent = 'Not configured';
+                }
+            }
+
+            // Show status message if neither is configured
+            if (!githubConfigured && !jiraConfigured) {
+                const statusEl = document.getElementById('integration-status');
+                statusEl.style.display = 'block';
+            }
+        }
+
+        // Run on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initDevSpacesOption();
+            initSkillsSection();
+            initMcpSection();
+            initIntegrationsSection();
+            checkProfileParam();
+        });
+
+        function selectAgent(card, agent) {
+            document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedAgent = agent;
+        }
+
+        function toggleItem(item) {
+            item.classList.toggle('selected');
+        }
+
+        function selectDeployment(option, type) {
+            document.querySelectorAll('.deployment-option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedDeployment = type;
+
+            // Update footer info text
+            const footerText = document.querySelector('.footer-info-text');
+            if (type === 'devspaces') {
+                footerText.textContent = 'Workspace will run in Red Hat DevSpaces cloud environment';
+            } else {
+                footerText.textContent = 'Workspace will run in a secured sandbox environment';
+            }
+        }
+
+        function selectFileAccess(card, type) {
+            document.querySelectorAll('.file-access-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedFileAccess = type;
+
+            // Show/hide custom paths input
+            const customContainer = document.getElementById('customPathsContainer');
+            if (type === 'custom') {
+                customContainer.classList.add('visible');
+            } else {
+                customContainer.classList.remove('visible');
+            }
+        }
+
+        function addPath() {
+            const container = document.getElementById('customPathsContainer');
+            const newRow = document.createElement('div');
+            newRow.className = 'path-input-row';
+            newRow.innerHTML = `
+                <input type="text" class="path-input" placeholder="/path/to/allowed/directory">
+                <button class="remove-path-btn" onclick="removePath(this)" title="Remove">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            `;
+            container.insertBefore(newRow, container.lastElementChild);
+        }
+
+        function removePath(btn) {
+            const rows = document.querySelectorAll('.path-input-row');
+            if (rows.length > 1) {
+                btn.closest('.path-input-row').remove();
+            }
+        }
+
+        function startSession() {
+            const name = document.getElementById('sessionName').value;
+            const workingDir = document.getElementById('workingDir').value;
+            const description = document.getElementById('sessionDescription').value;
+
+            if (!name) {
+                alert('Please enter a session name');
+                return;
+            }
+
+            // Collect selected items
+            const selectedSkills = Array.from(document.querySelectorAll('.config-section:nth-child(2) .selectable-item.selected'))
+                .map(item => item.querySelector('.selectable-name').textContent);
+            
+            const selectedMcpServers = Array.from(document.querySelectorAll('.config-section:nth-child(3) .selectable-item.selected'))
+                .map(item => item.querySelector('.selectable-name').textContent);
+
+            // Collect selected integrations
+            const enabledIntegrations = Object.keys(selectedIntegrations).filter(key => selectedIntegrations[key]);
+
+            const config = {
+                name,
+                workingDir,
+                description,
+                agent: selectedAgent,
+                fileAccess: selectedFileAccess,
+                skills: selectedSkills,
+                mcpServers: selectedMcpServers,
+                integrations: enabledIntegrations
+            };
+
+            console.log('Starting session with config:', config);
+            
+            // Navigate to the session details page
+            window.location.href = 'details.html?session=' + encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'));
+        }
+    </script>
+</body>
+</html>

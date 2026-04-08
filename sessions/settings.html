@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Workspace Settings</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Settings Page Styles */
+        .settings-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #0f0f14;
+        }
+
+        /* Header */
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .settings-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .settings-back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-back-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            color: #e5e7eb;
+        }
+
+        .settings-title-area h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .settings-title-area span {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .settings-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-discard {
+            padding: 10px 20px;
+            background: rgba(107, 114, 128, 0.2);
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-discard:hover {
+            background: rgba(107, 114, 128, 0.3);
+        }
+
+        .btn-save {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-save svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Main Content */
+        .settings-main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Settings Navigation */
+        .settings-nav {
+            width: 240px;
+            background: linear-gradient(180deg, #1a1b23 0%, #151620 100%);
+            border-right: 1px solid #3d3e4f;
+            padding: 20px 0;
+        }
+
+        .settings-nav-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 20px;
+            margin-bottom: 12px;
+        }
+
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .settings-nav-item:hover {
+            background: rgba(139, 92, 246, 0.05);
+            color: #e5e7eb;
+        }
+
+        .settings-nav-item.active {
+            background: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            border-left-color: #8b5cf6;
+        }
+
+        .settings-nav-item svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .settings-nav-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Settings Content */
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .settings-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .settings-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .settings-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+        }
+
+        .settings-section {
+            max-width: 800px;
+            display: none;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .settings-section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 8px 0;
+        }
+
+        .settings-section-desc {
+            font-size: 14px;
+            color: #9ca3af;
+            margin: 0 0 28px 0;
+            line-height: 1.6;
+        }
+
+        /* Settings Card */
+        .settings-card {
+            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .settings-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .settings-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .settings-card-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(37, 38, 49, 0.8);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(37, 38, 49, 1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .form-input::placeholder {
+            color: #6b7280;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        /* Toggle Row */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-info {
+            flex: 1;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .toggle-desc {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: #4b5563;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: #8b5cf6;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        /* Agent Selection */
+        .agent-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .agent-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .agent-option:hover {
+            border-color: #6b7280;
+        }
+
+        .agent-option.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .agent-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .agent-option-icon.claude {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            color: #ffffff;
+        }
+
+        .agent-option-icon.cursor {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: #ffffff;
+        }
+
+        .agent-option-icon.goose {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #ffffff;
+        }
+
+        .agent-option-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 2px 0;
+        }
+
+        .agent-option-info span {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .agent-option-check {
+            margin-left: auto;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .agent-option.selected .agent-option-check {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .agent-option-check svg {
+            width: 12px;
+            height: 12px;
+            color: #ffffff;
+            opacity: 0;
+        }
+
+        .agent-option.selected .agent-option-check svg {
+            opacity: 1;
+        }
+
+        /* Selectable Items */
+        .selectable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .selectable-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .selectable-item:hover {
+            border-color: #6b7280;
+        }
+
+        .selectable-item.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .selectable-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .selectable-item.selected .selectable-checkbox {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .selectable-checkbox svg {
+            width: 10px;
+            height: 10px;
+            color: #ffffff;
+            opacity: 0;
+        }
+
+        .selectable-item.selected .selectable-checkbox svg {
+            opacity: 1;
+        }
+
+        .selectable-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .selectable-icon.skill {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .selectable-icon.mcp {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .selectable-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .selectable-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        /* File Access Options */
+        .file-access-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .file-access-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-access-option:hover {
+            border-color: #6b7280;
+        }
+
+        .file-access-option.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .file-access-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .file-access-option.selected .file-access-radio {
+            border-color: #8b5cf6;
+        }
+
+        .file-access-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            opacity: 0;
+        }
+
+        .file-access-option.selected .file-access-radio::after {
+            opacity: 1;
+        }
+
+        .file-access-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .file-access-info p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        /* Danger Zone */
+        .danger-zone {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .danger-zone .settings-card-title {
+            color: #f87171;
+        }
+
+        .btn-danger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-danger svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Network Policy Styles */
+        .policy-mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .policy-mode-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 2px solid #3d3e4f;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .policy-mode-option:hover {
+            border-color: #6b7280;
+        }
+
+        .policy-mode-option.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .policy-mode-option.selected.allow-mode {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .policy-mode-option.selected.deny-mode {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .policy-mode-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .policy-mode-option.selected .policy-mode-radio {
+            border-color: #8b5cf6;
+        }
+
+        .policy-mode-option.selected.allow-mode .policy-mode-radio {
+            border-color: #10b981;
+        }
+
+        .policy-mode-option.selected.deny-mode .policy-mode-radio {
+            border-color: #f59e0b;
+        }
+
+        .policy-mode-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            opacity: 0;
+        }
+
+        .policy-mode-option.selected .policy-mode-radio::after {
+            opacity: 1;
+        }
+
+        .policy-mode-option.selected.allow-mode .policy-mode-radio::after {
+            background: #10b981;
+        }
+
+        .policy-mode-option.selected.deny-mode .policy-mode-radio::after {
+            background: #f59e0b;
+        }
+
+        .policy-mode-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .policy-mode-icon.allow {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .policy-mode-icon.deny {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+        }
+
+        .policy-mode-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .policy-mode-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+        }
+
+        .policy-mode-info p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Rules List */
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(37, 38, 49, 0.6);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .rule-item:hover {
+            border-color: #4b5563;
+        }
+
+        .rule-item.blocked {
+            border-left: 3px solid #ef4444;
+        }
+
+        .rule-item.allowed {
+            border-left: 3px solid #10b981;
+        }
+
+        .rule-item.bypass {
+            border-left: 3px solid #06b6d4;
+        }
+
+        .rule-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .rule-icon.blocked {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .rule-icon.allowed {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .rule-icon.bypass {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .rule-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .rule-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rule-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        .rule-desc {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .rule-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .rule-badge.default {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+        }
+
+        .rule-badge.custom {
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+        }
+
+        .rule-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .rule-action-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .rule-action-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .rule-action-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Add Rule Input */
+        .add-rule-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .add-rule-input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(37, 38, 49, 0.8);
+            border: 1.5px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        .add-rule-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .add-rule-input::placeholder {
+            color: #6b7280;
+            font-family: inherit;
+        }
+
+        .add-rule-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .add-rule-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .add-rule-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Security Info Box */
+        .security-info-box {
+            display: flex;
+            gap: 14px;
+            padding: 16px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .security-info-box.info {
+            background: rgba(6, 182, 212, 0.08);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .security-info-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .security-info-box.info .security-info-icon {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .security-info-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .security-info-content h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fcd34d;
+            margin: 0 0 4px 0;
+        }
+
+        .security-info-box.info .security-info-content h4 {
+            color: #67e8f9;
+        }
+
+        .security-info-content p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Network Log Preview */
+        .network-log-preview {
+            background: #0d0e14;
+            border: 1px solid #2d2e3f;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .network-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .network-log-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .network-log-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .network-log-badge.live {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+
+        .network-log-entries {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(45, 46, 63, 0.5);
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-status {
+            width: 60px;
+            flex-shrink: 0;
+        }
+
+        .log-status.allowed {
+            color: #6ee7b7;
+        }
+
+        .log-status.blocked {
+            color: #f87171;
+        }
+
+        .log-host {
+            flex: 1;
+            color: #e5e7eb;
+        }
+
+        .log-time {
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="sessions-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Settings UI -->
+        <main class="main-content">
+            <div class="settings-layout">
+                <!-- Header -->
+                <div class="settings-header">
+                    <div class="settings-header-left">
+                        <button class="settings-back-btn" onclick="window.location.href='details.html'">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6"/>
+                            </svg>
+                        </button>
+                        <div class="settings-title-area">
+                            <h1>Workspace Settings</h1>
+                            <span>Frontend Refactor</span>
+                        </div>
+                    </div>
+                    <div class="settings-header-actions">
+                        <button class="btn-discard" onclick="discardChanges()">Discard Changes</button>
+                        <button class="btn-save" onclick="saveSettings()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="settings-main">
+                    <!-- Navigation -->
+                    <div class="settings-nav">
+                        <div class="settings-nav-title">Settings</div>
+                        <div class="settings-nav-item active" onclick="showSection('general')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            </svg>
+                            <span>General</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="showSection('agent')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                            </svg>
+                            <span>Agent</span>
+                        </div>
+                        <div class="settings-nav-item" id="profiles-settings-nav" onclick="showSection('profiles')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <span>Profiles</span>
+                        </div>
+                        <div class="settings-nav-item" id="skills-settings-nav" onclick="showSection('skills')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                            </svg>
+                            <span>Skills</span>
+                        </div>
+                        <div class="settings-nav-item" id="mcp-settings-nav" onclick="showSection('mcp')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                            <span>MCP Servers</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="showSection('access')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            <span>File Access</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="showSection('network')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            <span>Network</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="showSection('advanced')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
+                            <span>Advanced</span>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="settings-content">
+                        <!-- General Section -->
+                        <div class="settings-section active" id="section-general">
+                            <h2 class="settings-section-title">General Settings</h2>
+                            <p class="settings-section-desc">Configure the basic settings for your workspace.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Workspace Information</h3>
+                                        <p class="settings-card-desc">Basic details about this workspace</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Workspace Name</label>
+                                    <input type="text" class="form-input" value="Frontend Refactor" id="workspaceName">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Working Directory</label>
+                                    <input type="text" class="form-input" value="~/projects/dashboard" id="workingDir">
+                                    <p class="form-hint">The directory where the agent will operate</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-input form-textarea" id="workspaceDesc">Refactoring the React components in the dashboard module. Currently working on optimizing the state management and splitting large components into smaller, reusable pieces.</textarea>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Behavior</h3>
+                                        <p class="settings-card-desc">Control how the workspace behaves</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Auto-save changes</div>
+                                        <div class="toggle-desc">Automatically save file changes made by the agent</div>
+                                    </div>
+                                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Require confirmation for file writes</div>
+                                        <div class="toggle-desc">Ask for approval before modifying files</div>
+                                    </div>
+                                    <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Enable notifications</div>
+                                        <div class="toggle-desc">Get notified when the agent completes tasks</div>
+                                    </div>
+                                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agent Section -->
+                        <div class="settings-section" id="section-agent">
+                            <h2 class="settings-section-title">Agent Configuration</h2>
+                            <p class="settings-section-desc">Choose and configure the AI agent for this workspace.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Select Agent</h3>
+                                        <p class="settings-card-desc">Choose the AI model to power this workspace</p>
+                                    </div>
+                                </div>
+                                <div class="agent-options">
+                                    <div class="agent-option selected" onclick="selectAgent(this)">
+                                        <div class="agent-option-icon claude">C</div>
+                                        <div class="agent-option-info">
+                                            <h4>Claude</h4>
+                                            <span>Sonnet 3.5</span>
+                                        </div>
+                                        <div class="agent-option-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="agent-option" onclick="selectAgent(this)">
+                                        <div class="agent-option-icon cursor">Cu</div>
+                                        <div class="agent-option-info">
+                                            <h4>Cursor</h4>
+                                            <span>Agent</span>
+                                        </div>
+                                        <div class="agent-option-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="agent-option" onclick="selectAgent(this)">
+                                        <div class="agent-option-icon goose">G</div>
+                                        <div class="agent-option-info">
+                                            <h4>Goose</h4>
+                                            <span>Block</span>
+                                        </div>
+                                        <div class="agent-option-check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Agent Behavior</h3>
+                                        <p class="settings-card-desc">Fine-tune how the agent operates</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Verbose mode</div>
+                                        <div class="toggle-desc">Agent explains its reasoning in detail</div>
+                                    </div>
+                                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Auto-execute commands</div>
+                                        <div class="toggle-desc">Allow agent to run terminal commands without confirmation</div>
+                                    </div>
+                                    <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profiles Section -->
+                        <div class="settings-section" id="section-profiles">
+                            <h2 class="settings-section-title">Profiles</h2>
+                            <p class="settings-section-desc">Select an agent profile to configure pre-defined skills, MCP servers, and behaviors.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Available Profiles</h3>
+                                        <p class="settings-card-desc">Choose a profile to apply to this workspace</p>
+                                    </div>
+                                </div>
+                                <div class="selectable-grid">
+                                    <div class="selectable-item selected" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="3"/>
+                                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">DevOps Engineer</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                                <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                                <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Platform Engineer</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="16 18 22 12 16 6"/>
+                                                <polyline points="8 6 2 12 8 18"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Backend Developer</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Security Analyst</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                                <line x1="9" y1="21" x2="9" y2="9"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Full Stack Developer</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="selectProfile(this)">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon" style="background: rgba(245, 158, 11, 0.15); color: #fcd34d;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                                <polyline points="2 17 12 22 22 17"/>
+                                                <polyline points="2 12 12 17 22 12"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Custom Profile</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Section -->
+                        <div class="settings-section" id="section-skills">
+                            <h2 class="settings-section-title">Skills</h2>
+                            <p class="settings-section-desc">Enable or disable skills to customize agent capabilities.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Local Skills</h3>
+                                        <p class="settings-card-desc">Skills available from your local workspace</p>
+                                    </div>
+                                </div>
+                                <div class="selectable-grid">
+                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="16 18 22 12 16 6"/>
+                                                <polyline points="8 6 2 12 8 18"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">code-review</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">api-docs-generator</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card" style="margin-top: 16px;">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Enterprise Skills</h3>
+                                        <p class="settings-card-desc">Skills available from your OpenShift environment at <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 12px;">ocp.internal.example.com</code></p>
+                                    </div>
+                                    <span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">INTERNAL</span>
+                                </div>
+                                <div class="selectable-grid">
+                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12h8M8 8h8M8 16h8"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">openshift-deployment</span>
+                                    </div>
+                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">podman-build</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                                <path d="M2 17l10 5 10-5"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">tekton-pipelines</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">security-scanning</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">quay-registry</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">internal-db-templates</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" style="width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px;">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M12 16v-4M12 8h.01"/>
+                                        </svg>
+                                        <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+                                            These skills are synced from your organization's OpenShift cluster. They provide access to internal tooling, CI/CD pipelines, and enterprise-specific deployment patterns.
+                                            <div style="margin-top: 8px; color: #64748b;">
+                                                <strong style="color: #94a3b8;">Source:</strong> <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">skills.ocp.internal.example.com/enterprise/v2</code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MCP Section -->
+                        <div class="settings-section" id="section-mcp">
+                            <h2 class="settings-section-title">MCP Servers</h2>
+                            <p class="settings-section-desc">Connect to Model Context Protocol servers for extended capabilities.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Available MCP Servers</h3>
+                                        <p class="settings-card-desc">Select the MCP servers to connect to</p>
+                                    </div>
+                                </div>
+                                <div class="selectable-grid">
+                                    <!-- Installed MCP Servers -->
+                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                                <path d="M2 17l10 5 10-5"/>
+                                                <path d="M2 12l10 5 10-5"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">RHEL MCP</span>
+                                    </div>
+                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12h8M8 8h8M8 16h8"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">OpenShift MCP</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">GitHub MCP</span>
+                                    </div>
+                                    <!-- Available MCP Servers -->
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                                <path d="M12 22V12"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Ansible MCP</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                                <path d="M9 9h6v6H9z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Podman MCP</span>
+                                    </div>
+                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
+                                        <div class="selectable-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                        </div>
+                                        <div class="selectable-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
+                                            </svg>
+                                        </div>
+                                        <span class="selectable-name">Kubernetes MCP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Access Section -->
+                        <div class="settings-section" id="section-access">
+                            <h2 class="settings-section-title">File System Access</h2>
+                            <p class="settings-section-desc">Configure which directories the agent can access.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Access Level</h3>
+                                        <p class="settings-card-desc">Choose the scope of file system access</p>
+                                    </div>
+                                </div>
+                                <div class="file-access-options">
+                                    <div class="file-access-option selected" onclick="selectAccess(this)">
+                                        <div class="file-access-radio"></div>
+                                        <div class="file-access-info">
+                                            <h4>Working Directory Only</h4>
+                                            <p>Agent can only access the specified working directory and its subdirectories.</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-access-option" onclick="selectAccess(this)">
+                                        <div class="file-access-radio"></div>
+                                        <div class="file-access-info">
+                                            <h4>Home Directory</h4>
+                                            <p>Agent can access your entire home directory (~/) and all subdirectories.</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-access-option" onclick="selectAccess(this)">
+                                        <div class="file-access-radio"></div>
+                                        <div class="file-access-info">
+                                            <h4>Custom Paths</h4>
+                                            <p>Specify exact directories the agent can access.</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-access-option" onclick="selectAccess(this)">
+                                        <div class="file-access-radio"></div>
+                                        <div class="file-access-info">
+                                            <h4>Full System Access</h4>
+                                            <p>Agent can access the entire filesystem. Use with caution.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Network Section -->
+                        <div class="settings-section" id="section-network">
+                            <h2 class="settings-section-title">Network Policies</h2>
+                            <p class="settings-section-desc">Control what external resources the sandbox can access through HTTP/HTTPS filtering.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Policy Mode</h3>
+                                        <p class="settings-card-desc">Choose the default behavior for network requests</p>
+                                    </div>
+                                </div>
+                                <div class="policy-mode-selector">
+                                    <div class="policy-mode-option selected allow-mode" onclick="selectPolicyMode(this, 'allow')">
+                                        <div class="policy-mode-radio"></div>
+                                        <div class="policy-mode-icon allow">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="policy-mode-info">
+                                            <h4>Allow Mode</h4>
+                                            <p>Permit all traffic except what's explicitly blocked. Best for development.</p>
+                                        </div>
+                                    </div>
+                                    <div class="policy-mode-option deny-mode" onclick="selectPolicyMode(this, 'deny')">
+                                        <div class="policy-mode-radio"></div>
+                                        <div class="policy-mode-icon deny">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                                            </svg>
+                                        </div>
+                                        <div class="policy-mode-info">
+                                            <h4>Deny Mode</h4>
+                                            <p>Block all traffic except what's explicitly allowed. Best for production.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="security-info-box">
+                                    <div class="security-info-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                            <line x1="12" y1="9" x2="12" y2="13"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div class="security-info-content">
+                                        <h4>Security Considerations</h4>
+                                        <p>Network policies control HTTP/HTTPS traffic. Connection to external services over other protocols (raw TCP/UDP) are blocked. Use policies as one layer of security alongside the sandbox isolation.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Blocked CIDR Ranges</h3>
+                                        <p class="settings-card-desc">IP address ranges that are blocked from access</p>
+                                    </div>
+                                </div>
+                                <div class="rules-list" id="blocked-cidrs">
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">10.0.0.0/8</div>
+                                            <div class="rule-desc">Private network (Class A)</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">127.0.0.0/8</div>
+                                            <div class="rule-desc">Loopback addresses</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">172.16.0.0/12</div>
+                                            <div class="rule-desc">Private network (Class B)</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">192.168.0.0/16</div>
+                                            <div class="rule-desc">Private network (Class C)</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">169.254.0.0/16</div>
+                                            <div class="rule-desc">Link-local addresses</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                </div>
+                                <div class="add-rule-row">
+                                    <input type="text" class="add-rule-input" placeholder="e.g., 203.0.113.0/24" id="new-blocked-cidr">
+                                    <button class="add-rule-btn" onclick="addBlockedCidr()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Allowed Hosts</h3>
+                                        <p class="settings-card-desc">Domains that are explicitly permitted (used in deny mode)</p>
+                                    </div>
+                                </div>
+                                <div class="rules-list" id="allowed-hosts">
+                                    <div class="rule-item allowed">
+                                        <div class="rule-icon allowed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">*.anthropic.com</div>
+                                            <div class="rule-desc">Claude API and services</div>
+                                        </div>
+                                        <span class="rule-badge default">Default</span>
+                                    </div>
+                                    <div class="rule-item allowed">
+                                        <div class="rule-icon allowed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">*.npmjs.org</div>
+                                            <div class="rule-desc">NPM package registry</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="rule-item allowed">
+                                        <div class="rule-icon allowed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">*.pypi.org</div>
+                                            <div class="rule-desc">Python Package Index</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="rule-item allowed">
+                                        <div class="rule-icon allowed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">github.com</div>
+                                            <div class="rule-desc">GitHub repositories</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="rule-item allowed">
+                                        <div class="rule-icon allowed">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">*.githubusercontent.com</div>
+                                            <div class="rule-desc">GitHub raw content</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-rule-row">
+                                    <input type="text" class="add-rule-input" placeholder="e.g., api.example.com:443 or *.example.com" id="new-allowed-host">
+                                    <button class="add-rule-btn" onclick="addAllowedHost()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Blocked Hosts</h3>
+                                        <p class="settings-card-desc">Domains that are explicitly blocked (used in allow mode)</p>
+                                    </div>
+                                </div>
+                                <div class="rules-list" id="blocked-hosts">
+                                    <div class="rule-item blocked">
+                                        <div class="rule-icon blocked">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                                <line x1="9" y1="9" x2="15" y2="15"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">internal.corp.com</div>
+                                            <div class="rule-desc">Internal corporate services</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-rule-row">
+                                    <input type="text" class="add-rule-input" placeholder="e.g., restricted.example.com" id="new-blocked-host">
+                                    <button class="add-rule-btn" onclick="addBlockedHost()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">HTTPS Bypass Rules</h3>
+                                        <p class="settings-card-desc">Hosts that bypass HTTPS inspection (for certificate pinning)</p>
+                                    </div>
+                                </div>
+                                <div class="rules-list" id="bypass-hosts">
+                                    <div class="rule-item bypass">
+                                        <div class="rule-icon bypass">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                                <path d="M9 12l2 2 4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="rule-info">
+                                            <div class="rule-value">api.service-with-pinning.com</div>
+                                            <div class="rule-desc">Service with certificate pinning</div>
+                                        </div>
+                                        <span class="rule-badge custom">Custom</span>
+                                        <div class="rule-actions">
+                                            <button class="rule-action-btn" onclick="removeRule(this)">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="3 6 5 6 21 6"/>
+                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-rule-row">
+                                    <input type="text" class="add-rule-input" placeholder="e.g., api.pinned-service.com" id="new-bypass-host">
+                                    <button class="add-rule-btn" onclick="addBypassHost()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                        Add
+                                    </button>
+                                </div>
+
+                                <div class="security-info-box info">
+                                    <div class="security-info-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="16" x2="12" y2="12"/>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                        </svg>
+                                    </div>
+                                    <div class="security-info-content">
+                                        <h4>About Bypass Mode</h4>
+                                        <p>Bypassed traffic acts as a simple TCP tunnel without content inspection. Use only when necessary for services with certificate pinning. The proxy cannot inject credentials or detect domain fronting for bypassed connections.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Network Activity Log</h3>
+                                        <p class="settings-card-desc">Monitor recent network requests from this workspace</p>
+                                    </div>
+                                </div>
+                                <div class="network-log-preview">
+                                    <div class="network-log-header">
+                                        <span class="network-log-title">Recent Activity</span>
+                                        <span class="network-log-badge live">Live</span>
+                                    </div>
+                                    <div class="network-log-entries">
+                                        <div class="log-entry">
+                                            <span class="log-status allowed">ALLOWED</span>
+                                            <span class="log-host">api.anthropic.com:443</span>
+                                            <span class="log-time">14:35:21</span>
+                                        </div>
+                                        <div class="log-entry">
+                                            <span class="log-status allowed">ALLOWED</span>
+                                            <span class="log-host">registry.npmjs.org:443</span>
+                                            <span class="log-time">14:32:18</span>
+                                        </div>
+                                        <div class="log-entry">
+                                            <span class="log-status blocked">BLOCKED</span>
+                                            <span class="log-host">internal.corp.com:443</span>
+                                            <span class="log-time">14:30:15</span>
+                                        </div>
+                                        <div class="log-entry">
+                                            <span class="log-status allowed">ALLOWED</span>
+                                            <span class="log-host">raw.githubusercontent.com:443</span>
+                                            <span class="log-time">14:30:45</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Section -->
+                        <div class="settings-section" id="section-advanced">
+                            <h2 class="settings-section-title">Advanced Settings</h2>
+                            <p class="settings-section-desc">Advanced configuration options and danger zone.</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Context Management</h3>
+                                        <p class="settings-card-desc">Manage the agent's context window</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Auto-summarize on context limit</div>
+                                        <div class="toggle-desc">Automatically summarize conversation when context is nearly full</div>
+                                    </div>
+                                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Include git history in context</div>
+                                        <div class="toggle-desc">Allow agent to access recent git commits for context</div>
+                                    </div>
+                                    <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card danger-zone">
+                                <div class="settings-card-header">
+                                    <div>
+                                        <h3 class="settings-card-title">Danger Zone</h3>
+                                        <p class="settings-card-desc">Irreversible and destructive actions</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Reset Context</div>
+                                        <div class="toggle-desc">Clear all conversation history and start fresh</div>
+                                    </div>
+                                    <button class="btn-danger" onclick="resetContext()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="23 4 23 10 17 10"/>
+                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                                        </svg>
+                                        Reset
+                                    </button>
+                                </div>
+                                <div class="toggle-row">
+                                    <div class="toggle-info">
+                                        <div class="toggle-label">Delete Workspace</div>
+                                        <div class="toggle-desc">Permanently delete this workspace and all its data</div>
+                                    </div>
+                                    <button class="btn-danger" onclick="deleteWorkspace()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"/>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        // Check if Profiles module is enabled in settings
+        function isProfilesModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.profilesEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if Skills module is enabled in settings
+        function isSkillsModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.skillsEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Check if MCP module is enabled in settings
+        function isMcpModuleEnabled() {
+            try {
+                const settings = localStorage.getItem('kortexSettings');
+                if (settings) {
+                    const parsed = JSON.parse(settings);
+                    if (parsed.modules && parsed.modules.mcpEnabled === false) {
+                        return false;
+                    }
+                }
+                return true; // Default to enabled
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Hide module elements if disabled
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isProfilesModuleEnabled()) {
+                const profilesNav = document.getElementById('profiles-settings-nav');
+                if (profilesNav) profilesNav.style.display = 'none';
+
+                const profilesSection = document.getElementById('section-profiles');
+                if (profilesSection) profilesSection.style.display = 'none';
+            }
+
+            if (!isSkillsModuleEnabled()) {
+                const skillsNav = document.getElementById('skills-settings-nav');
+                if (skillsNav) skillsNav.style.display = 'none';
+
+                const skillsSection = document.getElementById('section-skills');
+                if (skillsSection) skillsSection.style.display = 'none';
+            }
+
+            if (!isMcpModuleEnabled()) {
+                const mcpNav = document.getElementById('mcp-settings-nav');
+                if (mcpNav) mcpNav.style.display = 'none';
+
+                const mcpSection = document.getElementById('section-mcp');
+                if (mcpSection) mcpSection.style.display = 'none';
+            }
+        });
+
+        function showSection(sectionId) {
+            // Update nav
+            document.querySelectorAll('.settings-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('section-' + sectionId).classList.add('active');
+        }
+
+        function selectAgent(element) {
+            document.querySelectorAll('.agent-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectAccess(element) {
+            document.querySelectorAll('.file-access-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function selectProfile(element) {
+            // Profiles are single-select (like agents)
+            const profilesGrid = element.closest('.selectable-grid');
+            profilesGrid.querySelectorAll('.selectable-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function saveSettings() {
+            alert('Settings saved successfully!');
+            window.location.href = 'details.html';
+        }
+
+        function discardChanges() {
+            if (confirm('Are you sure you want to discard all changes?')) {
+                window.location.href = 'details.html';
+            }
+        }
+
+        function resetContext() {
+            if (confirm('This will clear all conversation history. Are you sure?')) {
+                alert('Context has been reset.');
+            }
+        }
+
+        function deleteWorkspace() {
+            if (confirm('This action cannot be undone. Are you sure you want to delete this workspace?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Network Policy Functions
+        function selectPolicyMode(element, mode) {
+            document.querySelectorAll('.policy-mode-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function addBlockedCidr() {
+            const input = document.getElementById('new-blocked-cidr');
+            const value = input.value.trim();
+            if (!value) return;
+            
+            const rulesList = document.getElementById('blocked-cidrs');
+            const newRule = createRuleItem(value, 'blocked', 'Custom CIDR block', true);
+            rulesList.appendChild(newRule);
+            input.value = '';
+        }
+
+        function addAllowedHost() {
+            const input = document.getElementById('new-allowed-host');
+            const value = input.value.trim();
+            if (!value) return;
+            
+            const rulesList = document.getElementById('allowed-hosts');
+            const newRule = createRuleItem(value, 'allowed', 'Custom allowed host', true);
+            rulesList.appendChild(newRule);
+            input.value = '';
+        }
+
+        function addBlockedHost() {
+            const input = document.getElementById('new-blocked-host');
+            const value = input.value.trim();
+            if (!value) return;
+            
+            const rulesList = document.getElementById('blocked-hosts');
+            const newRule = createRuleItem(value, 'blocked', 'Custom blocked host', true);
+            rulesList.appendChild(newRule);
+            input.value = '';
+        }
+
+        function addBypassHost() {
+            const input = document.getElementById('new-bypass-host');
+            const value = input.value.trim();
+            if (!value) return;
+            
+            const rulesList = document.getElementById('bypass-hosts');
+            const newRule = createRuleItem(value, 'bypass', 'HTTPS bypass rule', true);
+            rulesList.appendChild(newRule);
+            input.value = '';
+        }
+
+        function createRuleItem(value, type, description, removable) {
+            const div = document.createElement('div');
+            div.className = `rule-item ${type}`;
+            
+            const iconSvg = type === 'blocked' 
+                ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
+                : type === 'allowed'
+                ? '<circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/>'
+                : '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>';
+            
+            div.innerHTML = `
+                <div class="rule-icon ${type}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${iconSvg}
+                    </svg>
+                </div>
+                <div class="rule-info">
+                    <div class="rule-value">${value}</div>
+                    <div class="rule-desc">${description}</div>
+                </div>
+                <span class="rule-badge custom">Custom</span>
+                ${removable ? `
+                <div class="rule-actions">
+                    <button class="rule-action-btn" onclick="removeRule(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+                ` : ''}
+            `;
+            
+            return div;
+        }
+
+        function removeRule(button) {
+            const ruleItem = button.closest('.rule-item');
+            if (ruleItem) {
+                ruleItem.remove();
+            }
+        }
+    </script>
+</body>
+</html>

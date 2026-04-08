@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - AI Assets</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* ── AI Assets Layout: left sidebar + content ── */
+        .assets-page-layout {
+            display: flex;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .assets-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px;
+            min-width: 0;
+        }
+
+        .assets-main::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .assets-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .assets-main::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
+        }
+
+        /* ── Left Sidebar: Category Nav ── */
+        .assets-sidebar {
+            width: 240px;
+            min-width: 240px;
+            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
+            border-right: 1px solid #3d3e4f;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 24px 0;
+        }
+
+        .assets-sidebar-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0 20px 12px;
+        }
+
+        .assets-cat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0 10px;
+        }
+
+        .assets-cat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .assets-cat-item:hover {
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .assets-cat-item.active {
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .assets-cat-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .assets-cat-icon svg {
+            width: 18px;
+            height: 18px;
+            color: #6b7280;
+        }
+
+        .assets-cat-item.active .assets-cat-icon svg {
+            color: #c4b5fd;
+        }
+
+        .assets-cat-icon.all { }
+        .assets-cat-icon.mcp { }
+        .assets-cat-icon.skill { }
+        .assets-cat-icon.knowledge { }
+        .assets-cat-icon.profile { }
+
+        /* ── Profiles sidebar section ── */
+        .profiles-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .profiles-section-header .assets-sidebar-section-title {
+            margin-bottom: 0;
+        }
+
+        .profile-add-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 1px dashed #4b5563;
+            background: transparent;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .profile-add-btn:hover {
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .profile-add-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .profiles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .profile-sidebar-item:hover {
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .profile-sidebar-item.active {
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .profile-sidebar-avatar {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-sidebar-avatar svg {
+            width: 17px;
+            height: 17px;
+            color: #6b7280;
+        }
+
+        .profile-sidebar-item.active .profile-sidebar-avatar svg {
+            color: #c4b5fd;
+        }
+
+        .profile-sidebar-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-sidebar-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #e5e7eb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-sidebar-item.active .profile-sidebar-name {
+            color: #c4b5fd;
+        }
+
+        .profile-sidebar-meta {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 1px;
+        }
+
+        .profile-sidebar-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+        }
+
+        .profile-sidebar-badge.default {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+        }
+
+        /* ── Profile Detail View ── */
+        .profile-detail-view {
+            padding: 0;
+        }
+
+        .profile-detail-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: color 0.15s;
+        }
+
+        .profile-detail-back:hover {
+            color: #c4b5fd;
+        }
+
+        .profile-detail-back svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .profile-detail-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            margin-bottom: 28px;
+        }
+
+        .profile-detail-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .profile-detail-avatar svg {
+            width: 22px;
+            height: 22px;
+            color: #a78bfa;
+        }
+
+        .profile-detail-header-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-detail-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .profile-detail-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .profile-detail-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .profile-detail-badge.default {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+        }
+
+        .profile-detail-badge.enabled {
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+        }
+
+        .profile-detail-desc {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .profile-detail-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .profile-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid;
+            transition: all 0.15s;
+        }
+
+        .profile-action-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .profile-action-btn.secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #3d3e4f;
+            color: #e5e7eb;
+        }
+
+        .profile-action-btn.secondary:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .profile-action-btn.danger {
+            background: rgba(239, 68, 68, 0.06);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .profile-action-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* ── Profile Asset Blocks ── */
+        .profile-assets-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile-asset-block {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .profile-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .profile-block-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-block-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-block-icon svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .profile-block-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .profile-block-count {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .profile-block-add-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 1px dashed #4b5563;
+            background: transparent;
+            color: #6b7280;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .profile-block-add-btn:hover {
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .profile-block-add-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .profile-block-items {
+            padding: 4px 8px;
+        }
+
+        .profile-block-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.15s;
+        }
+
+        .profile-block-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .profile-block-item + .profile-block-item {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .profile-block-item:hover + .profile-block-item {
+            border-top-color: transparent;
+        }
+
+        .profile-block-item-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-block-item-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .profile-block-item-icon.mcp svg { color: #22d3ee; }
+        .profile-block-item-icon.skill svg { color: #34d399; }
+        .profile-block-item-icon.knowledge svg { color: #60a5fa; }
+
+        .profile-block-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-block-item-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .profile-block-item-meta {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .profile-block-item-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: #4b5563;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            opacity: 0;
+            flex-shrink: 0;
+        }
+
+        .profile-block-item:hover .profile-block-item-remove {
+            opacity: 1;
+        }
+
+        .profile-block-item-remove:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+        }
+
+        .profile-block-item-remove svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .assets-cat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .assets-cat-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .assets-cat-item.active .assets-cat-name {
+            color: #c4b5fd;
+        }
+
+        .assets-cat-count {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 1px;
+        }
+
+        .assets-cat-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .assets-cat-item.active .assets-cat-badge {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c4b5fd;
+        }
+
+        /* Sidebar divider */
+        .assets-sidebar-divider {
+            height: 1px;
+            background: #3d3e4f;
+            margin: 16px 20px;
+        }
+
+        /* Source filters in sidebar */
+        .assets-sidebar-section {
+            padding: 0 20px;
+        }
+
+        .assets-sidebar-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+        }
+
+        .source-filters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .source-filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .source-filter-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #e5e7eb;
+        }
+
+        .source-filter-item.active {
+            color: #e5e7eb;
+        }
+
+        .source-filter-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .source-filter-dot.all { background: #8b5cf6; }
+        .source-filter-dot.local { background: #6b7280; }
+        .source-filter-dot.prebuilt { background: #3b82f6; }
+        .source-filter-dot.enterprise { background: #fb923c; }
+
+        .source-filter-check {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1.5px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .source-filter-item.active .source-filter-check {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .source-filter-check svg {
+            width: 10px;
+            height: 10px;
+            color: #fff;
+            opacity: 0;
+        }
+
+        .source-filter-item.active .source-filter-check svg {
+            opacity: 1;
+        }
+
+        /* ── Header ── */
+        .assets-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .assets-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .assets-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .assets-count {
+            font-size: 13px;
+            color: #6b7280;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            border: 1px solid #3d3e4f;
+        }
+
+        .assets-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .assets-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            min-width: 260px;
+            transition: border-color 0.2s ease;
+        }
+
+        .assets-search:focus-within {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .assets-search svg {
+            width: 16px;
+            height: 16px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .assets-search input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #e5e7eb;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .assets-search input::placeholder {
+            color: #4b5563;
+        }
+
+        .assets-import-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .assets-import-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .assets-import-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Active category label shown above grid */
+        .assets-active-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .assets-active-label-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .assets-active-label-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .assets-active-label-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .assets-active-label-count {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* ── Asset Cards Grid ── */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 14px;
+        }
+
+        .asset-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .asset-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .asset-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .asset-card-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .asset-card-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .asset-card-icon.mcp svg { color: #22d3ee; }
+        .asset-card-icon.skill svg { color: #34d399; }
+        .asset-card-icon.knowledge svg { color: #60a5fa; }
+        .asset-card-icon.profile svg { color: #a78bfa; }
+
+        .asset-card-title-area {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .asset-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .asset-card-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .asset-type-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .asset-type-badge.mcp { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
+        .asset-type-badge.skill { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; }
+        .asset-type-badge.knowledge { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+        .asset-type-badge.profile { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+
+        .asset-source-badge {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .asset-source-badge.local { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
+        .asset-source-badge.enterprise { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+
+        .asset-card-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .asset-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .asset-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .asset-card-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .asset-card-meta-item svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .asset-card-status {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .asset-card-status.installed {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .asset-card-status.available {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .asset-card-status.enabled {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        /* Section headers in grid */
+        .assets-section-header {
+            grid-column: 1 / -1;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 8px 0 0;
+            margin-top: 8px;
+            border-top: 1px solid rgba(61, 62, 79, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .assets-section-header:first-child {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .section-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header-link {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            text-transform: none;
+            letter-spacing: 0;
+            transition: color 0.15s;
+        }
+
+        .section-header-link:hover { color: #c4b5fd; }
+
+        .section-create-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #8b5cf6;
+            text-decoration: none;
+            text-transform: none;
+            letter-spacing: 0;
+            padding: 3px 10px;
+            border-radius: 6px;
+            border: 1px dashed rgba(139, 92, 246, 0.3);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .section-create-btn:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            color: #c4b5fd;
+        }
+
+        .section-create-btn svg { width: 12px; height: 12px; }
+
+        /* ── Summary Dashboard ── */
+        .assets-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .summary-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .summary-stat-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .summary-stat-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-stat-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .summary-stat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e5e7eb;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .summary-stat-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .summary-category-block {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .summary-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .summary-category-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-category-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-category-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-category-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .summary-category-count {
+            font-size: 12px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .summary-category-link {
+            font-size: 12px;
+            font-weight: 500;
+            color: #8b5cf6;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.15s;
+        }
+
+        .summary-category-link:hover {
+            color: #c4b5fd;
+        }
+
+        .summary-category-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .summary-asset-list {
+            padding: 6px 10px;
+        }
+
+        .summary-asset-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .summary-asset-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .summary-asset-row + .summary-asset-row {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .summary-asset-row:hover + .summary-asset-row {
+            border-top-color: transparent;
+        }
+
+        .summary-asset-row-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-asset-row-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-asset-row-icon.mcp svg { color: #22d3ee; }
+        .summary-asset-row-icon.skill svg { color: #34d399; }
+        .summary-asset-row-icon.knowledge svg { color: #60a5fa; }
+
+        .summary-asset-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .summary-asset-row-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .summary-asset-row-desc {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .summary-asset-row-status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .summary-asset-row-status.installed {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .summary-asset-row-status.available {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .summary-asset-row-status.enabled {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .summary-asset-row-meta {
+            font-size: 11px;
+            color: #4b5563;
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+
+        .summary-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 14px;
+        }
+
+        .summary-profiles-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .summary-profile-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .summary-profile-card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .summary-profile-avatar {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-profile-avatar svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .summary-profile-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-left: 6px;
+        }
+
+        .summary-profile-badge.default {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+        }
+
+        .summary-profile-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .summary-profile-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .summary-profile-chip {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .summary-profile-chip.mcp {
+            background: rgba(6, 182, 212, 0.1);
+            color: #67e8f9;
+        }
+
+        .summary-profile-chip.skill {
+            background: rgba(52, 211, 153, 0.1);
+            color: #6ee7b7;
+        }
+
+        .summary-profile-chip.knowledge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body class="ai-assets-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="assets-page-layout">
+                <!-- Left Sidebar: Categories -->
+                <div class="assets-sidebar">
+                    <div class="assets-sidebar-title">Categories</div>
+
+                    <div class="assets-cat-list">
+                        <div class="assets-cat-item active" onclick="filterCategory('all', this)">
+                            <div class="assets-cat-icon all">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                            </div>
+                            <div class="assets-cat-info">
+                                <div class="assets-cat-name">All Assets</div>
+                                <div class="assets-cat-count">Everything in one view</div>
+                            </div>
+                            <span class="assets-cat-badge">11</span>
+                        </div>
+
+                        <div class="assets-cat-item" onclick="filterCategory('mcp', this)">
+                            <div class="assets-cat-icon mcp">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            </div>
+                            <div class="assets-cat-info">
+                                <div class="assets-cat-name">Tools (MCP)</div>
+                                <div class="assets-cat-count">MCP server connections</div>
+                            </div>
+                            <span class="assets-cat-badge">5</span>
+                        </div>
+
+                        <div class="assets-cat-item" onclick="filterCategory('skill', this)">
+                            <div class="assets-cat-icon skill">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            </div>
+                            <div class="assets-cat-info">
+                                <div class="assets-cat-name">Skills</div>
+                                <div class="assets-cat-count">Agent capabilities</div>
+                            </div>
+                            <span class="assets-cat-badge">4</span>
+                        </div>
+
+                        <div class="assets-cat-item" onclick="filterCategory('knowledge', this)">
+                            <div class="assets-cat-icon knowledge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <div class="assets-cat-info">
+                                <div class="assets-cat-name">Knowledge</div>
+                                <div class="assets-cat-count">RAG & vector stores</div>
+                            </div>
+                            <span class="assets-cat-badge">2</span>
+                        </div>
+                    </div>
+
+                    <div class="assets-sidebar-divider"></div>
+
+                    <div class="assets-sidebar-section">
+                        <div class="assets-sidebar-section-title">Source</div>
+                        <div class="source-filters-list">
+                            <div class="source-filter-item active" onclick="toggleSource('all', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span>All Sources</span>
+                            </div>
+                            <div class="source-filter-item" onclick="toggleSource('local', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="source-filter-dot local"></div>
+                                <span>Local / Custom</span>
+                            </div>
+                            <div class="source-filter-item" onclick="toggleSource('prebuilt', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="source-filter-dot prebuilt"></div>
+                                <span>Pre-built</span>
+                            </div>
+                            <div class="source-filter-item" onclick="toggleSource('enterprise', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <div class="source-filter-dot enterprise"></div>
+                                <span>Enterprise</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assets-sidebar-divider"></div>
+
+                    <div class="assets-sidebar-section">
+                        <div class="assets-sidebar-section-title">Status</div>
+                        <div class="source-filters-list">
+                            <div class="source-filter-item active" onclick="toggleStatus('all', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span>All</span>
+                            </div>
+                            <div class="source-filter-item" onclick="toggleStatus('installed', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span>Installed / Enabled</span>
+                            </div>
+                            <div class="source-filter-item" onclick="toggleStatus('available', this)">
+                                <div class="source-filter-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assets-sidebar-divider"></div>
+
+                    <div class="assets-sidebar-section">
+                        <div class="profiles-section-header">
+                            <div class="assets-sidebar-section-title">Profiles</div>
+                            <button class="profile-add-btn" onclick="event.stopPropagation()" title="Create new profile">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </button>
+                        </div>
+                        <div class="profiles-list">
+                            <div class="profile-sidebar-item" onclick="openProfile('devops-profile', this)">
+                                <div class="profile-sidebar-avatar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                                </div>
+                                <div class="profile-sidebar-info">
+                                    <div class="profile-sidebar-name">DevOps Engineer</div>
+                                    <div class="profile-sidebar-meta">4 skills, 3 tools</div>
+                                </div>
+                                <span class="profile-sidebar-badge default">Default</span>
+                            </div>
+                            <div class="profile-sidebar-item" onclick="openProfile('backend-profile', this)">
+                                <div class="profile-sidebar-avatar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                </div>
+                                <div class="profile-sidebar-info">
+                                    <div class="profile-sidebar-name">Backend Developer</div>
+                                    <div class="profile-sidebar-meta">3 skills, 2 tools</div>
+                                </div>
+                            </div>
+                            <div class="profile-sidebar-item" onclick="openProfile('security-profile', this)">
+                                <div class="profile-sidebar-avatar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div class="profile-sidebar-info">
+                                    <div class="profile-sidebar-name">Security Analyst</div>
+                                    <div class="profile-sidebar-meta">5 skills, 2 tools</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="assets-main">
+                    <!-- Header -->
+                    <div class="assets-header">
+                        <div class="assets-header-left">
+                            <h1 class="assets-title">AI Assets</h1>
+                            <span class="assets-count">11 assets</span>
+                        </div>
+                        <div class="assets-header-actions">
+                            <div class="assets-search">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" placeholder="Search assets..." oninput="searchAssets(this.value)">
+                            </div>
+                            <a href="../knowledges/index.html" class="assets-import-btn" id="createKbBtn" style="display:none; text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Knowledge Base
+                            </a>
+                            <a href="../skills/index.html" class="assets-import-btn" id="createSkillBtn" style="display:none; text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Skill
+                            </a>
+                            <button class="assets-import-btn" id="importBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Import
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Active category label (hidden on summary) -->
+                    <div class="assets-active-label" id="activeCategoryLabel" style="display: none;">
+                        <div class="assets-active-label-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                        </div>
+                        <span class="assets-active-label-text">All Assets</span>
+                        <span class="assets-active-label-count">(11)</span>
+                    </div>
+
+                    <!-- Summary Dashboard (shown on All Assets) -->
+                    <div class="assets-summary" id="assetsSummary">
+                        <!-- Stats Row -->
+                        <div class="summary-stats-row">
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(2)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">5</div>
+                                    <div class="summary-stat-label">Tools (MCP)</div>
+                                </div>
+                            </div>
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(3)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">4</div>
+                                    <div class="summary-stat-label">Skills</div>
+                                </div>
+                            </div>
+                            <div class="summary-stat-card" onclick="document.querySelector('.assets-cat-item:nth-child(4)').click()">
+                                <div class="summary-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                </div>
+                                <div class="summary-stat-info">
+                                    <div class="summary-stat-number">2</div>
+                                    <div class="summary-stat-label">Knowledge Bases</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tools Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Tools (MCP)</span>
+                                    <span class="summary-category-count">&mdash; 5 servers</span>
+                                </div>
+                                <a href="../mcp/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('github-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">GitHub MCP</div>
+                                        <div class="summary-asset-row-desc">Repositories, issues, pull requests, and workflows</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">12 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('openshift-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">OpenShift MCP</div>
+                                        <div class="summary-asset-row-desc">Clusters, deployments, services, and routes</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">18 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('ansible-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Ansible MCP</div>
+                                        <div class="summary-asset-row-desc">Playbooks, inventories, and infrastructure automation</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">8 tools</span>
+                                    <span class="summary-asset-row-status available">Available</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('rhel-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">RHEL MCP</div>
+                                        <div class="summary-asset-row-desc">Package management, services, and security</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">15 tools</span>
+                                    <span class="summary-asset-row-status installed">Installed</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('sap-mcp')">
+                                    <div class="summary-asset-row-icon mcp">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">SAP Integration</div>
+                                        <div class="summary-asset-row-desc">ERP data access, reporting, and process automation</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">6 tools</span>
+                                    <span class="summary-asset-row-status available">Available</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Skills</span>
+                                    <span class="summary-category-count">&mdash; 4 skills</span>
+                                </div>
+                                <a href="../skills/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('kubernetes-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Kubernetes</div>
+                                        <div class="summary-asset-row-desc">Resource management, deployment strategies, and cluster operations</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">5 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('hummingbird-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Hummingbird Containers</div>
+                                        <div class="summary-asset-row-desc">Minimal, hardened, distroless container images</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">2 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('code-review-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Code Review</div>
+                                        <div class="summary-asset-row-desc">Best practices checks, security analysis, and performance suggestions</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">8 tasks</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('tekton-skill')">
+                                    <div class="summary-asset-row-icon skill">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Tekton Pipelines</div>
+                                        <div class="summary-asset-row-desc">CI/CD pipelines, tasks, and triggers for cloud-native workflows</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">1 task</span>
+                                    <span class="summary-asset-row-status enabled">Enabled</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Knowledge Summary -->
+                        <div class="summary-category-block">
+                            <div class="summary-category-header">
+                                <div class="summary-category-header-left">
+                                    <div class="summary-category-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    </div>
+                                    <span class="summary-category-title">Knowledge Bases</span>
+                                    <span class="summary-category-count">&mdash; 2 bases</span>
+                                </div>
+                                <a href="../knowledges/index.html" class="summary-category-link">
+                                    View all
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                </a>
+                            </div>
+                            <div class="summary-asset-list">
+                                <div class="summary-asset-row" onclick="openAssetDetail('api-docs-kb')">
+                                    <div class="summary-asset-row-icon knowledge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">API Documentation</div>
+                                        <div class="summary-asset-row-desc">REST API specifications, endpoint documentation, and integration patterns</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">42 sources &middot; Milvus</span>
+                                    <span class="summary-asset-row-status installed">Active</span>
+                                </div>
+                                <div class="summary-asset-row" onclick="openAssetDetail('codebase-kb')">
+                                    <div class="summary-asset-row-icon knowledge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                    </div>
+                                    <div class="summary-asset-row-info">
+                                        <div class="summary-asset-row-name">Codebase Context</div>
+                                        <div class="summary-asset-row-desc">Indexed project codebase with semantic search for architecture patterns</div>
+                                    </div>
+                                    <span class="summary-asset-row-meta">1,284 files &middot; ChromaDB</span>
+                                    <span class="summary-asset-row-status installed">Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profiles Summary -->
+                        <div>
+                            <div class="summary-section-title">Profiles</div>
+                            <div class="summary-profiles-row">
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(1)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">DevOps Engineer</span>
+                                        <span class="summary-profile-badge default">Default</span>
+                                    </div>
+                                    <div class="summary-profile-desc">CI/CD, infrastructure management, and deployment automation.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">3 Tools</span>
+                                        <span class="summary-profile-chip skill">4 Skills</span>
+                                        <span class="summary-profile-chip knowledge">1 KB</span>
+                                    </div>
+                                </div>
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(2)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">Backend Developer</span>
+                                    </div>
+                                    <div class="summary-profile-desc">API development, database management, and backend architecture.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">2 Tools</span>
+                                        <span class="summary-profile-chip skill">3 Skills</span>
+                                        <span class="summary-profile-chip knowledge">2 KBs</span>
+                                    </div>
+                                </div>
+                                <div class="summary-profile-card" onclick="document.querySelector('.profile-sidebar-item:nth-child(3)').click()">
+                                    <div class="summary-profile-header">
+                                        <div class="summary-profile-avatar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                        <span class="summary-profile-name">Security Analyst</span>
+                                    </div>
+                                    <div class="summary-profile-desc">Vulnerability scanning, compliance checking, and secure coding.</div>
+                                    <div class="summary-profile-chips">
+                                        <span class="summary-profile-chip mcp">2 Tools</span>
+                                        <span class="summary-profile-chip skill">5 Skills</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Asset Cards Grid (hidden on summary, shown on category filter) -->
+                    <div class="assets-grid" id="assetsGrid" style="display: none;">
+                        <!-- MCP / Tools -->
+                        <div class="assets-section-header" data-type="mcp">
+                            <span>Tools (MCP Servers)</span>
+                            <div class="section-header-actions">
+                                <a href="../mcp/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="mcp" data-source="prebuilt" onclick="openAssetDetail('github-mcp')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">GitHub MCP</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge mcp">MCP</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Interact with GitHub repositories, issues, pull requests, and workflows through the Model Context Protocol.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        12 tools
+                                    </div>
+                                    <div class="asset-card-meta-item">v1.2.0</div>
+                                </div>
+                                <span class="asset-card-status installed">Installed</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="mcp" data-source="prebuilt" onclick="openAssetDetail('openshift-mcp')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">OpenShift MCP</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge mcp">MCP</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Manage OpenShift clusters, deployments, services, and routes through natural language interactions.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        18 tools
+                                    </div>
+                                    <div class="asset-card-meta-item">v2.1.0</div>
+                                </div>
+                                <span class="asset-card-status installed">Installed</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="mcp" data-source="prebuilt" onclick="openAssetDetail('ansible-mcp')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Ansible MCP</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge mcp">MCP</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Run Ansible playbooks, manage inventories, and automate infrastructure tasks directly from the agent.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        8 tools
+                                    </div>
+                                    <div class="asset-card-meta-item">v1.0.3</div>
+                                </div>
+                                <span class="asset-card-status available">Available</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="mcp" data-source="prebuilt" onclick="openAssetDetail('rhel-mcp')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">RHEL MCP</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge mcp">MCP</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">System administration tools for Red Hat Enterprise Linux including package management, services, and security.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        15 tools
+                                    </div>
+                                    <div class="asset-card-meta-item">v1.4.0</div>
+                                </div>
+                                <span class="asset-card-status installed">Installed</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="mcp" data-source="enterprise" onclick="openAssetDetail('sap-mcp')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon mcp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">SAP Integration</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge mcp">MCP</span>
+                                        <span class="asset-source-badge enterprise">Enterprise</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Connect to SAP systems for ERP data access, reporting, and business process automation.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        6 tools
+                                    </div>
+                                    <div class="asset-card-meta-item">v0.9.1</div>
+                                </div>
+                                <span class="asset-card-status available">Available</span>
+                            </div>
+                        </div>
+
+                        <!-- Skills -->
+                        <div class="assets-section-header" data-type="skill">
+                            <span>Skills</span>
+                            <div class="section-header-actions">
+                                <a href="../skills/index.html" class="section-create-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    New Skill
+                                </a>
+                                <a href="../skills/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="skill" data-source="prebuilt" onclick="openAssetDetail('kubernetes-skill')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon skill">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Kubernetes</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge skill">Skill</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Best practices for Kubernetes resource management, deployment strategies, and cluster operations.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">Used in 5 tasks</div>
+                                </div>
+                                <span class="asset-card-status enabled">Enabled</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="skill" data-source="prebuilt" onclick="openAssetDetail('hummingbird-skill')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon skill">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Hummingbird Containers</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge skill">Skill</span>
+                                        <span class="asset-source-badge local">Pre-built</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Create minimal, hardened, distroless container images using Hummingbird base images.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">Used in 2 tasks</div>
+                                </div>
+                                <span class="asset-card-status enabled">Enabled</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="skill" data-source="local" onclick="openAssetDetail('code-review-skill')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon skill">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Code Review</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge skill">Skill</span>
+                                        <span class="asset-source-badge local">Custom</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Automated code review with best practices checks, security analysis, and performance suggestions.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">Used in 8 tasks</div>
+                                </div>
+                                <span class="asset-card-status enabled">Enabled</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="skill" data-source="enterprise" onclick="openAssetDetail('tekton-skill')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon skill">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Tekton Pipelines</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge skill">Skill</span>
+                                        <span class="asset-source-badge enterprise">Enterprise</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Create and manage Tekton CI/CD pipelines, tasks, and triggers for cloud-native workflows.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">Used in 1 task</div>
+                                </div>
+                                <span class="asset-card-status enabled">Enabled</span>
+                            </div>
+                        </div>
+
+                        <!-- Knowledge -->
+                        <div class="assets-section-header" data-type="knowledge">
+                            <span>Knowledge Bases</span>
+                            <div class="section-header-actions">
+                                <a href="../knowledges/index.html" class="section-create-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    New Knowledge Base
+                                </a>
+                                <a href="../knowledges/index.html" class="section-header-link">View all &rarr;</a>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="knowledge" data-source="local" onclick="openAssetDetail('api-docs-kb')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">API Documentation</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge knowledge">Knowledge</span>
+                                        <span class="asset-source-badge local">Local</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">REST API specifications, endpoint documentation, and integration patterns for the platform.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                                        42 sources
+                                    </div>
+                                    <div class="asset-card-meta-item">Milvus</div>
+                                </div>
+                                <span class="asset-card-status installed">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card" data-type="knowledge" data-source="local" onclick="openAssetDetail('codebase-kb')">
+                            <div class="asset-card-header">
+                                <div class="asset-card-icon knowledge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                </div>
+                                <div class="asset-card-title-area">
+                                    <div class="asset-card-title">Codebase Context</div>
+                                    <div class="asset-card-badges">
+                                        <span class="asset-type-badge knowledge">Knowledge</span>
+                                        <span class="asset-source-badge local">Local</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="asset-card-desc">Indexed project codebase with semantic search for architecture patterns and code references.</div>
+                            <div class="asset-card-footer">
+                                <div class="asset-card-meta">
+                                    <div class="asset-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                                        1,284 files
+                                    </div>
+                                    <div class="asset-card-meta-item">ChromaDB</div>
+                                </div>
+                                <span class="asset-card-status installed">Active</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Profile Detail View (hidden by default) -->
+                    <div class="profile-detail-view" id="profileDetailView" style="display: none;">
+                        <div class="profile-detail-back" onclick="closeProfile()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                            Back to catalog
+                        </div>
+
+                        <div class="profile-detail-header" id="profileHeader">
+                            <div class="profile-detail-avatar">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                            </div>
+                            <div class="profile-detail-header-info">
+                                <div class="profile-detail-title-row">
+                                    <h2 class="profile-detail-name" id="profileName">DevOps Engineer</h2>
+                                    <span class="profile-detail-badge default" id="profileBadge">Default</span>
+                                </div>
+                                <p class="profile-detail-desc" id="profileDesc">Pre-configured for CI/CD, infrastructure management, and deployment automation. Includes Kubernetes, OpenShift, and Ansible skills with GitHub and cluster management tools.</p>
+                            </div>
+                            <div class="profile-detail-actions">
+                                <button class="profile-action-btn secondary" id="profileSetDefault">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    Set as Default
+                                </button>
+                                <button class="profile-action-btn danger">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="profile-assets-blocks" id="profileAssetsBlocks">
+                            <!-- Tools (MCP) Block -->
+                            <div class="profile-asset-block">
+                                <div class="profile-block-header">
+                                    <div class="profile-block-title-row">
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                        </div>
+                                        <h3 class="profile-block-title">Tools (MCP)</h3>
+                                        <span class="profile-block-count">3 attached</span>
+                                    </div>
+                                    <button class="profile-block-add-btn" onclick="event.stopPropagation()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Add Tool
+                                    </button>
+                                </div>
+                                <div class="profile-block-items" id="profileTools">
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">GitHub MCP</div>
+                                            <div class="profile-block-item-meta">12 tools &middot; v1.2.0</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">OpenShift MCP</div>
+                                            <div class="profile-block-item-meta">18 tools &middot; v2.1.0</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon mcp">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">Ansible MCP</div>
+                                            <div class="profile-block-item-meta">8 tools &middot; v1.0.3</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Skills Block -->
+                            <div class="profile-asset-block">
+                                <div class="profile-block-header">
+                                    <div class="profile-block-title-row">
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                        </div>
+                                        <h3 class="profile-block-title">Skills</h3>
+                                        <span class="profile-block-count">4 attached</span>
+                                    </div>
+                                    <button class="profile-block-add-btn" onclick="event.stopPropagation()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Add Skill
+                                    </button>
+                                </div>
+                                <div class="profile-block-items" id="profileSkills">
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">Kubernetes</div>
+                                            <div class="profile-block-item-meta">Pre-built &middot; Cluster operations</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">Hummingbird Containers</div>
+                                            <div class="profile-block-item-meta">Pre-built &middot; Distroless images</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">Code Review</div>
+                                            <div class="profile-block-item-meta">Custom &middot; Best practices</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon skill">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">Tekton Pipelines</div>
+                                            <div class="profile-block-item-meta">Enterprise &middot; CI/CD</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Knowledge Block -->
+                            <div class="profile-asset-block">
+                                <div class="profile-block-header">
+                                    <div class="profile-block-title-row">
+                                        <div class="profile-block-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                        </div>
+                                        <h3 class="profile-block-title">Knowledge</h3>
+                                        <span class="profile-block-count">1 attached</span>
+                                    </div>
+                                    <button class="profile-block-add-btn" onclick="event.stopPropagation()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Add Knowledge
+                                    </button>
+                                </div>
+                                <div class="profile-block-items" id="profileKnowledge">
+                                    <div class="profile-block-item">
+                                        <div class="profile-block-item-icon knowledge">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                        </div>
+                                        <div class="profile-block-item-info">
+                                            <div class="profile-block-item-name">API Documentation</div>
+                                            <div class="profile-block-item-meta">42 sources &middot; Milvus</div>
+                                        </div>
+                                        <button class="profile-block-item-remove" title="Remove from profile">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const categoryLabels = {
+            all:       { text: 'All Assets',       count: 11, color: '#9ca3af', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
+            mcp:       { text: 'Tools (MCP)',       count: 5,  color: '#22d3ee', icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>' },
+            skill:     { text: 'Skills',            count: 4,  color: '#34d399', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
+            knowledge: { text: 'Knowledge Bases',   count: 2,  color: '#60a5fa', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>' }
+        };
+
+        const profileData = {
+            'devops-profile': {
+                name: 'DevOps Engineer',
+                desc: 'Pre-configured for CI/CD, infrastructure management, and deployment automation. Includes Kubernetes, OpenShift, and Ansible skills with GitHub and cluster management tools.',
+                badge: 'Default',
+                badgeClass: 'default',
+                color: 'linear-gradient(135deg, #f97316, #ea580c)',
+                icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/>',
+                tools: [
+                    { name: 'GitHub MCP', meta: '12 tools &middot; v1.2.0', icon: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>' },
+                    { name: 'OpenShift MCP', meta: '18 tools &middot; v2.1.0', icon: '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>' },
+                    { name: 'Ansible MCP', meta: '8 tools &middot; v1.0.3', icon: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>' }
+                ],
+                skills: [
+                    { name: 'Kubernetes', meta: 'Pre-built &middot; Cluster operations', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' },
+                    { name: 'Hummingbird Containers', meta: 'Pre-built &middot; Distroless images', icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>' },
+                    { name: 'Code Review', meta: 'Custom &middot; Best practices', icon: '<path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/>' },
+                    { name: 'Tekton Pipelines', meta: 'Enterprise &middot; CI/CD', icon: '<polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>' }
+                ],
+                knowledge: [
+                    { name: 'API Documentation', meta: '42 sources &middot; Milvus', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' }
+                ]
+            },
+            'backend-profile': {
+                name: 'Backend Developer',
+                desc: 'Focused on API development, database management, and backend architecture. Equipped with code review and testing skills alongside GitHub and database management tools.',
+                badge: 'Enabled',
+                badgeClass: 'enabled',
+                color: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                icon: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>',
+                tools: [
+                    { name: 'GitHub MCP', meta: '12 tools &middot; v1.2.0', icon: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>' },
+                    { name: 'RHEL MCP', meta: '15 tools &middot; v1.4.0', icon: '<rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/>' }
+                ],
+                skills: [
+                    { name: 'Code Review', meta: 'Custom &middot; Best practices', icon: '<path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/>' },
+                    { name: 'Kubernetes', meta: 'Pre-built &middot; Cluster operations', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' },
+                    { name: 'Hummingbird Containers', meta: 'Pre-built &middot; Distroless images', icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>' }
+                ],
+                knowledge: [
+                    { name: 'Codebase Context', meta: '1,284 files &middot; ChromaDB', icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' },
+                    { name: 'API Documentation', meta: '42 sources &middot; Milvus', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' }
+                ]
+            },
+            'security-profile': {
+                name: 'Security Analyst',
+                desc: 'Security-focused profile with vulnerability scanning, compliance checking, and secure coding practices. Ideal for security audits and hardening projects.',
+                badge: 'Enabled',
+                badgeClass: 'enabled',
+                color: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+                tools: [
+                    { name: 'GitHub MCP', meta: '12 tools &middot; v1.2.0', icon: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>' },
+                    { name: 'RHEL MCP', meta: '15 tools &middot; v1.4.0', icon: '<rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/>' }
+                ],
+                skills: [
+                    { name: 'Code Review', meta: 'Custom &middot; Security focus', icon: '<path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/>' },
+                    { name: 'Kubernetes', meta: 'Pre-built &middot; RBAC & policies', icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' },
+                    { name: 'Hummingbird Containers', meta: 'Pre-built &middot; Hardened images', icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>' },
+                    { name: 'Tekton Pipelines', meta: 'Enterprise &middot; Secure CI/CD', icon: '<polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>' },
+                    { name: 'Ansible MCP', meta: 'Pre-built &middot; Compliance', icon: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>' }
+                ],
+                knowledge: []
+            }
+        };
+
+        function filterCategory(cat, el) {
+            document.querySelectorAll('.assets-cat-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.profile-sidebar-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+
+            document.getElementById('profileDetailView').style.display = 'none';
+            document.querySelector('.assets-header').style.display = '';
+
+            if (cat === 'all') {
+                document.getElementById('assetsSummary').style.display = '';
+                document.getElementById('assetsGrid').style.display = 'none';
+                document.getElementById('activeCategoryLabel').style.display = 'none';
+                document.getElementById('createKbBtn').style.display = 'none';
+                document.getElementById('createSkillBtn').style.display = 'none';
+                document.getElementById('importBtn').style.display = '';
+                document.querySelector('.assets-main').scrollTop = 0;
+                return;
+            }
+
+            document.getElementById('assetsSummary').style.display = 'none';
+            document.getElementById('assetsGrid').style.display = '';
+            document.getElementById('activeCategoryLabel').style.display = '';
+
+            const label = categoryLabels[cat];
+            const labelEl = document.getElementById('activeCategoryLabel');
+            labelEl.querySelector('.assets-active-label-icon').style.background = 'none';
+            labelEl.querySelector('.assets-active-label-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="' + label.color + '" stroke-width="2">' + label.icon + '</svg>';
+            labelEl.querySelector('.assets-active-label-text').textContent = label.text;
+            labelEl.querySelector('.assets-active-label-count').textContent = '(' + label.count + ')';
+
+            document.getElementById('createKbBtn').style.display = cat === 'knowledge' ? '' : 'none';
+            document.getElementById('createSkillBtn').style.display = cat === 'skill' ? '' : 'none';
+            document.getElementById('importBtn').style.display = (cat === 'knowledge' || cat === 'skill') ? 'none' : '';
+
+            const cards = document.querySelectorAll('.asset-card');
+            const headers = document.querySelectorAll('.assets-section-header');
+
+            cards.forEach(c => {
+                c.style.display = c.dataset.type === cat ? '' : 'none';
+            });
+            headers.forEach(h => {
+                h.style.display = h.dataset.type === cat ? 'flex' : 'none';
+            });
+        }
+
+        function openProfile(profileId, el) {
+            document.querySelectorAll('.assets-cat-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.profile-sidebar-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+
+            document.getElementById('assetsSummary').style.display = 'none';
+            document.getElementById('assetsGrid').style.display = 'none';
+            document.getElementById('activeCategoryLabel').style.display = 'none';
+            document.querySelector('.assets-header').style.display = 'none';
+            document.getElementById('profileDetailView').style.display = '';
+
+            const p = profileData[profileId];
+            if (!p) return;
+
+            document.getElementById('profileName').textContent = p.name;
+            document.getElementById('profileDesc').textContent = p.desc;
+            const badge = document.getElementById('profileBadge');
+            badge.textContent = p.badge;
+            badge.className = 'profile-detail-badge ' + p.badgeClass;
+
+            const avatar = document.querySelector('.profile-detail-avatar');
+            avatar.style.background = 'rgba(139, 92, 246, 0.1)';
+            avatar.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">' + p.icon + '</svg>';
+
+            const defaultBtn = document.getElementById('profileSetDefault');
+            defaultBtn.style.display = p.badgeClass === 'default' ? 'none' : '';
+
+            renderBlockItems('profileTools', p.tools, 'mcp');
+            renderBlockItems('profileSkills', p.skills, 'skill');
+            renderBlockItems('profileKnowledge', p.knowledge, 'knowledge');
+
+            const blocks = document.querySelectorAll('.profile-asset-block');
+            blocks[0].querySelector('.profile-block-count').textContent = p.tools.length + ' attached';
+            blocks[1].querySelector('.profile-block-count').textContent = p.skills.length + ' attached';
+            blocks[2].querySelector('.profile-block-count').textContent = p.knowledge.length + ' attached';
+
+            if (p.knowledge.length === 0) {
+                blocks[2].querySelector('.profile-block-items').innerHTML =
+                    '<div style="padding: 20px; text-align: center; color: #4b5563; font-size: 13px;">No knowledge bases attached</div>';
+            }
+
+            document.querySelector('.assets-main').scrollTop = 0;
+        }
+
+        function renderBlockItems(containerId, items, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(item =>
+                '<div class="profile-block-item">' +
+                    '<div class="profile-block-item-icon ' + type + '">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + item.icon + '</svg>' +
+                    '</div>' +
+                    '<div class="profile-block-item-info">' +
+                        '<div class="profile-block-item-name">' + item.name + '</div>' +
+                        '<div class="profile-block-item-meta">' + item.meta + '</div>' +
+                    '</div>' +
+                    '<button class="profile-block-item-remove" title="Remove from profile">' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                    '</button>' +
+                '</div>'
+            ).join('');
+        }
+
+        function closeProfile() {
+            document.getElementById('profileDetailView').style.display = 'none';
+            document.querySelectorAll('.profile-sidebar-item').forEach(i => i.classList.remove('active'));
+            const allCat = document.querySelector('.assets-cat-item');
+            allCat.classList.add('active');
+            filterCategory('all', allCat);
+        }
+
+        function toggleSource(source, el) {
+            const list = el.closest('.source-filters-list');
+            list.querySelectorAll('.source-filter-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function toggleStatus(status, el) {
+            const list = el.closest('.source-filters-list');
+            list.querySelectorAll('.source-filter-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function searchAssets(query) {}
+
+        function openAssetDetail(id) {
+            if (id.endsWith('-skill')) {
+                window.location.href = '../skills/details.html?id=' + id;
+            } else if (id.endsWith('-kb')) {
+                window.location.href = '../knowledges/details.html?env=' + id;
+            } else {
+                window.location.href = 'details.html?id=' + id;
+            }
+        }
+    </script>
+</body>
+</html>

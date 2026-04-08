@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Skill Details</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Skill Details Specific Styles */
+        .details-view {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .details-header {
+            margin-bottom: 0;
+            padding: 16px 24px;
+            border-bottom: 1px solid #3d3e4f;
+            background-color: #252631;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            background-color: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            color: #e5e7eb;
+            background-color: #374151;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .breadcrumb-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb-link:hover {
+            color: #a78bfa;
+        }
+
+        .breadcrumb-separator {
+            color: #6b7280;
+        }
+
+        .breadcrumb-current {
+            color: #e5e7eb;
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .skill-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .skill-icon-large {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .skill-icon-large.kubernetes {
+            background: linear-gradient(135deg, #326ce5, #54a3ff);
+            color: #ffffff;
+        }
+
+        .skill-icon-large.openshift {
+            background: linear-gradient(135deg, #db212e, #ee0000);
+            color: #ffffff;
+        }
+
+        .skill-icon-large.podman {
+            background: linear-gradient(135deg, #892ca0, #a855f7);
+            color: #ffffff;
+        }
+
+        .skill-icon-large.rhel {
+            background: linear-gradient(135deg, #cc0000, #ee0000);
+            color: #ffffff;
+        }
+
+        .skill-icon-large.hummingbird {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            color: #ffffff;
+        }
+
+        .skill-icon-large.custom {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: #ffffff;
+        }
+
+        .skill-details h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 6px 0;
+        }
+
+        .skill-subtitle {
+            font-size: 13px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .skill-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .skill-type-badge.prebuilt {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .skill-type-badge.custom {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .skill-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .skill-status-badge.enabled {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .skill-status-badge.disabled {
+            background-color: rgba(107, 114, 128, 0.1);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.2);
+        }
+
+        .skill-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .skill-status-badge.enabled .skill-status-dot {
+            background-color: #10b981;
+        }
+
+        .skill-status-badge.disabled .skill-status-dot {
+            background-color: #6b7280;
+        }
+
+        .skill-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            background-color: #374151;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .header-action-button:hover {
+            background-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .header-action-button.primary {
+            background-color: #8b5cf6;
+            color: #ffffff;
+        }
+
+        .header-action-button.primary:hover {
+            background-color: #7c3aed;
+        }
+
+        .header-action-button.danger:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: #4b5563;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .toggle-switch.active {
+            background-color: #8b5cf6;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        .details-tabs {
+            display: flex;
+            border-bottom: 1px solid #3d3e4f;
+            margin-bottom: 32px;
+            padding: 0 24px;
+        }
+
+        .details-tab {
+            padding: 12px 16px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .details-tab:hover {
+            color: #e5e7eb;
+        }
+
+        .details-tab.active {
+            color: #ffffff;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 0 24px 24px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .info-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        /* Instructions Tab Styles */
+        .skill-md-preview {
+            background-color: #1e1f29;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .skill-md-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: #252631;
+            border-bottom: 1px solid #3d3e4f;
+        }
+
+        .skill-md-filename {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .skill-md-filename svg {
+            color: #8b5cf6;
+        }
+
+        .skill-md-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .skill-md-action-btn {
+            padding: 6px 12px;
+            background-color: #374151;
+            border: none;
+            border-radius: 4px;
+            color: #9ca3af;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-md-action-btn:hover {
+            background-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .skill-md-content {
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            overflow-x: auto;
+        }
+
+        .skill-md-content .yaml-frontmatter {
+            background-color: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .skill-md-content .yaml-key {
+            color: #f59e0b;
+        }
+
+        .skill-md-content .yaml-value {
+            color: #34d399;
+        }
+
+        .skill-md-content .yaml-delimiter {
+            color: #6b7280;
+        }
+
+        .skill-md-content h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 24px 0 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .skill-md-content h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #d1d5db;
+            margin: 20px 0 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .skill-md-content p {
+            margin: 10px 0;
+            color: #9ca3af;
+        }
+
+        .skill-md-content code {
+            background-color: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .skill-md-content pre {
+            background-color: #1a1b23;
+            border: 1px solid #3d3e4f;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .skill-md-content pre code {
+            background: none;
+            padding: 0;
+            color: #e5e7eb;
+        }
+
+        /* Resources Tab Styles */
+        .resources-list {
+            background-color: #252631;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .resources-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #3d3e4f;
+            background-color: #1e1f29;
+        }
+
+        .resources-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #3d3e4f;
+            transition: background-color 0.2s ease;
+        }
+
+        .resource-item:hover {
+            background-color: #2d2e3f;
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .resource-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #374151;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+        }
+
+        .resource-icon.folder {
+            color: #60a5fa;
+        }
+
+        .resource-icon.file {
+            color: #34d399;
+        }
+
+        .resource-icon.script {
+            color: #f59e0b;
+        }
+
+        .resource-details h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .resource-meta {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .resource-action {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            background-color: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .resource-action:hover {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        /* Empty Resources State */
+        .resources-empty {
+            padding: 48px 24px;
+            text-align: center;
+        }
+
+        .resources-empty svg {
+            width: 48px;
+            height: 48px;
+            color: #4b5563;
+            margin-bottom: 16px;
+        }
+
+        .resources-empty p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="skills-page">
+    <div class="app-container">
+        <!-- Sidebar will be loaded here -->
+        <div id="sidebar-container"></div>
+
+        <!-- Skill Details View -->
+        <main class="main-content details-view">
+            <header class="header">
+                <h1>Skills</h1>
+            </header>
+            
+            <div class="content">
+                <!-- Details Header -->
+                <div class="details-header">
+                    <!-- Close Button -->
+                    <button class="close-button" onclick="window.location.href='index.html'" title="Close">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Breadcrumb Navigation -->
+                    <div class="breadcrumb-nav">
+                        <a href="index.html" class="breadcrumb-link">Skills</a>
+                        <span class="breadcrumb-separator">></span>
+                        <span class="breadcrumb-current" id="breadcrumbSkillName">Kubernetes</span>
+                    </div>
+                    
+                    <!-- Skill Header -->
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <div class="skill-icon-large kubernetes" id="skillIcon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <polygon points="12,6 14,10 12,9 10,10"/>
+                                    <polygon points="12,18 14,14 12,15 10,14"/>
+                                    <polygon points="6,12 10,14 9,12 10,10"/>
+                                    <polygon points="18,12 14,14 15,12 14,10"/>
+                                </svg>
+                            </div>
+                            <div class="skill-details">
+                                <h2 id="skillTitle">Kubernetes</h2>
+                                <div class="skill-subtitle">
+                                    <span class="skill-type-badge prebuilt" id="skillTypeBadge">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                            <path d="M2 17l10 5 10-5"/>
+                                            <path d="M2 12l10 5 10-5"/>
+                                        </svg>
+                                        Pre-built
+                                    </span>
+                                    <span class="skill-status-badge enabled" id="skillStatusBadge">
+                                        <span class="skill-status-dot"></span>
+                                        Enabled
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-actions">
+                            <div class="toggle-switch active" id="skillToggle" onclick="toggleSkill(this)" title="Enabled"></div>
+                            <button class="header-action-button danger" title="Delete" id="deleteBtn" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3,6 5,6 21,6"/>
+                                    <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="details-tabs">
+                    <a href="#" class="details-tab active" onclick="showTab('summary'); return false;">Summary</a>
+                    <a href="#" class="details-tab" onclick="showTab('instructions'); return false;">Instructions</a>
+                    <a href="#" class="details-tab" onclick="showTab('resources'); return false;">Resources</a>
+                </div>
+
+                <!-- Tab Content: Summary -->
+                <div id="summaryTab" class="tab-content active">
+                    <!-- About Section -->
+                    <div class="info-card" style="margin-bottom: 24px;">
+                        <h3 class="info-card-title">About This Skill</h3>
+                        <p id="summaryAbout" style="color: #e5e7eb; font-size: 14px; line-height: 1.7; margin: 0;">
+                            This skill helps you deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use it when working with pods, deployments, services, configmaps, secrets, or any cluster administration tasks. The skill provides best practices, common commands, resource templates, and troubleshooting guides.
+                        </p>
+                    </div>
+
+                    <div class="summary-grid">
+                        <div class="info-card">
+                            <h3 class="info-card-title">General Information</h3>
+                            <div class="info-row">
+                                <span class="info-label">Name</span>
+                                <span class="info-value" id="summaryName">Kubernetes</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Type</span>
+                                <span class="info-value" id="summaryType">Pre-built</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Status</span>
+                                <span class="info-value" id="summaryStatus">Enabled</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Source</span>
+                                <span class="info-value" id="summarySource">Red Hat</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Created</span>
+                                <span class="info-value">Built-in</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3 class="info-card-title">Metadata</h3>
+                            <div class="info-row">
+                                <span class="info-label">Description</span>
+                                <span class="info-value" id="summaryDescription" style="max-width: 200px; text-align: right;">Deploy, manage, and troubleshoot Kubernetes clusters and workloads</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Token Cost (Metadata)</span>
+                                <span class="info-value">~120 tokens</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Instructions Size</span>
+                                <span class="info-value">~4.8k tokens</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Bundled Resources</span>
+                                <span class="info-value" id="summaryResources">8 files</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Instructions -->
+                <div id="instructionsTab" class="tab-content">
+                    <div class="skill-md-preview">
+                        <div class="skill-md-header">
+                            <div class="skill-md-filename">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                </svg>
+                                SKILL.md
+                            </div>
+                            <div class="skill-md-actions">
+                                <button class="skill-md-action-btn">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                    </svg>
+                                    Copy
+                                </button>
+                                <button class="skill-md-action-btn">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="skill-md-content" id="skillMdContent">
+                            <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">kubernetes</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use when working with pods, deployments, services, or cluster administration.</span>
+<span class="yaml-delimiter">---</span>
+                            </div>
+
+                            <h1># Kubernetes Skill</h1>
+
+                            <h2>## Quick Start</h2>
+                            <p>When working with Kubernetes, follow these best practices:</p>
+                            <p>1. <strong>Cluster Health</strong> - Check node status, resource utilization, and system pods</p>
+                            <p>2. <strong>Workload Management</strong> - Deploy, scale, and update applications using Deployments and StatefulSets</p>
+                            <p>3. <strong>Troubleshooting</strong> - Inspect logs, events, and pod states to diagnose issues</p>
+
+                            <h2>## Common Commands</h2>
+                            <pre><code># Get cluster info
+kubectl cluster-info
+kubectl get nodes
+
+# Manage workloads
+kubectl get pods -A
+kubectl describe deployment &lt;name&gt;
+kubectl logs &lt;pod-name&gt; -f
+
+# Apply configurations
+kubectl apply -f manifest.yaml</code></pre>
+
+                            <h2>## Resource Templates</h2>
+                            <p>Use the templates in <code>templates/</code> for common resource types:</p>
+                            <pre><code>templates/
+├── deployment.yaml
+├── service.yaml
+├── configmap.yaml
+└── ingress.yaml</code></pre>
+
+                            <p>For troubleshooting guides, see <code>TROUBLESHOOTING.md</code>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Resources -->
+                <div id="resourcesTab" class="tab-content">
+                    <div class="resources-list">
+                        <div class="resources-header">
+                            <h3 class="resources-title" id="resourcesTitle">Bundled Resources (8)</h3>
+                        </div>
+                        <div id="resourcesContent">
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <div class="resource-icon folder">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>templates/</h4>
+                                    <div class="resource-meta">Directory • 4 files</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="Expand">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resource-item" style="padding-left: 40px;">
+                            <div class="resource-info">
+                                <div class="resource-icon file">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>deployment.yaml</h4>
+                                    <div class="resource-meta">YAML Template • 2.1 KB</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="View">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resource-item" style="padding-left: 40px;">
+                            <div class="resource-info">
+                                <div class="resource-icon file">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>service.yaml</h4>
+                                    <div class="resource-meta">YAML Template • 1.4 KB</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="View">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <div class="resource-icon folder">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>scripts/</h4>
+                                    <div class="resource-meta">Directory • 2 files</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="Expand">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resource-item" style="padding-left: 40px;">
+                            <div class="resource-info">
+                                <div class="resource-icon script">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="16 18 22 12 16 6"/>
+                                        <polyline points="8 6 2 12 8 18"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>health_check.sh</h4>
+                                    <div class="resource-meta">Shell Script • 3.2 KB</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="View">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <div class="resource-icon file">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                    </svg>
+                                </div>
+                                <div class="resource-details">
+                                    <h4>TROUBLESHOOTING.md</h4>
+                                    <div class="resource-meta">Markdown • 18.6 KB</div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-action" title="View">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Remove active from all tabs and content
+            document.querySelectorAll('.details-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active to selected tab and content
+            const targetTab = document.querySelector(`.details-tab[onclick*="${tabName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            const targetContent = document.getElementById(tabName + 'Tab');
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+
+        function toggleSkill(element) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            element.title = isActive ? 'Enabled' : 'Disabled';
+            
+            // Update status badge
+            const statusBadge = document.getElementById('skillStatusBadge');
+            if (isActive) {
+                statusBadge.classList.remove('disabled');
+                statusBadge.classList.add('enabled');
+                statusBadge.innerHTML = '<span class="skill-status-dot"></span>Enabled';
+            } else {
+                statusBadge.classList.remove('enabled');
+                statusBadge.classList.add('disabled');
+                statusBadge.innerHTML = '<span class="skill-status-dot"></span>Disabled';
+            }
+            
+            // Update summary status
+            document.getElementById('summaryStatus').textContent = isActive ? 'Enabled' : 'Disabled';
+        }
+
+        // Skill data for different skills
+        const skillsData = {
+            'code-review': {
+                name: 'code-review',
+                type: 'custom',
+                typeLabel: 'Custom',
+                source: 'Local',
+                description: 'Analyze code for best practices, security issues, and performance',
+                about: 'This skill analyzes code for best practices, security vulnerabilities, and performance issues. Use it when reviewing pull requests, auditing codebases, or improving code quality. The skill checks for common anti-patterns, suggests improvements, and identifies potential security risks across multiple programming languages.',
+                resources: '3 files',
+                iconClass: 'custom',
+                iconSvg: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+                enabled: true
+            },
+            'api-docs-generator': {
+                name: 'api-docs-generator',
+                type: 'custom',
+                typeLabel: 'Custom',
+                source: 'Local',
+                description: 'Generate comprehensive API documentation from code',
+                about: 'This skill generates comprehensive API documentation from your codebase. Use it to create OpenAPI/Swagger specifications, generate markdown documentation, or produce interactive API references. Supports REST APIs, GraphQL endpoints, and various programming languages including Python, JavaScript, Go, and Java.',
+                resources: '5 files',
+                iconClass: 'custom',
+                iconSvg: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>',
+                enabled: false
+            },
+            'kubernetes': {
+                name: 'Kubernetes',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Deploy, manage, and troubleshoot Kubernetes clusters and workloads',
+                about: 'This skill helps you deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use it when working with pods, deployments, services, configmaps, secrets, or any cluster administration tasks. The skill provides best practices, common commands, resource templates, and troubleshooting guides.',
+                resources: '8 files',
+                iconClass: 'kubernetes',
+                iconSvg: '<circle cx="12" cy="12" r="9"/><polygon points="12,6 14,10 12,9 10,10"/><polygon points="12,18 14,14 12,15 10,14"/><polygon points="6,12 10,14 9,12 10,10"/><polygon points="18,12 14,14 15,12 14,10"/>',
+                enabled: true
+            },
+            'openshift': {
+                name: 'OpenShift',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Build, deploy, and manage applications on Red Hat OpenShift Container Platform',
+                about: 'This skill helps you build, deploy, and manage applications on Red Hat OpenShift Container Platform. Use it for working with routes, builds, deployments, operators, and OpenShift-specific resources. The skill covers both oc CLI commands and OpenShift web console workflows, including CI/CD pipelines, source-to-image builds, and operator management.',
+                resources: '12 files',
+                iconClass: 'openshift',
+                iconSvg: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+                enabled: true
+            },
+            'podman': {
+                name: 'Podman',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Build, run, and manage containers and pods with Podman',
+                about: 'This skill helps you build, run, and manage containers using Podman. Use it for container lifecycle management, image building with Containerfiles, rootless container operations, and basic pod management. The skill covers podman commands for running, inspecting, and debugging containers.',
+                resources: '6 files',
+                iconClass: 'podman',
+                iconSvg: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/>',
+                enabled: true
+            },
+            'podman-pods': {
+                name: 'Podman Pods',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Create and define composite applications running as pods in Podman',
+                about: 'This skill helps you create, manage, and deploy composite applications using Podman pods. A pod is a group of containers that share the same network namespace, allowing them to communicate via localhost. Use this skill when building multi-container applications, simulating Kubernetes pod behavior locally, or generating Kubernetes-compatible YAML from your Podman setups. Includes templates for common stacks like web+database, API+cache, and full-stack applications.',
+                resources: '10 files',
+                iconClass: 'podman',
+                iconSvg: '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/>',
+                enabled: true
+            },
+            'rhel': {
+                name: 'RHEL',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Administer, configure, and troubleshoot Red Hat Enterprise Linux systems',
+                about: 'This skill helps you administer, configure, and troubleshoot Red Hat Enterprise Linux systems. Use it for system administration tasks including package management with dnf/yum, systemd service management, firewall configuration, SELinux policies, user management, and performance tuning. Includes troubleshooting guides and best practices for enterprise Linux environments.',
+                resources: '15 files',
+                iconClass: 'rhel',
+                iconSvg: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
+                enabled: true
+            },
+            'hummingbird': {
+                name: 'Hummingbird Containers',
+                type: 'prebuilt',
+                typeLabel: 'Pre-built',
+                source: 'Red Hat',
+                description: 'Create Dockerfiles using Hummingbird minimal, hardened, distroless base images',
+                about: 'This skill helps you containerize applications using Project Hummingbird base images. Hummingbird builds minimal, hardened, and secure container images with significantly reduced attack surfaces. Images are distroless (no package manager or shell in production variants) and default to non-root user (UID 65532). Use this skill when creating Dockerfiles, containerizing applications, or building secure container images. Includes templates for Python, Node.js, Go, Rust, Java, and multi-stage builds.',
+                resources: '12 files',
+                iconClass: 'hummingbird',
+                iconSvg: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+                enabled: true
+            },
+            // Enterprise Skills from OpenShift (ocp.internal.example.com)
+            'tekton-pipelines': {
+                name: 'Tekton Pipelines',
+                type: 'internal',
+                typeLabel: 'Enterprise',
+                source: 'ocp.internal',
+                description: 'Create and manage CI/CD pipelines using internal Tekton templates',
+                about: 'This enterprise skill connects to your organization\'s Tekton installation at <strong>pipelines.ocp.internal</strong>. Use it to create, manage, and trigger CI/CD pipelines using pre-approved templates. Includes organization-specific pipeline templates for Java, Node.js, Python, and Go applications, with built-in compliance checks and artifact signing.',
+                resources: '24 templates',
+                iconClass: 'openshift',
+                iconSvg: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+                enabled: true,
+                isInternal: true,
+                internalEndpoint: 'pipelines.ocp.internal'
+            },
+            'quay-registry': {
+                name: 'Quay Registry',
+                type: 'internal',
+                typeLabel: 'Enterprise',
+                source: 'ocp.internal',
+                description: 'Push and manage container images on internal Quay registry',
+                about: 'This enterprise skill connects to your organization\'s Quay registry at <strong>quay.ocp.internal</strong>. Use it to push, pull, and manage container images within your organization\'s private registry. Includes automated vulnerability scanning, image signing with internal PKI, and repository management following organization naming conventions.',
+                resources: '8 templates',
+                iconClass: 'openshift',
+                iconSvg: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>',
+                enabled: true,
+                isInternal: true,
+                internalEndpoint: 'quay.ocp.internal'
+            },
+            'acs-security': {
+                name: 'ACS Security Scanning',
+                type: 'internal',
+                typeLabel: 'Enterprise',
+                source: 'ocp.internal',
+                description: 'Security scanning with Advanced Cluster Security',
+                about: 'This enterprise skill connects to your organization\'s Red Hat Advanced Cluster Security (ACS) installation at <strong>acs.ocp.internal</strong>. Use it to scan container images for vulnerabilities, check deployment configurations against security policies, and generate compliance reports. Includes organization-specific security policies and CVE exception lists.',
+                resources: '16 policies',
+                iconClass: 'openshift',
+                iconSvg: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
+                enabled: false,
+                isInternal: true,
+                internalEndpoint: 'acs.ocp.internal'
+            },
+            'gitops-argocd': {
+                name: 'GitOps with ArgoCD',
+                type: 'internal',
+                typeLabel: 'Enterprise',
+                source: 'ocp.internal',
+                description: 'Deploy apps using internal ArgoCD GitOps workflows',
+                about: 'This enterprise skill connects to your organization\'s ArgoCD installation at <strong>argocd.ocp.internal</strong>. Use it to deploy applications using GitOps workflows, sync application state from Git repositories, and manage rollouts across environments (dev, staging, prod). Includes pre-configured application templates following organization deployment standards.',
+                resources: '18 templates',
+                iconClass: 'openshift',
+                iconSvg: '<circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v10"/><path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24"/><path d="M1 12h6m6 0h10"/><path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24"/>',
+                enabled: true,
+                isInternal: true,
+                internalEndpoint: 'argocd.ocp.internal'
+            },
+            'internal-db-templates': {
+                name: 'Database Templates',
+                type: 'internal',
+                typeLabel: 'Enterprise',
+                source: 'ocp.internal',
+                description: 'Deploy PostgreSQL, MySQL, MongoDB using internal operator templates',
+                about: 'This enterprise skill connects to your organization\'s DBaaS platform at <strong>dbaas.ocp.internal</strong>. Use it to provision and manage databases using pre-approved operator templates. Includes automated backup configuration, connection pooling setup, and monitoring integration. Supports PostgreSQL, MySQL, MongoDB, and Redis deployments following organization data governance policies.',
+                resources: '12 templates',
+                iconClass: 'openshift',
+                iconSvg: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+                enabled: false,
+                isInternal: true,
+                internalEndpoint: 'dbaas.ocp.internal'
+            }
+        };
+
+        // Skill instructions content
+        const skillInstructions = {
+            'podman-pods': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">podman-pods</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Create and define composite applications running as pods in Podman. Use when building multi-container applications that need to share networking and resources.</span>
+<span class="yaml-key">triggers:</span> <span class="yaml-value">["podman pod", "composite application", "multi-container", "pod create", "pod yaml"]</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Podman Pods Skill</h1>
+
+                <p>This skill helps you create, manage, and deploy composite applications using Podman pods. A pod is a group of containers that share the same network namespace, allowing them to communicate via localhost.</p>
+
+                <h2>## When to Use Pods</h2>
+                <p>Use Podman pods when you need:</p>
+                <p>• <strong>Multi-container applications</strong> - Apps with tightly coupled services (e.g., web server + database + cache)</p>
+                <p>• <strong>Shared networking</strong> - Containers that need to communicate via localhost</p>
+                <p>• <strong>Kubernetes compatibility</strong> - Generate Kubernetes YAML from running pods</p>
+                <p>• <strong>Local development</strong> - Simulate Kubernetes pod behavior locally</p>
+
+                <h2>## Creating a Pod</h2>
+                <pre><code># Create an empty pod
+podman pod create --name my-app-pod -p 8080:80 -p 5432:5432
+
+# Add containers to the pod
+podman run -d --pod my-app-pod --name web nginx:latest
+podman run -d --pod my-app-pod --name db postgres:15
+podman run -d --pod my-app-pod --name cache redis:alpine</code></pre>
+
+                <h2>## Defining Composite Applications</h2>
+                <p>Use a pod YAML file to define your entire application stack:</p>
+                <pre><code># my-app-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app-pod
+  labels:
+    app: my-composite-app
+spec:
+  containers:
+  - name: web
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+      hostPort: 8080
+    volumeMounts:
+    - name: web-content
+      mountPath: /usr/share/nginx/html
+  - name: api
+    image: my-api:latest
+    env:
+    - name: DATABASE_URL
+      value: "postgres://localhost:5432/mydb"
+  - name: db
+    image: postgres:15
+    env:
+    - name: POSTGRES_PASSWORD
+      value: "mysecretpassword"
+  volumes:
+  - name: web-content
+    hostPath:
+      path: ./html</code></pre>
+
+                <h2>## Pod Management Commands</h2>
+                <pre><code># Play a pod from YAML
+podman play kube my-app-pod.yaml
+
+# List all pods
+podman pod ls
+
+# Inspect a pod
+podman pod inspect my-app-pod
+
+# View pod logs (all containers)
+podman pod logs my-app-pod
+
+# Stop and remove a pod
+podman pod stop my-app-pod
+podman pod rm my-app-pod</code></pre>
+
+                <h2>## Generate Kubernetes YAML</h2>
+                <p>Export your running pod to Kubernetes-compatible YAML:</p>
+                <pre><code># Generate YAML from running pod
+podman generate kube my-app-pod > k8s-deployment.yaml
+
+# Generate with persistent volume claims
+podman generate kube my-app-pod --service > k8s-full.yaml</code></pre>
+
+                <p>For pod templates, see the <code>templates/</code> directory. For troubleshooting, refer to <code>TROUBLESHOOTING.md</code>.</p>
+            `,
+            'kubernetes': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">kubernetes</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Deploy, manage, and troubleshoot Kubernetes clusters and workloads. Use when working with pods, deployments, services, or cluster administration.</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Kubernetes Skill</h1>
+
+                <h2>## Quick Start</h2>
+                <p>When working with Kubernetes, follow these best practices:</p>
+                <p>1. <strong>Cluster Health</strong> - Check node status, resource utilization, and system pods</p>
+                <p>2. <strong>Workload Management</strong> - Deploy, scale, and update applications using Deployments and StatefulSets</p>
+                <p>3. <strong>Troubleshooting</strong> - Inspect logs, events, and pod states to diagnose issues</p>
+
+                <h2>## Common Commands</h2>
+                <pre><code># Get cluster info
+kubectl cluster-info
+kubectl get nodes
+
+# Manage workloads
+kubectl get pods -A
+kubectl describe deployment &lt;name&gt;
+kubectl logs &lt;pod-name&gt; -f
+
+# Apply configurations
+kubectl apply -f manifest.yaml</code></pre>
+
+                <h2>## Resource Templates</h2>
+                <p>Use the templates in <code>templates/</code> for common resource types:</p>
+                <pre><code>templates/
+├── deployment.yaml
+├── service.yaml
+├── configmap.yaml
+└── ingress.yaml</code></pre>
+
+                <p>For troubleshooting guides, see <code>TROUBLESHOOTING.md</code>.</p>
+            `,
+            'hummingbird': `
+                <div class="yaml-frontmatter">
+<span class="yaml-delimiter">---</span>
+<span class="yaml-key">name:</span> <span class="yaml-value">containerize-hummingbird</span>
+<span class="yaml-key">description:</span> <span class="yaml-value">Create Dockerfiles/Containerfiles using Hummingbird base images for minimal, hardened, distroless containers. Use when containerizing applications or building secure container images.</span>
+<span class="yaml-delimiter">---</span>
+                </div>
+
+                <h1># Containerize with Hummingbird Images</h1>
+
+                <p><a href="https://gitlab.com/redhat/hummingbird/containers" style="color: #8b5cf6;">Project Hummingbird</a> builds minimal, hardened, and secure container images with significantly reduced attack surfaces. Images are distroless (no package manager, no shell in production variants) and default to non-root user (UID 65532).</p>
+
+                <h2>## Registry and Available Images</h2>
+                <p>All images available at: <code>quay.io/hummingbird/</code></p>
+                <p>• <strong>Languages:</strong> python, go, nodejs, rust, php, ruby, dotnet-runtime, dotnet-sdk</p>
+                <p>• <strong>Databases:</strong> postgresql, mariadb, valkey</p>
+                <p>• <strong>Web Servers:</strong> httpd, caddy, nginx</p>
+                <p>• <strong>Tools:</strong> curl, git, jq</p>
+                <p>• <strong>Base:</strong> core-runtime (for compiled binaries)</p>
+
+                <h2>## Image Variants</h2>
+                <p>• <strong>Default</strong> (<code>:latest</code>, <code>:3.13</code>) - Production, minimal, distroless</p>
+                <p>• <strong>Builder</strong> (<code>:latest-builder</code>) - Multi-stage builds, includes <code>dnf</code> and <code>bash</code></p>
+
+                <h2>## Quick Reference - Python</h2>
+                <pre><code>FROM quay.io/hummingbird/python:3.13
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ /app/
+WORKDIR /app
+CMD ["python3", "main.py"]</code></pre>
+
+                <h2>## Multi-Stage Build - Go</h2>
+                <pre><code># Build stage
+FROM quay.io/hummingbird/go:latest-builder AS builder
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /app .
+
+# Runtime stage
+FROM quay.io/hummingbird/core-runtime:latest
+COPY --from=builder /app /app
+ENTRYPOINT ["/app"]</code></pre>
+
+                <h2>## Security Features</h2>
+                <p>• <strong>Distroless:</strong> No shell or package manager in production images</p>
+                <p>• <strong>Non-root:</strong> Default user UID 65532</p>
+                <p>• <strong>Minimal footprint:</strong> Only essential packages included</p>
+                <p>• <strong>Hermetic builds:</strong> Built without network access for reproducibility</p>
+
+                <p>For language-specific templates, see <code>templates/</code>. For volume permissions and troubleshooting, refer to <code>TROUBLESHOOTING.md</code>.</p>
+            `
+        };
+
+        // Skill resources content
+        const skillResources = {
+            'podman-pods': `
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>templates/</h4>
+                            <div class="resource-meta">Directory • 5 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>web-db-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Web + Database stack • 1.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>api-cache-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • API + Redis cache • 2.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>full-stack-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Frontend + API + DB + Cache • 3.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>monitoring-pod.yaml</h4>
+                            <div class="resource-meta">Pod Template • Prometheus + Grafana • 2.6 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>scripts/</h4>
+                            <div class="resource-meta">Directory • 3 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon script">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>pod-create.sh</h4>
+                            <div class="resource-meta">Shell Script • Creates pod from YAML • 1.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon script">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>generate-kube.sh</h4>
+                            <div class="resource-meta">Shell Script • Export to Kubernetes YAML • 0.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>TROUBLESHOOTING.md</h4>
+                            <div class="resource-meta">Markdown • Pod debugging guide • 12.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'hummingbird': `
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon folder">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>templates/</h4>
+                            <div class="resource-meta">Directory • 7 files</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>python.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Python application • 0.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>nodejs.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Node.js multi-stage • 1.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>go.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Go multi-stage build • 1.0 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>rust.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Rust multi-stage build • 1.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item" style="padding-left: 40px;">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>java-maven.Dockerfile</h4>
+                            <div class="resource-meta">Dockerfile Template • Java with Maven • 1.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>IMAGE_CATALOG.md</h4>
+                            <div class="resource-meta">Markdown • Available images and variants • 8.2 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>SECURITY_BEST_PRACTICES.md</h4>
+                            <div class="resource-meta">Markdown • Non-root, permissions, SELinux • 6.4 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>MULTI_STAGE_BUILDS.md</h4>
+                            <div class="resource-meta">Markdown • Builder patterns guide • 5.1 KB</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <div class="resource-icon file">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-details">
+                            <h4>TROUBLESHOOTING.md</h4>
+                            <div class="resource-meta">Markdown • Common issues and solutions • 4.8 KB</div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        // Load skill data based on URL parameter
+        function loadSkillData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const skillId = urlParams.get('skill') || 'kubernetes';
+            const skill = skillsData[skillId] || skillsData['kubernetes'];
+
+            // Update breadcrumb
+            document.getElementById('breadcrumbSkillName').textContent = skill.name;
+
+            // Update header
+            document.getElementById('skillTitle').textContent = skill.name;
+            
+            // Update icon class and SVG
+            const skillIcon = document.getElementById('skillIcon');
+            skillIcon.className = 'skill-icon-large ' + skill.iconClass;
+            skillIcon.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    ${skill.iconSvg}
+                </svg>
+            `;
+
+            // Update type badge
+            const typeBadge = document.getElementById('skillTypeBadge');
+            typeBadge.className = 'skill-type-badge ' + skill.type;
+            typeBadge.innerHTML = `
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    ${skill.type === 'prebuilt' 
+                        ? '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
+                        : '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'
+                    }
+                </svg>
+                ${skill.typeLabel}
+            `;
+
+            // Update status
+            const statusBadge = document.getElementById('skillStatusBadge');
+            const toggle = document.getElementById('skillToggle');
+            if (skill.enabled) {
+                statusBadge.className = 'skill-status-badge enabled';
+                statusBadge.innerHTML = '<span class="skill-status-dot"></span>Enabled';
+                toggle.classList.add('active');
+            } else {
+                statusBadge.className = 'skill-status-badge disabled';
+                statusBadge.innerHTML = '<span class="skill-status-dot"></span>Disabled';
+                toggle.classList.remove('active');
+            }
+
+            // Show/hide delete button for prebuilt skills
+            const deleteBtn = document.getElementById('deleteBtn');
+            deleteBtn.style.display = skill.type === 'prebuilt' ? 'none' : 'flex';
+
+            // Update summary
+            document.getElementById('summaryName').textContent = skill.name;
+            document.getElementById('summaryType').textContent = skill.typeLabel;
+            document.getElementById('summaryStatus').textContent = skill.enabled ? 'Enabled' : 'Disabled';
+            document.getElementById('summarySource').textContent = skill.source;
+            document.getElementById('summaryDescription').textContent = skill.description;
+            document.getElementById('summaryResources').textContent = skill.resources;
+            document.getElementById('resourcesTitle').textContent = `Bundled Resources (${skill.resources.split(' ')[0]})`;
+            
+            // Update about section
+            if (skill.about) {
+                document.getElementById('summaryAbout').textContent = skill.about;
+            }
+
+            // Update instructions content if available
+            if (skillInstructions[skillId]) {
+                document.getElementById('skillMdContent').innerHTML = skillInstructions[skillId];
+            }
+
+            // Update resources content if available
+            if (skillResources[skillId]) {
+                document.getElementById('resourcesContent').innerHTML = skillResources[skillId];
+            }
+        }
+
+        // Initialize
+        loadSkillData();
+    </script>
+</body>
+</html>

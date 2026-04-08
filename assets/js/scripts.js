@@ -56,3 +56,55 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Tools Sidebar Functions
+function filterTools(searchTerm) {
+    const term = searchTerm.toLowerCase();
+    const serverSections = document.querySelectorAll('.mcp-server-section');
+    const noResults = document.getElementById('toolsNoResults');
+    let hasVisibleServers = false;
+
+    serverSections.forEach(section => {
+        const serverName = section.querySelector('.mcp-server-name')?.textContent.toLowerCase() || '';
+        const serverDesc = section.querySelector('.mcp-server-desc')?.textContent.toLowerCase() || '';
+        const toolItems = section.querySelectorAll('.tool-item');
+        
+        let serverMatches = serverName.includes(term) || serverDesc.includes(term);
+        let hasVisibleTools = false;
+
+        toolItems.forEach(toolItem => {
+            const toolName = toolItem.querySelector('.tool-name')?.textContent.toLowerCase() || '';
+            const toolDesc = toolItem.querySelector('.tool-description')?.textContent.toLowerCase() || '';
+            
+            const toolMatches = toolName.includes(term) || toolDesc.includes(term);
+            
+            if (term === '' || toolMatches || serverMatches) {
+                toolItem.style.display = 'flex';
+                hasVisibleTools = true;
+            } else {
+                toolItem.style.display = 'none';
+            }
+        });
+
+        if (term === '' || serverMatches || hasVisibleTools) {
+            section.style.display = 'block';
+            hasVisibleServers = true;
+        } else {
+            section.style.display = 'none';
+        }
+    });
+
+    // Show/hide no results message
+    if (noResults) {
+        noResults.style.display = hasVisibleServers ? 'none' : 'block';
+    }
+}
+
+function toggleAutoSelect(checkbox) {
+    if (checkbox.checked) {
+        console.log('Auto-select enabled: Tools will be automatically selected based on context');
+        // In a real implementation, this would integrate with AI to auto-select relevant tools
+    } else {
+        console.log('Auto-select disabled');
+    }
+}
+

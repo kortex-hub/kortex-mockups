@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Sandbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .sb-page-layout {
+            display: flex;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .sb-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px 60px;
+            min-width: 0;
+        }
+
+        .sb-main::-webkit-scrollbar { width: 6px; }
+        .sb-main::-webkit-scrollbar-track { background: transparent; }
+        .sb-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.15); border-radius: 3px; }
+
+        /* Header */
+        .sb-header {
+            margin-bottom: 28px;
+        }
+
+        .sb-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .sb-header-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sb-header-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sb-header-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #a78bfa;
+        }
+
+        .sb-header-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f3f4f6;
+            margin-bottom: 4px;
+        }
+
+        .sb-header-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
+        /* Stats bar */
+        .sb-stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .sb-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sb-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .sb-stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .sb-stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .sb-stat-dot.dot-total { background: #a78bfa; box-shadow: 0 0 6px rgba(167,139,250,0.4); }
+        .sb-stat-dot.dot-blocked { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.4); }
+        .sb-stat-dot.dot-allowed { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+        .sb-stat-dot.dot-filtered { background: #60a5fa; box-shadow: 0 0 6px rgba(96,165,250,0.4); }
+        .sb-stat-dot.dot-routed { background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.4); }
+
+        /* Layer cards */
+        .sb-layers {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .sb-layer-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .sb-layer-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .sb-layer-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sb-layer-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sb-layer-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .sb-layer-icon.layer-fs {
+            background: rgba(250,204,21,0.1);
+            border: 1px solid rgba(250,204,21,0.2);
+            color: #facc15;
+        }
+        .sb-layer-icon.layer-net {
+            background: rgba(96,165,250,0.1);
+            border: 1px solid rgba(96,165,250,0.2);
+            color: #60a5fa;
+        }
+        .sb-layer-icon.layer-proc {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2);
+            color: #ef4444;
+        }
+        .sb-layer-icon.layer-priv {
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.2);
+            color: #f59e0b;
+        }
+
+        .sb-layer-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .sb-layer-badge {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 8px;
+            background: rgba(139,92,246,0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.15);
+        }
+
+        .sb-layer-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .sb-layer-perms {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sb-perm-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sb-perm-group-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 2px;
+        }
+
+        .sb-perm-group-label.perm-can { color: #86efac; }
+        .sb-perm-group-label.perm-cant { color: #fca5a5; }
+
+        .sb-perm-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .sb-perm-item svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .sb-perm-item.perm-allow svg { color: #22c55e; }
+        .sb-perm-item.perm-deny svg { color: #ef4444; }
+
+        /* Activities section */
+        .sb-activities-section {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 24px;
+        }
+
+        .sb-activities-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .sb-activities-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .sb-filter-bar {
+            display: flex;
+            gap: 6px;
+        }
+
+        .sb-filter-btn {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .sb-filter-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: #9ca3af;
+        }
+
+        .sb-filter-btn.active {
+            background: rgba(139,92,246,0.15);
+            border-color: rgba(139,92,246,0.3);
+            color: #c4b5fd;
+        }
+
+        .sb-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Activity row (wider version of .sandbox-activity) */
+        .sb-activity {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: sb-fadein 0.4s ease both;
+        }
+
+        .sb-activity:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        @keyframes sb-fadein {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sb-activity:nth-child(2) { animation-delay: 0.04s; }
+        .sb-activity:nth-child(3) { animation-delay: 0.08s; }
+        .sb-activity:nth-child(4) { animation-delay: 0.12s; }
+        .sb-activity:nth-child(5) { animation-delay: 0.16s; }
+        .sb-activity:nth-child(6) { animation-delay: 0.20s; }
+        .sb-activity:nth-child(7) { animation-delay: 0.24s; }
+        .sb-activity:nth-child(8) { animation-delay: 0.28s; }
+        .sb-activity:nth-child(9) { animation-delay: 0.32s; }
+        .sb-activity:nth-child(10) { animation-delay: 0.36s; }
+        .sb-activity:nth-child(11) { animation-delay: 0.40s; }
+        .sb-activity:nth-child(12) { animation-delay: 0.44s; }
+        .sb-activity:nth-child(13) { animation-delay: 0.48s; }
+        .sb-activity:nth-child(14) { animation-delay: 0.52s; }
+
+        /* Activity illustration canvas (reused from agent details) */
+        .sa-illust {
+            width: 56px;
+            height: 40px;
+            flex-shrink: 0;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sa-illust .sa-boundary {
+            position: absolute;
+            right: 14px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: rgba(139,92,246,0.4);
+            border-radius: 1px;
+        }
+
+        .sa-illust .sa-boundary::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid rgba(139,92,246,0.3);
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .sa-illust .sa-packet {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+        }
+
+        /* Network blocked */
+        .sa-illust.sa-net-blocked .sa-packet {
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239,68,68,0.5);
+            animation: sa-packet-blocked 2.4s ease-in-out infinite;
+        }
+        .sa-illust.sa-net-blocked .sa-boundary {
+            animation: sa-boundary-flash-red 2.4s ease-in-out infinite;
+        }
+
+        @keyframes sa-packet-blocked {
+            0%   { left: 8px; opacity: 1; }
+            35%  { left: 32px; opacity: 1; }
+            42%  { left: 28px; opacity: 1; }
+            50%  { left: 8px; opacity: 0.3; }
+            100% { left: 8px; opacity: 1; }
+        }
+        @keyframes sa-boundary-flash-red {
+            0%   { background: rgba(139,92,246,0.4); }
+            35%  { background: rgba(239,68,68,0.8); box-shadow: 0 0 8px rgba(239,68,68,0.3); }
+            50%  { background: rgba(139,92,246,0.4); box-shadow: none; }
+            100% { background: rgba(139,92,246,0.4); }
+        }
+
+        /* Network allowed */
+        .sa-illust.sa-net-allowed .sa-packet {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34,197,94,0.5);
+            animation: sa-packet-allowed 2.4s ease-in-out infinite;
+        }
+        .sa-illust.sa-net-allowed .sa-boundary {
+            animation: sa-boundary-flash-green 2.4s ease-in-out infinite;
+        }
+
+        @keyframes sa-packet-allowed {
+            0%   { left: 8px; opacity: 1; }
+            35%  { left: 32px; opacity: 1; }
+            55%  { left: 48px; opacity: 0.6; }
+            70%  { left: 48px; opacity: 0; }
+            100% { left: 8px; opacity: 1; }
+        }
+        @keyframes sa-boundary-flash-green {
+            0%   { background: rgba(139,92,246,0.4); }
+            35%  { background: rgba(34,197,94,0.6); box-shadow: 0 0 8px rgba(34,197,94,0.2); }
+            55%  { background: rgba(139,92,246,0.4); box-shadow: none; }
+            100% { background: rgba(139,92,246,0.4); }
+        }
+
+        /* File write */
+        .sa-illust.sa-file-write .sa-file-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+            border: 1.5px solid rgba(250,204,21,0.5);
+            border-radius: 2px;
+            background: rgba(250,204,21,0.08);
+        }
+        .sa-illust.sa-file-write .sa-file-icon::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            height: 1.5px;
+            background: rgba(250,204,21,0.4);
+            box-shadow: 0 3px 0 rgba(250,204,21,0.3), 0 6px 0 rgba(250,204,21,0.2);
+        }
+        .sa-illust.sa-file-write .sa-write-cursor {
+            position: absolute;
+            left: 13px;
+            top: 22px;
+            width: 8px;
+            height: 1.5px;
+            background: #facc15;
+            border-radius: 1px;
+            animation: sa-write-blink 1.2s ease-in-out infinite;
+        }
+        @keyframes sa-write-blink {
+            0%, 100% { opacity: 1; width: 8px; }
+            50% { opacity: 0.3; width: 4px; }
+        }
+
+        /* File blocked */
+        .sa-illust.sa-file-blocked .sa-file-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+            border: 1.5px solid rgba(239,68,68,0.5);
+            border-radius: 2px;
+            background: rgba(239,68,68,0.08);
+        }
+        .sa-illust.sa-file-blocked .sa-file-icon::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            height: 1.5px;
+            background: rgba(239,68,68,0.4);
+            box-shadow: 0 3px 0 rgba(239,68,68,0.3), 0 6px 0 rgba(239,68,68,0.2);
+        }
+        .sa-illust.sa-file-blocked .sa-shield {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+        }
+        .sa-illust.sa-file-blocked .sa-shield svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Exec blocked */
+        .sa-illust.sa-exec-blocked .sa-exec-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid rgba(239,68,68,0.5);
+            border-radius: 2px;
+            background: rgba(239,68,68,0.1);
+        }
+        .sa-illust.sa-exec-blocked .sa-shield {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+        }
+        .sa-illust.sa-exec-blocked .sa-shield svg {
+            width: 100%;
+            height: 100%;
+        }
+        .sa-illust.sa-exec-blocked .sa-exec-arrow {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            width: 10px;
+            height: 1.5px;
+            background: rgba(239,68,68,0.6);
+            transform: translateY(-50%);
+            animation: sa-exec-push 2s ease-in-out infinite;
+        }
+        .sa-illust.sa-exec-blocked .sa-exec-arrow::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: -2.5px;
+            border: 3px solid transparent;
+            border-left: 4px solid rgba(239,68,68,0.6);
+        }
+        @keyframes sa-exec-push {
+            0%   { left: 24px; opacity: 1; }
+            35%  { left: 28px; opacity: 1; }
+            42%  { left: 24px; opacity: 0.5; }
+            100% { left: 24px; opacity: 1; }
+        }
+
+        /* DNS resolution */
+        .sa-illust.sa-dns .sa-dns-dot {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 6px rgba(96,165,250,0.4);
+            animation: sa-dns-pulse 2s ease-in-out infinite;
+        }
+        .sa-illust.sa-dns .sa-dns-wave {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 50%;
+            animation: sa-dns-ripple 2s ease-out infinite;
+        }
+        .sa-illust.sa-dns .sa-dns-wave:nth-child(3) {
+            animation-delay: 0.3s;
+            left: 18px;
+        }
+        @keyframes sa-dns-pulse {
+            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+            50% { opacity: 0.6; transform: translateY(-50%) scale(0.8); }
+        }
+        @keyframes sa-dns-ripple {
+            0%   { transform: translateY(-50%) scale(0.5); opacity: 0.6; }
+            100% { transform: translateY(-50%) scale(2.2); opacity: 0; }
+        }
+
+        /* Privacy routing — key/lock illustration */
+        .sa-illust.sa-priv-routed .sa-key {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(245,158,11,0.5);
+            border-radius: 50%;
+            background: rgba(245,158,11,0.08);
+        }
+        .sa-illust.sa-priv-routed .sa-key::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 6px;
+            background: rgba(245,158,11,0.5);
+            border-radius: 0 0 1px 1px;
+        }
+        .sa-illust.sa-priv-routed .sa-router-arrow {
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            width: 14px;
+            height: 1.5px;
+            background: rgba(245,158,11,0.4);
+            transform: translateY(-50%);
+            animation: sa-route-flow 2s ease-in-out infinite;
+        }
+        .sa-illust.sa-priv-routed .sa-router-arrow::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: -2.5px;
+            border: 3px solid transparent;
+            border-left: 4px solid rgba(245,158,11,0.5);
+        }
+        .sa-illust.sa-priv-routed .sa-router-box {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 10px;
+            border: 1.5px solid rgba(245,158,11,0.4);
+            border-radius: 2px;
+            background: rgba(245,158,11,0.06);
+        }
+        @keyframes sa-route-flow {
+            0%   { opacity: 0.3; }
+            50%  { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        /* Privacy blocked */
+        .sa-illust.sa-priv-blocked .sa-key {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid rgba(239,68,68,0.5);
+            border-radius: 50%;
+            background: rgba(239,68,68,0.08);
+        }
+        .sa-illust.sa-priv-blocked .sa-key::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 6px;
+            background: rgba(239,68,68,0.5);
+            border-radius: 0 0 1px 1px;
+        }
+        .sa-illust.sa-priv-blocked .sa-shield {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 16px;
+        }
+        .sa-illust.sa-priv-blocked .sa-shield svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Activity info */
+        .sa-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sa-info-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #d1d5db;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sa-info-detail {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 2px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .sa-info-time {
+            font-size: 9px;
+            color: #4b5563;
+            margin-top: 2px;
+        }
+
+        /* Agent tag */
+        .sa-agent {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+        .sa-agent-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* Layer tag */
+        .sa-layer-tag {
+            flex-shrink: 0;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sa-layer-tag.tag-fs {
+            color: #facc15;
+            background: rgba(250,204,21,0.08);
+            border: 1px solid rgba(250,204,21,0.12);
+        }
+        .sa-layer-tag.tag-net {
+            color: #93c5fd;
+            background: rgba(96,165,250,0.08);
+            border: 1px solid rgba(96,165,250,0.12);
+        }
+        .sa-layer-tag.tag-proc {
+            color: #fca5a5;
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.12);
+        }
+        .sa-layer-tag.tag-priv {
+            color: #fbbf24;
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.12);
+        }
+
+        /* Status badge */
+        .sa-badge {
+            flex-shrink: 0;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .sa-badge.sa-blocked {
+            color: #fca5a5;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+        .sa-badge.sa-allowed {
+            color: #86efac;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.12);
+        }
+        .sa-badge.sa-filtered {
+            color: #93c5fd;
+            background: rgba(96,165,250,0.1);
+            border: 1px solid rgba(96,165,250,0.12);
+        }
+        .sa-badge.sa-routed {
+            color: #fbbf24;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.12);
+        }
+    </style>
+</head>
+<body class="sandbox-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+        <main class="main-content">
+            <div class="header"></div>
+            <div class="sb-page-layout">
+                <div class="sb-main">
+
+                    <!-- Header -->
+                    <div class="sb-header">
+                        <div class="sb-header-top">
+                            <div class="sb-header-info">
+                                <div class="sb-header-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="sb-header-title">Sandbox</div>
+                                    <div class="sb-header-subtitle">Isolated environments providing multiple layers of protection that prevent unauthorized data access, credential exposure, and uncontrolled agentic behavior.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sb-stats">
+                            <div class="sb-stat">
+                                <div class="sb-stat-dot dot-total"></div>
+                                <div class="sb-stat-value">47</div>
+                                <div class="sb-stat-label">Total Events</div>
+                            </div>
+                            <div class="sb-stat">
+                                <div class="sb-stat-dot dot-blocked"></div>
+                                <div class="sb-stat-value">18</div>
+                                <div class="sb-stat-label">Blocked</div>
+                            </div>
+                            <div class="sb-stat">
+                                <div class="sb-stat-dot dot-allowed"></div>
+                                <div class="sb-stat-value">21</div>
+                                <div class="sb-stat-label">Allowed</div>
+                            </div>
+                            <div class="sb-stat">
+                                <div class="sb-stat-dot dot-filtered"></div>
+                                <div class="sb-stat-value">5</div>
+                                <div class="sb-stat-label">Filtered</div>
+                            </div>
+                            <div class="sb-stat">
+                                <div class="sb-stat-dot dot-routed"></div>
+                                <div class="sb-stat-value">3</div>
+                                <div class="sb-stat-label">Routed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layer Cards -->
+                    <div class="sb-layers">
+
+                        <!-- Filesystem -->
+                        <div class="sb-layer-card">
+                            <div class="sb-layer-card-header">
+                                <div class="sb-layer-icon layer-fs">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="sb-layer-name">Filesystem</div>
+                                <div class="sb-layer-badge">12 events</div>
+                            </div>
+                            <div class="sb-layer-desc">Bounds the damage radius of mistakes by limiting what the agent can read and write on the host filesystem.</div>
+                            <div class="sb-layer-perms">
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-can">Can do</div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Read declared paths</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Write to read-write paths</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Access /sandbox, /tmp</span>
+                                    </div>
+                                </div>
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-cant">Cannot do</div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Access unlisted paths</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Traverse with ..</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Write to read-only paths</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Network -->
+                        <div class="sb-layer-card">
+                            <div class="sb-layer-card-header">
+                                <div class="sb-layer-icon layer-net">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                    </svg>
+                                </div>
+                                <div class="sb-layer-name">Network</div>
+                                <div class="sb-layer-badge">18 events</div>
+                            </div>
+                            <div class="sb-layer-desc">Controls what the agent can reach outside the sandbox — preventing exfiltration and supply-chain attacks.</div>
+                            <div class="sb-layer-perms">
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-can">Can do</div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Reach declared hosts+ports</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Scoped HTTP methods/paths</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Wildcard host matching</span>
+                                    </div>
+                                </div>
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-cant">Cannot do</div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Reach undeclared hosts</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Use blocked HTTP methods</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Exfiltrate to arbitrary URLs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Processes -->
+                        <div class="sb-layer-card">
+                            <div class="sb-layer-card-header">
+                                <div class="sb-layer-icon layer-proc">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                </div>
+                                <div class="sb-layer-name">Processes</div>
+                                <div class="sb-layer-badge">10 events</div>
+                            </div>
+                            <div class="sb-layer-desc">Kernel-level enforcement that prevents the agent from escalating privileges, regardless of the code it writes.</div>
+                            <div class="sb-layer-perms">
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-can">Can do</div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Run as sandbox user</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Normal process ops</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Safe syscalls only</span>
+                                    </div>
+                                </div>
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-cant">Cannot do</div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Run as root</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Use sudo or setuid</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Call blocked syscalls</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Privacy Routing -->
+                        <div class="sb-layer-card">
+                            <div class="sb-layer-card-header">
+                                <div class="sb-layer-icon layer-priv">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                </div>
+                                <div class="sb-layer-name">Privacy Routing</div>
+                                <div class="sb-layer-badge">7 events</div>
+                            </div>
+                            <div class="sb-layer-desc">Strips agent-supplied credentials at the proxy level so the agent never sees real API keys or tokens.</div>
+                            <div class="sb-layer-perms">
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-can">Can do</div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Request approved services</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>API calls via router</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-allow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span>Receive 3rd-party responses</span>
+                                    </div>
+                                </div>
+                                <div class="sb-perm-group">
+                                    <div class="sb-perm-group-label perm-cant">Cannot do</div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Read tokens or API keys</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Bypass router, call API directly</span>
+                                    </div>
+                                    <div class="sb-perm-item perm-deny">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                        <span>Exfiltrate credentials</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Activities Feed -->
+                    <div class="sb-activities-section">
+                        <div class="sb-activities-header">
+                            <div class="sb-activities-title">Sandboxing Activities</div>
+                            <div class="sb-filter-bar">
+                                <button class="sb-filter-btn active" data-filter="all" onclick="filterActivities('all', this)">All</button>
+                                <button class="sb-filter-btn" data-filter="network" onclick="filterActivities('network', this)">Network</button>
+                                <button class="sb-filter-btn" data-filter="filesystem" onclick="filterActivities('filesystem', this)">Filesystem</button>
+                                <button class="sb-filter-btn" data-filter="process" onclick="filterActivities('process', this)">Processes</button>
+                                <button class="sb-filter-btn" data-filter="privacy" onclick="filterActivities('privacy', this)">Privacy</button>
+                                <span style="width: 1px; height: 16px; background: rgba(255,255,255,0.1); margin: 0 4px;"></span>
+                                <button class="sb-filter-btn" data-status="all" onclick="filterByStatus('all', this)">All Status</button>
+                                <button class="sb-filter-btn" data-status="blocked" onclick="filterByStatus('blocked', this)">Blocked</button>
+                                <button class="sb-filter-btn" data-status="allowed" onclick="filterByStatus('allowed', this)">Allowed</button>
+                            </div>
+                        </div>
+
+                        <div class="sb-activity-list" id="sbActivityList">
+
+                            <!-- Network: Outbound blocked -->
+                            <div class="sb-activity" data-layer="network" data-status="blocked">
+                                <div class="sa-illust sa-net-blocked">
+                                    <div class="sa-boundary"></div>
+                                    <div class="sa-packet"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Outbound request blocked</div>
+                                    <div class="sa-info-detail">&rarr; api.external-service.io:443</div>
+                                    <div class="sa-info-time">2s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-net">Network</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Network: HTTPS allowed -->
+                            <div class="sb-activity" data-layer="network" data-status="allowed">
+                                <div class="sa-illust sa-net-allowed">
+                                    <div class="sa-boundary"></div>
+                                    <div class="sa-packet"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">HTTPS request allowed</div>
+                                    <div class="sa-info-detail">&rarr; registry.npmjs.org:443</div>
+                                    <div class="sa-info-time">5s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-net">Network</span>
+                                <span class="sa-badge sa-allowed">Allowed</span>
+                            </div>
+
+                            <!-- Process: exec denied -->
+                            <div class="sb-activity" data-layer="process" data-status="blocked">
+                                <div class="sa-illust sa-exec-blocked">
+                                    <div class="sa-exec-icon"></div>
+                                    <div class="sa-exec-arrow"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Process exec denied</div>
+                                    <div class="sa-info-detail">seccomp: /usr/bin/curl</div>
+                                    <div class="sa-info-time">8s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #06b6d4;"></div>
+                                    Agent #2 &middot; Frontend App
+                                </div>
+                                <span class="sa-layer-tag tag-proc">Process</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Filesystem: write to scratch -->
+                            <div class="sb-activity" data-layer="filesystem" data-status="allowed">
+                                <div class="sa-illust sa-file-write">
+                                    <div class="sa-file-icon"></div>
+                                    <div class="sa-write-cursor"></div>
+                                    <div class="sa-boundary"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">File write to scratch</div>
+                                    <div class="sa-info-detail">tmpfs: /tmp/build/out.js</div>
+                                    <div class="sa-info-time">12s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-fs">Filesystem</span>
+                                <span class="sa-badge sa-allowed">Allowed</span>
+                            </div>
+
+                            <!-- Network: DNS filtered -->
+                            <div class="sb-activity" data-layer="network" data-status="filtered">
+                                <div class="sa-illust sa-dns">
+                                    <div class="sa-dns-dot"></div>
+                                    <div class="sa-dns-wave"></div>
+                                    <div class="sa-dns-wave"></div>
+                                    <div class="sa-boundary"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">DNS resolution filtered</div>
+                                    <div class="sa-info-detail">lookup: malware-c2.evil.net</div>
+                                    <div class="sa-info-time">15s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #10b981;"></div>
+                                    Agent #3 &middot; API Gateway
+                                </div>
+                                <span class="sa-layer-tag tag-net">Network</span>
+                                <span class="sa-badge sa-filtered">Filtered</span>
+                            </div>
+
+                            <!-- Network: Exfiltration attempt blocked -->
+                            <div class="sb-activity" data-layer="network" data-status="blocked">
+                                <div class="sa-illust sa-net-blocked">
+                                    <div class="sa-boundary"></div>
+                                    <div class="sa-packet"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Exfiltration attempt blocked</div>
+                                    <div class="sa-info-detail">POST &rarr; pastebin.com/api (source code payload)</div>
+                                    <div class="sa-info-time">18s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #06b6d4;"></div>
+                                    Agent #2 &middot; Frontend App
+                                </div>
+                                <span class="sa-layer-tag tag-net">Network</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Filesystem: access unlisted path blocked -->
+                            <div class="sb-activity" data-layer="filesystem" data-status="blocked">
+                                <div class="sa-illust sa-file-blocked">
+                                    <div class="sa-file-icon"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Access to unlisted path blocked</div>
+                                    <div class="sa-info-detail">read: /etc/shadow</div>
+                                    <div class="sa-info-time">22s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #10b981;"></div>
+                                    Agent #3 &middot; API Gateway
+                                </div>
+                                <span class="sa-layer-tag tag-fs">Filesystem</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Process: privilege escalation blocked -->
+                            <div class="sb-activity" data-layer="process" data-status="blocked">
+                                <div class="sa-illust sa-exec-blocked">
+                                    <div class="sa-exec-icon"></div>
+                                    <div class="sa-exec-arrow"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Privilege escalation blocked</div>
+                                    <div class="sa-info-detail">rejected: sudo apt install nmap</div>
+                                    <div class="sa-info-time">25s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-proc">Process</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Privacy: API call redirected through router -->
+                            <div class="sb-activity" data-layer="privacy" data-status="routed">
+                                <div class="sa-illust sa-priv-routed">
+                                    <div class="sa-key"></div>
+                                    <div class="sa-router-arrow"></div>
+                                    <div class="sa-router-box"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">API call redirected through router</div>
+                                    <div class="sa-info-detail">openai.com/v1/chat &rarr; privacy-router:8443</div>
+                                    <div class="sa-info-time">28s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #06b6d4;"></div>
+                                    Agent #2 &middot; Frontend App
+                                </div>
+                                <span class="sa-layer-tag tag-priv">Privacy</span>
+                                <span class="sa-badge sa-routed">Routed</span>
+                            </div>
+
+                            <!-- Privacy: credential access blocked -->
+                            <div class="sb-activity" data-layer="privacy" data-status="blocked">
+                                <div class="sa-illust sa-priv-blocked">
+                                    <div class="sa-key"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Credential access blocked</div>
+                                    <div class="sa-info-detail">env read: OPENAI_API_KEY &rarr; &lt;stripped&gt;</div>
+                                    <div class="sa-info-time">30s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #10b981;"></div>
+                                    Agent #3 &middot; API Gateway
+                                </div>
+                                <span class="sa-layer-tag tag-priv">Privacy</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Filesystem: traversal blocked -->
+                            <div class="sb-activity" data-layer="filesystem" data-status="blocked">
+                                <div class="sa-illust sa-file-blocked">
+                                    <div class="sa-file-icon"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Path traversal blocked</div>
+                                    <div class="sa-info-detail">read: ../../.env (.. not allowed)</div>
+                                    <div class="sa-info-time">35s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #06b6d4;"></div>
+                                    Agent #2 &middot; Frontend App
+                                </div>
+                                <span class="sa-layer-tag tag-fs">Filesystem</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Network: package download allowed -->
+                            <div class="sb-activity" data-layer="network" data-status="allowed">
+                                <div class="sa-illust sa-net-allowed">
+                                    <div class="sa-boundary"></div>
+                                    <div class="sa-packet"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Package download allowed</div>
+                                    <div class="sa-info-detail">&rarr; pypi.org:443 (pip install requests)</div>
+                                    <div class="sa-info-time">40s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #10b981;"></div>
+                                    Agent #3 &middot; API Gateway
+                                </div>
+                                <span class="sa-layer-tag tag-net">Network</span>
+                                <span class="sa-badge sa-allowed">Allowed</span>
+                            </div>
+
+                            <!-- Process: blocked syscall -->
+                            <div class="sb-activity" data-layer="process" data-status="blocked">
+                                <div class="sa-illust sa-exec-blocked">
+                                    <div class="sa-exec-icon"></div>
+                                    <div class="sa-exec-arrow"></div>
+                                    <div class="sa-shield">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Blocked syscall</div>
+                                    <div class="sa-info-detail">seccomp: ptrace(PTRACE_ATTACH, ...)</div>
+                                    <div class="sa-info-time">42s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-proc">Process</span>
+                                <span class="sa-badge sa-blocked">Blocked</span>
+                            </div>
+
+                            <!-- Privacy: token stripping applied -->
+                            <div class="sb-activity" data-layer="privacy" data-status="routed">
+                                <div class="sa-illust sa-priv-routed">
+                                    <div class="sa-key"></div>
+                                    <div class="sa-router-arrow"></div>
+                                    <div class="sa-router-box"></div>
+                                </div>
+                                <div class="sa-info">
+                                    <div class="sa-info-label">Token stripping applied</div>
+                                    <div class="sa-info-detail">Authorization header stripped &rarr; proxy-injected</div>
+                                    <div class="sa-info-time">45s ago</div>
+                                </div>
+                                <div class="sa-agent">
+                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    Agent #1 &middot; Kortex Backend
+                                </div>
+                                <span class="sa-layer-tag tag-priv">Privacy</span>
+                                <span class="sa-badge sa-routed">Routed</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        var activeLayerFilter = 'all';
+        var activeStatusFilter = 'all';
+
+        function filterActivities(layer, btn) {
+            activeLayerFilter = layer;
+            document.querySelectorAll('.sb-filter-btn[data-filter]').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        function filterByStatus(status, btn) {
+            activeStatusFilter = status;
+            document.querySelectorAll('.sb-filter-btn[data-status]').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            var items = document.querySelectorAll('.sb-activity');
+            items.forEach(function(item) {
+                var layerMatch = activeLayerFilter === 'all' || item.getAttribute('data-layer') === activeLayerFilter;
+                var statusMatch = activeStatusFilter === 'all' || item.getAttribute('data-status') === activeStatusFilter;
+                item.style.display = (layerMatch && statusMatch) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

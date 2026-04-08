@@ -6,6 +6,278 @@
     <title>Kortex - Settings</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* Settings Page Styles */
+        .settings-layout {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
+            background: linear-gradient(145deg, #2d2e3f 0%, #252631 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .settings-section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #3d3e4f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-section-icon.general {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .settings-section-icon.devspaces {
+            background: linear-gradient(135deg, #EE0000 0%, #CC0000 100%);
+        }
+
+        .settings-section-icon.appearance {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .settings-section-icon.advanced {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
+        .settings-section-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #fff;
+        }
+
+        .settings-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0;
+        }
+
+        .settings-section-description {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 4px 0 0 0;
+        }
+
+        .settings-section-body {
+            padding: 0;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #3d3e4f;
+            gap: 24px;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .settings-item-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-item-description {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .settings-item-control {
+            flex-shrink: 0;
+        }
+
+        /* Toggle Switch */
+        .settings-toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background-color: #4b5563;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .settings-toggle.active {
+            background-color: #8b5cf6;
+        }
+
+        .settings-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-toggle.active::after {
+            transform: translateX(22px);
+        }
+
+        /* Select Dropdown */
+        .settings-select {
+            padding: 10px 36px 10px 14px;
+            background: #1a1b23;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 14px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            min-width: 180px;
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        /* Input Field */
+        .settings-input {
+            padding: 10px 14px;
+            background: #1a1b23;
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 14px;
+            min-width: 250px;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .settings-input::placeholder {
+            color: #6b7280;
+        }
+
+        /* Badge */
+        .settings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .settings-badge.beta {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+
+        .settings-badge.new {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        /* DevSpaces Highlight */
+        .devspaces-highlight {
+            background: linear-gradient(135deg, rgba(238, 0, 0, 0.05) 0%, transparent 100%);
+            border-left: 3px solid #EE0000;
+            margin-left: -1px;
+        }
+
+        /* DevSpaces Logo */
+        .devspaces-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 4px;
+        }
+
+        /* Save Button */
+        .settings-save-bar {
+            position: sticky;
+            bottom: 28px;
+            background: linear-gradient(180deg, transparent 0%, #1a1b23 20%);
+            padding: 24px 0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .settings-save-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .settings-save-btn:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .settings-reset-btn {
+            padding: 12px 20px;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-reset-btn:hover {
+            background: #4b5563;
+        }
+    </style>
 </head>
 <body class="settings-page">
     <div class="app-container">
@@ -19,18 +291,758 @@
             </header>
             
             <div class="content">
-                <div style="padding: 40px; text-align: center; color: #9ca3af;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px; margin: 0 auto 20px; color: #8b5cf6;">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                    <h2 style="color: #e5e7eb; margin-bottom: 10px;">Settings</h2>
-                    <p>Configure your Kortex Studio preferences.</p>
-                    <p style="font-size: 14px; margin-top: 20px;">Coming soon...</p>
+                <div class="settings-layout">
+
+                    <!-- Development Environment Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon devspaces">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Development Environment</h3>
+                                <p class="settings-section-description">Configure how Kortex integrates with development environments</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item devspaces-highlight">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg class="devspaces-logo" viewBox="0 0 24 24" fill="none" stroke="#EE0000" stroke-width="2">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                            <polyline points="2 17 12 22 22 17"/>
+                                            <polyline points="2 12 12 17 22 12"/>
+                                        </svg>
+                                        Enable Red Hat DevSpaces
+                                        <span class="settings-badge new">New</span>
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Launch Kortex sessions directly in Red Hat DevSpaces cloud development environments. 
+                                        This enables you to work in pre-configured, containerized workspaces with all your tools ready to go.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="devspacesToggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">DevSpaces URL</h4>
+                                    <p class="settings-item-description">
+                                        The URL of your Red Hat DevSpaces instance. Leave empty to use the default from your OpenShift AI connection.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <input type="url" class="settings-input" id="devspacesUrl" placeholder="https://devspaces.example.com" value="">
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default DevSpace Template</h4>
+                                    <p class="settings-item-description">
+                                        Choose the default workspace template when launching new DevSpaces sessions.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="devspacesTemplate">
+                                        <option value="universal">Universal (Python, Node, Java)</option>
+                                        <option value="python">Python Data Science</option>
+                                        <option value="nodejs">Node.js & TypeScript</option>
+                                        <option value="java">Java & Quarkus</option>
+                                        <option value="go">Go Development</option>
+                                        <option value="custom">Custom Template</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Auto-start DevSpaces</h4>
+                                    <p class="settings-item-description">
+                                        Automatically start a DevSpaces workspace when creating a new agent session that requires coding capabilities.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="autoStartDevspaces" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Agent Defaults Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                                    <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+                                    <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Agent Defaults</h3>
+                                <p class="settings-section-description">Default configuration for new tasks and agents</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default Agent</h4>
+                                    <p class="settings-item-description">
+                                        The coding agent to use when creating new tasks.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="defaultAgent">
+                                        <option value="claude" selected>Claude</option>
+                                        <option value="cursor">Cursor</option>
+                                        <option value="goose">Goose</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default Profile</h4>
+                                    <p class="settings-item-description">
+                                        The agent profile to apply by default when starting a new task. Profiles bundle skills, MCP servers, and instructions.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="defaultProfile">
+                                        <option value="devops" selected>DevOps Engineer</option>
+                                        <option value="backend">Backend Developer</option>
+                                        <option value="security">Security Analyst</option>
+                                        <option value="fullstack">Full Stack</option>
+                                        <option value="none">None (Start Fresh)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default File Access</h4>
+                                    <p class="settings-item-description">
+                                        The default file system access level for agents in new tasks.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="defaultFileAccess">
+                                        <option value="workspace" selected>Working Directory Only</option>
+                                        <option value="home">Home Directory</option>
+                                        <option value="custom">Custom Paths</option>
+                                        <option value="full">Full System Access</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Require Confirmation for File Writes</h4>
+                                    <p class="settings-item-description">
+                                        Ask for confirmation before agents write or modify files.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="confirmWrites" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Auto-execute Commands</h4>
+                                    <p class="settings-item-description">
+                                        Allow agents to execute shell commands without manual approval.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="autoExecute" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network & Security Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Network & Security</h3>
+                                <p class="settings-section-description">Default network policies and security settings for agents</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default Network Policy</h4>
+                                    <p class="settings-item-description">
+                                        The default network access policy for agent tasks.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="networkPolicy">
+                                        <option value="allow" selected>Allow All</option>
+                                        <option value="deny">Deny by Default</option>
+                                        <option value="restricted">Restricted (Allowlist)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Bridge Orchestration</h4>
+                                    <p class="settings-item-description">
+                                        Enable inter-agent communication and orchestration between different AI systems and external services.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="bridgeEnabled" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(238, 0, 0, 0.05) 0%, transparent 100%); border-left: 3px solid #ee0000; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ee0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                            <polyline points="2 17 12 22 22 17"/>
+                                            <polyline points="2 12 12 17 22 12"/>
+                                        </svg>
+                                        OpenShift AI Connection
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Enable connection to Red Hat OpenShift AI for centralized model serving, knowledge bases, and enterprise AI assets.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="openshiftAIModuleToggle" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrations Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Integrations</h3>
+                                <p class="settings-section-description">Connect external tools and services to extend Kortex capabilities</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <!-- GitHub Integration -->
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(36, 41, 46, 0.15) 0%, transparent 100%); border-left: 3px solid #6e7681; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#e5e7eb">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                        </svg>
+                                        GitHub
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Connect to GitHub for repository access, issue tracking, and pull request management.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="githubEnabled" onclick="toggleSetting(this); toggleIntegrationFields('github')"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item integration-fields github-fields" style="display: none; flex-direction: column; align-items: stretch; gap: 16px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">GitHub URL</h4>
+                                        <p class="settings-item-description">
+                                            Use github.com or your GitHub Enterprise instance URL.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="url" class="settings-input" id="githubUrl" placeholder="https://github.com" value="https://github.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Personal Access Token</h4>
+                                        <p class="settings-item-description">
+                                            Generate a token with repo and workflow scopes for full access.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="password" class="settings-input" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Default Organization/User</h4>
+                                        <p class="settings-item-description">
+                                            The default organization or username for repository operations.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="text" class="settings-input" id="githubOrg" placeholder="my-organization">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- JIRA Integration -->
+                            <div class="settings-item" style="background: linear-gradient(135deg, rgba(0, 82, 204, 0.1) 0%, transparent 100%); border-left: 3px solid #0052cc; margin-left: -1px;">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                            <defs>
+                                                <linearGradient id="jiraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" style="stop-color:#2684ff"/>
+                                                    <stop offset="100%" style="stop-color:#0052cc"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.213 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.005 1.005 0 0 0 23.013 0z" fill="url(#jiraGradient)"/>
+                                        </svg>
+                                        JIRA
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Connect to JIRA for issue tracking, sprint management, and project updates.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="jiraEnabled" onclick="toggleSetting(this); toggleIntegrationFields('jira')"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item integration-fields jira-fields" style="display: none; flex-direction: column; align-items: stretch; gap: 16px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">JIRA Instance URL</h4>
+                                        <p class="settings-item-description">
+                                            Your Atlassian Cloud or JIRA Server instance URL.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="url" class="settings-input" id="jiraUrl" placeholder="https://your-company.atlassian.net">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Email Address</h4>
+                                        <p class="settings-item-description">
+                                            The email associated with your Atlassian account.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="email" class="settings-input" id="jiraEmail" placeholder="you@company.com">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">API Token</h4>
+                                        <p class="settings-item-description">
+                                            Generate an API token from your Atlassian account settings.
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="password" class="settings-input" id="jiraToken" placeholder="ATATT3xxxxxxxxxxx">
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+                                    <div class="settings-item-info">
+                                        <h4 class="settings-item-label">Default Project Key</h4>
+                                        <p class="settings-item-description">
+                                            The project key to use by default (e.g., PROJ, DEV, PLATFORM).
+                                        </p>
+                                    </div>
+                                    <div class="settings-item-control">
+                                        <input type="text" class="settings-input" id="jiraProject" placeholder="PROJ" style="min-width: 120px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- General Settings Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon general">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.07a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">General</h3>
+                                <p class="settings-section-description">Basic application settings and preferences</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Default Model</h4>
+                                    <p class="settings-item-description">
+                                        The default AI model to use for new chat sessions and agent tasks.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="defaultModel">
+                                        <option value="granite-3.1">Granite 3.1 8B</option>
+                                        <option value="granite-3.1-dense">Granite 3.1 Dense</option>
+                                        <option value="llama-3.2">Llama 3.2 70B</option>
+                                        <option value="mistral">Mistral Large</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Session Auto-save</h4>
+                                    <p class="settings-item-description">
+                                        Automatically save session state and conversation history.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="autoSave" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Show Thinking Process</h4>
+                                    <p class="settings-item-description">
+                                        Display the AI's reasoning steps and thought process during responses.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle active" id="showThinking" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon appearance">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"/>
+                                    <line x1="12" y1="1" x2="12" y2="3"/>
+                                    <line x1="12" y1="21" x2="12" y2="23"/>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                    <line x1="1" y1="12" x2="3" y2="12"/>
+                                    <line x1="21" y1="12" x2="23" y2="12"/>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Appearance</h3>
+                                <p class="settings-section-description">Customize the look and feel of Kortex</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Theme</h4>
+                                    <p class="settings-item-description">
+                                        Choose your preferred color theme.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <select class="settings-select" id="theme">
+                                        <option value="dark">Dark (Default)</option>
+                                        <option value="light">Light</option>
+                                        <option value="system">System</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Compact Mode</h4>
+                                    <p class="settings-item-description">
+                                        Reduce spacing and padding for a more compact interface.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="compactMode" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Section -->
+                    <div class="settings-section">
+                        <div class="settings-section-header">
+                            <div class="settings-section-icon advanced">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6"/>
+                                    <polyline points="8 6 2 12 8 18"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="settings-section-title">Advanced</h3>
+                                <p class="settings-section-description">Advanced configuration options for power users</p>
+                            </div>
+                        </div>
+                        <div class="settings-section-body">
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Enable Debug Mode</h4>
+                                    <p class="settings-item-description">
+                                        Show additional debugging information and logs in the console.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="debugMode" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">
+                                        Experimental Features
+                                        <span class="settings-badge beta">Beta</span>
+                                    </h4>
+                                    <p class="settings-item-description">
+                                        Enable experimental features that are still in development. These may be unstable.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="experimentalFeatures" onclick="toggleSetting(this)"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">API Endpoint Override</h4>
+                                    <p class="settings-item-description">
+                                        Override the default API endpoint for custom deployments.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <input type="url" class="settings-input" id="apiEndpoint" placeholder="https://api.kortex.ai">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save Bar -->
+                    <div class="settings-save-bar">
+                        <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
+                        <button class="settings-save-btn" onclick="saveSettings()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Save Settings
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </main>
     </div>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        function toggleSetting(element) {
+            element.classList.toggle('active');
+        }
+
+        function toggleIntegrationFields(integration) {
+            const fields = document.querySelector('.' + integration + '-fields');
+            const toggle = document.getElementById(integration + 'Enabled');
+            if (toggle.classList.contains('active')) {
+                fields.style.display = 'flex';
+            } else {
+                fields.style.display = 'none';
+            }
+        }
+
+        function saveSettings() {
+            const settings = {
+                modules: {
+                    openshiftAIEnabled: document.getElementById('openshiftAIModuleToggle').classList.contains('active')
+                },
+                agentDefaults: {
+                    defaultAgent: document.getElementById('defaultAgent').value,
+                    defaultProfile: document.getElementById('defaultProfile').value,
+                    defaultFileAccess: document.getElementById('defaultFileAccess').value,
+                    confirmWrites: document.getElementById('confirmWrites').classList.contains('active'),
+                    autoExecute: document.getElementById('autoExecute').classList.contains('active')
+                },
+                network: {
+                    networkPolicy: document.getElementById('networkPolicy').value,
+                    bridgeEnabled: document.getElementById('bridgeEnabled').classList.contains('active')
+                },
+                integrations: {
+                    github: {
+                        enabled: document.getElementById('githubEnabled').classList.contains('active'),
+                        url: document.getElementById('githubUrl').value,
+                        token: document.getElementById('githubToken').value,
+                        org: document.getElementById('githubOrg').value
+                    },
+                    jira: {
+                        enabled: document.getElementById('jiraEnabled').classList.contains('active'),
+                        url: document.getElementById('jiraUrl').value,
+                        email: document.getElementById('jiraEmail').value,
+                        token: document.getElementById('jiraToken').value,
+                        project: document.getElementById('jiraProject').value
+                    }
+                },
+                devspaces: {
+                    enabled: document.getElementById('devspacesToggle').classList.contains('active'),
+                    url: document.getElementById('devspacesUrl').value,
+                    template: document.getElementById('devspacesTemplate').value,
+                    autoStart: document.getElementById('autoStartDevspaces').classList.contains('active')
+                },
+                general: {
+                    defaultModel: document.getElementById('defaultModel').value,
+                    autoSave: document.getElementById('autoSave').classList.contains('active'),
+                    showThinking: document.getElementById('showThinking').classList.contains('active')
+                },
+                appearance: {
+                    theme: document.getElementById('theme').value,
+                    compactMode: document.getElementById('compactMode').classList.contains('active')
+                },
+                advanced: {
+                    debugMode: document.getElementById('debugMode').classList.contains('active'),
+                    experimentalFeatures: document.getElementById('experimentalFeatures').classList.contains('active'),
+                    apiEndpoint: document.getElementById('apiEndpoint').value
+                }
+            };
+
+            // Save to localStorage (mock)
+            localStorage.setItem('kortexSettings', JSON.stringify(settings));
+
+            // Show confirmation
+            const btn = document.querySelector('.settings-save-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Saved!
+            `;
+            btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        function resetSettings() {
+            if (confirm('Reset all settings to their default values?')) {
+                document.getElementById('openshiftAIModuleToggle').classList.add('active');
+                document.getElementById('devspacesToggle').classList.add('active');
+                document.getElementById('autoStartDevspaces').classList.remove('active');
+                document.getElementById('autoSave').classList.add('active');
+                document.getElementById('showThinking').classList.add('active');
+                document.getElementById('compactMode').classList.remove('active');
+                document.getElementById('debugMode').classList.remove('active');
+                document.getElementById('experimentalFeatures').classList.remove('active');
+                document.getElementById('confirmWrites').classList.add('active');
+                document.getElementById('autoExecute').classList.remove('active');
+                document.getElementById('bridgeEnabled').classList.add('active');
+
+                document.getElementById('githubEnabled').classList.remove('active');
+                document.getElementById('jiraEnabled').classList.remove('active');
+                document.querySelector('.github-fields').style.display = 'none';
+                document.querySelector('.jira-fields').style.display = 'none';
+
+                document.getElementById('devspacesUrl').value = '';
+                document.getElementById('devspacesTemplate').value = 'universal';
+                document.getElementById('defaultModel').value = 'granite-3.1';
+                document.getElementById('defaultAgent').value = 'claude';
+                document.getElementById('defaultProfile').value = 'devops';
+                document.getElementById('defaultFileAccess').value = 'workspace';
+                document.getElementById('networkPolicy').value = 'allow';
+                document.getElementById('theme').value = 'dark';
+                document.getElementById('apiEndpoint').value = '';
+
+                document.getElementById('githubUrl').value = 'https://github.com';
+                document.getElementById('githubToken').value = '';
+                document.getElementById('githubOrg').value = '';
+                document.getElementById('jiraUrl').value = '';
+                document.getElementById('jiraEmail').value = '';
+                document.getElementById('jiraToken').value = '';
+                document.getElementById('jiraProject').value = '';
+
+                localStorage.removeItem('kortexSettings');
+            }
+        }
+
+        // Load saved settings on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const saved = localStorage.getItem('kortexSettings');
+            if (saved) {
+                try {
+                    const settings = JSON.parse(saved);
+                    
+                    if (settings.modules) {
+                        if (settings.modules.openshiftAIEnabled === false) {
+                            document.getElementById('openshiftAIModuleToggle').classList.remove('active');
+                        }
+                    }
+
+                    if (settings.agentDefaults) {
+                        if (settings.agentDefaults.defaultAgent) document.getElementById('defaultAgent').value = settings.agentDefaults.defaultAgent;
+                        if (settings.agentDefaults.defaultProfile) document.getElementById('defaultProfile').value = settings.agentDefaults.defaultProfile;
+                        if (settings.agentDefaults.defaultFileAccess) document.getElementById('defaultFileAccess').value = settings.agentDefaults.defaultFileAccess;
+                        if (settings.agentDefaults.confirmWrites === false) document.getElementById('confirmWrites').classList.remove('active');
+                        if (settings.agentDefaults.autoExecute) document.getElementById('autoExecute').classList.add('active');
+                    }
+
+                    if (settings.network) {
+                        if (settings.network.networkPolicy) document.getElementById('networkPolicy').value = settings.network.networkPolicy;
+                        if (settings.network.bridgeEnabled === false) document.getElementById('bridgeEnabled').classList.remove('active');
+                    }
+                    
+                    // Apply DevSpaces settings
+                    if (settings.devspaces) {
+                        if (settings.devspaces.enabled) {
+                            document.getElementById('devspacesToggle').classList.add('active');
+                        } else {
+                            document.getElementById('devspacesToggle').classList.remove('active');
+                        }
+                        document.getElementById('devspacesUrl').value = settings.devspaces.url || '';
+                        document.getElementById('devspacesTemplate').value = settings.devspaces.template || 'universal';
+                        if (settings.devspaces.autoStart) {
+                            document.getElementById('autoStartDevspaces').classList.add('active');
+                        }
+                    }
+
+                    // Apply integrations settings
+                    if (settings.integrations) {
+                        // GitHub
+                        if (settings.integrations.github) {
+                            if (settings.integrations.github.enabled) {
+                                document.getElementById('githubEnabled').classList.add('active');
+                                document.querySelector('.github-fields').style.display = 'flex';
+                            } else {
+                                document.getElementById('githubEnabled').classList.remove('active');
+                            }
+                            document.getElementById('githubUrl').value = settings.integrations.github.url || 'https://github.com';
+                            document.getElementById('githubToken').value = settings.integrations.github.token || '';
+                            document.getElementById('githubOrg').value = settings.integrations.github.org || '';
+                        }
+                        // JIRA
+                        if (settings.integrations.jira) {
+                            if (settings.integrations.jira.enabled) {
+                                document.getElementById('jiraEnabled').classList.add('active');
+                                document.querySelector('.jira-fields').style.display = 'flex';
+                            } else {
+                                document.getElementById('jiraEnabled').classList.remove('active');
+                            }
+                            document.getElementById('jiraUrl').value = settings.integrations.jira.url || '';
+                            document.getElementById('jiraEmail').value = settings.integrations.jira.email || '';
+                            document.getElementById('jiraToken').value = settings.integrations.jira.token || '';
+                            document.getElementById('jiraProject').value = settings.integrations.jira.project || '';
+                        }
+                    }
+
+                    // Apply other settings similarly...
+                } catch (e) {
+                    console.error('Failed to load settings:', e);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-

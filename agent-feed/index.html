@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kortex - Agent Feed</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .agent-feed-page-layout {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 28px);
+            overflow: hidden;
+        }
+
+        .agent-feed-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px 16px;
+            border-bottom: 1px solid #2d2e3f;
+            flex-shrink: 0;
+        }
+
+        .agent-feed-page-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .agent-feed-page-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+
+        .agent-feed-page-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #c4b5fd;
+        }
+
+        .agent-feed-page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e5e7eb;
+            letter-spacing: -0.02em;
+        }
+
+        .agent-feed-page-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+
+        .agent-feed-page-badge .page-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            animation: pulse-blue 2.5s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0%, 100% { box-shadow: 0 0 4px rgba(96, 165, 250, 0.4); }
+            50%       { box-shadow: 0 0 8px rgba(96, 165, 250, 0.7); }
+        }
+
+        /* ── Two-panel layout ── */
+        .af-panels {
+            flex: 1;
+            display: flex;
+            gap: 0;
+            overflow: hidden;
+        }
+
+        .af-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .af-panel + .af-panel {
+            border-left: 1px solid #2d2e3f;
+        }
+
+        .af-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            border-bottom: 1px solid #2d2e3f;
+            flex-shrink: 0;
+        }
+
+        .af-panel-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .af-panel-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .af-panel-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .af-panel-icon.interact {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .af-panel-icon.interact svg {
+            stroke: #f59e0b;
+        }
+
+        .af-panel-icon.activity {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .af-panel-icon.activity svg {
+            stroke: #60a5fa;
+        }
+
+        .af-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .af-panel-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .af-panel-count.interact {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+        }
+
+        .af-panel-count.activity {
+            background: rgba(96, 165, 250, 0.1);
+            color: #93c5fd;
+        }
+
+        .af-panel-stream {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+
+        .af-panel-stream::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .af-panel-stream::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .af-panel-stream::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 3px;
+        }
+
+        .af-panel-stream .feed-card {
+            max-width: none;
+        }
+
+        .af-panel-stream .feed-empty {
+            padding: 40px 20px;
+        }
+
+        /* ── Live Monitoring Button ── */
+        .af-live-monitor-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 9px;
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .af-live-monitor-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #d1d5db;
+        }
+        .af-live-monitor-btn.active {
+            background: rgba(96, 165, 250, 0.08);
+            border-color: rgba(96, 165, 250, 0.2);
+            color: #93c5fd;
+        }
+        .af-live-monitor-btn .af-lm-pulse {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #6b7280;
+            transition: all 0.3s ease;
+        }
+        .af-live-monitor-btn.active .af-lm-pulse {
+            background: #60a5fa;
+            box-shadow: 0 0 6px rgba(96, 165, 250, 0.5);
+            animation: af-lm-pulse 2s ease-in-out infinite;
+        }
+        @keyframes af-lm-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(96, 165, 250, 0.5); }
+            50%       { opacity: 0.4; box-shadow: 0 0 2px rgba(96, 165, 250, 0.2); }
+        }
+        .af-live-monitor-btn .af-lm-label { white-space: nowrap; }
+    </style>
+</head>
+<body class="agent-feed-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <div class="agent-feed-page-layout">
+            <div class="agent-feed-page-header">
+                <div class="agent-feed-page-header-left">
+                    <div class="agent-feed-page-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 11a9 9 0 0 1 9 9"/>
+                            <path d="M4 4a16 16 0 0 1 16 16"/>
+                            <circle cx="5" cy="19" r="1"/>
+                        </svg>
+                    </div>
+                    <h1 class="agent-feed-page-title">Agent Feed</h1>
+                    <div class="agent-feed-page-badge">
+                        <div class="page-badge-dot"></div>
+                        <span id="pageFeedBadge">loading...</span>
+                    </div>
+                </div>
+                <button class="af-live-monitor-btn" id="afLiveMonitorBtn" onclick="toggleAfLiveMonitor()">
+                    <span class="af-lm-pulse"></span>
+                    <span class="af-lm-label">Live Monitoring</span>
+                </button>
+            </div>
+
+            <div class="af-panels">
+                <div class="af-panel">
+                    <div class="af-panel-header">
+                        <div class="af-panel-header-left">
+                            <div class="af-panel-icon interact">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <span class="af-panel-title">Needs Your Input</span>
+                        </div>
+                        <span class="af-panel-count interact" id="afInteractCount">0</span>
+                    </div>
+                    <div class="af-panel-stream" id="afInteractStream"></div>
+                </div>
+                <div class="af-panel">
+                    <div class="af-panel-header">
+                        <div class="af-panel-header-left">
+                            <div class="af-panel-icon activity">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </div>
+                            <span class="af-panel-title">Activity & Progress</span>
+                        </div>
+                        <span class="af-panel-count activity" id="afActivityCount">0</span>
+                    </div>
+                    <div class="af-panel-stream" id="afActivityStream"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/agent-feed.js"></script>
+    <script>
+        var afLmInterval = null;
+        var afLmRunning = false;
+
+        function toggleAfLiveMonitor() {
+            var btn = document.getElementById('afLiveMonitorBtn');
+            if (afLmRunning) {
+                stopAfLiveMonitor();
+                btn.classList.remove('active');
+                btn.querySelector('.af-lm-label').textContent = 'Live Monitoring';
+            } else {
+                startAfLiveMonitor();
+                btn.classList.add('active');
+                btn.querySelector('.af-lm-label').textContent = 'Monitoring\u2026';
+            }
+            afLmRunning = !afLmRunning;
+        }
+
+        function stopAfLiveMonitor() {
+            if (afLmInterval) { clearInterval(afLmInterval); afLmInterval = null; }
+        }
+
+        function renderFeed() {
+            var interactStream = document.getElementById('afInteractStream');
+            var activityStream = document.getElementById('afActivityStream');
+            var badge = document.getElementById('pageFeedBadge');
+            var interactCount = document.getElementById('afInteractCount');
+            var activityCount = document.getElementById('afActivityCount');
+
+            window.agentFeed._renderDual(interactStream, activityStream, badge);
+
+            var agents = window.agentFeed._agents;
+            var wc = agents.filter(function (a) { return a.status === 'waiting'; }).length;
+            var ac = agents.filter(function (a) { return a.status !== 'waiting'; }).length;
+            interactCount.textContent = wc;
+            activityCount.textContent = ac;
+        }
+
+        function startAfLiveMonitor() {
+            if (afLmInterval) clearInterval(afLmInterval);
+            var step = 0;
+            var events = [
+                function () {
+                    window.agentFeed.updateAgent('add-dark-mode', {
+                        status: 'waiting', statusLabel: 'Waiting for input', time: 'now',
+                        activity: null,
+                        question: {
+                            text: 'I\'ve implemented the dark mode toggle. The theme applies globally via a CSS class on <code>&lt;body&gt;</code>. Should I also persist the preference to <code>localStorage</code>, or use a server-side setting?',
+                            options: [
+                                { label: 'Use localStorage', type: 'primary' },
+                                { label: 'Server-side setting', type: 'secondary' }
+                            ],
+                            allowReply: true
+                        }
+                    });
+                    renderFeed();
+                },
+                function () {
+                    window.agentFeed.updateAgent('fix-memory-leak', {
+                        status: 'running', statusLabel: 'Running', time: 'now',
+                        progress: 60, progressSteps: '3 / 4',
+                        activity: { text: 'Refactoring AsyncPool connection handling', type: 'writing' },
+                        question: null
+                    });
+                    renderFeed();
+                },
+                function () {
+                    window.agentFeed.updateAgent('api-docs', {
+                        status: 'running', statusLabel: 'Running', time: 'now',
+                        activity: { text: 'Scanning route definitions in src/routes/', type: 'reading' },
+                        question: null
+                    });
+                    renderFeed();
+                },
+                function () {
+                    window.agentFeed.updateAgent('refactor-auth', {
+                        status: 'running', statusLabel: 'Running', time: 'now',
+                        progress: 70, progressSteps: '4 / 5',
+                        activity: { text: 'Writing JWT verification middleware', type: 'writing' },
+                        question: null
+                    });
+                    renderFeed();
+                },
+                function () {
+                    window.agentFeed.updateAgent('fix-memory-leak', {
+                        status: 'completed', statusLabel: 'Completed', time: 'just now',
+                        progress: 100, progressSteps: '4 / 4',
+                        activity: null, question: null
+                    });
+                    renderFeed();
+                },
+                function () {
+                    window.agentFeed.updateAgent('add-dark-mode', {
+                        status: 'running', statusLabel: 'Running', time: 'now',
+                        progress: 55, progressSteps: '2 / 4',
+                        activity: { text: 'Adding localStorage persistence for theme', type: 'writing' },
+                        question: null
+                    });
+                    renderFeed();
+                }
+            ];
+            afLmInterval = setInterval(function () {
+                if (step < events.length) {
+                    events[step]();
+                    step++;
+                } else {
+                    clearInterval(afLmInterval);
+                    afLmInterval = null;
+                }
+            }, 3500);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function waitForFeed(cb, tries) {
+                if (window.agentFeed && window.agentFeed._renderDual) { cb(); return; }
+                if (tries > 20) return;
+                setTimeout(function () { waitForFeed(cb, (tries || 0) + 1); }, 50);
+            }
+            waitForFeed(function () {
+                renderFeed();
+            });
+        });
+    </script>
+</body>
+</html>
