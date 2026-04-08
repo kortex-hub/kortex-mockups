@@ -17,6 +17,15 @@ function buildSidebarHTML() {
     const R = getNavRoot();
     return `
 <nav class="sidebar">
+    <a href="${R}/sessions/index.html" class="nav-item" data-section="sessions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+        </svg>
+        <span>Agents</span>
+    </a>
+
     <a href="${R}/projects/index.html" class="nav-item" data-section="projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
@@ -47,15 +56,6 @@ function buildSidebarHTML() {
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Chat</span>
-    </a>
-
-    <a href="${R}/sessions/index.html" class="nav-item" data-section="sessions">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
-            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
-        </svg>
-        <span>Agents</span>
     </a>
 
     <a href="${R}/profiles/index.html" class="nav-item" data-section="profiles" id="profiles-nav-item">
@@ -96,13 +96,6 @@ function buildSidebarHTML() {
         <span>Skills</span>
     </a>
 
-    <a href="${R}/flows/index.html" class="nav-item" data-section="flows">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-        </svg>
-        <span>Flows</span>
-    </a>
-
     <a href="${R}/extensions/index.html" class="nav-item" data-section="extensions">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5.5 8.5 9 12l-3.5 3.5L2 12l3.5-3.5Z"/>
@@ -111,13 +104,6 @@ function buildSidebarHTML() {
             <path d="m12 15 3.5 3.5L12 22l-3.5-3.5L12 15Z"/>
         </svg>
         <span>Extensions</span>
-    </a>
-
-    <a href="${R}/bridge/index.html" class="nav-item" data-section="bridge" id="bridge-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-        </svg>
-        <span>Bridge</span>
     </a>
 
     <div class="nav-spacer"></div>
@@ -248,21 +234,6 @@ function isSkillsModuleEnabled() {
     }
 }
 
-function isBridgeModuleEnabled() {
-    try {
-        const saved = localStorage.getItem('kaidenSettings');
-        if (saved) {
-            const settings = JSON.parse(saved);
-            if (settings.network && settings.network.bridgeEnabled === false) {
-                return false;
-            }
-        }
-        return true;
-    } catch (e) {
-        return true;
-    }
-}
-
 function isMcpModuleEnabled() {
     try {
         const saved = localStorage.getItem('kaidenSettings');
@@ -312,11 +283,6 @@ function loadSidebar(activeSection) {
     const skillsNavItem = document.getElementById('skills-nav-item');
     if (skillsNavItem && !isSkillsModuleEnabled()) {
         skillsNavItem.style.display = 'none';
-    }
-
-    const bridgeNavItem = document.getElementById('bridge-nav-item');
-    if (bridgeNavItem && !isBridgeModuleEnabled()) {
-        bridgeNavItem.style.display = 'none';
     }
 
     const mcpNavItem = document.getElementById('mcp-nav-item');
