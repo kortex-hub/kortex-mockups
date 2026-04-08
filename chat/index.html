@@ -105,15 +105,6 @@
                                     <rect x="3" y="14" width="7" height="7"/>
                                 </svg>
                             </button>
-                            <button class="conversation-action-btn" title="Export as Flow" onclick="exportAsFlow()">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="6" cy="6" r="3"/>
-                                    <circle cx="18" cy="6" r="3"/>
-                                    <circle cx="12" cy="18" r="3"/>
-                                    <line x1="8.5" y1="7.5" x2="10.5" y2="16"/>
-                                    <line x1="15.5" y1="7.5" x2="13.5" y2="16"/>
-                                </svg>
-                            </button>
                             <button class="conversation-action-btn" title="Rename conversation">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -333,32 +324,6 @@
                     
                     <!-- Chat Input -->
                     <div class="chat-input-area">
-                        <!-- Floating Attachments Area -->
-                        <div class="chat-attachments-area" id="chatAttachmentsArea">
-                            <!-- Export Flow Attachment -->
-                            <div class="chat-attachment-item" id="exportFlowAttachment" onclick="exportAsFlow()">
-                                <div class="chat-attachment-icon flow-icon">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="6" cy="6" r="3"/>
-                                        <circle cx="18" cy="6" r="3"/>
-                                        <circle cx="12" cy="18" r="3"/>
-                                        <path d="M8 8l3 8"/>
-                                        <path d="M16 8l-3 8"/>
-                                    </svg>
-                                </div>
-                                <div class="chat-attachment-content">
-                                    <div class="chat-attachment-name">Export as Flow</div>
-                                    <div class="chat-attachment-meta">Convert conversation to reusable flow</div>
-                                </div>
-                                <button class="chat-attachment-close" onclick="event.stopPropagation(); closeExportFlow();" title="Close">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18"/>
-                                        <line x1="6" y1="6" x2="18" y2="18"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        
                         <div class="chat-input-container">
                             <div class="chat-input-wrapper">
                                 <!-- Main Input Area -->
@@ -1018,7 +983,6 @@
         function loadChat(chatId) {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
             const conversationHeader = document.getElementById('conversationHeader');
             const conversationTitle = document.getElementById('conversationTitle');
             const conversationSubtitle = document.getElementById('conversationSubtitle');
@@ -1036,9 +1000,6 @@
             const conversation = chatConversations[chatId];
             if (conversation && conversation.messages && conversation.messages.length > 0) {
                 emptyState.style.display = 'none';
-                if (exportFlowAttachment) {
-                    exportFlowAttachment.style.display = 'flex';
-                }
                 
                 // Show and update conversation header
                 if (conversationHeader) {
@@ -1065,9 +1026,6 @@
             } else if (conversation) {
                 // Conversation exists but has no messages yet
                 emptyState.style.display = 'flex';
-                if (exportFlowAttachment) {
-                    exportFlowAttachment.style.display = 'none';
-                }
                 
                 // Show header with conversation title
                 if (conversationHeader) {
@@ -1078,9 +1036,6 @@
             } else {
                 // Show empty state for chats without messages
                 emptyState.style.display = 'flex';
-                if (exportFlowAttachment) {
-                    exportFlowAttachment.style.display = 'none';
-                }
                 if (conversationHeader) {
                     conversationHeader.style.display = 'none';
                 }
@@ -1175,15 +1130,9 @@
         function addMessage(content, isUser = true) {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
             
             // Hide empty state
             emptyState.style.display = 'none';
-            
-            // Show export flow attachment if there are messages
-            if (exportFlowAttachment) {
-                exportFlowAttachment.style.display = 'flex';
-            }
             
             // Create message element
             const messageDiv = document.createElement('div');
@@ -1308,7 +1257,6 @@
         function startNewChat() {
             const chatMessages = document.getElementById('chatMessages');
             const emptyState = document.getElementById('emptyState');
-            const exportFlowAttachment = document.getElementById('exportFlowAttachment');
             const conversationHeader = document.getElementById('conversationHeader');
             const conversationTitle = document.getElementById('conversationTitle');
             const conversationSubtitle = document.getElementById('conversationSubtitle');
@@ -1318,11 +1266,6 @@
             
             // Show empty state
             emptyState.style.display = 'flex';
-            
-            // Hide export flow attachment
-            if (exportFlowAttachment) {
-                exportFlowAttachment.style.display = 'none';
-            }
             
             // Show conversation header with "New discussion" title
             if (conversationHeader) {
@@ -1372,56 +1315,6 @@
             if (confirm('Are you sure you want to delete this conversation?')) {
                 startNewChat();
                 console.log('Conversation deleted');
-            }
-        }
-
-        function exportAsFlow() {
-            const chatMessages = document.getElementById('chatMessages');
-            const messages = chatMessages.querySelectorAll('.chat-message');
-            
-            if (messages.length === 0) {
-                alert('No messages to export. Start a conversation first!');
-                return;
-            }
-            
-            // Extract conversation data
-            let userMessages = [];
-            
-            messages.forEach((messageEl) => {
-                const isUser = messageEl.classList.contains('user-message');
-                const messageBubble = messageEl.querySelector('.message-bubble');
-                
-                if (messageBubble) {
-                    const content = messageBubble.textContent.trim();
-                    if (isUser) {
-                        userMessages.push(content);
-                    }
-                }
-            });
-            
-            // Generate parameters for the create flow page
-            const firstUserMessage = userMessages[0] || '';
-            let params = new URLSearchParams();
-            
-            if (firstUserMessage) {
-                const flowName = firstUserMessage
-                    .toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-')
-                    .substring(0, 50);
-                params.append('name', flowName);
-                params.append('description', firstUserMessage);
-                params.append('prompt', firstUserMessage);
-            }
-            
-            // Navigate to create flow page
-            window.location.href = `../flows/create.html?${params.toString()}`;
-        }
-
-        function closeExportFlow() {
-            const attachment = document.getElementById('exportFlowAttachment');
-            if (attachment) {
-                attachment.style.display = 'none';
             }
         }
 
