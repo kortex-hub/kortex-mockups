@@ -7,8 +7,17 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
+        /* Podman Extensions–style: title + action, underline search, category text tabs */
+        :root {
+            --vault-pd-accent: #8b5cf6;
+            --vault-pd-accent-dim: #7c3aed;
+            --vault-pd-border: #3d3e4f;
+            --vault-pd-muted: #9ca3af;
+        }
+
         .services-page-layout {
             display: flex;
+            flex-direction: column;
             height: calc(100vh - 32px);
             overflow: hidden;
         }
@@ -16,257 +25,152 @@
         .services-main {
             flex: 1;
             overflow-y: auto;
-            padding: 32px 40px;
+            padding: 28px 40px 40px;
             min-width: 0;
         }
 
         .services-main::-webkit-scrollbar { width: 6px; }
         .services-main::-webkit-scrollbar-track { background: transparent; }
-        .services-main::-webkit-scrollbar-thumb { background: rgba(251, 146, 60, 0.15); border-radius: 3px; }
+        .services-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
 
-        /* ── Left Sidebar ── */
-        .services-sidebar {
-            width: 240px;
-            min-width: 240px;
-            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-right: 1px solid #3d3e4f;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 24px 0;
-        }
-
-        .services-sidebar-title {
-            font-size: 10px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            padding: 0 20px 12px;
-        }
-
-        .services-cat-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            padding: 0 10px;
-        }
-
-        .services-cat-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 9px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: 1px solid transparent;
-        }
-
-        .services-cat-item:hover { background: rgba(251, 146, 60, 0.06); }
-
-        .services-cat-item.active {
-            background: rgba(251, 146, 60, 0.12);
-            border-color: rgba(251, 146, 60, 0.2);
-        }
-
-        .services-cat-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .services-cat-icon svg { width: 18px; height: 18px; color: #6b7280; }
-        .services-cat-item.active .services-cat-icon svg { color: #fdba74; }
-        .services-cat-icon.all { }
-        .services-cat-icon.llm { }
-        .services-cat-icon.api { }
-        .services-cat-icon.infra { }
-
-        .services-cat-info { flex: 1; min-width: 0; }
-        .services-cat-name { font-size: 13px; font-weight: 500; color: #e5e7eb; }
-        .services-cat-item.active .services-cat-name { color: #fdba74; }
-        .services-cat-count { font-size: 11px; color: #6b7280; margin-top: 1px; }
-
-        .services-cat-badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            color: #6b7280;
-            flex-shrink: 0;
-        }
-
-        .services-cat-item.active .services-cat-badge {
-            background: rgba(251, 146, 60, 0.2);
-            color: #fdba74;
-        }
-
-        .services-sidebar-divider {
-            height: 1px;
-            background: #3d3e4f;
-            margin: 16px 20px;
-        }
-
-        .services-sidebar-section { padding: 0 20px; }
-
-        .services-sidebar-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 10px;
-        }
-
-        .services-filter-list {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .services-filter-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 10px;
-            border-radius: 7px;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-size: 13px;
-            color: #9ca3af;
-        }
-
-        .services-filter-item:hover { background: rgba(255, 255, 255, 0.04); color: #e5e7eb; }
-        .services-filter-item.active { color: #e5e7eb; }
-
-        .services-filter-check {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            border: 1.5px solid #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.15s;
-        }
-
-        .services-filter-item.active .services-filter-check {
-            background: #f97316;
-            border-color: #f97316;
-        }
-
-        .services-filter-check svg { width: 10px; height: 10px; color: #fff; opacity: 0; }
-        .services-filter-item.active .services-filter-check svg { opacity: 1; }
-
-        /* ── Header ── */
-        .services-header {
+        /* Title row — title left, primary action right */
+        .vault-pd-title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            gap: 20px;
+            margin-bottom: 22px;
         }
 
-        .services-header-left {
+        .vault-pd-title-block {
             display: flex;
-            align-items: center;
-            gap: 16px;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .services-title { font-size: 28px; font-weight: 700; color: #e5e7eb; }
+        .services-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f4f4f5;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.15;
+        }
 
-        .services-count {
+        .vault-pd-subtitle {
             font-size: 13px;
-            color: #6b7280;
-            padding: 4px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 20px;
-            border: 1px solid #3d3e4f;
+            color: var(--vault-pd-muted);
         }
 
-        .services-header-actions {
+        .vault-pd-primary-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: filter 0.15s ease, box-shadow 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .vault-pd-primary-btn:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .vault-pd-primary-btn svg { width: 17px; height: 17px; }
+
+        /* Search — bottom border only (Podman Extensions pattern) */
+        .vault-pd-search {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .services-search {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
-            border-radius: 10px;
-            min-width: 260px;
+            max-width: 420px;
+            padding: 10px 0 12px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             transition: border-color 0.2s ease;
         }
 
-        .services-search:focus-within { border-color: rgba(251, 146, 60, 0.5); }
-        .services-search svg { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
+        .vault-pd-search:focus-within {
+            border-bottom-color: var(--vault-pd-accent);
+        }
 
-        .services-search input {
-            background: none;
+        .vault-pd-search svg {
+            width: 17px;
+            height: 17px;
+            color: var(--vault-pd-muted);
+            flex-shrink: 0;
+        }
+
+        .vault-pd-search input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
             border: none;
             outline: none;
             color: #e5e7eb;
             font-size: 14px;
-            width: 100%;
         }
 
-        .services-search input::placeholder { color: #4b5563; }
+        .vault-pd-search input::placeholder { color: #6b7280; }
 
-        .services-add-btn {
+        /* Category tabs — purple underline on active, full-width rule below */
+        .vault-pd-tabs-strip {
+            border-bottom: 1px solid var(--vault-pd-border);
+            margin-bottom: 0;
+        }
+
+        .vault-pd-tabs {
             display: flex;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .vault-pd-tab {
+            position: relative;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            color: #fff;
+            gap: 8px;
+            padding: 14px 28px 12px 0;
+            margin-right: 8px;
+            background: none;
             border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--vault-pd-muted);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: color 0.15s ease;
         }
 
-        .services-add-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
+        .vault-pd-tab:hover { color: #e5e7eb; }
+
+        .vault-pd-tab.active {
+            color: #f4f4f5;
         }
 
-        .services-add-btn svg { width: 16px; height: 16px; }
-
-        /* Active category label */
-        .services-active-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
+        .vault-pd-tab.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 3px;
+            background: var(--vault-pd-accent);
+            border-radius: 2px 2px 0 0;
         }
-
-        .services-active-label-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .services-active-label-icon svg { width: 18px; height: 18px; }
-        .services-active-label-text { font-size: 16px; font-weight: 600; color: #e5e7eb; }
-        .services-active-label-count { font-size: 13px; color: #6b7280; }
 
         /* ── Service List ── */
         .services-grid {
             display: flex;
             flex-direction: column;
+            margin-top: 8px;
         }
 
         .service-card {
@@ -284,7 +188,7 @@
         }
 
         .service-card:hover {
-            background: rgba(251, 146, 60, 0.04);
+            background: rgba(139, 92, 246, 0.06);
         }
 
         .service-card-icon {
@@ -425,39 +329,6 @@
             margin-top: 0;
             padding-top: 4px;
         }
-
-        /* ── Quick Stats Bar ── */
-        .services-stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .services-stat {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
-            border-radius: 10px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .services-stat-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .services-stat-icon svg { width: 19px; height: 19px; }
-
-        .services-stat-info { flex: 1; }
-        .services-stat-value { font-size: 20px; font-weight: 700; color: #e5e7eb; line-height: 1; }
-        .services-stat-label { font-size: 11px; color: #6b7280; margin-top: 2px; }
     </style>
 </head>
 <body class="services-page">
@@ -468,174 +339,32 @@
             <div class="header"></div>
 
             <div class="services-page-layout">
-                <!-- Left Sidebar: Categories -->
-                <div class="services-sidebar">
-                    <div class="services-sidebar-title">Categories</div>
-
-                    <div class="services-cat-list">
-                        <div class="services-cat-item active" onclick="filterCategory('all', this)">
-                            <div class="services-cat-icon all">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                            </div>
-                            <div class="services-cat-info">
-                                <div class="services-cat-name">All secrets</div>
-                                <div class="services-cat-count">Tokens &amp; platform keys</div>
-                            </div>
-                            <span class="services-cat-badge">5</span>
-                        </div>
-
-                        <div class="services-cat-item" onclick="filterCategory('api', this)">
-                            <div class="services-cat-icon api">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                            </div>
-                            <div class="services-cat-info">
-                                <div class="services-cat-name">API Tokens</div>
-                                <div class="services-cat-count">Third-party integrations</div>
-                            </div>
-                            <span class="services-cat-badge">3</span>
-                        </div>
-
-                        <div class="services-cat-item" onclick="filterCategory('infra', this)">
-                            <div class="services-cat-icon infra">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-                            </div>
-                            <div class="services-cat-info">
-                                <div class="services-cat-name">Infrastructure</div>
-                                <div class="services-cat-count">Platform credentials</div>
-                            </div>
-                            <span class="services-cat-badge">2</span>
-                        </div>
-                    </div>
-
-                    <div class="services-sidebar-divider"></div>
-
-                    <div class="services-sidebar-section">
-                        <div class="services-sidebar-section-title">Status</div>
-                        <div class="services-filter-list">
-                            <div class="services-filter-item active" onclick="toggleFilter('all', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>All</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleFilter('active', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Active</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleFilter('expiring', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Expiring Soon</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleFilter('expired', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Expired / Inactive</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="services-sidebar-divider"></div>
-
-                    <div class="services-sidebar-section">
-                        <div class="services-sidebar-section-title">Usage</div>
-                        <div class="services-filter-list">
-                            <div class="services-filter-item active" onclick="toggleUsage('all', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>All</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleUsage('used', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>In Use</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleUsage('unused', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Unused</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Content Area -->
                 <div class="services-main">
-                    <!-- Header -->
-                    <div class="services-header">
-                        <div class="services-header-left">
+                    <div class="vault-pd-title-row">
+                        <div class="vault-pd-title-block">
                             <h1 class="services-title">Secret Vault</h1>
-                            <span class="services-count">5 credentials</span>
+                            <p class="vault-pd-subtitle">6 credentials · tokens and platform keys</p>
                         </div>
-                        <div class="services-header-actions">
-                            <div class="services-search">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                <input type="text" placeholder="Search vault credentials...">
-                            </div>
-                            <button class="services-add-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                Add credential
-                            </button>
-                        </div>
+                        <button type="button" class="vault-pd-primary-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add credential
+                        </button>
                     </div>
 
-                    <!-- Quick Stats -->
-                    <div class="services-stats-bar">
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">4</div>
-                                <div class="services-stat-label">Active</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">0</div>
-                                <div class="services-stat-label">Expiring soon</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">1</div>
-                                <div class="services-stat-label">Expired</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">9</div>
-                                <div class="services-stat-label">Connected assets</div>
-                            </div>
-                        </div>
+                    <div class="vault-pd-search" role="search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="search" id="vaultSearchInput" placeholder="Search..." autocomplete="off" aria-label="Search credentials">
                     </div>
 
-                    <!-- Active category label -->
-                    <div class="services-active-label" id="activeCategoryLabel">
-                        <div class="services-active-label-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                        </div>
-                        <span class="services-active-label-text">All secrets</span>
-                        <span class="services-active-label-count">(5)</span>
+                    <div class="vault-pd-tabs-strip">
+                        <nav class="vault-pd-tabs" aria-label="Credential categories">
+                            <button type="button" class="vault-pd-tab active" data-category="all" onclick="filterVaultCategory('all', this)">All secrets</button>
+                            <button type="button" class="vault-pd-tab" data-category="api" onclick="filterVaultCategory('api', this)">API tokens</button>
+                            <button type="button" class="vault-pd-tab" data-category="infra" onclick="filterVaultCategory('infra', this)">Infrastructure</button>
+                        </nav>
                     </div>
 
-                    <!-- Service Cards Grid -->
+                    <!-- Credential list -->
                     <div class="services-grid" id="servicesGrid">
 
                         <!-- API Tokens -->
@@ -665,6 +394,34 @@
                                     <div class="service-card-meta-item">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                                         Sep 2026
+                                    </div>
+                                </div>
+                                <span class="service-card-status active">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="service-card" data-type="api">
+                            <div class="service-card-icon api">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            </div>
+                            <div class="service-card-info">
+                                <div class="service-card-title-row">
+                                    <div class="service-card-title">GitHub</div>
+                                    <span class="service-type-badge api">Project</span>
+                                </div>
+                                <div class="service-card-desc">Fine-grained PAT · single repo (acme/docs-portal) · Doc updater workspace only</div>
+                            </div>
+                            <div class="service-card-token">
+                                <span class="service-card-token-value">github_pat_11AB...k9Qw</span>
+                                <button class="service-card-token-copy" title="Copy token">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                </button>
+                            </div>
+                            <div class="service-card-footer">
+                                <div class="service-card-meta">
+                                    <div class="service-card-meta-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                        Dec 2026
                                     </div>
                                 </div>
                                 <span class="service-card-status active">Active</span>
@@ -796,50 +553,53 @@
     </div>
 
     <script>
-        const categoryLabels = {
-            all:   { text: 'All secrets',     count: 5, color: '#9ca3af', icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
-            api:   { text: 'API Tokens',      count: 3, color: '#22d3ee', icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>' },
-            infra: { text: 'Infrastructure',  count: 2, color: '#fb923c', icon: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>' }
-        };
-
-        function filterCategory(cat, el) {
-            document.querySelectorAll('.services-cat-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-
-            const label = categoryLabels[cat];
-            const labelEl = document.getElementById('activeCategoryLabel');
-            labelEl.querySelector('.services-active-label-icon').style.background = 'none';
-            labelEl.querySelector('.services-active-label-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="' + label.color + '" stroke-width="2">' + label.icon + '</svg>';
-            labelEl.querySelector('.services-active-label-text').textContent = label.text;
-            labelEl.querySelector('.services-active-label-count').textContent = '(' + label.count + ')';
-
-            const cards = document.querySelectorAll('.service-card');
-            const headers = document.querySelectorAll('.services-section-header');
-
-            if (cat === 'all') {
-                cards.forEach(c => c.style.display = '');
-                headers.forEach(h => h.style.display = 'flex');
-            } else {
-                cards.forEach(c => {
-                    c.style.display = c.dataset.type === cat ? '' : 'none';
-                });
-                headers.forEach(h => {
-                    h.style.display = h.dataset.type === cat ? 'flex' : 'none';
-                });
-            }
+        function getActiveVaultCategory() {
+            const tab = document.querySelector('.vault-pd-tab.active');
+            return tab ? tab.getAttribute('data-category') || 'all' : 'all';
         }
 
-        function toggleFilter(status, el) {
-            const list = el.closest('.services-filter-list');
-            list.querySelectorAll('.services-filter-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
+        function applyVaultListVisibility() {
+            const grid = document.getElementById('servicesGrid');
+            const input = document.getElementById('vaultSearchInput');
+            if (!grid) return;
+            const q = input ? (input.value || '').trim().toLowerCase() : '';
+            const cat = getActiveVaultCategory();
+
+            const cards = grid.querySelectorAll('.service-card');
+            const headers = grid.querySelectorAll('.services-section-header');
+
+            cards.forEach(card => {
+                const typeOk = cat === 'all' || card.dataset.type === cat;
+                const textOk = !q || card.textContent.toLowerCase().includes(q);
+                card.style.display = typeOk && textOk ? '' : 'none';
+            });
+
+            headers.forEach(h => {
+                const headerTypeOk = cat === 'all' || h.dataset.type === cat;
+                if (!headerTypeOk) {
+                    h.style.display = 'none';
+                    return;
+                }
+                let next = h.nextElementSibling;
+                let any = false;
+                while (next && next.classList.contains('service-card')) {
+                    if (next.style.display !== 'none') any = true;
+                    next = next.nextElementSibling;
+                }
+                h.style.display = any ? 'flex' : 'none';
+            });
         }
 
-        function toggleUsage(usage, el) {
-            const list = el.closest('.services-filter-list');
-            list.querySelectorAll('.services-filter-item').forEach(i => i.classList.remove('active'));
+        function filterVaultCategory(cat, el) {
+            document.querySelectorAll('.vault-pd-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
+            applyVaultListVisibility();
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('vaultSearchInput');
+            if (input) input.addEventListener('input', applyVaultListVisibility);
+        });
     </script>
 </body>
 </html>
