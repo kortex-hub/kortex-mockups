@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden - Secret Vault</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        :root {
+            --vault-pd-accent: #8b5cf6;
+            --vault-pd-accent-dim: #7c3aed;
+            --vault-pd-border: #3d3e4f;
+            --vault-pd-muted: #9ca3af;
+        }
+
+        .vault-detail-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .vault-detail-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 40px 40px;
+            min-width: 0;
+        }
+
+        .vault-detail-main::-webkit-scrollbar { width: 6px; }
+        .vault-detail-main::-webkit-scrollbar-track { background: transparent; }
+        .vault-detail-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
+
+        .vault-detail-inner {
+            max-width: 720px;
+        }
+
+        .vault-detail-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .vault-detail-breadcrumb a {
+            color: var(--vault-pd-muted);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .vault-detail-breadcrumb a:hover { color: #c4b5fd; }
+
+        .vault-detail-breadcrumb svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .vault-detail-breadcrumb span { color: #e5e7eb; font-weight: 500; }
+
+        .vault-detail-hero {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .vault-detail-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .vault-detail-icon svg { width: 28px; height: 28px; }
+
+        .vault-detail-icon.api {
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .vault-detail-icon.api svg { color: #22d3ee; }
+
+        .vault-detail-icon.infra {
+            background: rgba(249, 115, 22, 0.12);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .vault-detail-icon.infra svg { color: #fb923c; }
+
+        .vault-detail-hero-text { flex: 1; min-width: 0; }
+
+        .vault-detail-hero-title-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .vault-detail-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f4f4f5;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.15;
+        }
+
+        .vault-detail-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .vault-detail-badge.api {
+            background: rgba(6, 182, 212, 0.15);
+            color: #67e8f9;
+        }
+
+        .vault-detail-badge.infra {
+            background: rgba(249, 115, 22, 0.15);
+            color: #fdba74;
+        }
+
+        .vault-detail-tagline {
+            font-size: 14px;
+            color: var(--vault-pd-muted);
+            margin: 0 0 10px;
+            line-height: 1.45;
+        }
+
+        .vault-detail-status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .vault-detail-status.active {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .vault-detail-status.expired {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .vault-detail-panel {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid var(--vault-pd-border);
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+        }
+
+        .vault-detail-panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0 0 14px;
+        }
+
+        .vault-detail-dl {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 10px 20px;
+            font-size: 14px;
+        }
+
+        .vault-detail-dl dt {
+            margin: 0;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .vault-detail-dl dd {
+            margin: 0;
+            color: #e5e7eb;
+        }
+
+        .vault-detail-alert {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .vault-detail-alert.warn {
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            background: rgba(245, 158, 11, 0.08);
+            color: #d4d4d8;
+        }
+
+        .vault-detail-alert.danger {
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            background: rgba(239, 68, 68, 0.08);
+            color: #fecaca;
+        }
+
+        .vault-detail-alert svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .vault-detail-secret-box {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            color: #a1a1aa;
+            padding: 14px 16px;
+            background: #14141a;
+            border: 1px solid rgba(61, 62, 79, 0.8);
+            border-radius: 10px;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+
+        .vault-detail-secret-note {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .vault-detail-used-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .vault-detail-used-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            font-size: 14px;
+        }
+
+        .vault-detail-used-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .vault-detail-used-item:first-child { padding-top: 0; }
+
+        .vault-detail-used-name { color: #e5e7eb; font-weight: 500; }
+        .vault-detail-used-kind { font-size: 12px; color: #6b7280; }
+
+        .vault-detail-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(61, 62, 79, 0.6);
+        }
+
+        .vault-detail-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: filter 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .vault-detail-btn-rotate {
+            color: #fff;
+            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
+        }
+
+        .vault-detail-btn-rotate:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .vault-detail-btn-rotate svg { width: 17px; height: 17px; }
+
+        .vault-detail-btn-ghost {
+            color: #d4d4d8;
+            background: transparent;
+            border: 1px solid var(--vault-pd-border);
+        }
+
+        .vault-detail-btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #52525b;
+        }
+
+        .vault-detail-btn-danger {
+            color: #fca5a5;
+            background: transparent;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+
+        .vault-detail-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .vault-detail-btn-danger svg { width: 16px; height: 16px; }
+    </style>
+</head>
+<body class="services-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="vault-detail-layout">
+                <div class="vault-detail-main">
+                    <div class="vault-detail-inner">
+                        <nav class="vault-detail-breadcrumb" aria-label="Breadcrumb">
+                            <a href="index.html">Secret Vault</a>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                            <span id="vaultBreadcrumbName">Credential</span>
+                        </nav>
+
+                        <div class="vault-detail-hero">
+                            <div class="vault-detail-icon api" id="vaultHeroIcon" aria-hidden="true"></div>
+                            <div class="vault-detail-hero-text">
+                                <div class="vault-detail-hero-title-row">
+                                    <h1 class="vault-detail-title" id="vaultTitle">—</h1>
+                                    <span class="vault-detail-badge api" id="vaultBadge">—</span>
+                                </div>
+                                <p class="vault-detail-tagline" id="vaultTagline"></p>
+                                <span class="vault-detail-status active" id="vaultStatus">Active</span>
+                            </div>
+                        </div>
+
+                        <div id="vaultAlertMount"></div>
+
+                        <section class="vault-detail-panel" aria-labelledby="vaultDetailsHeading">
+                            <h2 class="vault-detail-panel-title" id="vaultDetailsHeading">Details</h2>
+                            <dl class="vault-detail-dl" id="vaultDetailsDl"></dl>
+                        </section>
+
+                        <section class="vault-detail-panel" aria-labelledby="vaultSecretHeading">
+                            <h2 class="vault-detail-panel-title" id="vaultSecretHeading">Secret value</h2>
+                            <div class="vault-detail-secret-box" id="vaultFingerprint">—</div>
+                            <p class="vault-detail-secret-note">The full secret is not stored in plain text and cannot be viewed again. Rotate to replace it with a new value.</p>
+                        </section>
+
+                        <section class="vault-detail-panel" aria-labelledby="vaultUsedHeading">
+                            <h2 class="vault-detail-panel-title" id="vaultUsedHeading">Used by</h2>
+                            <ul class="vault-detail-used-list" id="vaultUsedList"></ul>
+                        </section>
+
+                        <div class="vault-detail-actions">
+                            <button type="button" class="vault-detail-btn vault-detail-btn-rotate" id="vaultRotateBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                                Rotate Secret
+                            </button>
+                            <button type="button" class="vault-detail-btn vault-detail-btn-ghost" onclick="window.location.href='index.html'">Back to list</button>
+                            <button type="button" class="vault-detail-btn vault-detail-btn-danger" id="vaultDeleteBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            const icons = {
+                github: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+                jira: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>',
+                slack: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>',
+                openshift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+                ansible: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
+            };
+
+            const vaultById = {
+                'github-pat': {
+                    title: 'GitHub',
+                    breadcrumb: 'GitHub · PAT',
+                    badge: 'PAT',
+                    icon: 'github',
+                    iconTone: 'api',
+                    status: 'active',
+                    statusLabel: 'Active',
+                    tagline: 'Repos, pull requests, and issues across the organization.',
+                    fingerprint: 'ghp_R8kLm2••••••••••••v4Qx',
+                    details: [
+                        ['Category', 'API token'],
+                        ['Kind', 'Personal access token'],
+                        ['Expires', 'September 2026'],
+                        ['Added', 'Mar 12, 2025'],
+                        ['Last rotated', 'Jan 8, 2026']
+                    ],
+                    usedBy: [
+                        { name: 'Docs sync agent', kind: 'Workspace' },
+                        { name: 'Release notes flow', kind: 'Flow' },
+                        { name: 'acme/core-api', kind: 'Project default' }
+                    ]
+                },
+                'github-project': {
+                    title: 'GitHub',
+                    breadcrumb: 'GitHub · Project token',
+                    badge: 'Project',
+                    icon: 'github',
+                    iconTone: 'api',
+                    status: 'active',
+                    statusLabel: 'Active',
+                    tagline: 'Fine-grained PAT scoped to acme/docs-portal. Doc updater workspace only.',
+                    fingerprint: 'github_pat_11AB••••••••••k9Qw',
+                    details: [
+                        ['Category', 'API token'],
+                        ['Kind', 'Fine-grained token'],
+                        ['Repository', 'acme/docs-portal'],
+                        ['Expires', 'December 2026'],
+                        ['Added', 'Jun 2, 2025'],
+                        ['Last rotated', 'Never']
+                    ],
+                    usedBy: [
+                        { name: 'Doc updater', kind: 'Workspace' }
+                    ]
+                },
+                'jira': {
+                    title: 'Jira',
+                    breadcrumb: 'Jira · OAuth',
+                    badge: 'OAuth',
+                    icon: 'jira',
+                    iconTone: 'api',
+                    status: 'active',
+                    statusLabel: 'Active',
+                    tagline: 'Issues and sprints for the platform squad.',
+                    fingerprint: 'ATATT3xFf••••••••••9kLm',
+                    details: [
+                        ['Category', 'API token'],
+                        ['Kind', 'OAuth 2.0'],
+                        ['Expires', 'November 2026'],
+                        ['Added', 'Apr 18, 2025'],
+                        ['Last rotated', 'Oct 1, 2025']
+                    ],
+                    usedBy: [
+                        { name: 'Sprint status flow', kind: 'Flow' }
+                    ]
+                },
+                'slack': {
+                    title: 'Slack',
+                    breadcrumb: 'Slack · Bot',
+                    badge: 'Bot',
+                    icon: 'slack',
+                    iconTone: 'api',
+                    status: 'active',
+                    statusLabel: 'Active',
+                    tagline: 'Notifications and alerts for all agents.',
+                    fingerprint: 'xoxb-1234••••••••abcd',
+                    details: [
+                        ['Category', 'API token'],
+                        ['Kind', 'Bot token'],
+                        ['Expires', 'No expiry'],
+                        ['Added', 'Feb 4, 2025'],
+                        ['Last rotated', 'Feb 4, 2025']
+                    ],
+                    usedBy: [
+                        { name: 'Global agent defaults', kind: 'Policy' },
+                        { name: 'On-call handoff', kind: 'Flow' }
+                    ]
+                },
+                'openshift': {
+                    title: 'OpenShift Cluster',
+                    breadcrumb: 'OpenShift Cluster',
+                    badge: 'Infra',
+                    icon: 'openshift',
+                    iconTone: 'infra',
+                    status: 'active',
+                    statusLabel: 'Active',
+                    tagline: 'Deployments, pods, and routes for non-prod clusters.',
+                    fingerprint: 'sha256~Dk8x••••••••••Qm3z',
+                    details: [
+                        ['Category', 'Infrastructure'],
+                        ['Kind', 'Platform token'],
+                        ['Cluster', 'api.dev.openshift.corp.example'],
+                        ['Expires', 'August 2026'],
+                        ['Added', 'Jan 22, 2025'],
+                        ['Last rotated', 'Dec 10, 2025']
+                    ],
+                    usedBy: [
+                        { name: 'Deploy helper MCP', kind: 'MCP server' },
+                        { name: 'Infra diagnostics', kind: 'Workspace' },
+                        { name: 'acme/payments-api', kind: 'Project default' }
+                    ]
+                },
+                'ansible-aap': {
+                    title: 'Ansible Automation Platform',
+                    breadcrumb: 'Ansible AAP',
+                    badge: 'Infra',
+                    icon: 'ansible',
+                    iconTone: 'infra',
+                    status: 'expired',
+                    statusLabel: 'Expired',
+                    tagline: 'Playbooks and inventories for automation jobs.',
+                    fingerprint: 'aap_bHR5c••••••••expired',
+                    alert: {
+                        type: 'danger',
+                        text: 'This credential expired in February 2026. Jobs using it will fail until you rotate or replace it.'
+                    },
+                    details: [
+                        ['Category', 'Infrastructure'],
+                        ['Kind', 'Service account token'],
+                        ['Expires', 'February 2026 (passed)'],
+                        ['Added', 'Aug 30, 2024'],
+                        ['Last rotated', 'Aug 30, 2024']
+                    ],
+                    usedBy: [
+                        { name: 'AAP MCP', kind: 'MCP server' }
+                    ]
+                }
+            };
+
+            function getVaultId() {
+                const q = new URLSearchParams(window.location.search).get('id');
+                if (q && vaultById[q]) return q;
+                return 'github-pat';
+            }
+
+            function renderDl(dl, rows) {
+                dl.innerHTML = rows.map(function(row) {
+                    return '<dt>' + row[0] + '</dt><dd>' + row[1] + '</dd>';
+                }).join('');
+            }
+
+            function renderUsedList(ul, items) {
+                ul.innerHTML = items.map(function(item) {
+                    return '<li class="vault-detail-used-item"><span class="vault-detail-used-name">' + item.name + '</span><span class="vault-detail-used-kind">' + item.kind + '</span></li>';
+                }).join('');
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var id = getVaultId();
+                var v = vaultById[id];
+
+                document.title = 'Kaiden - ' + v.title + ' · Secret Vault';
+
+                document.getElementById('vaultBreadcrumbName').textContent = v.breadcrumb;
+                document.getElementById('vaultTitle').textContent = v.title;
+                document.getElementById('vaultBadge').textContent = v.badge;
+                document.getElementById('vaultBadge').className = 'vault-detail-badge ' + v.iconTone;
+                document.getElementById('vaultTagline').textContent = v.tagline;
+                document.getElementById('vaultFingerprint').textContent = v.fingerprint;
+
+                var st = document.getElementById('vaultStatus');
+                st.textContent = v.statusLabel;
+                st.className = 'vault-detail-status ' + v.status;
+
+                var iconEl = document.getElementById('vaultHeroIcon');
+                iconEl.className = 'vault-detail-icon ' + v.iconTone;
+                iconEl.innerHTML = icons[v.icon] || icons.github;
+
+                renderDl(document.getElementById('vaultDetailsDl'), v.details);
+                renderUsedList(document.getElementById('vaultUsedList'), v.usedBy);
+
+                var mount = document.getElementById('vaultAlertMount');
+                mount.innerHTML = '';
+                if (v.alert) {
+                    var div = document.createElement('div');
+                    div.className = 'vault-detail-alert ' + v.alert.type;
+                    div.setAttribute('role', 'alert');
+                    div.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div>' + v.alert.text + '</div>';
+                    mount.appendChild(div);
+                }
+
+                document.getElementById('vaultRotateBtn').addEventListener('click', function() {
+                    window.location.href = 'create.html';
+                });
+
+                document.getElementById('vaultDeleteBtn').addEventListener('click', function() {
+                    if (window.confirm('Remove this secret from the vault? Connected workspaces and flows will lose access.')) {
+                        window.location.href = 'index.html';
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

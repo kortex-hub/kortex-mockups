@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden - Add Secret · Secret Vault</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        :root {
+            --vault-pd-accent: #8b5cf6;
+            --vault-pd-accent-dim: #7c3aed;
+            --vault-pd-border: #3d3e4f;
+            --vault-pd-muted: #9ca3af;
+        }
+
+        .vault-create-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .vault-create-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 40px 48px;
+            min-width: 0;
+        }
+
+        .vault-create-main::-webkit-scrollbar { width: 6px; }
+        .vault-create-main::-webkit-scrollbar-track { background: transparent; }
+        .vault-create-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
+
+        .vault-create-inner {
+            max-width: 560px;
+        }
+
+        .vault-create-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .vault-create-breadcrumb a {
+            color: var(--vault-pd-muted);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .vault-create-breadcrumb a:hover { color: #c4b5fd; }
+
+        .vault-create-breadcrumb svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .vault-create-breadcrumb span { color: #e5e7eb; font-weight: 500; }
+
+        .vault-create-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f4f4f5;
+            letter-spacing: -0.02em;
+            margin: 0 0 8px;
+            line-height: 1.15;
+        }
+
+        .vault-create-lead {
+            font-size: 14px;
+            color: var(--vault-pd-muted);
+            line-height: 1.55;
+            margin: 0 0 28px;
+        }
+
+        .vault-create-callout {
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 28px;
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            background: rgba(139, 92, 246, 0.06);
+            font-size: 13px;
+            color: #a1a1aa;
+            line-height: 1.5;
+        }
+
+        .vault-create-callout svg {
+            width: 20px;
+            height: 20px;
+            color: #a78bfa;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .vault-create-form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .vault-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 8px;
+        }
+
+        .vault-field .vault-field-hint {
+            font-weight: 400;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .vault-input,
+        .vault-select,
+        .vault-textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px 14px;
+            background: #1a1b23;
+            border: 1px solid var(--vault-pd-border);
+            border-radius: 10px;
+            color: #e5e7eb;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.15s ease;
+        }
+
+        .vault-input:focus,
+        .vault-select:focus,
+        .vault-textarea:focus {
+            outline: none;
+            border-color: var(--vault-pd-accent);
+        }
+
+        .vault-input::placeholder,
+        .vault-textarea::placeholder { color: #6b7280; }
+
+        .vault-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        .vault-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .vault-secret-wrap {
+            position: relative;
+        }
+
+        .vault-secret-wrap .vault-input {
+            padding-right: 96px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .vault-toggle-secret {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .vault-toggle-secret:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .vault-radio-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .vault-radio-pill {
+            position: relative;
+        }
+
+        .vault-radio-pill input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .vault-radio-pill span {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--vault-pd-border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--vault-pd-muted);
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+        }
+
+        .vault-radio-pill input:focus-visible + span {
+            outline: 2px solid var(--vault-pd-accent);
+            outline-offset: 2px;
+        }
+
+        .vault-radio-pill input:checked + span {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.1);
+            color: #e5e7eb;
+        }
+
+        .vault-radio-pill:hover span {
+            border-color: #52525b;
+            color: #d4d4d8;
+        }
+
+        .vault-expiry-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .vault-expiry-row .vault-input[type="date"] {
+            max-width: 200px;
+        }
+
+        .vault-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #d4d4d8;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .vault-check input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--vault-pd-accent);
+            cursor: pointer;
+        }
+
+        .vault-form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(61, 62, 79, 0.6);
+        }
+
+        .vault-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #d4d4d8;
+            background: transparent;
+            border: 1px solid var(--vault-pd-border);
+            border-radius: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .vault-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #52525b;
+        }
+
+        .vault-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: filter 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .vault-btn-primary:hover {
+            filter: brightness(1.08);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .vault-btn-primary svg { width: 17px; height: 17px; }
+    </style>
+</head>
+<body class="services-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="vault-create-layout">
+                <div class="vault-create-main">
+                    <div class="vault-create-inner">
+                        <nav class="vault-create-breadcrumb" aria-label="Breadcrumb">
+                            <a href="index.html">Secret Vault</a>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                            <span>Add Secret</span>
+                        </nav>
+
+                        <h1 class="vault-create-title">Add Secret</h1>
+                        <p class="vault-create-lead">Store API tokens, OAuth secrets, and infrastructure keys in one place. Values are encrypted and only exposed to agents and flows you attach them to.</p>
+
+                        <div class="vault-create-callout" role="note">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div>After saving, you can connect this credential from agent workspaces, MCP servers, and Settings integrations. You won’t be able to read the full secret back—only rotate or replace it.</div>
+                        </div>
+
+                        <form class="vault-create-form" id="vaultCreateForm">
+                            <div class="vault-field">
+                                <label for="vaultName">Display name</label>
+                                <input type="text" id="vaultName" name="name" class="vault-input" placeholder="e.g. GitHub · docs repo" autocomplete="off" required>
+                            </div>
+
+                            <div class="vault-field">
+                                <label>Category</label>
+                                <div class="vault-radio-row" role="radiogroup" aria-label="Credential category">
+                                    <label class="vault-radio-pill">
+                                        <input type="radio" name="category" value="api" checked>
+                                        <span>API token</span>
+                                    </label>
+                                    <label class="vault-radio-pill">
+                                        <input type="radio" name="category" value="infra">
+                                        <span>Infrastructure</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="vault-field">
+                                <label for="vaultKind">Credential type</label>
+                                <select id="vaultKind" name="kind" class="vault-select" aria-label="Credential type">
+                                    <option value="pat">Personal access token (PAT)</option>
+                                    <option value="oauth">OAuth / refresh token</option>
+                                    <option value="bot">Bot token</option>
+                                    <option value="project">Fine-grained / project token</option>
+                                    <option value="apikey">Generic API key</option>
+                                    <option value="cluster">Cluster or platform token</option>
+                                    <option value="service">Service account</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="vault-field">
+                                <label for="vaultSecret">Secret value</label>
+                                <div class="vault-secret-wrap">
+                                    <input type="password" id="vaultSecret" name="secret" class="vault-input" placeholder="Paste token or key" autocomplete="off" required aria-describedby="vaultSecretHint">
+                                    <button type="button" class="vault-toggle-secret" id="vaultToggleSecret" aria-pressed="false">Show</button>
+                                </div>
+                                <p id="vaultSecretHint" style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Use the real credential here. This mock does not send data anywhere.</p>
+                            </div>
+
+                            <div class="vault-field">
+                                <label for="vaultDescription">Description <span class="vault-field-hint">(optional)</span></label>
+                                <textarea id="vaultDescription" name="description" class="vault-textarea" placeholder="Where it’s used, scopes, or rotation notes"></textarea>
+                            </div>
+
+                            <div class="vault-field">
+                                <label>Expiration <span class="vault-field-hint">(optional)</span></label>
+                                <div class="vault-expiry-row">
+                                    <input type="date" id="vaultExpiry" name="expiry" class="vault-input" aria-label="Expiration date">
+                                    <label class="vault-check">
+                                        <input type="checkbox" id="vaultNoExpiry" name="no_expiry" value="1">
+                                        No expiry
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="vault-form-actions">
+                                <a href="index.html" class="vault-btn-secondary">Cancel</a>
+                                <button type="submit" class="vault-btn-primary">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    Save Secret
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const secretInput = document.getElementById('vaultSecret');
+            const toggleBtn = document.getElementById('vaultToggleSecret');
+            const noExpiry = document.getElementById('vaultNoExpiry');
+            const expiryInput = document.getElementById('vaultExpiry');
+
+            if (toggleBtn && secretInput) {
+                toggleBtn.addEventListener('click', function() {
+                    const showing = secretInput.type === 'text';
+                    secretInput.type = showing ? 'password' : 'text';
+                    toggleBtn.textContent = showing ? 'Show' : 'Hide';
+                    toggleBtn.setAttribute('aria-pressed', showing ? 'false' : 'true');
+                });
+            }
+
+            if (noExpiry && expiryInput) {
+                function syncExpiry() {
+                    expiryInput.disabled = noExpiry.checked;
+                    if (noExpiry.checked) expiryInput.value = '';
+                }
+                noExpiry.addEventListener('change', syncExpiry);
+                syncExpiry();
+            }
+
+            document.getElementById('vaultCreateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
