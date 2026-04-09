@@ -419,74 +419,206 @@
             text-decoration: underline;
         }
 
-        .model-provider-card.ca-model-hidden {
-            display: none !important;
+        /* Model catalog (tables aligned with models/index.html) */
+        .ca-catalog-intro {
+            font-size: 13px;
+            color: #6b7280;
+            margin: 0 0 14px;
+            line-height: 1.5;
+            max-width: 720px;
         }
 
-        .model-provider-card {
-            position: relative;
+        .ca-catalog-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 16px;
+            margin-bottom: 18px;
         }
 
-        .model-provider-card .agent-icon {
-            margin-bottom: 14px;
-        }
-
-        .model-provider-title-row {
+        .ca-catalog-search {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px 10px;
-            margin-bottom: 8px;
-            min-width: 0;
+            gap: 10px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 380px;
+            padding: 10px 14px;
+            background: rgba(37, 38, 49, 0.8);
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
         }
 
-        .model-provider-title-row .agent-name {
-            margin-bottom: 0;
-            min-width: 0;
-            line-height: 1.25;
-            flex: 1 1 auto;
+        .ca-catalog-search:focus-within {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
         }
 
-        .model-provider-pill {
+        .ca-catalog-search svg {
+            width: 18px;
+            height: 18px;
+            color: #6b7280;
             flex-shrink: 0;
-            font-size: 10px;
-            font-weight: 700;
+        }
+
+        .ca-catalog-search input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            color: #e5e7eb;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .ca-catalog-search input::placeholder {
+            color: #6b7280;
+        }
+
+        .ca-catalog-source-block {
+            margin-bottom: 22px;
+        }
+
+        .ca-catalog-source-block:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .ca-catalog-source-title {
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 5px 10px;
-            border-radius: 999px;
-            line-height: 1;
+            letter-spacing: 0.06em;
+            color: #9ca3af;
+            margin: 0 0 10px;
         }
 
-        .model-provider-pill--active {
-            background: rgba(52, 211, 153, 0.14);
-            color: #6ee7b7;
-            border: 1px solid rgba(52, 211, 153, 0.35);
+        .ca-models-table-wrap {
+            border: 1px solid rgba(61, 62, 79, 0.65);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(15, 15, 18, 0.35);
         }
 
-        .model-provider-pill--expiring {
-            background: rgba(245, 158, 11, 0.12);
-            color: #fcd34d;
-            border: 1px solid rgba(251, 191, 36, 0.35);
+        .ca-models-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
         }
 
-        .agent-icon.openai-brand {
-            background: linear-gradient(135deg, #10a37f, #0d8f6e);
-            color: #fff;
+        .ca-models-data-table thead {
+            background: rgba(0, 0, 0, 0.22);
         }
 
-        .agent-icon.anthropic-brand {
-            background: linear-gradient(135deg, #d97757, #b4532a);
-            color: #fff;
+        .ca-models-data-table th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.55);
         }
 
-        .agent-icon.openshift-brand {
-            background: linear-gradient(135deg, #ee0000, #c00);
-            color: #fff;
+        .ca-models-data-table td {
+            padding: 11px 12px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.35);
+            color: #d1d5db;
+            vertical-align: middle;
         }
 
-        .model-provider-empty {
+        .ca-models-data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ca-catalog-model-row {
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .ca-catalog-model-row:hover:not(.ca-catalog-row-disabled) td {
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .ca-catalog-model-row.selected td {
+            background: rgba(139, 92, 246, 0.12);
+        }
+
+        .ca-catalog-model-row.ca-catalog-row-hidden,
+        .ca-catalog-model-row.ca-catalog-filtered-out {
+            display: none;
+        }
+
+        .ca-catalog-model-row.ca-catalog-row-disabled {
+            cursor: not-allowed;
+            opacity: 0.48;
+        }
+
+        .ca-catalog-model-row.ca-catalog-row-disabled:hover td {
+            background: transparent;
+        }
+
+        .ca-models-data-table .ca-table-status {
+            width: 36px;
+            text-align: center;
+        }
+
+        .ca-models-data-table .ca-table-status svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+        }
+
+        .ca-table-name-main { font-weight: 600; color: #e5e7eb; }
+        .ca-table-name-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+        .ca-table-name-with-icon {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .ca-table-name-with-icon .ca-table-name-stack {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ca-table-name-brain {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            color: #71717a;
+            margin-top: 2px;
+        }
+
+        .ca-models-data-table .ca-table-ram {
+            font-size: 11px;
+            color: #9ca3af;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 7px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .ca-catalog-radio-cell {
+            width: 52px;
+            text-align: center;
+        }
+
+        .ca-catalog-radio-cell input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #8b5cf6;
+            cursor: pointer;
+        }
+
+        .ca-catalog-row-disabled .ca-catalog-radio-cell input {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .catalog-model-empty {
             display: none;
             padding: 20px;
             border-radius: 12px;
@@ -495,9 +627,10 @@
             font-size: 13px;
             text-align: center;
             line-height: 1.5;
+            margin-top: 12px;
         }
 
-        .model-provider-empty a {
+        .catalog-model-empty a {
             color: #a78bfa;
         }
 
@@ -1530,74 +1663,6 @@
                             </div>
                         </div>
 
-                        <!-- LLM / model provider (same providers as Models page) -->
-                        <div class="config-section" id="model-provider-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon model-provider">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                        <path d="M2 17l10 5 10-5"/>
-                                        <path d="M2 12l10 5 10-5"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>Model provider</h3>
-                                    <p>Pick a configured LLM from Models. Credentials are managed there.</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="ca-label-with-action">
-                                    <span>LLM backend</span>
-                                    <a href="../models/index.html" class="ca-inline-link">Manage in Models</a>
-                                </div>
-                                <div class="agent-grid" id="modelProviderGrid">
-                                    <div class="agent-card model-provider-card" data-model-id="openai" onclick="selectModel(this, 'openai')">
-                                        <div class="agent-card-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon openai-brand">O</div>
-                                        <div class="model-provider-title-row">
-                                            <div class="agent-name">OpenAI</div>
-                                            <span class="model-provider-pill model-provider-pill--active">Active</span>
-                                        </div>
-                                        <div class="agent-description">GPT-4o, GPT-4o-mini &middot; API keys in Models</div>
-                                    </div>
-                                    <div class="agent-card model-provider-card" data-model-id="anthropic" onclick="selectModel(this, 'anthropic')">
-                                        <div class="agent-card-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon anthropic-brand">A</div>
-                                        <div class="model-provider-title-row">
-                                            <div class="agent-name">Anthropic</div>
-                                            <span class="model-provider-pill model-provider-pill--active">Active</span>
-                                        </div>
-                                        <div class="agent-description">Claude models &middot; API keys in Models</div>
-                                    </div>
-                                    <div class="agent-card model-provider-card" data-model-id="openshift-vllm" onclick="selectModel(this, 'openshift-vllm')">
-                                        <div class="agent-card-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon openshift-brand">AI</div>
-                                        <div class="model-provider-title-row">
-                                            <div class="agent-name">OpenShift AI (vLLM)</div>
-                                            <span class="model-provider-pill model-provider-pill--expiring">Expiring</span>
-                                        </div>
-                                        <div class="agent-description">Granite &amp; Mistral on-cluster &middot; token in Models</div>
-                                    </div>
-                                </div>
-                                <div class="model-provider-empty" id="model-provider-empty">
-                                    No model providers are enabled. <a href="../models/index.html">Configure at least one in Models</a> to create a workspace.
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Coding agent (separate from session metadata) -->
                         <div class="config-section" id="coding-agent-section">
                             <div class="config-section-header">
@@ -1647,6 +1712,269 @@
                                         <div class="agent-description">Block's Goose agent - great for task automation and workflows</div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Model — same catalog slices as models/index.html (pick one row) -->
+                        <div class="config-section" id="model-provider-section">
+                            <div class="config-section-header">
+                                <div class="config-section-icon model-provider">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <div class="config-section-info">
+                                    <h3>Model</h3>
+                                    <p>Choose the default model for this workspace from your catalog. Enable providers and models under <strong>Models</strong>; only enabled entries appear here.</p>
+                                </div>
+                            </div>
+
+                            <p class="ca-catalog-intro">Cloud, in-house (OpenShift AI), and local runtimes mirror the Models page. Disabled catalog rows cannot be selected.</p>
+
+                            <div class="ca-catalog-toolbar">
+                                <div class="ca-catalog-search" role="search">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="search" id="caModelCatalogSearch" placeholder="Filter models…" autocomplete="off" aria-label="Filter catalog models">
+                                </div>
+                                <div class="ca-label-with-action" style="margin: 0;">
+                                    <a href="../models/index.html" class="ca-inline-link">Open Models catalog</a>
+                                </div>
+                            </div>
+
+                            <div id="workspace-model-catalog">
+                                <div class="ca-catalog-source-block" data-catalog-source="cloud">
+                                    <h4 class="ca-catalog-source-title">Cloud · LLM providers</h4>
+                                    <div class="ca-models-table-wrap">
+                                        <table class="ca-models-data-table" aria-label="Cloud models">
+                                            <thead>
+                                                <tr>
+                                                    <th class="ca-table-status" scope="col">Status</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Size</th>
+                                                    <th scope="col">Runtime</th>
+                                                    <th class="ca-catalog-radio-cell" scope="col">Use</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="composer-2-fast" data-requires-provider="composer" data-legacy-provider="openai" data-search="composer-2-fast composer" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">composer-2-fast</div>
+                                                                <div class="ca-table-name-sub">Cloud · enabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>Composer</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="composer-2-fast" aria-label="Use composer-2-fast"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="gpt-5.3-codex" data-requires-provider="openai" data-legacy-provider="openai" data-search="gpt-5.3-codex gpt codex" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">gpt-5.3-codex</div>
+                                                                <div class="ca-table-name-sub">Cloud · enabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>OpenAI</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="gpt-5.3-codex" aria-label="Use gpt-5.3-codex"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="gpt-5.4-medium" data-requires-provider="openai" data-legacy-provider="openai" data-search="gpt-5.4-medium gpt medium" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">gpt-5.4-medium</div>
+                                                                <div class="ca-table-name-sub">Cloud · enabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>OpenAI</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="gpt-5.4-medium" aria-label="Use gpt-5.4-medium"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="claude-4.6-sonnet-medium" data-requires-provider="anthropic" data-legacy-provider="anthropic" data-search="claude-4.6-sonnet-medium claude sonnet" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">claude-4.6-sonnet-medium</div>
+                                                                <div class="ca-table-name-sub">Cloud · enabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>Anthropic</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="claude-4.6-sonnet-medium" aria-label="Use claude-4.6-sonnet-medium"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="claude-4.6-opus-high" data-requires-provider="anthropic" data-legacy-provider="anthropic" data-search="claude-4.6-opus-high claude opus" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">claude-4.6-opus-high</div>
+                                                                <div class="ca-table-name-sub">Cloud · enabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>Anthropic</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="claude-4.6-opus-high" aria-label="Use claude-4.6-opus-high"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row ca-catalog-row-disabled" role="button" tabindex="-1" data-catalog-id="composer-2" data-requires-provider="composer" data-legacy-provider="openai" data-search="composer-2" aria-disabled="true">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">composer-2</div>
+                                                                <div class="ca-table-name-sub">Cloud · disabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>Composer</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="composer-2" disabled aria-label="composer-2 disabled in catalog"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row ca-catalog-row-disabled" role="button" tabindex="-1" data-catalog-id="gpt-5.3-codex-low" data-requires-provider="openai" data-legacy-provider="openai" data-search="gpt-5.3-codex-low" aria-disabled="true">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-with-icon">
+                                                            <div class="ca-table-name-stack">
+                                                                <div class="ca-table-name-main">gpt-5.3-codex-low</div>
+                                                                <div class="ca-table-name-sub">Cloud · disabled in catalog</div>
+                                                            </div>
+                                                            <svg class="ca-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                        </div>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>OpenAI</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="gpt-5.3-codex-low" disabled aria-label="gpt-5.3-codex-low disabled in catalog"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="ca-catalog-source-block" data-catalog-source="corporate">
+                                    <h4 class="ca-catalog-source-title">In-house · OpenShift AI</h4>
+                                    <div class="ca-models-table-wrap">
+                                        <table class="ca-models-data-table" aria-label="OpenShift AI models">
+                                            <thead>
+                                                <tr>
+                                                    <th class="ca-table-status" scope="col">Status</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Size</th>
+                                                    <th scope="col">Age</th>
+                                                    <th class="ca-catalog-radio-cell" scope="col">Use</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="ibm-granite-3.3-8b-instruct" data-requires-provider="openshift-vllm" data-legacy-provider="openshift-vllm" data-search="granite ibm openshift" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">ibm-granite-3.3-8b-instruct</div>
+                                                        <div class="ca-table-name-sub">OpenShift AI · Apache-2.0</div>
+                                                        <span class="ca-table-ram">VRAM est. 8.2 GiB</span>
+                                                    </td>
+                                                    <td>4.8 GB</td>
+                                                    <td>2 weeks</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="ibm-granite-3.3-8b-instruct" aria-label="Use ibm-granite-3.3-8b-instruct"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="mistral-small-internal" data-requires-provider="openshift-vllm" data-legacy-provider="openshift-vllm" data-search="mistral openshift" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">mistral-small-internal</div>
+                                                        <div class="ca-table-name-sub">OpenShift AI</div>
+                                                        <span class="ca-table-ram">VRAM est. 11 GiB</span>
+                                                    </td>
+                                                    <td>6.1 GB</td>
+                                                    <td>1 month</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="mistral-small-internal" aria-label="Use mistral-small-internal"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row ca-catalog-row-disabled" role="button" tabindex="-1" data-catalog-id="llama-3.1-70b-instruct" data-requires-provider="openshift-vllm" data-legacy-provider="openshift-vllm" data-search="llama openshift" aria-disabled="true">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">llama-3.1-70b-instruct</div>
+                                                        <div class="ca-table-name-sub">OpenShift AI · pending approval</div>
+                                                        <span class="ca-table-ram">RAM usage: N/A</span>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>—</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="llama-3.1-70b-instruct" disabled aria-label="llama-3.1-70b-instruct not approved"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="ca-catalog-source-block" data-catalog-source="local">
+                                    <h4 class="ca-catalog-source-title">Local · Ollama &amp; Ramalama</h4>
+                                    <div class="ca-models-table-wrap">
+                                        <table class="ca-models-data-table" aria-label="Local models">
+                                            <thead>
+                                                <tr>
+                                                    <th class="ca-table-status" scope="col">Status</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Size</th>
+                                                    <th scope="col">Runtime</th>
+                                                    <th class="ca-catalog-radio-cell" scope="col">Use</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="llama3.2-3b" data-requires-provider="local" data-legacy-provider="local" data-search="llama ollama llama3.2" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">llama3.2:3b</div>
+                                                        <div class="ca-table-name-sub">GGUF · loaded in memory</div>
+                                                        <span class="ca-table-ram">RAM usage: 3.93 GiB</span>
+                                                    </td>
+                                                    <td>2.0 GB</td>
+                                                    <td>Ollama</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="llama3.2-3b" aria-label="Use llama3.2:3b"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="mistral-latest" data-requires-provider="local" data-legacy-provider="local" data-search="mistral ollama latest" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">mistral:latest</div>
+                                                        <div class="ca-table-name-sub">GGUF · loaded in memory</div>
+                                                        <span class="ca-table-ram">RAM usage: 4.4 GiB</span>
+                                                    </td>
+                                                    <td>4.1 GB</td>
+                                                    <td>Ollama</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="mistral-latest" aria-label="Use mistral:latest"></td>
+                                                </tr>
+                                                <tr class="ca-catalog-model-row ca-catalog-row-disabled" role="button" tabindex="-1" data-catalog-id="qwen2.5-7b" data-requires-provider="local" data-legacy-provider="local" data-search="qwen ramalama" aria-disabled="true">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">qwen2.5:7b</div>
+                                                        <div class="ca-table-name-sub">Not loaded — Ramalama stopped</div>
+                                                        <span class="ca-table-ram">RAM usage: N/A</span>
+                                                    </td>
+                                                    <td>4.7 GB</td>
+                                                    <td>Ramalama</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="qwen2.5-7b" disabled aria-label="qwen2.5:7b unavailable"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="catalog-model-empty" id="catalog-model-empty">
+                                No model sources match your settings. <a href="../models/index.html">Enable a provider in Models</a>, then return here.
                             </div>
                         </div>
 
@@ -2108,7 +2436,7 @@
     <script src="../assets/js/scripts.js"></script>
     <script>
         let selectedAgent = null;
-        let selectedModelId = null;
+        let selectedCatalogModelId = null;
         let selectedFileAccess = 'workspace';
         let selectedDeployment = 'local';
         /** Selected vault credential ids (aligned with Secret Vault tab in services/index.html). */
@@ -2126,7 +2454,7 @@
                 sessionName: 'Doc updater workspace',
                 workingDir: '~/dev/doc-updater',
                 description: 'Automatic documentation updater: when new features land, the agent checks whether project docs need updates before we deploy to OpenShift.',
-                model: 'anthropic',
+                catalogModel: 'claude-4.6-sonnet-medium',
                 agent: 'claude',
                 skills: ['code-review', 'Kubernetes', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'OpenShift MCP'],
@@ -2138,7 +2466,7 @@
                 sessionName: 'Frontend App workspace',
                 workingDir: '~/dev/docs-portal',
                 description: 'Documentation portal UI: React app for internal product docs and dashboards.',
-                model: 'openai',
+                catalogModel: 'gpt-5.4-medium',
                 agent: 'cursor',
                 skills: ['api-docs-generator', 'code-review'],
                 mcpServers: ['GitHub MCP'],
@@ -2150,7 +2478,7 @@
                 sessionName: 'Infrastructure Platform workspace',
                 workingDir: '~/dev/infra-platform',
                 description: 'Terraform, Ansible, and OpenShift configs for shared internal platform services.',
-                model: 'openshift-vllm',
+                catalogModel: 'ibm-granite-3.3-8b-instruct',
                 agent: 'claude',
                 skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
                 mcpServers: ['Kubernetes MCP', 'OpenShift MCP', 'Ansible MCP'],
@@ -2162,7 +2490,7 @@
                 sessionName: 'API Gateway workspace',
                 workingDir: '~/dev/api-gateway',
                 description: 'Edge API gateway: routing, authentication, and rate limits for microservices.',
-                model: 'openai',
+                catalogModel: 'gpt-5.3-codex',
                 agent: 'goose',
                 skills: ['code-review', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'Kubernetes MCP'],
@@ -2260,11 +2588,12 @@
                 selectFileAccess(fa, preset.fileAccess);
             }
 
-            if (preset.model) {
-                const modelCard = document.querySelector('#model-provider-section .model-provider-card[data-model-id="' + preset.model + '"]');
-                if (modelCard && !modelCard.classList.contains('ca-model-hidden')) {
-                    selectModel(modelCard, preset.model);
-                }
+            const catalogSearch = document.getElementById('caModelCatalogSearch');
+            if (catalogSearch) catalogSearch.value = '';
+            filterCatalogModels('');
+            applyWorkspaceCatalogVisibility();
+            if (preset.catalogModel) {
+                selectCatalogModelById(preset.catalogModel);
             }
 
             const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + preset.agent + '"]');
@@ -2451,9 +2780,9 @@
         }
 
         // Run on page load
-        /** Which LLM providers appear (matches Models page). Set via localStorage kaidenModelProviders, e.g. {"openai":true,"anthropic":false,"openshift-vllm":true} */
+        /** Which catalog slices appear (matches Models / provider toggles). kaidenModelProviders JSON, e.g. {"openai":true,"anthropic":false,"composer":true,"openshift-vllm":true,"local":true} */
         function getModelProviderPrefs() {
-            const defaults = { openai: true, anthropic: true, 'openshift-vllm': true };
+            const defaults = { openai: true, anthropic: true, composer: true, 'openshift-vllm': true, local: true };
             try {
                 const raw = localStorage.getItem('kaidenModelProviders');
                 if (!raw) return defaults;
@@ -2465,34 +2794,109 @@
             return defaults;
         }
 
-        function initModelProviderCards() {
-            const prefs = getModelProviderPrefs();
-            let anyVisible = false;
-            document.querySelectorAll('#model-provider-section .model-provider-card').forEach(card => {
-                const id = card.getAttribute('data-model-id');
-                const enabled = prefs[id] !== false;
-                card.classList.toggle('ca-model-hidden', !enabled);
-                if (enabled) anyVisible = true;
-            });
-            const emptyEl = document.getElementById('model-provider-empty');
+        function updateCatalogEmptyState() {
+            const visible = document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row:not(.ca-catalog-row-hidden)');
+            const emptyEl = document.getElementById('catalog-model-empty');
             if (emptyEl) {
-                emptyEl.style.display = anyVisible ? 'none' : 'block';
-            }
-            if (selectedModelId && prefs[selectedModelId] === false) {
-                selectedModelId = null;
-                document.querySelectorAll('#model-provider-section .model-provider-card').forEach(c => c.classList.remove('selected'));
+                emptyEl.style.display = visible.length === 0 ? 'block' : 'none';
             }
         }
 
-        function selectModel(card, modelId) {
-            document.querySelectorAll('#model-provider-section .model-provider-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedModelId = modelId;
+        function applyWorkspaceCatalogVisibility() {
+            const prefs = getModelProviderPrefs();
+            document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row[data-requires-provider]').forEach(function(tr) {
+                const req = tr.getAttribute('data-requires-provider');
+                const ok = prefs[req] !== false;
+                tr.classList.toggle('ca-catalog-row-hidden', !ok);
+            });
+            if (selectedCatalogModelId) {
+                const cur = document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]');
+                if (!cur || cur.classList.contains('ca-catalog-row-hidden')) {
+                    selectedCatalogModelId = null;
+                    document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row').forEach(function(r) { r.classList.remove('selected'); });
+                    document.querySelectorAll('#workspace-model-catalog input[name="workspaceCatalogModel"]').forEach(function(i) { i.checked = false; });
+                }
+            }
+            updateCatalogEmptyState();
+        }
+
+        function filterCatalogModels(q) {
+            const query = (q || '').trim().toLowerCase();
+            document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row').forEach(function(tr) {
+                const hay = (tr.getAttribute('data-search') || '') + ' ' + tr.textContent.toLowerCase();
+                tr.classList.toggle('ca-catalog-filtered-out', query.length > 0 && !hay.includes(query));
+            });
+            if (selectedCatalogModelId) {
+                const cur = document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]');
+                if (cur && cur.classList.contains('ca-catalog-filtered-out')) {
+                    selectedCatalogModelId = null;
+                    document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row').forEach(function(r) { r.classList.remove('selected'); });
+                    document.querySelectorAll('#workspace-model-catalog input[name="workspaceCatalogModel"]').forEach(function(i) { i.checked = false; });
+                }
+            }
+        }
+
+        function selectCatalogModelRow(row, id) {
+            document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row').forEach(function(r) {
+                r.classList.remove('selected');
+            });
+            document.querySelectorAll('#workspace-model-catalog input[name="workspaceCatalogModel"]').forEach(function(inp) {
+                inp.checked = (inp.value === id && !inp.disabled);
+            });
+            if (row) row.classList.add('selected');
+            selectedCatalogModelId = id;
+        }
+
+        function selectCatalogModelById(id) {
+            const row = document.querySelector('#workspace-model-catalog tr.ca-catalog-model-row[data-catalog-id="' + id + '"]');
+            if (!row || row.classList.contains('ca-catalog-row-hidden') || row.classList.contains('ca-catalog-row-disabled') || row.classList.contains('ca-catalog-filtered-out')) {
+                return false;
+            }
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio && !radio.disabled) {
+                radio.checked = true;
+            }
+            selectCatalogModelRow(row, id);
+            return true;
+        }
+
+        function onCatalogRowClick(ev) {
+            const row = ev.currentTarget;
+            if (!row || row.classList.contains('ca-catalog-row-disabled')) return;
+            const id = row.getAttribute('data-catalog-id');
+            const radio = row.querySelector('input[type="radio"]');
+            if (!radio || radio.disabled) return;
+            radio.checked = true;
+            selectCatalogModelRow(row, id);
+        }
+
+        function onCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            onCatalogRowClick(ev);
+        }
+
+        function initWorkspaceModelCatalog() {
+            applyWorkspaceCatalogVisibility();
+            const search = document.getElementById('caModelCatalogSearch');
+            if (search) {
+                search.addEventListener('input', function() {
+                    filterCatalogModels(this.value);
+                });
+            }
+            document.querySelectorAll('#workspace-model-catalog input[name="workspaceCatalogModel"]').forEach(function(inp) {
+                inp.addEventListener('change', function() {
+                    const row = this.closest('tr.ca-catalog-model-row');
+                    if (row && !row.classList.contains('ca-catalog-row-disabled')) {
+                        selectCatalogModelRow(row, this.value);
+                    }
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             initDevSpacesOption();
-            initModelProviderCards();
+            initWorkspaceModelCatalog();
             initSkillsSection();
             initMcpSection();
             initSecretVaultSection();
@@ -2500,7 +2904,7 @@
         });
 
         function selectAgent(card, agent) {
-            document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('#coding-agent-section .agent-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             selectedAgent = agent;
         }
@@ -2575,10 +2979,23 @@
                 return;
             }
 
-            const visibleModelCards = document.querySelectorAll('#model-provider-section .model-provider-card:not(.ca-model-hidden)');
-            if (visibleModelCards.length > 0 && !selectedModelId) {
-                alert('Please select a model provider');
+            applyWorkspaceCatalogVisibility();
+            const allCatalogRows = document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row');
+            const pickable = document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row:not(.ca-catalog-row-hidden):not(.ca-catalog-filtered-out):not(.ca-catalog-row-disabled)');
+            if (allCatalogRows.length > 0 && pickable.length === 0) {
+                alert('No models are available for your enabled providers or the current filter. Open Models to enable a source, or clear the filter.');
                 return;
+            }
+            if (pickable.length > 0) {
+                if (!selectedCatalogModelId) {
+                    alert('Please select a model from the catalog');
+                    return;
+                }
+                const sel = document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]');
+                if (!sel || sel.classList.contains('ca-catalog-row-hidden') || sel.classList.contains('ca-catalog-filtered-out') || sel.classList.contains('ca-catalog-row-disabled')) {
+                    alert('The selected model is not available. Adjust the filter or pick another model.');
+                    return;
+                }
             }
 
             // Collect selected items
@@ -2596,12 +3013,18 @@
 
             const vaultSecretIds = Object.keys(selectedVaultSecrets).filter(key => selectedVaultSecrets[key]);
 
+            const selRow = selectedCatalogModelId
+                ? document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]')
+                : null;
+            const legacyProvider = selRow ? selRow.getAttribute('data-legacy-provider') : null;
+
             const config = {
                 name,
                 workingDir,
                 description,
                 agent: selectedAgent,
-                modelProvider: selectedModelId,
+                catalogModelId: selectedCatalogModelId,
+                modelProvider: legacyProvider,
                 fileAccess: selectedFileAccess,
                 skills: selectedSkills,
                 mcpServers: selectedMcpServers,

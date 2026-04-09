@@ -7,6 +7,82 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
+        /* Align with Secret Vault (services/index.html) for search + title row */
+        :root {
+            --vault-pd-accent: #8b5cf6;
+            --vault-pd-accent-dim: #7c3aed;
+            --vault-pd-border: #3d3e4f;
+            --vault-pd-muted: #9ca3af;
+        }
+
+        .vault-pd-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        .vault-pd-title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .vault-pd-title-row .services-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f4f4f5;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.15;
+        }
+
+        .vault-pd-subtitle {
+            font-size: 13px;
+            color: var(--vault-pd-muted);
+            margin: 0;
+        }
+
+        /* Search — bottom border only (same as Secret Vault) */
+        .vault-pd-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 420px;
+            padding: 10px 0 12px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            transition: border-color 0.2s ease;
+        }
+
+        .vault-pd-search:focus-within {
+            border-bottom-color: var(--vault-pd-accent);
+        }
+
+        .vault-pd-search svg {
+            width: 17px;
+            height: 17px;
+            color: var(--vault-pd-muted);
+            flex-shrink: 0;
+        }
+
+        .vault-pd-search input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        .vault-pd-search input::placeholder { color: #6b7280; }
+
+        #modelSourceSections {
+            margin-top: 14px;
+        }
+
         .services-page-layout {
             display: flex;
             height: calc(100vh - 32px);
@@ -24,203 +100,150 @@
         .services-main::-webkit-scrollbar-track { background: transparent; }
         .services-main::-webkit-scrollbar-thumb { background: rgba(251, 146, 60, 0.15); border-radius: 3px; }
 
-        /* ── Left Sidebar ── */
+        /* ── Left sidebar: model categories (Settings-style nav) ── */
         .services-sidebar {
-            width: 240px;
-            min-width: 240px;
-            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-right: 1px solid #3d3e4f;
+            --models-nav-accent: #a855f7;
+            --models-nav-surface: #0f0f12;
+            --models-nav-border: #27272a;
+            width: 288px;
+            min-width: 288px;
+            background: var(--models-nav-surface);
+            border-right: 1px solid var(--models-nav-border);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            padding: 24px 0;
+            padding: 0 0 20px;
         }
 
         .services-sidebar-title {
-            font-size: 10px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            padding: 0 20px 12px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fafafa;
+            letter-spacing: -0.02em;
+            padding: 24px 20px 20px;
+            margin: 0;
+            line-height: 1.2;
         }
 
         .services-cat-list {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            padding: 0 10px;
+            gap: 0;
+            padding: 0;
         }
 
         .services-cat-item {
+            position: relative;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 9px;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 11px 16px 11px 18px;
+            margin: 0;
+            border-radius: 0;
             cursor: pointer;
-            transition: all 0.15s ease;
-            border: 1px solid transparent;
+            transition: background 0.12s ease;
+            border: none;
+            user-select: none;
         }
 
-        .services-cat-item:hover { background: rgba(251, 146, 60, 0.06); }
+        .services-cat-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
 
         .services-cat-item.active {
-            background: rgba(251, 146, 60, 0.12);
-            border-color: rgba(251, 146, 60, 0.2);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .services-cat-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--models-nav-accent);
+            border-radius: 0 2px 2px 0;
         }
 
         .services-cat-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        .services-cat-icon svg { width: 18px; height: 18px; color: #6b7280; }
-        .services-cat-item.active .services-cat-icon svg { color: #fdba74; }
-        .services-cat-icon.all { }
-        .services-cat-icon.llm { }
-        .services-cat-icon.api { }
-        .services-cat-icon.infra { }
+        .services-cat-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #e4e4e7;
+            stroke: currentColor;
+        }
 
-        .services-cat-info { flex: 1; min-width: 0; }
-        .services-cat-name { font-size: 13px; font-weight: 500; color: #e5e7eb; }
-        .services-cat-item.active .services-cat-name { color: #fdba74; }
-        .services-cat-count { font-size: 11px; color: #6b7280; margin-top: 1px; }
+        .services-cat-item.active .services-cat-icon svg {
+            color: #fafafa;
+        }
+
+        .services-cat-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: #fafafa;
+            letter-spacing: -0.01em;
+            line-height: 1.35;
+            white-space: normal;
+        }
+        .services-cat-item.active .services-cat-name {
+            color: #fff;
+            font-weight: 600;
+        }
 
         .services-cat-badge {
             font-size: 11px;
             font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            color: #6b7280;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #a1a1aa;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 1px;
         }
 
         .services-cat-item.active .services-cat-badge {
-            background: rgba(251, 146, 60, 0.2);
-            color: #fdba74;
+            background: rgba(168, 85, 247, 0.15);
+            color: #d8b4fe;
+            border-color: rgba(168, 85, 247, 0.25);
         }
 
         .services-sidebar-divider {
             height: 1px;
-            background: #3d3e4f;
+            background: var(--models-nav-border);
             margin: 16px 20px;
         }
 
         .services-sidebar-section { padding: 0 20px; }
 
         .services-sidebar-section-title {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: #71717a;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
         }
 
-        .services-filter-list {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
+        .services-sidebar-note {
+            font-size: 12px;
+            color: #71717a;
+            line-height: 1.5;
+            margin: 0;
         }
-
-        .services-filter-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 10px;
-            border-radius: 7px;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-size: 13px;
-            color: #9ca3af;
-        }
-
-        .services-filter-item:hover { background: rgba(255, 255, 255, 0.04); color: #e5e7eb; }
-        .services-filter-item.active { color: #e5e7eb; }
-
-        .services-filter-check {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            border: 1.5px solid #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.15s;
-        }
-
-        .services-filter-item.active .services-filter-check {
-            background: #f97316;
-            border-color: #f97316;
-        }
-
-        .services-filter-check svg { width: 10px; height: 10px; color: #fff; opacity: 0; }
-        .services-filter-item.active .services-filter-check svg { opacity: 1; }
 
         /* ── Header ── */
-        .services-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-
-        .services-header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .services-title { font-size: 28px; font-weight: 700; color: #e5e7eb; }
-
-        .services-count {
-            font-size: 13px;
-            color: #6b7280;
-            padding: 4px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 20px;
-            border: 1px solid #3d3e4f;
-        }
-
-        .services-header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .services-search {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
-            border-radius: 10px;
-            min-width: 260px;
-            transition: border-color 0.2s ease;
-        }
-
-        .services-search:focus-within { border-color: rgba(251, 146, 60, 0.5); }
-        .services-search svg { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
-
-        .services-search input {
-            background: none;
-            border: none;
-            outline: none;
-            color: #e5e7eb;
-            font-size: 14px;
-            width: 100%;
-        }
-
-        .services-search input::placeholder { color: #4b5563; }
-
         .services-add-btn {
             display: flex;
             align-items: center;
@@ -242,26 +265,6 @@
         }
 
         .services-add-btn svg { width: 16px; height: 16px; }
-
-        /* Active category label */
-        .services-active-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .services-active-label-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .services-active-label-icon svg { width: 18px; height: 18px; }
-        .services-active-label-text { font-size: 16px; font-weight: 600; color: #e5e7eb; }
-        .services-active-label-count { font-size: 13px; color: #6b7280; }
 
         /* ── Service List ── */
         .services-grid {
@@ -426,38 +429,400 @@
             padding-top: 4px;
         }
 
-        /* ── Quick Stats Bar ── */
-        .services-stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
+        /* ── Model source blocks (cloud / in-house / local); data-cat corporate unchanged for filters ── */
+        .model-source-block {
+            margin-bottom: 32px;
+            scroll-margin-top: 16px;
         }
 
-        .services-stat {
+        .model-source-block.hidden { display: none; }
+
+        .model-source-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .model-source-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #9ca3af;
+            margin: 0 0 4px;
+        }
+
+        .model-source-desc {
+            font-size: 13px;
+            color: #6b7280;
+            max-width: 640px;
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        .model-config-panel {
             background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
             border: 1px solid #3d3e4f;
-            border-radius: 10px;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+        }
+
+        .model-config-panel-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 12px;
+        }
+
+        .model-config-row {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            align-items: flex-end;
             gap: 12px;
         }
 
-        .services-stat-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+        .model-config-field {
+            flex: 1;
+            min-width: 200px;
         }
 
-        .services-stat-icon svg { width: 19px; height: 19px; }
+        .model-config-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
 
-        .services-stat-info { flex: 1; }
-        .services-stat-value { font-size: 20px; font-weight: 700; color: #e5e7eb; line-height: 1; }
-        .services-stat-label { font-size: 11px; color: #6b7280; margin-top: 2px; }
+        .model-config-field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .model-config-field input:focus {
+            border-color: rgba(251, 146, 60, 0.55);
+        }
+
+        .model-config-field input::placeholder { color: #4b5563; }
+
+        .model-ghost-btn {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .model-ghost-btn:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: #4b5563;
+        }
+
+        /* Runtime engine status (Ollama / Ramalama) */
+        .model-runtime-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .model-runtime-card {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+
+        .model-runtime-card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 10px;
+        }
+
+        .model-runtime-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .model-runtime-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid transparent;
+        }
+
+        .model-runtime-badge.ok {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.25);
+        }
+
+        .model-runtime-badge.warn {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .model-runtime-badge.muted {
+            background: rgba(107, 114, 128, 0.12);
+            color: #9ca3af;
+            border-color: rgba(107, 114, 128, 0.2);
+        }
+
+        .model-runtime-badge.bad {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .model-runtime-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 10px 0 0;
+            line-height: 1.4;
+        }
+
+        /* Catalog-style table (AI Lab–like) */
+        .models-table-wrap {
+            border: 1px solid rgba(61, 62, 79, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .models-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .models-data-table thead {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .models-data-table th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.6);
+        }
+
+        .models-data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.35);
+            color: #d1d5db;
+            vertical-align: middle;
+        }
+
+        .models-data-table tbody tr:last-child td { border-bottom: none; }
+
+        .models-data-table tbody tr:hover td {
+            background: rgba(251, 146, 60, 0.04);
+        }
+
+        .models-table-status {
+            width: 36px;
+            text-align: center;
+        }
+
+        .models-table-status svg { width: 18px; height: 18px; vertical-align: middle; }
+
+        .models-table-name-main { font-weight: 600; color: #e5e7eb; }
+        .models-table-name-sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+        .models-table-ram {
+            font-size: 11px;
+            color: #9ca3af;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .models-table-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .models-table-icon-btn {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.04);
+            color: #9ca3af;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .models-table-icon-btn:hover {
+            background: rgba(251, 146, 60, 0.12);
+            color: #fdba74;
+        }
+
+        .models-table-icon-btn svg { width: 15px; height: 15px; }
+
+        .provider-config-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fdba74;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .provider-config-link:hover {
+            color: #fb923c;
+            text-decoration: underline;
+        }
+
+        /* LLM provider tiles (same family as Local runtime cards) */
+        .llm-provider-tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .llm-provider-tile.model-runtime-card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .llm-provider-tile.model-runtime-card:hover {
+            border-color: rgba(251, 146, 60, 0.35);
+            box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.08);
+        }
+
+        .llm-provider-tile .llm-provider-models {
+            font-size: 12px;
+            color: #6b7280;
+            margin: -4px 0 10px;
+            line-height: 1.35;
+        }
+
+        .llm-provider-tile .provider-config-link {
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        /* Cloud model catalog (same table chrome as local / in-house lists) */
+        .model-catalog-block {
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(61, 62, 79, 0.55);
+        }
+
+        .model-catalog-lead {
+            font-size: 13px;
+            color: #6b7280;
+            margin: 0 0 12px;
+            line-height: 1.45;
+            max-width: 640px;
+        }
+
+        .models-table-name-with-icon {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .models-table-name-with-icon .models-table-name-stack {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .models-table-name-brain {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            color: #71717a;
+            margin-top: 2px;
+        }
+
+        .models-table-toggle-label {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 26px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .models-table-toggle-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .models-table-toggle-track {
+            position: absolute;
+            inset: 0;
+            background: #3f3f46;
+            border-radius: 999px;
+            transition: background 0.2s ease;
+        }
+
+        .models-table-toggle-knob {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 3px;
+            left: 3px;
+            background: #fafafa;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s ease;
+        }
+
+        .models-table-toggle-input:checked + .models-table-toggle-track {
+            background: #4ade80;
+        }
+
+        .models-table-toggle-input:checked + .models-table-toggle-track .models-table-toggle-knob {
+            transform: translateX(18px);
+        }
+
+        .models-table-toggle-input:focus-visible + .models-table-toggle-track {
+            outline: 2px solid var(--vault-pd-accent);
+            outline-offset: 2px;
+        }
+
     </style>
 </head>
 <body class="models-page">
@@ -468,241 +833,524 @@
             <div class="header"></div>
 
             <div class="services-page-layout">
-                <!-- Left Sidebar: Categories -->
-                <div class="services-sidebar">
-                    <div class="services-sidebar-title">Categories</div>
+                <div class="services-sidebar" aria-label="Models">
+                    <h2 class="services-sidebar-title">Models</h2>
 
                     <div class="services-cat-list">
-                        <div class="services-cat-item active" onclick="filterCategory('all', this)">
-                            <div class="services-cat-icon all">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/></svg>
+                        <div class="services-cat-item active" data-cat="cloud" onclick="filterCategory('cloud', this)">
+                            <div class="services-cat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                             </div>
-                            <div class="services-cat-info">
-                                <div class="services-cat-name">All models</div>
-                                <div class="services-cat-count">LLM providers &amp; endpoints</div>
+                            <span class="services-cat-name">LLM Providers</span>
+                            <span class="services-cat-badge">4</span>
+                        </div>
+                        <div class="services-cat-item" data-cat="corporate" onclick="filterCategory('corporate', this)">
+                            <div class="services-cat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                             </div>
+                            <span class="services-cat-name">In-house</span>
                             <span class="services-cat-badge">3</span>
                         </div>
-                    </div>
-
-                    <div class="services-sidebar-divider"></div>
-
-                    <div class="services-sidebar-section">
-                        <div class="services-sidebar-section-title">Status</div>
-                        <div class="services-filter-list">
-                            <div class="services-filter-item active" onclick="toggleFilter('all', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>All</span>
+                        <div class="services-cat-item" data-cat="local" onclick="filterCategory('local', this)">
+                            <div class="services-cat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                             </div>
-                            <div class="services-filter-item" onclick="toggleFilter('active', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Active</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleFilter('expiring', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Expiring Soon</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleFilter('expired', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Expired / Inactive</span>
-                            </div>
+                            <span class="services-cat-name">Local</span>
+                            <span class="services-cat-badge">2</span>
                         </div>
                     </div>
 
                     <div class="services-sidebar-divider"></div>
 
                     <div class="services-sidebar-section">
-                        <div class="services-sidebar-section-title">Usage</div>
-                        <div class="services-filter-list">
-                            <div class="services-filter-item active" onclick="toggleUsage('all', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>All</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleUsage('used', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>In Use</span>
-                            </div>
-                            <div class="services-filter-item" onclick="toggleUsage('unused', this)">
-                                <div class="services-filter-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                </div>
-                                <span>Unused</span>
-                            </div>
-                        </div>
+                        <div class="services-sidebar-section-title">About</div>
+                        <p class="services-sidebar-note">Cloud keys stay on this device. In-house is OpenShift AI only. Local lists runtimes detected on the host (mock in this prototype).</p>
                     </div>
                 </div>
 
-                <!-- Main Content Area -->
                 <div class="services-main">
-                    <!-- Header -->
-                    <div class="services-header">
-                        <div class="services-header-left">
+                    <div class="vault-pd-title-row">
+                        <div class="vault-pd-title-block">
                             <h1 class="services-title">Models</h1>
-                            <span class="services-count">3 providers</span>
+                            <p class="vault-pd-subtitle" id="headerCountStr">API keys for hosted providers</p>
                         </div>
-                        <div class="services-header-actions">
-                            <div class="services-search">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                <input type="text" placeholder="Search models &amp; providers...">
-                            </div>
-                            <button class="services-add-btn">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                Add model
-                            </button>
-                        </div>
+                        <button type="button" class="services-add-btn" onclick="goNextProviderConfig()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Configure provider
+                        </button>
                     </div>
 
-                    <!-- Quick Stats -->
-                    <div class="services-stats-bar">
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">2</div>
-                                <div class="services-stat-label">Active</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">1</div>
-                                <div class="services-stat-label">Expiring soon</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">0</div>
-                                <div class="services-stat-label">Expired</div>
-                            </div>
-                        </div>
-                        <div class="services-stat">
-                            <div class="services-stat-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                            </div>
-                            <div class="services-stat-info">
-                                <div class="services-stat-value">7</div>
-                                <div class="services-stat-label">Connected assets</div>
-                            </div>
-                        </div>
+                    <div class="vault-pd-search" role="search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="search" id="modelsSearchInput" placeholder="Search…" autocomplete="off" aria-label="Search models">
                     </div>
 
-                    <!-- Active category label -->
-                    <div class="services-active-label" id="activeCategoryLabel">
-                        <div class="services-active-label-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                        </div>
-                        <span class="services-active-label-text">All models</span>
-                        <span class="services-active-label-count">(3)</span>
-                    </div>
+                    <div id="modelSourceSections">
 
-                    <!-- Service Cards Grid -->
-                    <div class="services-grid" id="servicesGrid">
-
-                        <div class="services-section-header" data-type="llm">
-                            <span>LLM providers</span>
-                        </div>
-
-                        <div class="service-card" data-type="llm">
-                            <div class="service-card-icon llm">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/></svg>
-                            </div>
-                            <div class="service-card-info">
-                                <div class="service-card-title-row">
-                                    <div class="service-card-title">OpenAI</div>
-                                    <span class="service-type-badge llm">LLM</span>
+                        <!-- 1. LLM providers — status list; keys on provider-config.html -->
+                        <section class="model-source-block" data-cat="cloud" data-search="openai anthropic google azure gpt claude gemini api composer codex sonnet opus medium high low">
+                            <div class="model-source-head">
+                                <div>
+                                    <h2 class="model-source-title">LLM Providers</h2>
+                                    <p class="model-source-desc">Connection status for each provider is shown here. API keys and endpoints are configured on a <strong>dedicated page</strong> per provider (not a modal).</p>
                                 </div>
-                                <div class="service-card-desc">GPT-4o, GPT-4o-mini &middot; 3 agents connected</div>
                             </div>
-                            <div class="service-card-token">
-                                <span class="service-card-token-value">sk-proj-aBcD...xYz9</span>
-                                <button class="service-card-token-copy" title="Copy token">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                </button>
-                            </div>
-                            <div class="service-card-footer">
-                                <div class="service-card-meta">
-                                    <div class="service-card-meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                        Dec 2026
+
+                            <div class="llm-provider-tiles" id="cloudProviderTiles" role="list" aria-label="LLM providers">
+                                <div class="model-runtime-card llm-provider-tile" role="listitem" data-search="openai gpt" data-connection="connected">
+                                    <div class="model-runtime-card-name">OpenAI</div>
+                                    <p class="llm-provider-models">GPT-4o, GPT-4o-mini, o-series</p>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge ok">Connected</span>
+                                        <span class="model-runtime-badge muted">Verified 2h ago</span>
                                     </div>
+                                    <p class="model-runtime-hint">Credentials accepted; models reachable.</p>
+                                    <a class="provider-config-link" href="provider-config.html?provider=openai">Configure</a>
                                 </div>
-                                <span class="service-card-status active">Active</span>
-                            </div>
-                        </div>
-
-                        <div class="service-card" data-type="llm">
-                            <div class="service-card-icon llm">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            </div>
-                            <div class="service-card-info">
-                                <div class="service-card-title-row">
-                                    <div class="service-card-title">Anthropic</div>
-                                    <span class="service-type-badge llm">LLM</span>
-                                </div>
-                                <div class="service-card-desc">Claude models &middot; 2 assets connected</div>
-                            </div>
-                            <div class="service-card-token">
-                                <span class="service-card-token-value">sk-ant-api03-Wk7...mNp</span>
-                                <button class="service-card-token-copy" title="Copy token">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                </button>
-                            </div>
-                            <div class="service-card-footer">
-                                <div class="service-card-meta">
-                                    <div class="service-card-meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                        Mar 2027
+                                <div class="model-runtime-card llm-provider-tile" role="listitem" data-search="anthropic claude" data-connection="connected">
+                                    <div class="model-runtime-card-name">Anthropic</div>
+                                    <p class="llm-provider-models">Claude 3.5 / 4</p>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge ok">Connected</span>
+                                        <span class="model-runtime-badge muted">Verified 1d ago</span>
                                     </div>
+                                    <p class="model-runtime-hint">API responding normally.</p>
+                                    <a class="provider-config-link" href="provider-config.html?provider=anthropic">Configure</a>
                                 </div>
-                                <span class="service-card-status active">Active</span>
-                            </div>
-                        </div>
-
-                        <div class="service-card" data-type="llm">
-                            <div class="service-card-icon llm">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                            </div>
-                            <div class="service-card-info">
-                                <div class="service-card-title-row">
-                                    <div class="service-card-title">OpenShift AI (vLLM)</div>
-                                    <span class="service-type-badge llm">LLM</span>
-                                </div>
-                                <div class="service-card-desc">Granite &amp; Mistral via vLLM &middot; 2 assets connected</div>
-                            </div>
-                            <div class="service-card-token">
-                                <span class="service-card-token-value">eyJhbGciOi...dF9pZCI</span>
-                                <button class="service-card-token-copy" title="Copy token">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                </button>
-                            </div>
-                            <div class="service-card-footer">
-                                <div class="service-card-meta">
-                                    <div class="service-card-meta-item">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                        Apr 2026
+                                <div class="model-runtime-card llm-provider-tile" role="listitem" data-search="google gemini vertex" data-connection="none">
+                                    <div class="model-runtime-card-name">Google AI</div>
+                                    <p class="llm-provider-models">Gemini (AI Studio / Vertex)</p>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge muted">Not configured</span>
                                     </div>
+                                    <p class="model-runtime-hint">No API key stored. Add one on the configuration page.</p>
+                                    <a class="provider-config-link" href="provider-config.html?provider=google">Configure</a>
                                 </div>
-                                <span class="service-card-status warning">Expiring</span>
+                                <div class="model-runtime-card llm-provider-tile" role="listitem" data-search="azure openai microsoft" data-connection="error">
+                                    <div class="model-runtime-card-name">Azure OpenAI</div>
+                                    <p class="llm-provider-models">Enterprise deployments</p>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge bad">Error</span>
+                                        <span class="model-runtime-badge muted">Check failed</span>
+                                    </div>
+                                    <p class="model-runtime-hint">Could not reach the resource endpoint. Update URL and key on the configuration page.</p>
+                                    <a class="provider-config-link" href="provider-config.html?provider=azure">Configure</a>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="model-catalog-block" id="cloudModelCatalog" data-search="cloud models catalog">
+                                <h3 class="model-config-panel-title" style="margin-bottom: 8px;">Models</h3>
+                                <p class="model-catalog-lead">Turn models on or off for chat and agents. Only models from connected providers appear here.</p>
+                                <div class="models-table-wrap">
+                                    <table class="models-data-table" aria-label="Cloud models">
+                                        <thead>
+                                            <tr>
+                                                <th class="models-table-status" scope="col">Status</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Runtime</th>
+                                                <th scope="col" style="text-align: right;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-search="composer-2-fast composer">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">composer-2-fast</div>
+                                                            <div class="models-table-name-sub">Cloud · enabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>Composer</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" checked aria-label="Enable composer-2-fast">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="gpt-5.3-codex gpt codex">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">gpt-5.3-codex</div>
+                                                            <div class="models-table-name-sub">Cloud · enabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>OpenAI</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" checked aria-label="Enable gpt-5.3-codex">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="gpt-5.4-medium gpt medium">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">gpt-5.4-medium</div>
+                                                            <div class="models-table-name-sub">Cloud · enabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>OpenAI</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" checked aria-label="Enable gpt-5.4-medium">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="claude-4.6-sonnet-medium claude sonnet">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">claude-4.6-sonnet-medium</div>
+                                                            <div class="models-table-name-sub">Cloud · enabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>Anthropic</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" checked aria-label="Enable claude-4.6-sonnet-medium">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="claude-4.6-opus-high claude opus high">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">claude-4.6-opus-high</div>
+                                                            <div class="models-table-name-sub">Cloud · enabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>Anthropic</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" checked aria-label="Enable claude-4.6-opus-high">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="composer-2">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">composer-2</div>
+                                                            <div class="models-table-name-sub">Cloud · disabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>Composer</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" aria-label="Enable composer-2">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="composer-1.5">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">composer-1.5</div>
+                                                            <div class="models-table-name-sub">Cloud · disabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>Composer</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" aria-label="Enable composer-1.5">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr data-search="gpt-5.3-codex-low gpt codex low">
+                                                <td class="models-table-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                </td>
+                                                <td>
+                                                    <div class="models-table-name-with-icon">
+                                                        <div class="models-table-name-stack">
+                                                            <div class="models-table-name-main">gpt-5.3-codex-low</div>
+                                                            <div class="models-table-name-sub">Cloud · disabled</div>
+                                                        </div>
+                                                        <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                                    </div>
+                                                </td>
+                                                <td>—</td>
+                                                <td>OpenAI</td>
+                                                <td>
+                                                    <div class="models-table-actions">
+                                                        <label class="models-table-toggle-label">
+                                                            <input type="checkbox" class="models-table-toggle-input" aria-label="Enable gpt-5.3-codex-low">
+                                                            <span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 2. In-house — OpenShift AI only -->
+                        <section class="model-source-block hidden" data-cat="corporate" data-search="corporate openshift ai openshift-ai granite vllm cluster red hat endpoint in-house">
+                            <div class="model-source-head">
+                                <div>
+                                    <h2 class="model-source-title">In-house · OpenShift AI</h2>
+                                    <p class="model-source-desc">The in-house model source is <strong>OpenShift AI only</strong>: connect your cluster API (or dashboard URL) and an OpenShift OAuth token. Approved models from your Data Science / serving stack appear below after sync.</p>
+                                </div>
+                            </div>
+
+                            <div class="model-config-panel">
+                                <h3 class="model-config-panel-title">OpenShift AI connection</h3>
+                                <p style="font-size: 12px; color: #6b7280; margin: -4px 0 14px; line-height: 1.45;">No other in-house catalog types are configured here—only OpenShift AI.</p>
+                                <div class="model-config-row" style="align-items: center; margin-bottom: 14px;">
+                                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #6b7280;">Source</span>
+                                    <span class="service-type-badge infra" style="margin-left: 8px;">OpenShift AI</span>
+                                </div>
+                                <div class="model-config-row">
+                                    <div class="model-config-field" style="flex: 2; min-width: 280px;">
+                                        <label for="openshiftApiUrl">Cluster API URL</label>
+                                        <input type="url" id="openshiftApiUrl" value="https://api.openshift.corp.example:6443" placeholder="https://api.cluster.example:6443" autocomplete="off" aria-describedby="openshiftUrlHint">
+                                    </div>
+                                    <div class="model-config-field">
+                                        <label for="openshiftToken">OpenShift token</label>
+                                        <input type="password" id="openshiftToken" placeholder="sha256~… or OAuth token" autocomplete="off" aria-describedby="openshiftUrlHint">
+                                    </div>
+                                    <button type="button" class="services-add-btn" style="height: 40px; align-self: flex-end;">Save &amp; sync models</button>
+                                    <button type="button" class="model-ghost-btn" style="height: 40px; align-self: flex-end;">Test connection</button>
+                                </div>
+                                <p id="openshiftUrlHint" style="font-size: 11px; color: #6b7280; margin: 12px 0 0;">Use the same API endpoint you would pass to <code style="color:#9ca3af;">oc login</code>. Token needs access to model serving / OpenShift AI resources in your project.</p>
+                            </div>
+
+                            <div class="models-table-wrap">
+                                <table class="models-data-table" aria-label="OpenShift AI models">
+                                    <thead>
+                                        <tr>
+                                            <th class="models-table-status" scope="col">Status</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col" style="text-align: right;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-search="granite ibm">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">ibm-granite-3.3-8b-instruct</div>
+                                                <div class="models-table-name-sub">OpenShift AI · Apache-2.0</div>
+                                                <span class="models-table-ram">VRAM est. 8.2 GiB</span>
+                                            </td>
+                                            <td>4.8 GB</td>
+                                            <td>2 weeks</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Use in session" aria-label="Use in session"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-search="mistral">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">mistral-small-internal</div>
+                                                <div class="models-table-name-sub">OpenShift AI</div>
+                                                <span class="models-table-ram">VRAM est. 11 GiB</span>
+                                            </td>
+                                            <td>6.1 GB</td>
+                                            <td>1 month</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Use in session" aria-label="Use in session"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-search="llama meta">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">llama-3.1-70b-instruct</div>
+                                                <div class="models-table-name-sub">OpenShift AI · pending approval</div>
+                                                <span class="models-table-ram">RAM usage: N/A</span>
+                                            </td>
+                                            <td>—</td>
+                                            <td>—</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Request access" aria-label="Request access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3"/><rect x="8" y="3" width="8" height="5" rx="1"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- 3. Local Ollama / Ramalama -->
+                        <section class="model-source-block hidden" data-cat="local" data-search="ollama ramalama local docker gguf">
+                            <div class="model-source-head">
+                                <div>
+                                    <h2 class="model-source-title">Local · Ollama &amp; Ramalama</h2>
+                                    <p class="model-source-desc">The extension probes for Ollama and Ramalama on the host: binary or container presence, daemon reachability, then lists <strong>models currently loaded</strong> (mock detection for this prototype).</p>
+                                </div>
+                                <button type="button" class="model-ghost-btn" onclick="alert('Mock: rescan local runtimes')">Rescan</button>
+                            </div>
+
+                            <div class="model-runtime-row">
+                                <div class="model-runtime-card">
+                                    <div class="model-runtime-card-name">Ollama</div>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge ok">Installed</span>
+                                        <span class="model-runtime-badge ok">Running</span>
+                                        <span class="model-runtime-badge muted">127.0.0.1:11434</span>
+                                    </div>
+                                    <p class="model-runtime-hint">Detected via CLI and HTTP <code style="color:#9ca3af;">/api/version</code>. Loaded models reflect the inference server state.</p>
+                                </div>
+                                <div class="model-runtime-card">
+                                    <div class="model-runtime-card-name">Ramalama</div>
+                                    <div class="model-runtime-badges">
+                                        <span class="model-runtime-badge ok">Installed</span>
+                                        <span class="model-runtime-badge bad">Not running</span>
+                                        <span class="model-runtime-badge muted">Podman service</span>
+                                    </div>
+                                    <p class="model-runtime-hint">Start the Ramalama service to expose models; when stopped, no loaded models are reported.</p>
+                                </div>
+                            </div>
+
+                            <h3 class="model-config-panel-title" style="margin-bottom: 10px;">Running on local runtimes</h3>
+                            <div class="models-table-wrap">
+                                <table class="models-data-table" aria-label="Local running models">
+                                    <thead>
+                                        <tr>
+                                            <th class="models-table-status" scope="col">Status</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Runtime</th>
+                                            <th scope="col" style="text-align: right;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-search="llama ollama">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">llama3.2:3b</div>
+                                                <div class="models-table-name-sub">GGUF · loaded in memory</div>
+                                                <span class="models-table-ram">RAM usage: 3.93 GiB</span>
+                                            </td>
+                                            <td>2.0 GB</td>
+                                            <td>Ollama</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Open in playground" aria-label="Open in playground"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></button>
+                                                    <button type="button" class="models-table-icon-btn" title="Reveal model path" aria-label="Reveal model path"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-search="mistral ollama">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">mistral:latest</div>
+                                                <div class="models-table-name-sub">GGUF · loaded in memory</div>
+                                                <span class="models-table-ram">RAM usage: 4.4 GiB</span>
+                                            </td>
+                                            <td>4.1 GB</td>
+                                            <td>Ollama</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Open in playground" aria-label="Open in playground"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></button>
+                                                    <button type="button" class="models-table-icon-btn" title="Stop model" aria-label="Stop model"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr data-search="qwen ramalama">
+                                            <td class="models-table-status">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                                            </td>
+                                            <td>
+                                                <div class="models-table-name-main">qwen2.5:7b</div>
+                                                <div class="models-table-name-sub">Not loaded — Ramalama stopped</div>
+                                                <span class="models-table-ram">RAM usage: N/A</span>
+                                            </td>
+                                            <td>4.7 GB</td>
+                                            <td>Ramalama</td>
+                                            <td>
+                                                <div class="models-table-actions">
+                                                    <button type="button" class="models-table-icon-btn" title="Start runtime first" aria-label="Unavailable" disabled style="opacity:0.4;cursor:not-allowed;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
 
                     </div>
                 </div>
@@ -713,47 +1361,82 @@
 
     <script>
         const categoryLabels = {
-            all: { text: 'All models', count: 3, color: '#a78bfa', icon: '<path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/><circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>' }
+            cloud: { subtitle: 'API keys for hosted providers' },
+            corporate: { subtitle: 'In-house · OpenShift AI & models' },
+            local: { subtitle: 'Host detection & loaded models' }
         };
 
+        let activeCategory = 'cloud';
+
+        function applyModelSearch() {
+            const input = document.getElementById('modelsSearchInput');
+            const q = input ? (input.value || '').trim().toLowerCase() : '';
+            const sections = document.querySelectorAll('.model-source-block');
+
+            sections.forEach(section => {
+                const cat = section.getAttribute('data-cat');
+                if (cat !== activeCategory) {
+                    section.classList.add('hidden');
+                    return;
+                }
+                section.classList.remove('hidden');
+
+                if (!q) {
+                    section.querySelectorAll('.llm-provider-tile, tbody tr').forEach(el => { el.style.display = ''; });
+                    return;
+                }
+
+                const sectionHay = (section.getAttribute('data-search') || '') + ' ' + section.textContent.toLowerCase();
+                let any = false;
+
+                section.querySelectorAll('.llm-provider-tile, tbody tr').forEach(row => {
+                    const hay = (row.getAttribute('data-search') || '') + ' ' + row.textContent.toLowerCase();
+                    const show = hay.includes(q);
+                    row.style.display = show ? '' : 'none';
+                    if (show) any = true;
+                });
+
+                if (q && !any && sectionHay.includes(q)) {
+                    section.querySelectorAll('.llm-provider-tile, tbody tr').forEach(el => { el.style.display = ''; });
+                } else if (q && !any && !sectionHay.includes(q)) {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        function goNextProviderConfig() {
+            const root = document.getElementById('cloudProviderTiles');
+            if (!root) return;
+            const link =
+                root.querySelector('.llm-provider-tile[data-connection="none"] a.provider-config-link')
+                || root.querySelector('.llm-provider-tile[data-connection="error"] a.provider-config-link')
+                || root.querySelector('.llm-provider-tile a.provider-config-link');
+            if (link) window.location.href = link.getAttribute('href');
+        }
+
         function filterCategory(cat, el) {
+            activeCategory = cat;
             document.querySelectorAll('.services-cat-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
 
             const label = categoryLabels[cat];
-            const labelEl = document.getElementById('activeCategoryLabel');
-            labelEl.querySelector('.services-active-label-icon').style.background = 'none';
-            labelEl.querySelector('.services-active-label-icon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="' + label.color + '" stroke-width="2">' + label.icon + '</svg>';
-            labelEl.querySelector('.services-active-label-text').textContent = label.text;
-            labelEl.querySelector('.services-active-label-count').textContent = '(' + label.count + ')';
-
-            const cards = document.querySelectorAll('.service-card');
-            const headers = document.querySelectorAll('.services-section-header');
-
-            if (cat === 'all') {
-                cards.forEach(c => c.style.display = '');
-                headers.forEach(h => h.style.display = 'flex');
-            } else {
-                cards.forEach(c => {
-                    c.style.display = c.dataset.type === cat ? '' : 'none';
-                });
-                headers.forEach(h => {
-                    h.style.display = h.dataset.type === cat ? 'flex' : 'none';
-                });
+            const headerStr = document.getElementById('headerCountStr');
+            if (headerStr && label) {
+                headerStr.textContent = label.subtitle;
             }
+
+            document.querySelectorAll('.model-source-block').forEach(block => {
+                const c = block.getAttribute('data-cat');
+                block.classList.toggle('hidden', c !== cat);
+            });
+
+            applyModelSearch();
         }
 
-        function toggleFilter(status, el) {
-            const list = el.closest('.services-filter-list');
-            list.querySelectorAll('.services-filter-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        function toggleUsage(usage, el) {
-            const list = el.closest('.services-filter-list');
-            list.querySelectorAll('.services-filter-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('modelsSearchInput');
+            if (input) input.addEventListener('input', applyModelSearch);
+        });
     </script>
 </body>
 </html>
