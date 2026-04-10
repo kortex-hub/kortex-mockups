@@ -5,7 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Knowledge Bases</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
+    <script src="../assets/js/demo-page-hydrate.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .kb-empty-after-onboarding {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 48px 24px;
+            margin: 24px 0 32px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed #3d3e4f;
+            border-radius: 14px;
+            color: #9ca3af;
+        }
+
+        .kb-empty-after-onboarding svg {
+            width: 40px;
+            height: 40px;
+            color: #4b5563;
+            margin-bottom: 14px;
+        }
+
+        .kb-empty-after-onboarding h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 6px 0;
+        }
+
+        .kb-empty-after-onboarding p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+            max-width: 400px;
+        }
+
+    </style>
 </head>
 <body class="knowledges-page">
     <div class="app-container">
@@ -19,6 +59,20 @@
             </header>
             
             <div class="content">
+                <div class="kb-empty-after-onboarding" id="kbEmptyState" aria-live="polite">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <h2>No knowledge bases yet</h2>
+                    <p>After guided setup, your catalog is empty. Create a knowledge base when you are ready to index docs or connect a vector store.</p>
+                    <button type="button" class="create-button" style="margin-top: 18px;" onclick="openModal()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        New Knowledge Base
+                    </button>
+                </div>
+
+                <div id="kbTablePanel">
                 <!-- Knowledges Content -->
                 <div class="rag-header">
                     <h2 class="rag-title">Knowledge Bases</h2>
@@ -61,200 +115,9 @@
                             <th class="actions-cell">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr onclick="window.location.href='details.html?env=podman-knowledges'">
-                            <td class="checkbox-cell">
-                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
-                            </td>
-                            <td class="status-cell">
-                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14,2 14,8 20,8"/>
-                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                    <polyline points="10,9 9,9 8,9"/>
-                                </svg>
-                            </td>
-                            <td>
-                                <span class="env-name">podman-knowledges</span>
-                            </td>
-                            <td>
-                                <span class="database-badge">
-                                    <div class="tech-icon milvus-icon"></div>
-                                    Milvus
-                                </span>
-                            </td>
-                            <td>
-                                <span class="chunker-badge">
-                                    <div class="tech-icon" style="background: linear-gradient(45deg, #ff9500, #ffb800); border-radius: 20%;"></div>
-                                    Docling
-                                </span>
-                            </td>
-                            <td class="sources-cell">
-                                <span class="sources-count">23</span>
-                            </td>
-                            <td class="actions-cell">
-                                <div class="actions-row" onclick="event.stopPropagation()">
-                                    <button class="action-button" title="Stop">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                            <rect x="6" y="6" width="12" height="12" rx="2"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-button delete" title="Delete">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3,6 5,6 21,6"/>
-                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr onclick="window.location.href='details.html?env=openshift-knowledges'">
-                            <td class="checkbox-cell">
-                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
-                            </td>
-                            <td class="status-cell">
-                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14,2 14,8 20,8"/>
-                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                    <polyline points="10,9 9,9 8,9"/>
-                                </svg>
-                            </td>
-                            <td>
-                                <span class="env-name">openshift-knowledges</span>
-                            </td>
-                            <td>
-                                <span class="database-badge">
-                                    <div class="tech-icon chroma-icon"></div>
-                                    ChromaDB
-                                </span>
-                            </td>
-                            <td>
-                                <span class="chunker-badge">
-                                    <div class="tech-icon" style="background: linear-gradient(45deg, #00b4d8, #0096c7); border-radius: 20%;"></div>
-                                    HF Sentence Transformers
-                                </span>
-                            </td>
-                            <td class="sources-cell">
-                                <span class="sources-count">15</span>
-                            </td>
-                            <td class="actions-cell">
-                                <div class="actions-row" onclick="event.stopPropagation()">
-                                    <button class="action-button" title="Stop">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                            <rect x="6" y="6" width="12" height="12" rx="2"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-button delete" title="Delete">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3,6 5,6 21,6"/>
-                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr onclick="window.location.href='details.html?env=docker-knowledges'">
-                            <td class="checkbox-cell">
-                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
-                            </td>
-                            <td class="status-cell">
-                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14,2 14,8 20,8"/>
-                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                    <polyline points="10,9 9,9 8,9"/>
-                                </svg>
-                            </td>
-                            <td>
-                                <span class="env-name">docker-knowledges</span>
-                            </td>
-                            <td>
-                                <span class="database-badge">
-                                    <div class="tech-icon milvus-icon"></div>
-                                    Milvus
-                                </span>
-                            </td>
-                            <td>
-                                <span class="chunker-badge">
-                                    <div class="tech-icon" style="background: linear-gradient(45deg, #00b4d8, #0096c7); border-radius: 20%;"></div>
-                                    HF Sentence Transformers
-                                </span>
-                            </td>
-                            <td class="sources-cell">
-                                <span class="sources-count">8</span>
-                            </td>
-                            <td class="actions-cell">
-                                <div class="actions-row" onclick="event.stopPropagation()">
-                                    <button class="action-button" title="Start">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                            <polygon points="5,3 19,12 5,21"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-button delete" title="Delete">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3,6 5,6 21,6"/>
-                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr onclick="window.location.href='details.html?env=kubernetes-knowledges'">
-                            <td class="checkbox-cell">
-                                <input type="checkbox" class="checkbox" onclick="event.stopPropagation()">
-                            </td>
-                            <td class="status-cell">
-                                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                    <polyline points="14,2 14,8 20,8"/>
-                                    <line x1="16" y1="13" x2="8" y2="13"/>
-                                    <line x1="16" y1="17" x2="8" y2="17"/>
-                                    <polyline points="10,9 9,9 8,9"/>
-                                </svg>
-                            </td>
-                            <td>
-                                <span class="env-name">kubernetes-knowledges</span>
-                            </td>
-                            <td>
-                                <span class="database-badge">
-                                    <div class="tech-icon chroma-icon"></div>
-                                    ChromaDB
-                                </span>
-                            </td>
-                            <td>
-                                <span class="chunker-badge">
-                                    <div class="tech-icon" style="background: linear-gradient(45deg, #ff9500, #ffb800); border-radius: 20%;"></div>
-                                    Docling
-                                </span>
-                            </td>
-                            <td class="sources-cell">
-                                <span class="sources-count">31</span>
-                            </td>
-                            <td class="actions-cell">
-                                <div class="actions-row" onclick="event.stopPropagation()">
-                                    <button class="action-button" title="Stop">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                            <rect x="6" y="6" width="12" height="12" rx="2"/>
-                                        </svg>
-                                    </button>
-                                    <button class="action-button delete" title="Delete">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3,6 5,6 21,6"/>
-                                            <path d="M19,6v14a2,2 0,0,1-2,2H7a2,2 0,0,1-2-2V6m3,0V4a2,2 0,0,1,2-2h4a2,2 0,0,1,2,2v2"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
+                </div>
             </div>
         </main>
     </div>

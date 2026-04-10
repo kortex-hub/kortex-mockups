@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Workspace Details</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* Session Details Page Styles */
@@ -709,6 +711,64 @@
 
         .terminal-output {
             color: #9ca3af;
+        }
+
+        .terminal-agent-output {
+            color: #9ca3af;
+            white-space: pre-wrap;
+            margin: 0 0 10px 12px;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 6px;
+            border-left: 2px solid #3d3e4f;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .terminal-agent-meta {
+            color: #6b7280;
+            font-size: 11px;
+            margin-bottom: 14px;
+            letter-spacing: 0.02em;
+        }
+
+        .terminal-agent-user {
+            margin: 12px 0 8px;
+            color: #f3f4f6;
+        }
+
+        .terminal-agent-user-mark {
+            color: #f59e0b;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .terminal-agent-msg {
+            margin: 10px 0 6px;
+            color: #d1d5db;
+            line-height: 1.55;
+        }
+
+        .terminal-agent-msg-mark {
+            color: #f59e0b;
+            opacity: 0.9;
+            margin-right: 6px;
+        }
+
+        .terminal-agent-tool {
+            margin: 8px 0 0;
+            padding: 2px 0 2px 12px;
+            border-left: 2px solid rgba(167, 139, 250, 0.45);
+            color: #c4b5fd;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .terminal-agent-tool-note {
+            color: #6b7280;
+            font-size: 11px;
+            padding-left: 12px;
+            margin: 2px 0 4px;
         }
 
         .terminal-cursor {
@@ -2080,6 +2140,226 @@ spec:
   tls:
     termination: edge` }
                 ]
+            },
+            'quadlet-openshift-demo': {
+                title: 'kaiden-demo-app · Quadlet & OpenShift',
+                model: 'Claude 3.5 Sonnet',
+                workingDir: '~/dev/kaiden-demo-app',
+                iconStyle: 'background: linear-gradient(135deg, #c2410c, #ea580c); color: #fff;',
+                iconContent: 'K',
+                description: 'Coding agent converting the app to a Podman Quadlet user unit on RHEL, then adding Kubernetes manifests (Deployment, Service, Route) to deploy on OpenShift.',
+                contextUsed: '104K',
+                contextTotal: '200K',
+                contextPercent: '52%',
+                started: '18 min ago',
+                filesModified: '7 files',
+                messages: 14,
+                toolCalls: 36,
+                linesChanged: 428,
+                skills: [
+                    { name: 'Podman Quadlet', icon: 'container' },
+                    { name: 'OpenShift', icon: 'openshift' }
+                ],
+                mcpServers: [
+                    { name: 'filesystem', status: 'Connected' },
+                    { name: 'OpenShift MCP', status: 'Connected' }
+                ],
+                terminalOutput: `
+                    <div class="terminal-agent-meta">Claude Code · Sonnet · ~/dev/kaiden-demo-app · sandbox</div>
+
+                    <div class="terminal-agent-user"><span class="terminal-agent-user-mark">❯</span> I need this app on RHEL with Podman as a systemd <strong>user</strong> service (quadlet), then the same image on OpenShift with Kustomize. Add the quadlet unit, manifests under deploy/openshift/, and show me the commands to verify.</div>
+
+                    <div class="terminal-agent-msg"><span class="terminal-agent-msg-mark">⏺</span> I’ll add a Podman Quadlet under ~/.config/containers/systemd and OpenShift Deployment/Service/Route with kustomization. Scanning the repo to match ports and image name.</div>
+
+                    <div class="terminal-agent-tool">Glob</div>
+                    <div class="terminal-agent-tool-note">**/*.{json,yml,yaml,container,Dockerfile*} · max 40 files</div>
+                    <div class="terminal-output terminal-agent-output">./package.json
+./Containerfile
+(no existing systemd/ or deploy/openshift yet)</div>
+
+                    <div class="terminal-agent-msg"><span class="terminal-agent-msg-mark">⏺</span> Nothing under deploy/openshift yet. I’ll create the quadlet unit, then kustomize layout and apply to your logged-in cluster context.</div>
+
+                    <div class="terminal-agent-tool">Write</div>
+                    <div class="terminal-agent-tool-note">~/.config/containers/systemd/kaiden-demo-app.container</div>
+                    <div class="terminal-output terminal-agent-output">[Unit]
+Description=kaiden-demo-app (Podman Quadlet)
+After=network-online.target
+
+[Container]
+Image=quay.io/openkaiden/kaiden-demo-app:latest
+PublishPort=8080:8080
+Environment=NODE_ENV=production
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target</div>
+
+                    <div class="terminal-agent-tool">Bash</div>
+                    <div class="terminal-agent-tool-note">systemctl --user daemon-reload &amp;&amp; systemctl --user enable --now kaiden-demo-app.service</div>
+                    <div class="terminal-output terminal-agent-output">Created symlink ~/.config/systemd/user/default.target.wants/kaiden-demo-app.service → …/kaiden-demo-app.service</div>
+
+                    <div class="terminal-agent-tool">Bash</div>
+                    <div class="terminal-agent-tool-note">systemctl --user status kaiden-demo-app.service --no-pager · exit 0</div>
+                    <div class="terminal-output terminal-agent-output">● kaiden-demo-app.service - kaiden-demo-app (Podman Quadlet)
+     Active: active (running) …</div>
+
+                    <div class="terminal-agent-msg"><span class="terminal-agent-msg-mark">⏺</span> Quadlet is up locally. Verifying the container, then I’ll write manifests and apply with oc.</div>
+
+                    <div class="terminal-agent-tool">Bash</div>
+                    <div class="terminal-agent-tool-note">podman ps --filter name=kaiden-demo-app --format "table {{.Names}}\\t{{.Status}}"</div>
+                    <div class="terminal-output terminal-agent-output">NAMES               STATUS
+kaiden-demo-app     Up About a minute (healthy)</div>
+
+                    <div class="terminal-agent-tool">Write</div>
+                    <div class="terminal-agent-tool-note">deploy/openshift/kustomization.yaml (+ deployment.yaml, service.yaml, route.yaml)</div>
+                    <div class="terminal-output terminal-agent-output">wrote 4 files · labels app=kaiden-demo-app · probes /health:8080</div>
+
+                    <div class="terminal-agent-tool">Bash</div>
+                    <div class="terminal-agent-tool-note">oc apply -k deploy/openshift/</div>
+                    <div class="terminal-output terminal-agent-output">deployment.apps/kaiden-demo-app created
+service/kaiden-demo-app created
+route.route.openshift.io/kaiden-demo-app created</div>
+
+                    <div class="terminal-agent-tool">Bash</div>
+                    <div class="terminal-agent-tool-note">oc get pods,svc,route -l app=kaiden-demo-app</div>
+                    <div class="terminal-output terminal-agent-output">NAME                                    READY   STATUS    RESTARTS   AGE
+pod/kaiden-demo-app-5c8d7f9b4-xxkq2   1/1     Running   0          42s
+
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)
+service/kaiden-demo-app ClusterIP   172.30.88.12   &lt;none&gt;        8080/TCP
+
+NAME                                          HOST/PORT
+route.route.openshift.io/kaiden-demo-app      kaiden-demo-app-myproject.apps.cluster.example.com</div>
+
+                    <div class="terminal-agent-msg"><span class="terminal-agent-msg-mark">⏺</span> Summary: RHEL user quadlet runs the same image reference; OpenShift picks it up via Deployment + Route. Say if you want a BuildConfig or external image pull secret next.</div>
+
+                    <div class="terminal-agent-user"><span class="terminal-agent-user-mark">❯</span> <span class="terminal-cursor"></span></div>
+                `,
+                files: [
+                    {
+                        name: '.config/containers/systemd/kaiden-demo-app.container',
+                        change: '+18 lines',
+                        type: 'new',
+                        content: `[Unit]
+Description=kaiden-demo-app (Podman Quadlet)
+After=network-online.target
+
+[Container]
+Image=quay.io/openkaiden/kaiden-demo-app:latest
+PublishPort=8080:8080
+Environment=NODE_ENV=production
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target`
+                    },
+                    {
+                        name: 'deploy/openshift/kustomization.yaml',
+                        change: '+12 lines',
+                        type: 'new',
+                        content: `apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: myproject
+resources:
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
+commonLabels:
+  app: kaiden-demo-app`
+                    },
+                    {
+                        name: 'deploy/openshift/deployment.yaml',
+                        change: '+48 lines',
+                        type: 'new',
+                        content: `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaiden-demo-app
+  labels:
+    app: kaiden-demo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kaiden-demo-app
+  template:
+    metadata:
+      labels:
+        app: kaiden-demo-app
+    spec:
+      containers:
+        - name: app
+          image: quay.io/openkaiden/kaiden-demo-app:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true`
+                    },
+                    {
+                        name: 'deploy/openshift/service.yaml',
+                        change: '+14 lines',
+                        type: 'new',
+                        content: `apiVersion: v1
+kind: Service
+metadata:
+  name: kaiden-demo-app
+  labels:
+    app: kaiden-demo-app
+spec:
+  selector:
+    app: kaiden-demo-app
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP`
+                    },
+                    {
+                        name: 'deploy/openshift/route.yaml',
+                        change: '+16 lines',
+                        type: 'new',
+                        content: `apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: kaiden-demo-app
+  labels:
+    app: kaiden-demo-app
+spec:
+  to:
+    kind: Service
+    name: kaiden-demo-app
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect`
+                    }
+                ]
             }
         };
 
@@ -2108,8 +2388,15 @@ spec:
                 avatarLarge.innerHTML = session.iconContent;
                 
                 // Update context
-                document.querySelector('.context-percentage').textContent = session.contextPercent;
-                document.querySelectorAll('.context-stat-value')[0].textContent = session.contextUsed;
+                var ctxPctEl = document.querySelector('.context-percentage');
+                if (ctxPctEl) ctxPctEl.textContent = session.contextPercent;
+                var ctxBadge = document.querySelector('.context-card .summary-card-badge');
+                if (ctxBadge) ctxBadge.textContent = session.contextPercent;
+                var ctxFill = document.querySelector('.context-bar-compact-fill');
+                if (ctxFill && session.contextPercent) ctxFill.style.width = session.contextPercent;
+                var ctxStats = document.querySelectorAll('.context-stat-value');
+                if (ctxStats[0]) ctxStats[0].textContent = session.contextUsed;
+                if (ctxStats[1] && session.contextTotal) ctxStats[1].textContent = session.contextTotal;
                 
                 // Update info grid
                 const infoValues = document.querySelectorAll('.info-item .info-value');

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Extensions</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* ── Extensions Layout: left sidebar + content ── */
@@ -1155,6 +1157,17 @@
         }
 
         function searchExtensions(query) {}
+
+        function applyExtensionsEmptyCatalogIfNeeded() {
+            if (typeof window.isKaidenDemoEmpty !== 'function' || !window.isKaidenDemoEmpty()) return;
+            document.querySelectorAll('.ext-card-status.installed, .ext-card-status.enabled').forEach((el) => {
+                el.classList.remove('installed', 'enabled');
+                el.classList.add('available');
+                el.textContent = 'Available';
+            });
+        }
+
+        document.addEventListener('sidebarLoaded', applyExtensionsEmptyCatalogIfNeeded);
     </script>
 </body>
 </html>

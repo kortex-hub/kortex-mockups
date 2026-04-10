@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden — Setup</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
     <style>
         body.onboarding-page {
             background: #1a1b23;
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 32px 20px;
+            padding: 32px 20px 48px;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .onboarding-container {
@@ -21,6 +24,7 @@
             display: flex;
             flex-direction: column;
             min-height: min(86vh, 700px);
+            flex-shrink: 0;
         }
 
         /* ── Header / Stepper ── */
@@ -63,14 +67,14 @@
             align-items: center;
             gap: 0;
             width: 100%;
-            max-width: 560px;
+            max-width: 720px;
         }
 
         .ob-stepper-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 10px;
             font-weight: 600;
             color: #4b5563;
             white-space: nowrap;
@@ -134,16 +138,17 @@
             background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
             border: 1px solid #3d3e4f;
             border-radius: 16px;
-            overflow: hidden;
+            overflow: visible;
+            min-height: 0;
         }
 
         .ob-step {
             display: none;
             flex-direction: column;
             padding: 36px 40px;
-            flex: 1;
+            flex: 1 1 auto;
             min-height: 0;
-            overflow-y: auto;
+            overflow: visible;
         }
 
         .ob-step.active {
@@ -531,6 +536,114 @@
 
         .ob-project-card-remove svg { width: 14px; height: 14px; }
 
+        .ob-project-card-main {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .ob-project-card-expanded {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .ob-project-card-extra {
+            width: 100%;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ob-project-extra-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .ob-project-extra-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin: -4px 0 10px 0;
+        }
+
+        .ob-project-detect-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ob-project-detect-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 8px 12px;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+        }
+
+        .ob-project-detect-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .ob-project-detect-meta {
+            font-size: 11px;
+            color: #6b7280;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        }
+
+        .ob-project-agent-policy .ob-project-policy-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .ob-project-agent-policy .ob-project-policy-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .ob-project-policy-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+
+        .ob-project-policy-select {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .ob-project-git-hint {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 8px;
+            line-height: 1.45;
+        }
+
+        .ob-project-git-hint a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .ob-project-git-hint a:hover {
+            text-decoration: underline;
+            color: #c4b5fd;
+        }
+
         .ob-mini-spinner {
             width: 18px;
             height: 18px;
@@ -565,7 +678,115 @@
         }
 
         /* ═══════════════════════════════════════
-           Step 3: LLM Providers
+           Coding agents (onboarding step 3)
+           ═══════════════════════════════════════ */
+        .ob-agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        #obStep3 .ob-provider-section {
+            margin-top: 28px;
+        }
+
+        .ob-agent-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            text-align: left;
+        }
+
+        .ob-agent-card:hover {
+            border-color: #6b7280;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .ob-agent-card.selected {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        .ob-agent-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #4b5563;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .ob-agent-card.selected .ob-agent-radio {
+            border-color: #a78bfa;
+            background: radial-gradient(circle, #a78bfa 45%, transparent 48%);
+        }
+
+        .ob-agent-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ob-agent-icon svg { width: 20px; height: 20px; }
+
+        .ob-agent-icon.local {
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+        }
+
+        .ob-agent-icon.remote {
+            background: rgba(167, 139, 250, 0.12);
+            color: #c4b5fd;
+        }
+
+        .ob-agent-icon.rh {
+            background: rgba(238, 68, 51, 0.1);
+            color: #f87171;
+        }
+
+        .ob-agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ob-agent-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .ob-agent-desc {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+            line-height: 1.45;
+        }
+
+        .ob-agent-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.12);
+            padding: 4px 10px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════
+           LLM Providers
            ═══════════════════════════════════════ */
         .ob-provider-section {
             margin-bottom: 24px;
@@ -682,6 +903,47 @@
         .ob-provider-icon.remote svg { color: #a78bfa; }
         .ob-provider-icon.openshift { background: rgba(238, 0, 0, 0.12); }
         .ob-provider-icon.openshift svg { color: #f87171; }
+        .ob-provider-icon.vertex { background: rgba(66, 133, 244, 0.12); }
+        .ob-provider-icon.vertex svg { color: #8ab4f8; }
+
+        .ob-config-hint {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.55;
+            margin: 0 0 10px 0;
+        }
+
+        .ob-provider-doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .ob-provider-doc-link:hover {
+            color: #c4b5fd;
+            text-decoration: underline;
+        }
+
+        .ob-config-check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.45;
+            margin-top: 6px;
+        }
+
+        .ob-config-check-row input[type="checkbox"] {
+            margin-top: 3px;
+            flex-shrink: 0;
+            accent-color: #8b5cf6;
+        }
 
         .ob-provider-info {
             flex: 1;
@@ -864,6 +1126,37 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+
+        .ob-scan-panel-hidden {
+            display: none !important;
+        }
+
+        .ob-scan-intro {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+        }
+
+        .ob-scan-explainer-body {
+            margin: 0;
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.65;
+            max-width: 560px;
+        }
+
+        .ob-scan-explainer-body code {
+            font-size: 11px;
+            background: rgba(139, 92, 246, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #c4b5fd;
         }
 
         .ob-scan-progress {
@@ -1200,24 +1493,29 @@
                 Kaiden
             </div>
 
-            <div class="ob-stepper" id="obStepper" style="display:none;">
+            <div class="ob-stepper" id="obStepper">
                 <div class="ob-stepper-item active" id="obStepInd1">
                     <div class="ob-stepper-dot">1</div>
-                    Projects
+                    LLM Providers
                 </div>
                 <div class="ob-stepper-line" id="obStepLine1"></div>
                 <div class="ob-stepper-item" id="obStepInd2">
                     <div class="ob-stepper-dot">2</div>
-                    LLM Providers
+                    AI Assets
                 </div>
                 <div class="ob-stepper-line" id="obStepLine2"></div>
                 <div class="ob-stepper-item" id="obStepInd3">
                     <div class="ob-stepper-dot">3</div>
-                    AI Assets
+                    Coding Agents
                 </div>
                 <div class="ob-stepper-line" id="obStepLine3"></div>
                 <div class="ob-stepper-item" id="obStepInd4">
                     <div class="ob-stepper-dot">4</div>
+                    Project
+                </div>
+                <div class="ob-stepper-line" id="obStepLine4"></div>
+                <div class="ob-stepper-item" id="obStepInd5">
+                    <div class="ob-stepper-dot">5</div>
                     Ready
                 </div>
             </div>
@@ -1226,42 +1524,8 @@
         <!-- Body -->
         <div class="onboarding-body">
 
-            <!-- ═══ Step 1: Welcome ═══ -->
-            <div class="ob-step ob-welcome active" id="obStep1">
-                <div class="ob-welcome-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                        <polyline points="2 17 12 22 22 17"/>
-                        <polyline points="2 12 12 17 22 12"/>
-                    </svg>
-                </div>
-                <h2>Welcome to Kaiden</h2>
-                <p>Download the installer from <strong>openkaiden.ai</strong> (same idea as podman-desktop.io). This guided flow follows a <strong>Podman Desktop&ndash;style</strong> sequence: extensions (Kaiden CLI, onecli, krunAI, OpenCode, Ramalama, OpenShift MCP, Semantic Router&hellip;), then projects and providers. You will use the coding agent from the terminal with <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code>.</p>
-
-                <div class="ob-welcome-features">
-                    <div class="ob-welcome-feat">
-                        <div class="ob-welcome-feat-icon purple">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5.5 8.5 9 12l-3.5 3.5L2 12l3.5-3.5Z"/><path d="m12 2 3.5 3.5L12 9 8.5 5.5 12 2Z"/></svg>
-                        </div>
-                        <span>Extensions</span>
-                    </div>
-                    <div class="ob-welcome-feat">
-                        <div class="ob-welcome-feat-icon green">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        </div>
-                        <span>Projects</span>
-                    </div>
-                    <div class="ob-welcome-feat">
-                        <div class="ob-welcome-feat-icon cyan">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        </div>
-                        <span>LLM &amp; assets</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ═══ Step 2: Define Projects ═══ -->
-            <div class="ob-step" id="obStep2">
+            <!-- ═══ Step 4: Project (listed after steps 1–3 in flow; id obStep4) ═══ -->
+            <div class="ob-step" id="obStep4">
                 <h3 class="ob-section-title">Add Your Projects</h3>
                 <p class="ob-section-desc">Point Kaiden at your code. You can add local directories or clone from a git repository. We'll analyze each project to detect its language, frameworks, and structure.</p>
 
@@ -1281,12 +1545,13 @@
                     <div class="ob-or-divider">or</div>
 
                     <div class="ob-input-row">
-                        <input type="text" class="ob-input" id="obProjectGit" placeholder="https://github.com/org/repo.git" oninput="updateAddProjectBtn()">
+                        <input type="text" class="ob-input" id="obProjectGit" placeholder="https://github.com/openkaiden/kaiden-demo-app" oninput="updateAddProjectBtn()">
                         <button class="ob-add-btn" id="obAddGitBtn" disabled onclick="addProjectFromGit()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                             Clone & Add
                         </button>
                     </div>
+                    <p class="ob-project-git-hint">Sample repo for demos: <a href="https://github.com/openkaiden/kaiden-demo-app" target="_blank" rel="noopener noreferrer">openkaiden/kaiden-demo-app</a> — after clone we show detected stack files and let you set filesystem and network policy for agents.</p>
                 </div>
 
                 <div class="ob-project-list" id="obProjectList">
@@ -1297,8 +1562,8 @@
                 </div>
             </div>
 
-            <!-- ═══ Step 3: Configure LLM Providers ═══ -->
-            <div class="ob-step" id="obStep3">
+            <!-- ═══ Step 1: LLM Providers ═══ -->
+            <div class="ob-step active" id="obStep1">
                 <h3 class="ob-section-title">Configure LLM Providers</h3>
                 <p class="ob-section-desc">Connect Kaiden to language models for AI-powered assistance. Enable local models for privacy-first workflows, or connect remote APIs for maximum capability.</p>
 
@@ -1338,28 +1603,104 @@
                             </div>
                         </div>
 
-                        <!-- vLLM / OpenShift AI -->
+                        <!-- Ramalama -->
+                        <div class="ob-provider-card" id="provRamalama" onclick="toggleProvider('provRamalama', event)">
+                            <div class="ob-provider-header">
+                                <div class="ob-provider-toggle"></div>
+                                <div class="ob-provider-icon local">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
+                                </div>
+                                <div class="ob-provider-info">
+                                    <div class="ob-provider-name">Ramalama</div>
+                                    <div class="ob-provider-desc">Run models locally with Podman — OpenAI-compatible API, Granite and popular open models</div>
+                                </div>
+                                <div class="ob-provider-status detected">Detected</div>
+                            </div>
+                            <div class="ob-provider-config">
+                                <div class="ob-provider-config-divider"></div>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">Endpoint</label>
+                                    <input type="text" class="ob-config-input" value="http://127.0.0.1:8080/v1" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">Models</label>
+                                    <div class="ob-model-chips" onclick="event.stopPropagation()">
+                                        <div class="ob-model-chip active" onclick="toggleChip(this)">Granite 3.1 8B</div>
+                                        <div class="ob-model-chip active" onclick="toggleChip(this)">Llama 3.2 8B</div>
+                                        <div class="ob-model-chip" onclick="toggleChip(this)">Mistral 7B</div>
+                                        <div class="ob-model-chip" onclick="toggleChip(this)">Qwen 2.5 Coder</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- vLLM -->
                         <div class="ob-provider-card" id="provVllm" onclick="toggleProvider('provVllm', event)">
+                            <div class="ob-provider-header">
+                                <div class="ob-provider-toggle"></div>
+                                <div class="ob-provider-icon local">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                                </div>
+                                <div class="ob-provider-info">
+                                    <div class="ob-provider-name">vLLM</div>
+                                    <div class="ob-provider-desc">High-throughput OpenAI-compatible serving on your own GPUs or LAN</div>
+                                </div>
+                            </div>
+                            <div class="ob-provider-config">
+                                <div class="ob-provider-config-divider"></div>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">Inference endpoint</label>
+                                    <input type="text" class="ob-config-input" placeholder="http://127.0.0.1:8000/v1" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="ob-config-row" onclick="event.stopPropagation()">
+                                    <div class="ob-config-field">
+                                        <label class="ob-config-label">API key (optional)</label>
+                                        <input type="password" class="ob-config-input" placeholder="Bearer token">
+                                    </div>
+                                    <div class="ob-config-field">
+                                        <label class="ob-config-label">Model</label>
+                                        <select class="ob-config-select">
+                                            <option>granite-3.1-8b-instruct</option>
+                                            <option>mistral-7b-instruct</option>
+                                            <option>llama-3.2-70b</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="ob-config-test-btn" onclick="event.stopPropagation(); testConnection(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Test Connection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ob-provider-section">
+                    <div class="ob-provider-section-label">In House Models</div>
+                    <div class="ob-provider-list">
+
+                        <!-- OpenShift AI -->
+                        <div class="ob-provider-card" id="provOpenshiftAI" onclick="toggleProvider('provOpenshiftAI', event)">
                             <div class="ob-provider-header">
                                 <div class="ob-provider-toggle"></div>
                                 <div class="ob-provider-icon openshift">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                                 </div>
                                 <div class="ob-provider-info">
-                                    <div class="ob-provider-name">vLLM / OpenShift AI</div>
-                                    <div class="ob-provider-desc">Connect to on-premise model serving via OpenShift AI or standalone vLLM</div>
+                                    <div class="ob-provider-name">OpenShift AI</div>
+                                    <div class="ob-provider-desc">Connect to governed model serving on your OpenShift AI cluster</div>
                                 </div>
                             </div>
                             <div class="ob-provider-config">
                                 <div class="ob-provider-config-divider"></div>
                                 <div class="ob-config-field">
-                                    <label class="ob-config-label">Inference Endpoint</label>
-                                    <input type="text" class="ob-config-input" placeholder="https://vllm.openshift.example.com/v1" onclick="event.stopPropagation()">
+                                    <label class="ob-config-label">OpenShift AI URL</label>
+                                    <input type="text" class="ob-config-input" placeholder="https://ai.openshift.example.com/v1" onclick="event.stopPropagation()">
                                 </div>
                                 <div class="ob-config-row" onclick="event.stopPropagation()">
                                     <div class="ob-config-field">
-                                        <label class="ob-config-label">Auth Token</label>
-                                        <input type="password" class="ob-config-input" placeholder="Bearer token">
+                                        <label class="ob-config-label">Auth token</label>
+                                        <input type="password" class="ob-config-input" placeholder="Bearer or OAuth token">
                                     </div>
                                     <div class="ob-config-field">
                                         <label class="ob-config-label">Model</label>
@@ -1440,13 +1781,21 @@
                 </div>
             </div>
 
-            <!-- ═══ Step 4: Scan AI Assets ═══ -->
-            <div class="ob-step" id="obStep4">
+            <!-- ═══ Step 2: AI Assets ═══ -->
+            <div class="ob-step" id="obStep2">
                 <h3 class="ob-section-title">Discover AI Assets</h3>
-                <p class="ob-section-desc">We'll scan your projects to find existing AI assets — MCP tool configurations, skills, knowledge bases, and more.</p>
+                <p class="ob-section-desc">This step finds AI-related resources already in your workspace. Nothing runs until you choose to detect.</p>
 
                 <div class="ob-scan-container">
-                    <div class="ob-scan-progress" id="obScanProgress">
+                    <div class="ob-scan-intro" id="obScanIntro">
+                        <p class="ob-scan-explainer-body">Kaiden walks your project roots and looks for things like MCP tool manifests under <code>.mcp/</code>, reusable agent skills, and folders that work well as knowledge bases (for example docs or API specs). The pass is local to your machine—we only enumerate paths and surface candidates here so you can turn individual items on or off before continuing.</p>
+                        <button type="button" class="ob-btn ob-btn-primary" onclick="startScan()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            Detect resources
+                        </button>
+                    </div>
+
+                    <div class="ob-scan-progress ob-scan-panel-hidden" id="obScanProgress">
                         <div class="ob-scan-bar-track">
                             <div class="ob-scan-bar-fill" id="obScanBar"></div>
                         </div>
@@ -1560,6 +1909,96 @@
                 </div>
             </div>
 
+            <!-- ═══ Step 3: Coding Agents ═══ -->
+            <div class="ob-step" id="obStep3">
+                <h3 class="ob-section-title">Coding agents</h3>
+                <p class="ob-section-desc">Choose the default agent runtime for terminal-based work with <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn</code>. You can override this per workspace later. If you use Claude Code through Google Vertex AI, expand <span style="font-weight:600;color:#d1d5db;">OTHER</span> below for the matching <code style="font-size:11px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;">agents.json</code> settings.</p>
+
+                <div class="ob-agent-list">
+                    <div class="ob-agent-card selected" data-agent="opencode" onclick="selectAgentCard(this)">
+                        <div class="ob-agent-radio"></div>
+                        <div class="ob-agent-icon local">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                        </div>
+                        <div class="ob-agent-info">
+                            <div class="ob-agent-name">OpenCode</div>
+                            <div class="ob-agent-desc">Local open-source agent — pairs with Ramalama / Ollama on your machine</div>
+                        </div>
+                        <span class="ob-agent-badge">Recommended</span>
+                    </div>
+                    <div class="ob-agent-card" data-agent="claude" onclick="selectAgentCard(this)">
+                        <div class="ob-agent-radio"></div>
+                        <div class="ob-agent-icon remote">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                        </div>
+                        <div class="ob-agent-info">
+                            <div class="ob-agent-name">Claude Code</div>
+                            <div class="ob-agent-desc">Anthropic Claude in the terminal — use when using a remote / bridged setup</div>
+                        </div>
+                    </div>
+                    <div class="ob-agent-card" data-agent="codex" onclick="selectAgentCard(this)">
+                        <div class="ob-agent-radio"></div>
+                        <div class="ob-agent-icon remote">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <div class="ob-agent-info">
+                            <div class="ob-agent-name">Codex</div>
+                            <div class="ob-agent-desc">OpenAI Codex — agentic edits and tool use in the terminal or supported editors</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ob-provider-section">
+                    <div class="ob-provider-section-label">OTHER</div>
+                    <div class="ob-provider-list">
+
+                        <!-- Claude Code + Vertex AI (kdn agents.json scenario) -->
+                        <div class="ob-provider-card" id="provClaudeVertex" onclick="toggleProvider('provClaudeVertex', event)">
+                            <div class="ob-provider-header">
+                                <div class="ob-provider-toggle"></div>
+                                <div class="ob-provider-icon vertex">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                                </div>
+                                <div class="ob-provider-info">
+                                    <div class="ob-provider-name">Claude with a model from Vertex AI</div>
+                                    <div class="ob-provider-desc">Use together with Claude Code above — route inference through Google Cloud Vertex AI instead of the Anthropic API</div>
+                                </div>
+                            </div>
+                            <div class="ob-provider-config">
+                                <div class="ob-provider-config-divider"></div>
+                                <p class="ob-config-hint">These values map to <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">environment</code> entries for the Claude agent in <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">~/.kdn/config/agents.json</code>. Run <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:2px 5px;border-radius:4px;">gcloud auth application-default login</code> on the host before starting the workspace.</p>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">CLAUDE_CODE_USE_VERTEX</label>
+                                    <input type="text" class="ob-config-input" value="1" placeholder="1" onclick="event.stopPropagation()" readonly style="opacity:0.85;cursor:default;">
+                                </div>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">ANTHROPIC_VERTEX_PROJECT_ID</label>
+                                    <input type="text" class="ob-config-input" placeholder="my-gcp-project-id" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="ob-config-field">
+                                    <label class="ob-config-label">CLOUD_ML_REGION</label>
+                                    <input type="text" class="ob-config-input" placeholder="us-east5" onclick="event.stopPropagation()">
+                                </div>
+                                <p class="ob-config-hint" style="margin-top:10px;">Mounts (add under <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">claude.mounts</code> in the same file):</p>
+                                <label class="ob-config-check-row" onclick="event.stopPropagation()">
+                                    <input type="checkbox" checked onclick="event.stopPropagation()">
+                                    <span>Mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">$HOME/.config/gcloud</code> read-only for application default credentials</span>
+                                </label>
+                                <label class="ob-config-check-row" onclick="event.stopPropagation()">
+                                    <input type="checkbox" onclick="event.stopPropagation()">
+                                    <span>Also mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude</code> and <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude.json</code> (optional; reuse host Claude Code settings)</span>
+                                </label>
+                                <p class="ob-config-hint" style="margin-top:8px;">No <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">ANTHROPIC_API_KEY</code> is required when using Vertex; credentials come from the mounted gcloud config.</p>
+                                <a class="ob-provider-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    kdn README: Claude with a model from Vertex AI
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ═══ Step 5: Ready ═══ -->
             <div class="ob-step ob-ready" id="obStep5">
                 <div class="ob-ready-icon">
@@ -1568,10 +2007,10 @@
                     </svg>
                 </div>
                 <h2>You're All Set!</h2>
-                <p>Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.</p>
+                <p id="obReadyIntro">Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.</p>
 
                 <div class="ob-ready-summary">
-                    <div class="ob-ready-stat">
+                    <div class="ob-ready-stat ob-ready-stat--projects">
                         <div class="ob-ready-stat-val purple" id="readyProjects">0</div>
                         <div class="ob-ready-stat-label">Projects</div>
                     </div>
@@ -1583,7 +2022,12 @@
                         <div class="ob-ready-stat-val cyan" id="readyAssets">0</div>
                         <div class="ob-ready-stat-label">AI Assets</div>
                     </div>
+                    <div class="ob-ready-stat">
+                        <div class="ob-ready-stat-val" style="color:#fbbf24;font-size:15px;line-height:1.2;max-width:100px;word-break:break-word;" id="readyAgentLabel">—</div>
+                        <div class="ob-ready-stat-label">Coding agent</div>
+                    </div>
                 </div>
+                <p class="ob-ready-agent-line" id="readyAgentPick" style="text-align:center;font-size:12px;color:#9ca3af;margin-top:14px;"></p>
             </div>
 
         </div>
@@ -1599,7 +2043,7 @@
             <div class="ob-footer-right">
                 <button class="ob-btn ob-btn-ghost" id="obSkipBtn" style="display:none;" onclick="skipStep()">Skip</button>
                 <button class="ob-btn ob-btn-primary" id="obNextBtn" onclick="goNext()">
-                    Get Started
+                    Continue
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
             </div>
@@ -1611,8 +2055,11 @@
 
     <script>
         let currentStep = 1;
-        const totalSteps = 5;
         const projects = [];
+
+        function obSkipProjectStep() {
+            return typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
+        }
 
         const sampleProjects = {
             '/home/user/projects/my-app': {
@@ -1641,8 +2088,71 @@
                 lang: 'Rust',
                 framework: 'Cargo workspace',
                 path: 'github.com/kaiden-io/kaiden'
+            },
+            'github.com/openkaiden/kaiden-demo-app': {
+                name: 'kaiden-demo-app',
+                lang: 'JavaScript',
+                framework: 'Node.js · Express',
+                path: 'github.com/openkaiden/kaiden-demo-app',
+                profile: {
+                    repoUrl: 'https://github.com/openkaiden/kaiden-demo-app',
+                    detections: [
+                        { label: 'Node.js', detail: 'package.json · package-lock.json' },
+                        { label: 'HTTP server', detail: 'server.js (Express-style entry)' },
+                        { label: 'Container images', detail: 'Dockerfile · docker-compose.yml' },
+                        { label: 'Static front-end', detail: 'public/' }
+                    ]
+                }
             }
         };
+
+        function normaliseGitRepoInput(raw) {
+            let s = raw.trim().replace(/^https?:\/\//i, '').replace(/\.git$/i, '');
+            s = s.replace(/\/+$/, '');
+            if (s.toLowerCase().startsWith('www.')) s = s.slice(4);
+            return s.toLowerCase();
+        }
+
+        function renderProjectCardExtra(id, profile) {
+            if (!profile || !profile.detections) return '';
+            const items = profile.detections.map(d =>
+                '<div class="ob-project-detect-item">' +
+                '<span class="ob-project-detect-name">' + d.label + '</span>' +
+                '<span class="ob-project-detect-meta">' + d.detail + '</span>' +
+                '</div>'
+            ).join('');
+            return (
+                '<div class="ob-project-card-extra">' +
+                '<div class="ob-project-detect">' +
+                '<div class="ob-project-extra-title">Detected in repository</div>' +
+                '<div class="ob-project-detect-list">' + items + '</div>' +
+                '</div>' +
+                '<div class="ob-project-agent-policy">' +
+                '<div class="ob-project-extra-title">Agent policy</div>' +
+                '<p class="ob-project-extra-desc">Controls how coding agents may use the filesystem and the network in this workspace. You can refine these later under Projects.</p>' +
+                '<div class="ob-project-policy-row">' +
+                '<label class="ob-project-policy-label" for="projFs-' + id + '">Filesystem mode</label>' +
+                '<select class="ob-config-select ob-project-policy-select" id="projFs-' + id + '" onclick="event.stopPropagation()">' +
+                '<option value="workspace" selected>Workspace only (default)</option>' +
+                '<option value="project-rw">Project tree read/write</option>' +
+                '<option value="ro-escape">Read-only outside workspace</option>' +
+                '</select></div>' +
+                '<div class="ob-project-policy-row">' +
+                '<label class="ob-project-policy-label" for="projNet-' + id + '">Network mode</label>' +
+                '<select class="ob-config-select ob-project-policy-select" id="projNet-' + id + '" onclick="event.stopPropagation()">' +
+                '<option value="blocked">Blocked (no outbound)</option>' +
+                '<option value="registries" selected>Package registries only (npm, PyPI, …)</option>' +
+                '<option value="allowlist">Allowlist (configure in Projects)</option>' +
+                '<option value="open">Unrestricted</option>' +
+                '</select></div>' +
+                '</div></div>'
+            );
+        }
+
+        function selectAgentCard(el) {
+            document.querySelectorAll('.ob-agent-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
 
         function goToStep(n) {
             document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
@@ -1651,37 +2161,58 @@
             updateStepper(n);
             updateFooter(n);
 
-            if (n === 4) startScan();
             if (n === 5) showReadySummary();
         }
 
         function updateStepper(n) {
             const stepper = document.getElementById('obStepper');
-            stepper.style.display = (n === 1) ? 'none' : 'flex';
+            const skip = obSkipProjectStep();
+            stepper.style.display = 'flex';
 
-            const stepMapping = [
-                { ind: 1, stepNum: 2 },
-                { ind: 2, stepNum: 3 },
-                { ind: 3, stepNum: 4 },
-                { ind: 4, stepNum: 5 },
-            ];
+            const line3 = document.getElementById('obStepLine3');
+            const ind4 = document.getElementById('obStepInd4');
+            const dot5 = document.querySelector('#obStepInd5 .ob-stepper-dot');
+            if (skip) {
+                if (line3) line3.style.display = 'none';
+                if (ind4) ind4.style.display = 'none';
+                if (dot5) dot5.textContent = '4';
+            } else {
+                if (line3) line3.style.display = '';
+                if (ind4) ind4.style.display = '';
+                if (dot5) dot5.textContent = '5';
+            }
 
-            stepMapping.forEach(({ ind, stepNum }) => {
-                const el = document.getElementById('obStepInd' + ind);
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById('obStepInd' + i);
+                if (!el) continue;
+                if (skip && i === 4) continue;
+
                 el.classList.remove('active', 'done');
-                if (n === stepNum) el.classList.add('active');
-                else if (n > stepNum) el.classList.add('done');
-            });
-
-            [1, 2, 3].forEach(i => {
-                const line = document.getElementById('obStepLine' + i);
-                const lineStep = stepMapping[i] ? stepMapping[i].stepNum : 99;
-                if (n > stepMapping[i - 1].stepNum) {
-                    line.classList.add('done');
-                } else {
-                    line.classList.remove('done');
+                if (n === i) {
+                    el.classList.add('active');
+                } else if (skip) {
+                    if (i < 4 && n > i) el.classList.add('done');
+                } else if (n > i) {
+                    el.classList.add('done');
                 }
-            });
+            }
+
+            for (let i = 1; i <= 4; i++) {
+                const line = document.getElementById('obStepLine' + i);
+                if (!line) continue;
+                if (skip && i === 3) {
+                    line.style.display = 'none';
+                    continue;
+                }
+                line.style.display = '';
+                let done;
+                if (skip && i === 4) {
+                    done = n >= 5;
+                } else {
+                    done = n > i;
+                }
+                line.classList.toggle('done', done);
+            }
         }
 
         function updateFooter(n) {
@@ -1690,11 +2221,9 @@
             const nextBtn = document.getElementById('obNextBtn');
 
             backBtn.style.display = (n > 1 && n < 5) ? 'flex' : 'none';
-            skipBtn.style.display = (n >= 2 && n <= 4) ? 'block' : 'none';
+            skipBtn.style.display = (n >= 1 && n <= 4) ? 'block' : 'none';
 
-            if (n === 1) {
-                nextBtn.innerHTML = 'Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
-            } else if (n === 5) {
+            if (n === 5) {
                 nextBtn.innerHTML = 'Go to Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
             } else {
                 nextBtn.innerHTML = 'Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
@@ -1703,14 +2232,30 @@
 
         function goNext() {
             if (currentStep === 5) {
-                window.location.href = '../projects/index.html';
+                try {
+                    localStorage.setItem('kaidenOnboardingComplete', '1');
+                } catch (e) { /* ignore */ }
+                if (typeof window.kaidenExitDemoPreserveOnboarding === 'function') {
+                    window.kaidenExitDemoPreserveOnboarding();
+                }
+                var agentsFirst = typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
+                window.location.href = agentsFirst ? '../sessions/index.html' : '../projects/index.html';
                 return;
             }
-            goToStep(currentStep + 1);
+            let next = currentStep + 1;
+            if (obSkipProjectStep() && next === 4) {
+                next = 5;
+            }
+            goToStep(next);
         }
 
         function goBack() {
-            if (currentStep > 1) goToStep(currentStep - 1);
+            if (currentStep <= 1) return;
+            let prev = currentStep - 1;
+            if (obSkipProjectStep() && prev === 4) {
+                prev = 3;
+            }
+            goToStep(prev);
         }
 
         function skipStep() {
@@ -1743,7 +2288,7 @@
             const lang = known ? known.lang : 'JavaScript';
             const framework = known ? known.framework : 'Node.js';
 
-            addProjectCard(name, raw, lang, framework, false);
+            addProjectCard(name, raw, lang, framework, false, null);
             input.value = '';
             updateAddProjectBtn();
         }
@@ -1753,18 +2298,19 @@
             const raw = input.value.trim();
             if (!raw) return;
 
-            const normalised = raw.replace(/^https?:\/\//, '').replace(/\.git$/, '');
+            const normalised = normaliseGitRepoInput(raw);
             const known = sampleGitRepos[normalised];
             const name = known ? known.name : normalised.split('/').pop();
             const lang = known ? known.lang : 'Python';
             const framework = known ? known.framework : 'Django';
+            const profile = known && known.profile ? known.profile : null;
 
-            addProjectCard(name, raw, lang, framework, true);
+            addProjectCard(name, raw, lang, framework, true, profile);
             input.value = '';
             updateAddProjectBtn();
         }
 
-        function addProjectCard(name, source, lang, framework, isGit) {
+        function addProjectCard(name, source, lang, framework, isGit, profile) {
             const empty = document.getElementById('obProjectEmpty');
             if (empty) empty.style.display = 'none';
 
@@ -1772,39 +2318,46 @@
             const id = 'proj-' + Date.now();
 
             const card = document.createElement('div');
-            card.className = 'ob-project-card analyzing';
+            card.className = 'ob-project-card analyzing' + (profile ? ' ob-project-card-expanded' : '');
             card.id = id;
             card.innerHTML = `
-                <div class="ob-project-card-icon analyzing">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <div class="ob-project-card-main">
+                    <div class="ob-project-card-icon analyzing">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="ob-project-card-info">
+                        <div class="ob-project-card-name">${name}</div>
+                        <div class="ob-project-card-meta">Analyzing project...</div>
+                    </div>
+                    <div class="ob-mini-spinner"></div>
                 </div>
-                <div class="ob-project-card-info">
-                    <div class="ob-project-card-name">${name}</div>
-                    <div class="ob-project-card-meta">Analyzing project...</div>
-                </div>
-                <div class="ob-mini-spinner"></div>
             `;
             list.appendChild(card);
 
             setTimeout(() => {
                 card.classList.remove('analyzing');
                 card.classList.add('ready');
+                if (profile) card.classList.add('ob-project-card-expanded');
+                const extra = renderProjectCardExtra(id, profile);
                 card.innerHTML = `
-                    <div class="ob-project-card-icon ready">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                    <div class="ob-project-card-info">
-                        <div class="ob-project-card-name">${name}</div>
-                        <div class="ob-project-card-meta">
-                            <span class="lang-tag">${lang}</span>
-                            ${framework} ${isGit ? '· cloned' : '· local'}
+                    <div class="ob-project-card-main">
+                        <div class="ob-project-card-icon ready">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
+                        <div class="ob-project-card-info">
+                            <div class="ob-project-card-name">${name}</div>
+                            <div class="ob-project-card-meta">
+                                <span class="lang-tag">${lang}</span>
+                                ${framework} ${isGit ? '· cloned' : '· local'}
+                            </div>
+                        </div>
+                        <button class="ob-project-card-remove" onclick="removeProject('${id}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
                     </div>
-                    <button class="ob-project-card-remove" onclick="removeProject('${id}')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
+                    ${extra}
                 `;
-                projects.push({ name, lang, framework });
+                projects.push({ name, lang, framework, profile: profile || null });
             }, 1600);
         }
 
@@ -1862,11 +2415,24 @@
             if (scanStarted) return;
             scanStarted = true;
 
+            const intro = document.getElementById('obScanIntro');
+            const progressEl = document.getElementById('obScanProgress');
+            if (intro) intro.classList.add('ob-scan-panel-hidden');
+            if (progressEl) progressEl.classList.remove('ob-scan-panel-hidden');
+
             const bar = document.getElementById('obScanBar');
             const text = document.getElementById('obScanText');
             const pathEl = document.getElementById('obScanPath');
             const spinner = document.getElementById('obScanSpinner');
             const results = document.getElementById('obScanResults');
+
+            bar.style.width = '0%';
+            bar.classList.remove('done');
+            text.textContent = 'Preparing scan...';
+            text.style.color = '';
+            pathEl.textContent = '';
+            if (spinner) spinner.style.display = '';
+            results.classList.remove('visible');
 
             const scanPaths = [
                 'package.json', 'src/index.ts', '.mcp/filesystem.json',
@@ -1907,13 +2473,37 @@
         // ── Ready ──
 
         function showReadySummary() {
+            const skipProj = obSkipProjectStep();
+            const intro = document.getElementById('obReadyIntro');
+            if (intro) {
+                if (skipProj) {
+                    intro.innerHTML = 'Your Kaiden environment is configured for an <strong>agent-first</strong> workflow (projects are optional). Open <strong>Agents</strong> to create a workspace, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.';
+                } else {
+                    intro.innerHTML = 'Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.';
+                }
+            }
+
             const projectCards = document.querySelectorAll('.ob-project-card.ready').length;
-            const providerCards = document.querySelectorAll('.ob-provider-card.selected, .ob-provider-card.connected').length;
+            const providerCards = document.querySelectorAll('#obStep1 .ob-provider-card.selected, #obStep1 .ob-provider-card.connected').length;
             const assetCards = document.querySelectorAll('.ob-asset-item.checked').length;
+            const agentCard = document.querySelector('.ob-agent-card.selected');
+            const agentNameEl = agentCard && agentCard.querySelector('.ob-agent-name');
+            const agentName = agentNameEl ? agentNameEl.textContent.trim() : '—';
 
             document.getElementById('readyProjects').textContent = projectCards;
             document.getElementById('readyProviders').textContent = providerCards;
             document.getElementById('readyAssets').textContent = assetCards;
+            document.getElementById('readyAgentLabel').textContent = agentName;
+
+            const vertexCard = document.getElementById('provClaudeVertex');
+            const vertexOn = vertexCard && (vertexCard.classList.contains('selected') || vertexCard.classList.contains('connected'));
+
+            const pickLine = document.getElementById('readyAgentPick');
+            if (pickLine) {
+                let t = agentCard ? 'Default coding agent: ' + agentName + '.' : '';
+                if (vertexOn) t += (t ? ' ' : '') + 'Claude Code + Vertex AI (OTHER) is enabled.';
+                pickLine.textContent = t;
+            }
 
             launchConfetti();
         }
@@ -1941,6 +2531,7 @@
         }
 
         // Init
+        updateStepper(1);
         updateFooter(1);
     </script>
 

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Workspace Settings</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* Settings Page Styles */
@@ -404,9 +406,11 @@
             color: #ffffff;
         }
 
-        .agent-option-icon.goose {
-            background: linear-gradient(135deg, #ec4899, #db2777);
+        .agent-option-icon.opencode {
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #ffffff;
+            font-size: 13px;
+            letter-spacing: -0.04em;
         }
 
         .agent-option-info h4 {
@@ -1261,10 +1265,10 @@
                                         </div>
                                     </div>
                                     <div class="agent-option" onclick="selectAgent(this)">
-                                        <div class="agent-option-icon goose">G</div>
+                                        <div class="agent-option-icon opencode">OC</div>
                                         <div class="agent-option-info">
-                                            <h4>Goose</h4>
-                                            <span>Block</span>
+                                            <h4>OpenCode</h4>
+                                            <span>Open runtime</span>
                                         </div>
                                         <div class="agent-option-check">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">

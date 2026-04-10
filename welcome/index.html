@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden — Welcome</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body.welcome-page {
+            background: #1a1b23;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 20px;
+        }
+
+        .welcome-container {
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 28px;
+        }
+
+        .welcome-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #e5e7eb;
+            letter-spacing: -0.01em;
+        }
+
+        .welcome-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-logo-icon svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+        }
+
+        .welcome-card {
+            width: 100%;
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.08) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-icon-wrap svg {
+            width: 36px;
+            height: 36px;
+            color: #8b5cf6;
+        }
+
+        .welcome-card h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-card p {
+            font-size: 15px;
+            color: #9ca3af;
+            line-height: 1.65;
+            margin: 0;
+            max-width: 420px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 8px;
+        }
+
+        .welcome-btn {
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .welcome-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .welcome-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #fff;
+        }
+
+        .welcome-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .welcome-btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            color: #9ca3af;
+        }
+
+        .welcome-btn-secondary:hover {
+            border-color: #6b7280;
+            color: #e5e7eb;
+        }
+
+    </style>
+    <script src="../assets/js/demo-scenario.js"></script>
+</head>
+<body class="welcome-page">
+    <div class="welcome-container">
+        <div class="welcome-logo">
+            <div class="welcome-logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <span>Kaiden</span>
+        </div>
+
+        <div class="welcome-card">
+            <div class="welcome-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                </svg>
+            </div>
+            <h1>Welcome — Kaiden is not configured yet</h1>
+            <p>
+                You have not set up models, extensions, agents, or policies. Start the guided setup to configure your environment, or browse the extension catalog first if you prefer to explore what is available.
+            </p>
+            <div class="welcome-actions">
+                <a class="welcome-btn welcome-btn-primary" href="../onboarding/index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                    Start guided setup
+                </a>
+                <a class="welcome-btn welcome-btn-secondary" href="../extensions/index.html?demo=onboarding">
+                    Browse extension catalog
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

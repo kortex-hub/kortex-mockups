@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden CLI</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
     <style>
         .cli-page-layout {
             display: flex;
@@ -191,7 +192,7 @@
 
         .cli-tab-icon.claude { color: #f59e0b; }
         .cli-tab-icon.codex { color: #10b981; }
-        .cli-tab-icon.goose { color: #8b5cf6; }
+        .cli-tab-icon.opencode { color: #10b981; }
         .cli-tab-icon.cursor { color: #06b6d4; }
         .cli-tab-icon.kdn { color: #67e8f9; }
 
@@ -1056,7 +1057,7 @@
                             <p>Initialize a new workspace in the specified directory</p>
                             <div class="command-ref-params">
                                 <span class="param"><code>--name &lt;name&gt;</code> Workspace name (default: directory name)</span>
-                                <span class="param"><code>--agent &lt;type&gt;</code> Agent type: claude-code, codex, goose, cursor</span>
+                                <span class="param"><code>--agent &lt;type&gt;</code> Agent type: claude-code, codex, opencode, cursor</span>
                                 <span class="param"><code>--config &lt;path&gt;</code> Configuration directory (default: DIR/.kdn/)</span>
                             </div>
                         </div>
@@ -1174,7 +1175,7 @@
         <!-- CLI Status Bar -->
         <div class="global-status-bar" id="globalStatusBar">
             <div class="status-bar-left">
-                <div class="status-bar-item status-bar-ui-mode" onclick="window.location.href='../projects/index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
+                <div class="status-bar-item status-bar-ui-mode" id="cliProjectsStatusChip" onclick="window.location.href='../projects/index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"/>
                         <rect x="14" y="3" width="7" height="7"/>
@@ -1326,7 +1327,7 @@
             const classes = {
                 'claude-code': 'claude',
                 'codex': 'codex',
-                'goose': 'goose',
+                'opencode': 'opencode',
                 'cursor': 'cursor',
                 'kdn': 'kdn'
             };
@@ -1531,12 +1532,12 @@
                 icon: 'X',
                 color: '#10b981'
             },
-            'goose': {
-                name: 'Goose',
-                provider: 'Block',
+            'opencode': {
+                name: 'OpenCode',
+                provider: 'OpenCode',
                 defaultModel: 'Claude 3.5 Sonnet',
-                icon: 'G',
-                color: '#8b5cf6'
+                icon: 'OC',
+                color: '#10b981'
             },
             'cursor': {
                 name: 'Cursor Agent',
@@ -1704,7 +1705,7 @@
             addOutput('COMMANDS:', 'highlight');
             addOutput('  init [DIR]             Initialize a new workspace');
             addOutput('       --name <name>     Workspace name (default: directory name)');
-            addOutput('       --agent <type>    Agent type: claude-code, codex, goose, cursor');
+            addOutput('       --agent <type>    Agent type: claude-code, codex, opencode, cursor');
             addOutput('       --config <path>   Configuration directory (default: DIR/.kdn/)');
             addOutput('  workspace list         List all running workspaces with context usage');
             addOutput('  workspace info <id>    Show detailed workspace info and context window');
@@ -1739,7 +1740,7 @@
             addOutput('AVAILABLE AGENTS:', 'highlight');
             addOutput('  claude-code            Claude Code (Anthropic)');
             addOutput('  codex                  Codex CLI (OpenAI)');
-            addOutput('  goose                  Goose (Block)');
+            addOutput('  opencode               OpenCode (open agent runtime)');
             addOutput('  cursor                 Cursor Agent');
             addOutput('');
             addOutput('KEYBOARD SHORTCUTS:', 'highlight');
@@ -1750,7 +1751,7 @@
             addOutput('EXAMPLES:', 'highlight');
             addOutput('  kdn init --name my-project --agent claude-code');
             addOutput('  kdn init /path/to/project --agent codex');
-            addOutput('  kdn init --name feature/issue-123 --agent goose');
+            addOutput('  kdn init --name feature/issue-123 --agent opencode');
             addOutput('  kdn mcp install github --workspace agt_123');
         }
 
@@ -1769,7 +1770,7 @@
                 addOutput('');
                 addOutput('  [1] Claude Code     - Anthropic\'s coding agent (Claude 3.5 Sonnet)');
                 addOutput('  [2] Codex CLI       - OpenAI\'s coding assistant (o3-mini)');
-                addOutput('  [3] Goose           - Block\'s autonomous agent (Claude 3.5 Sonnet)');
+                addOutput('  [3] OpenCode        - Open, extensible coding agent runtime');
                 addOutput('  [4] Cursor Agent    - Cursor\'s AI coding agent (Claude 3.5 Sonnet)');
                 addOutput('');
                 addOutput('Use --agent flag to specify: kdn init --agent claude-code', 'muted');
@@ -1838,9 +1839,9 @@
             } else if (agentType === 'codex') {
                 clearTerminal();
                 showCodexInterface(workName);
-            } else if (agentType === 'goose') {
+            } else if (agentType === 'opencode') {
                 clearTerminal();
-                showGooseInterface(workName);
+                showOpenCodeInterface(workName);
             } else if (agentType === 'cursor') {
                 clearTerminal();
                 showCursorInterface(workName);
@@ -1875,35 +1876,28 @@
             addOutput('');
         }
 
-        function showGooseInterface(projectName) {
+        function showOpenCodeInterface(projectName) {
             // Update tab
-            updateTab(activeTabId, { name: `goose: ${projectName}`, type: 'goose' });
+            updateTab(activeTabId, { name: `opencode: ${projectName}`, type: 'opencode' });
             
             // Update prompt
             const promptEl = getPromptEl();
             if (promptEl) {
-                promptEl.textContent = 'goose>';
-                promptEl.style.color = '#8b5cf6';
+                promptEl.textContent = 'opencode>';
+                promptEl.style.color = '#10b981';
             }
-            getCurrentTab().promptText = 'goose>';
-            getCurrentTab().promptColor = '#8b5cf6';
+            getCurrentTab().promptText = 'opencode>';
+            getCurrentTab().promptColor = '#10b981';
 
-            addOutputHTML(`<span style="color: #8b5cf6; font-weight: bold;">
-   ▄████  ▒█████   ▒█████    ██████ ▓█████ 
-  ██▒ ▀█▒██▒  ██▒▒██▒  ██▒▒██    ▒ ▓█   ▀ 
- ▒██░▄▄▄░▒██░  ██▒▒██░  ██▒░ ▓██▄   ▒███   
- ░▓█  ██▓▒██   ██░▒██   ██░  ▒   ██▒▒▓█  ▄ 
- ░▒▓███▀▒░ ████▓▒░░ ████▓▒░▒██████▒▒░▒████▒
-  ░▒   ▒ ░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░
-            </span>`);
+            addOutputHTML(`<span style="color: #10b981;">╔═══════════════════════════════════════════════════════════════════════════╗</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">OpenCode</span> <span style="color: #6b7280;">v1.0</span> <span style="color: #9ca3af;">— Open coding agent runtime</span>                          <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">╠═══════════════════════════════════════════════════════════════════════════╣</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Session:</span>  ${projectName.padEnd(58)}<span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Model:</span>    Claude 3.5 Sonnet (via provider plugin)                    <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Sandbox:</span>  Enabled                                                       <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">╚═══════════════════════════════════════════════════════════════════════════╝</span>`);
             addOutput('');
-            addOutputHTML(`  <span style="color: #8b5cf6;">Goose</span> <span style="color: #6b7280;">v0.9.2</span> <span style="color: #9ca3af;">— Autonomous Developer Agent by Block</span>`);
-            addOutput('');
-            addOutputHTML(`  <span style="color: #e5e7eb;">Session:</span>  ${projectName}`);
-            addOutputHTML(`  <span style="color: #e5e7eb;">Provider:</span> Anthropic (Claude 3.5 Sonnet)`);
-            addOutputHTML(`  <span style="color: #e5e7eb;">Toolkit:</span>  developer, github, jira`);
-            addOutput('');
-            addOutput('  Honk! Ready to help. What are we building today?', 'muted');
+            addOutput('  Ready. Describe a task or run /help for commands.', 'muted');
             addOutput('');
         }
 
@@ -1952,7 +1946,7 @@
             addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
             addOutput('│ agt_7x8k2m9n4p1q │ frontend-refactor  │ Claude Code  │ Claude 3.5       │ 124K/200K    │ Running  │', 'success');
             addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
-            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ Goose        │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
             addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Cursor       │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
             addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
             addOutput('');
@@ -1998,7 +1992,7 @@
                 },
                 'agt_9m8n7o6p5q4r': {
                     name: 'bug-investigation',
-                    agent: 'Goose',
+                    agent: 'OpenCode',
                     model: 'Claude 3.5 Sonnet',
                     status: 'Paused',
                     path: '~/slemeur/bug-investigation',
@@ -3122,7 +3116,7 @@
             addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
             addOutput('│ agt_7x8k2m9n4p1q │ my-project         │ Claude Code  │ Claude 3.5       │ 12K/200K     │ Running  │', 'success');
             addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
-            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ Goose        │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
             addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Cursor       │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
             addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
             addOutput('');

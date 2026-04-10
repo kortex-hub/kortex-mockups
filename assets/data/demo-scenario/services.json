@@ -1,0 +1,84 @@
+{
+  "onboarding": {
+    "subtitle": "0 credentials · tokens and platform keys",
+    "mode": "empty",
+    "sections": []
+  },
+  "postOnboarding": {
+    "subtitle": "0 credentials · tokens and platform keys",
+    "mode": "empty",
+    "sections": []
+  },
+  "codingAgent": {
+    "subtitle": "0 credentials · tokens and platform keys",
+    "mode": "empty",
+    "sections": []
+  },
+  "full": {
+    "subtitle": "6 credentials · tokens and platform keys",
+    "mode": "list",
+    "sections": [
+      {
+        "type": "api",
+        "header": "API Tokens",
+        "items": [
+          {
+            "id": "github-pat",
+            "title": "GitHub",
+            "badge": "PAT",
+            "desc": "Repos, PRs, issues · 3 assets connected",
+            "meta": "Sep 2026",
+            "status": "active"
+          },
+          {
+            "id": "github-project",
+            "title": "GitHub",
+            "badge": "Project",
+            "desc": "Fine-grained PAT · single repo (acme/docs-portal) · Doc updater workspace only",
+            "meta": "Dec 2026",
+            "status": "active"
+          },
+          {
+            "id": "jira",
+            "title": "Jira",
+            "badge": "OAuth",
+            "desc": "Issues, sprints · 1 flow connected",
+            "meta": "Nov 2026",
+            "status": "active"
+          },
+          {
+            "id": "slack",
+            "title": "Slack",
+            "badge": "Bot",
+            "desc": "Notifications & alerts · all agents",
+            "meta": "No expiry",
+            "status": "active"
+          }
+        ]
+      },
+      {
+        "type": "infra",
+        "header": "Infrastructure",
+        "items": [
+          {
+            "id": "openshift",
+            "title": "OpenShift Cluster",
+            "badge": "Infra",
+            "desc": "Deployments, pods, routes · 3 assets connected",
+            "meta": "Aug 2026",
+            "status": "active"
+          },
+          {
+            "id": "ansible-aap",
+            "title": "Ansible Automation Platform",
+            "badge": "Infra",
+            "desc": "Playbooks & inventories · 1 MCP connected",
+            "meta": "Feb 2026",
+            "metaTone": "danger",
+            "status": "expired"
+          }
+        ]
+      }
+    ]
+  }
+}

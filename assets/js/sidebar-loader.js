@@ -2,7 +2,14 @@
  * Sidebar Component Loader
  * Loads the sidebar component and handles active state management
  *
- * Repo root `index.html` redirects to Projects. Subpages omit data-nav-root (default "..").
+ * Repo root `index.html` redirects to Welcome. Subpages omit data-nav-root (default "..").
+ *
+ * Demo scenario: load `demo-scenario.js` and `demo-screen-data.js` before this script.
+ * Sidebar visibility uses `assets/data/demo-scenario/sidebar.json` by view key.
+ * `kaiden-empty-mock.js` applies onboarding-shell selectors when view is `onboarding`.
+ *
+ * Optional projects: Settings → General → "Optional projects" saves `modules.optionalProjectsMode`.
+ * When true, the Projects nav item is hidden (create-agent project picker is hidden on sessions/create.html).
  */
 
 function getNavRoot() {
@@ -229,6 +236,24 @@ function isOpenshiftAIModuleEnabled() {
     }
 }
 
+function isOptionalProjectsMode() {
+    if (typeof window.kaidenIsOptionalProjectsMode === 'function') {
+        return window.kaidenIsOptionalProjectsMode();
+    }
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.modules && settings.modules.optionalProjectsMode === true) {
+                return true;
+            }
+        }
+        return false;
+    } catch (e) {
+        return false;
+    }
+}
+
 // Load sidebar component
 function loadSidebar(activeSection) {
     const sidebarContainer = document.getElementById('sidebar-container');
@@ -254,6 +279,61 @@ function loadSidebar(activeSection) {
         openshiftStatusItem.style.display = 'none';
     }
 
+    const viewKey = typeof window.getKaidenDemoViewKey === 'function' ? window.getKaidenDemoViewKey() : 'full';
+    const sidebarCfg = window.__kaidenDemoScreenData && window.__kaidenDemoScreenData.sidebar
+        ? window.__kaidenDemoScreenData.sidebar[viewKey]
+        : null;
+    const demoOnboarding = viewKey === 'onboarding';
+
+    if (demoOnboarding) {
+        document.body.classList.add('kaiden-demo-empty');
+    } else {
+        document.body.classList.remove('kaiden-demo-empty');
+    }
+
+    const hideSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
+        ? sidebarCfg.hiddenNavSections
+        : (demoOnboarding ? ['sessions', 'projects', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
+
+    document.querySelectorAll('.nav-item[data-section]').forEach((el) => {
+        const sec = el.getAttribute('data-section');
+        if (!sec) return;
+        const hide = hideSections.indexOf(sec) !== -1;
+        el.style.display = hide ? 'none' : '';
+    });
+
+    const projectsNavItem = document.querySelector('.nav-item[data-section="projects"]');
+    if (projectsNavItem && isOptionalProjectsMode()) {
+        projectsNavItem.style.display = 'none';
+    }
+
+    const hiddenStatus = sidebarCfg && Array.isArray(sidebarCfg.hiddenStatusItems)
+        ? sidebarCfg.hiddenStatusItems
+        : (demoOnboarding ? ['sandbox', 'cli', 'openshift'] : []);
+
+    const sandboxChip = document.querySelector('.global-status-bar .agents-status');
+    if (sandboxChip) {
+        sandboxChip.style.display = hiddenStatus.indexOf('sandbox') !== -1 ? 'none' : '';
+    }
+    const cliChip = document.querySelector('.global-status-bar .status-bar-cli');
+    if (cliChip) {
+        cliChip.style.display = hiddenStatus.indexOf('cli') !== -1 ? 'none' : '';
+    }
+    if (openshiftStatusItem) {
+        if (!isOpenshiftAIModuleEnabled()) {
+            openshiftStatusItem.style.display = 'none';
+        } else {
+            openshiftStatusItem.style.display = hiddenStatus.indexOf('openshift') !== -1 ? 'none' : '';
+        }
+    }
+
+    if (skillsNavItem && !isSkillsModuleEnabled()) {
+        skillsNavItem.style.display = 'none';
+    }
+    if (mcpNavItem && !isMcpModuleEnabled()) {
+        mcpNavItem.style.display = 'none';
+    }
+
     if (activeSection) {
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
@@ -264,10 +344,23 @@ function loadSidebar(activeSection) {
         });
     }
 
+    if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
+        window.kaidenRefreshOptionalProjectsClass();
+    }
+
     document.dispatchEvent(new CustomEvent('sidebarLoaded'));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.__kaidenDemoScreenDataPromise) {
+        try {
+            await window.__kaidenDemoScreenDataPromise;
+        } catch (e) { /* ignore */ }
+    }
+    if (typeof window.kaidenHydrateDemoPages === 'function') {
+        window.kaidenHydrateDemoPages();
+    }
+
     const bodyClass = document.body.className;
     let activeSection = bodyClass.split(' ').find(c => c.endsWith('-page'))?.replace('-page', '');
 
@@ -289,4 +382,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const script = document.createElement('script');
     script.src = openshiftSrc;
     document.body.appendChild(script);
+
+    const mockSrc = loaderEl && loaderEl.src
+        ? loaderEl.src.replace(/sidebar-loader\.js/i, 'kaiden-empty-mock.js')
+        : new URL('../assets/js/kaiden-empty-mock.js', document.baseURI).href;
+    const mockScript = document.createElement('script');
+    mockScript.src = mockSrc;
+    document.body.appendChild(mockScript);
 });

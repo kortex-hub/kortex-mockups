@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Agentic Coding Workspaces</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
+    <script src="../assets/js/demo-page-hydrate.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* Sessions Page — List Style */
@@ -66,9 +69,11 @@
             color: #ffffff;
         }
 
-        .session-row-icon.goose {
-            background: linear-gradient(135deg, #ec4899, #db2777);
+        .session-row-icon.opencode {
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #ffffff;
+            font-size: 11px;
+            letter-spacing: -0.03em;
         }
 
         .session-row-icon.devspaces {
@@ -418,6 +423,37 @@
             width: 20px;
             height: 20px;
         }
+
+        .sessions-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 56px 28px;
+            color: #9ca3af;
+        }
+
+        .sessions-empty-state svg {
+            width: 44px;
+            height: 44px;
+            color: #4b5563;
+            margin-bottom: 16px;
+        }
+
+        .sessions-empty-state__title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin: 0 0 8px 0;
+        }
+
+        .sessions-empty-state__text {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.55;
+            max-width: 420px;
+        }
     </style>
 </head>
 <body class="sessions-page">
@@ -599,10 +635,10 @@
 
                     <!-- Row 4 — Test Suite Setup (Stopped) -->
                     <div class="session-row" onclick="window.location.href='details.html?session=test-suite'">
-                        <div class="session-row-icon goose">G</div>
+                        <div class="session-row-icon opencode">OC</div>
                         <div class="session-row-body">
                             <div class="session-row-title">Test Suite Setup</div>
-                            <div class="session-row-subtitle">Goose Agent · E2E testing with Playwright, fixtures and page objects</div>
+                            <div class="session-row-subtitle">OpenCode · E2E testing with Playwright, fixtures and page objects</div>
                         </div>
                         <div class="session-row-tags">
                             <span class="session-row-tag skill">test-automation</span>
@@ -709,8 +745,11 @@
             const rows = document.querySelectorAll('.session-row');
 
             rows.forEach(row => {
-                const title = row.querySelector('.session-row-title').textContent.toLowerCase();
-                const subtitle = row.querySelector('.session-row-subtitle').textContent.toLowerCase();
+                const titleEl = row.querySelector('.session-row-title');
+                const subtitleEl = row.querySelector('.session-row-subtitle');
+                if (!titleEl || !subtitleEl) return;
+                const title = titleEl.textContent.toLowerCase();
+                const subtitle = subtitleEl.textContent.toLowerCase();
                 if (title.includes(filter) || subtitle.includes(filter)) {
                     row.style.display = '';
                 } else {

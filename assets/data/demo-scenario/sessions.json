@@ -1,0 +1,30 @@
+{
+  "postOnboarding": {
+    "activeCount": 0,
+    "totalCount": 0,
+    "agentsCount": 0,
+    "emptyTitle": "No agents yet",
+    "emptyBody": "You have not created any agent workspaces. After setup, start one with New Agent or from the CLI when you are ready."
+  },
+  "codingAgent": {
+    "activeCount": 1,
+    "totalCount": 1,
+    "agentsCount": 1,
+    "sectionLabel": "Active",
+    "rows": [
+      {
+        "sessionId": "quadlet-openshift-demo",
+        "title": "kaiden-demo-app · Quadlet & OpenShift",
+        "subtitle": "Claude · RHEL Podman quadlet + Kubernetes manifests for OpenShift",
+        "contextPct": "52%",
+        "contextTooltip": "104K / 200K tokens",
+        "timeLabel": "18m",
+        "tags": [
+          { "class": "skill", "label": "Quadlet" },
+          { "class": "skill", "label": "OpenShift" },
+          { "class": "mcp", "label": "filesystem" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "onboarding": {
+    "rows": []
+  },
+  "postOnboarding": {
+    "rows": []
+  },
+  "codingAgent": {
+    "rows": []
+  },
+  "full": {
+    "rows": [
+      {
+        "env": "podman-knowledges",
+        "name": "podman-knowledges",
+        "database": "Milvus",
+        "databaseIcon": "milvus",
+        "chunker": "Docling",
+        "chunkerStyle": "linear-gradient(45deg, #ff9500, #ffb800)",
+        "sources": "23",
+        "primaryAction": "stop"
+      },
+      {
+        "env": "openshift-knowledges",
+        "name": "openshift-knowledges",
+        "database": "ChromaDB",
+        "databaseIcon": "chroma",
+        "chunker": "HF Sentence Transformers",
+        "chunkerStyle": "linear-gradient(45deg, #00b4d8, #0096c7)",
+        "sources": "15",
+        "primaryAction": "stop"
+      },
+      {
+        "env": "docker-knowledges",
+        "name": "docker-knowledges",
+        "database": "Milvus",
+        "databaseIcon": "milvus",
+        "chunker": "HF Sentence Transformers",
+        "chunkerStyle": "linear-gradient(45deg, #00b4d8, #0096c7)",
+        "sources": "8",
+        "primaryAction": "start"
+      },
+      {
+        "env": "kubernetes-knowledges",
+        "name": "kubernetes-knowledges",
+        "database": "ChromaDB",
+        "databaseIcon": "chroma",
+        "chunker": "Docling",
+        "chunkerStyle": "linear-gradient(45deg, #ff9500, #ffb800)",
+        "sources": "31",
+        "primaryAction": "stop"
+      }
+    ]
+  }
+}

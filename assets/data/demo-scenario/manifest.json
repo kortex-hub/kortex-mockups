@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "description": "Demo view keys map to sprint demo steps and idle onboarding flag.",
+  "viewKeys": ["onboarding", "postOnboarding", "codingAgent", "full"],
+  "demoSteps": [
+    "Step 1 — onboarding: minimal shell; presenter runs Setup wizard",
+    "Step 2 — post-onboarding: only JSON postOnboarding slice (e.g. kaiden-demo-app, empty vault/KBs)",
+    "Step 3 — coding agent: session details — RHEL Quadlet + OpenShift manifests (quadlet-openshift-demo)",
+    "Step 4 — full: rich mocks across projects, vault, knowledges"
+  ],
+  "viewKeyHelp": {
+    "onboarding": "Demo step 1 — Extensions + Settings; cleared lists until Setup or advance",
+    "postOnboarding": "Demo step 2 or real guided setup finished — slim catalog",
+    "codingAgent": "Demo step 3 — one active coding workspace (quadlet + OpenShift k8s)",
+    "full": "Demo step 4 or idle default — full mock workspace"
+  }
+}
