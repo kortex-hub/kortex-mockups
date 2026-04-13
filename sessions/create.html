@@ -4448,11 +4448,14 @@
             }
             try {
                 const raw = localStorage.getItem('kaidenSettings');
-                if (!raw) return false;
+                if (!raw) return true;
                 const parsed = JSON.parse(raw);
-                return !!(parsed.modules && parsed.modules.optionalProjectsMode === true);
+                if (parsed.modules && parsed.modules.optionalProjectsMode === false) {
+                    return false;
+                }
+                return true;
             } catch (e) {
-                return false;
+                return true;
             }
         }
 

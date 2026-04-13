@@ -724,7 +724,7 @@
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
-                                    <div class="settings-toggle" id="optionalProjectsModeToggle" onclick="toggleSetting(this); kaidenOnOptionalProjectsToggleChanged();"></div>
+                                    <div class="settings-toggle active" id="optionalProjectsModeToggle" onclick="toggleSetting(this); kaidenOnOptionalProjectsToggleChanged();"></div>
                                 </div>
                             </div>
                         </div>
@@ -984,7 +984,7 @@
                 document.getElementById('compactMode').classList.remove('active');
                 document.getElementById('debugMode').classList.remove('active');
                 document.getElementById('experimentalFeatures').classList.remove('active');
-                document.getElementById('optionalProjectsModeToggle').classList.remove('active');
+                document.getElementById('optionalProjectsModeToggle').classList.add('active');
                 document.getElementById('confirmWrites').classList.add('active');
                 document.getElementById('autoExecute').classList.remove('active');
                 document.getElementById('bridgeEnabled').classList.add('active');
@@ -1034,7 +1034,9 @@
                         if (settings.modules.openshiftAIEnabled === false) {
                             document.getElementById('openshiftAIModuleToggle').classList.remove('active');
                         }
-                        if (settings.modules.optionalProjectsMode === true) {
+                        if (settings.modules.optionalProjectsMode === false) {
+                            document.getElementById('optionalProjectsModeToggle').classList.remove('active');
+                        } else {
                             document.getElementById('optionalProjectsModeToggle').classList.add('active');
                         }
                     }

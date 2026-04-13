@@ -9,6 +9,7 @@
  * `kaiden-empty-mock.js` applies onboarding-shell selectors when view is `onboarding`.
  *
  * Optional projects: Settings → General → "Optional projects" saves `modules.optionalProjectsMode`.
+ * Default is on (hide sidebar Projects) unless explicitly set to false.
  * When true, the Projects nav item is hidden (create-agent project picker is hidden on sessions/create.html).
  */
 
@@ -250,15 +251,14 @@ function isOptionalProjectsMode() {
     }
     try {
         const saved = localStorage.getItem('kaidenSettings');
-        if (saved) {
-            const settings = JSON.parse(saved);
-            if (settings.modules && settings.modules.optionalProjectsMode === true) {
-                return true;
-            }
+        if (!saved) return true;
+        const settings = JSON.parse(saved);
+        if (settings.modules && settings.modules.optionalProjectsMode === false) {
+            return false;
         }
-        return false;
+        return true;
     } catch (e) {
-        return false;
+        return true;
     }
 }
 

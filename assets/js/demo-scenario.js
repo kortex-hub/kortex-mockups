@@ -1,7 +1,8 @@
 /**
  * Optional projects (Settings → General): sync <html class="kaiden-optional-projects"> from localStorage
- * so CSS can hide project UI before/without waiting for sidebar-loader. Call
- * window.kaidenRefreshOptionalProjectsClass() after changing kaidenSettings in the same tab.
+ * so CSS can hide project UI before/without waiting for sidebar-loader. Default is on (projects hidden)
+ * unless modules.optionalProjectsMode === false. Call window.kaidenRefreshOptionalProjectsClass() after
+ * changing kaidenSettings in the same tab.
  */
 (function () {
     function readKaidenSettings() {
@@ -16,7 +17,10 @@
 
     function isOptionalProjectsMode() {
         var p = readKaidenSettings();
-        return !!(p && p.modules && p.modules.optionalProjectsMode === true);
+        if (!p || !p.modules) return true;
+        var v = p.modules.optionalProjectsMode;
+        if (v === false) return false;
+        return true;
     }
 
     function applyOptionalProjectsClass() {
