@@ -592,7 +592,16 @@
         }).join('');
         var detailsHref = 'details.html?session=' + encodeURIComponent(sid);
 
+        var sessColHead =
+            '<div class="sessions-column-header">' +
+            '<span class="sessions-col-h-spacer" aria-hidden="true"></span>' +
+            '<span class="sessions-col-h-label">Workspace</span>' +
+            '<span class="sessions-col-h-label">Context</span>' +
+            '<span class="sessions-col-h-label sessions-col-h-label--time">Time</span>' +
+            '<span aria-hidden="true"></span></div>';
+
         list.innerHTML =
+            sessColHead +
             '<div class="sessions-section-header">' + escapeHtml(ccfg.sectionLabel || 'Active') + '</div>' +
             '<div class="session-row" onclick="window.location.href=\'' + detailsHref + '\'">' +
             '<div class="session-row-icon claude">C</div>' +
