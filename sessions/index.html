@@ -10,33 +10,129 @@
     <script src="../assets/js/demo-page-hydrate.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
-        /* Sessions Page — List Style */
+        /* Sessions page — workspace dashboard */
+        body.sessions-page .content {
+            padding: 28px 40px 40px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        body.sessions-page .rag-title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #f9fafb;
+        }
+
+        .sessions-page-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .create-cli-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 18px;
+            background: #2a2b36;
+            color: #e5e7eb;
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .create-cli-btn:hover {
+            background: #32333f;
+            border-color: #6b7280;
+        }
+
+        body.sessions-page .search-container {
+            margin-bottom: 20px;
+        }
+
+        body.sessions-page .search-wrapper {
+            max-width: none;
+        }
+
+        body.sessions-page .search-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: #1f2028;
+            border: 1px solid #3d3e4f;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        body.sessions-page .search-icon {
+            left: 14px;
+            color: #6b7280;
+        }
+
+        .sessions-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+            padding: 0;
+            background: transparent;
+            border: none;
+        }
+
+        @media (max-width: 900px) {
+            .sessions-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: linear-gradient(160deg, #252631 0%, #1c1d26 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+        }
+
         .sessions-list {
-            margin-top: 20px;
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            margin-top: 0;
+            background: linear-gradient(165deg, #22232c 0%, #181922 100%);
             border: 1px solid #3d3e4f;
             border-radius: 14px;
             overflow: hidden;
         }
 
         .sessions-section-header {
-            padding: 14px 20px 8px 20px;
-            font-size: 11px;
-            font-weight: 600;
+            padding: 16px 22px 10px;
+            font-size: 10px;
+            font-weight: 700;
             color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.12em;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .sessions-section-header + .session-row {
+            border-top: none;
         }
 
         .session-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) minmax(200px, 240px) 52px;
+            grid-template-rows: auto auto;
+            column-gap: 16px;
+            row-gap: 10px;
+            padding: 18px 22px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.3);
+            transition: background 0.15s ease;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.35);
             position: relative;
+            align-items: center;
         }
 
         .session-row:last-child {
@@ -44,12 +140,140 @@
         }
 
         .session-row:hover {
-            background: rgba(139, 92, 246, 0.06);
+            background: rgba(139, 92, 246, 0.07);
+        }
+
+        .session-row-progress {
+            grid-row: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+            position: relative;
+            cursor: default;
+        }
+
+        .session-row-progress-bar {
+            height: 5px;
+            background: rgba(107, 114, 128, 0.22);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .session-row-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.2s ease;
+        }
+
+        .session-row-progress-fill.low {
+            background: #34d399;
+        }
+
+        .session-row-progress-fill.medium {
+            background: #fbbf24;
+        }
+
+        .session-row-progress-fill.high {
+            background: #f87171;
+        }
+
+        .session-row-progress-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #9ca3af;
+            flex-wrap: wrap;
+        }
+
+        .session-row-progress-meta .meta-pct {
+            font-variant-numeric: tabular-nums;
+            color: #d1d5db;
+        }
+
+        .session-row-progress-meta .meta-sep {
+            color: #4b5563;
+            user-select: none;
+        }
+
+        .session-row-progress-meta .session-row-status-label.running {
+            color: #34d399;
+        }
+
+        .session-row-progress-meta .session-row-status-label.stopped {
+            color: #9ca3af;
+        }
+
+        .session-row-time {
+            grid-row: 1 / -1;
+            justify-self: end;
+        }
+
+        .session-row-actions {
+            grid-column: 1 / -1;
+            justify-self: end;
+            margin-top: -4px;
+        }
+
+        @media (min-width: 960px) {
+            .session-row {
+                grid-template-columns: 44px minmax(0, 1fr) minmax(220px, 280px) 56px auto;
+                grid-template-rows: auto;
+            }
+
+            .session-row-actions {
+                grid-column: auto;
+                grid-row: 1 / -1;
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 959px) {
+            .session-row {
+                grid-template-columns: 40px 1fr auto;
+                grid-template-rows: auto auto auto;
+                align-items: start;
+            }
+
+            .session-row-icon {
+                grid-row: 1;
+            }
+
+            .session-row-body {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .session-row-time {
+                grid-column: 3;
+                grid-row: 1;
+                align-self: center;
+            }
+
+            .session-row-progress {
+                grid-column: 1 / -1;
+                grid-row: 2;
+            }
+
+            .session-row-actions {
+                grid-column: 1 / -1;
+                grid-row: 3;
+                justify-self: end;
+                margin-top: 4px;
+            }
+
+            .session-row-title,
+            .session-row-subtitle {
+                white-space: normal;
+            }
         }
 
         .session-row-icon {
-            width: 38px;
-            height: 38px;
+            grid-row: 1 / -1;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -82,11 +306,10 @@
         }
 
         .session-row-body {
-            flex: 1;
             min-width: 0;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 6px;
         }
 
         .session-row-title {
@@ -113,7 +336,7 @@
         .session-row-tags {
             display: flex;
             gap: 6px;
-            flex-shrink: 0;
+            flex-wrap: wrap;
         }
 
         .session-row-tag {
@@ -146,16 +369,6 @@
             color: #f9a8d4;
         }
 
-        .session-row-context {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-            width: 120px;
-            position: relative;
-            cursor: default;
-        }
-
         .session-row-context-tooltip {
             position: absolute;
             bottom: calc(100% + 8px);
@@ -185,7 +398,7 @@
             border-top-color: #3d3e4f;
         }
 
-        .session-row-context:hover .session-row-context-tooltip {
+        .session-row-progress:hover .session-row-context-tooltip {
             opacity: 1;
         }
 
@@ -200,47 +413,6 @@
         .session-row-context-tooltip .tooltip-value {
             font-weight: 600;
             color: #e5e7eb;
-        }
-
-        .session-row-context-bar {
-            flex: 1;
-            height: 4px;
-            background: rgba(107, 114, 128, 0.2);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .session-row-context-fill {
-            height: 100%;
-            border-radius: 2px;
-        }
-
-        .session-row-context-fill.low {
-            background: #34d399;
-        }
-
-        .session-row-context-fill.medium {
-            background: #fbbf24;
-        }
-
-        .session-row-context-fill.high {
-            background: #f87171;
-        }
-
-        .session-row-context-pct {
-            font-size: 11px;
-            color: #9ca3af;
-            font-weight: 500;
-            min-width: 28px;
-            text-align: right;
-        }
-
-        .session-row-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-            min-width: 80px;
         }
 
         .session-row-status-dot {
@@ -263,14 +435,6 @@
             font-weight: 500;
         }
 
-        .session-row-status-label.running {
-            color: #34d399;
-        }
-
-        .session-row-status-label.stopped {
-            color: #6b7280;
-        }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
             50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(52, 211, 153, 0); }
@@ -279,10 +443,11 @@
         .session-row-time {
             font-size: 12px;
             color: #6b7280;
-            font-weight: 500;
-            min-width: 60px;
+            font-weight: 600;
+            min-width: 44px;
             text-align: right;
             flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
         }
 
         .session-row:hover .session-row-time {
@@ -340,23 +505,6 @@
             background: rgba(139, 92, 246, 0.25);
         }
 
-        /* Stats Bar */
-        .sessions-stats {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 24px;
-            padding: 20px 24px;
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
-            border-radius: 12px;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
         .stat-icon {
             width: 40px;
             height: 40px;
@@ -397,31 +545,25 @@
             color: #9ca3af;
         }
 
-        /* Create Button Enhanced */
         .create-session-btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 24px;
+            gap: 8px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-size: 14px;
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: #ffffff;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .create-session-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
-        }
-
-        .create-session-btn svg {
-            width: 20px;
-            height: 20px;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.38);
         }
 
         .sessions-empty-state {
@@ -464,34 +606,29 @@
         <!-- Sessions UI -->
         <main class="main-content">
             <header class="header">
-                <h1>Sessions</h1>
+                <h1>Agentic Coding Workspaces</h1>
             </header>
             
             <div class="content">
-                <!-- Sessions Header -->
                 <div class="rag-header">
                     <h2 class="rag-title">Agentic Coding Workspaces</h2>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="create-cli-btn" onclick="window.location.href='cli.html'" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; background: rgba(107, 114, 128, 0.15); color: #e5e7eb; border: 1px solid #4b5563; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="4 17 10 11 4 5"/>
-                                <line x1="12" y1="19" x2="20" y2="19"/>
+                    <div class="sessions-page-actions">
+                        <button type="button" class="create-cli-btn" onclick="window.location.href='cli.html'">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="3" width="20" height="18" rx="2"/>
+                                <path d="M7 10l3 3-3 3"/>
+                                <line x1="12" y1="16" x2="17" y2="16"/>
                             </svg>
                             Create from CLI
                         </button>
-                        <button class="create-session-btn" onclick="window.location.href='create.html'">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="12" y1="5" x2="12" y2="19"/>
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                            </svg>
-                            New Agent
+                        <button type="button" class="create-session-btn" onclick="window.location.href='create.html'">
+                            + New Agent
                         </button>
                     </div>
                 </div>
 
-                <!-- Stats Bar -->
                 <div class="sessions-stats">
-                    <div class="stat-item">
+                    <div class="stat-card">
                         <div class="stat-icon active">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"/>
@@ -503,7 +640,7 @@
                             <span class="stat-label">Active Sessions</span>
                         </div>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-card">
                         <div class="stat-icon total">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -516,7 +653,7 @@
                             <span class="stat-label">Total Sessions</span>
                         </div>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-card">
                         <div class="stat-icon agents">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
@@ -553,26 +690,27 @@
                         </div>
                         <div class="session-row-body">
                             <div class="session-row-title">My New App</div>
-                            <div class="session-row-subtitle">Claude 3.5 Sonnet · FastAPI with Hummingbird images on OpenShift</div>
+                            <div class="session-row-subtitle">Claude 3.5 Sonnet - FastAPI with Hummingbird images on OpenShift</div>
+                            <div class="session-row-tags">
+                                <span class="session-row-tag skill">Hummingbird</span>
+                                <span class="session-row-tag skill">OpenShift</span>
+                                <span class="session-row-tag mcp">filesystem</span>
+                            </div>
                         </div>
-                        <div class="session-row-tags">
-                            <span class="session-row-tag skill">Hummingbird</span>
-                            <span class="session-row-tag skill">OpenShift</span>
-                            <span class="session-row-tag mcp">filesystem</span>
-                        </div>
-                        <div class="session-row-context">
+                        <div class="session-row-progress">
                             <div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">90K / 200K tokens</div></div>
-                            <div class="session-row-context-bar"><div class="session-row-context-fill medium" style="width: 45%"></div></div>
-                            <span class="session-row-context-pct">45%</span>
-                        </div>
-                        <div class="session-row-status">
-                            <span class="session-row-status-dot running"></span>
-                            <span class="session-row-status-label running">Running</span>
+                            <div class="session-row-progress-bar"><div class="session-row-progress-fill medium" style="width: 45%"></div></div>
+                            <div class="session-row-progress-meta">
+                                <span class="meta-pct">45%</span>
+                                <span class="meta-sep" aria-hidden="true">•</span>
+                                <span class="session-row-status-dot running"></span>
+                                <span class="session-row-status-label running">Running</span>
+                            </div>
                         </div>
                         <span class="session-row-time">25m</span>
                         <div class="session-row-actions" onclick="event.stopPropagation()">
-                            <button class="session-row-action stop" onclick="stopSession('hummingbird-demo')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
-                            <button class="session-row-action open" onclick="window.location.href='details.html?session=hummingbird-demo'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                            <button type="button" class="session-row-action stop" onclick="stopSession('hummingbird-demo')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
+                            <button type="button" class="session-row-action open" onclick="window.location.href='details.html?session=hummingbird-demo'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
                         </div>
                     </div>
 
@@ -581,26 +719,27 @@
                         <div class="session-row-icon claude">C</div>
                         <div class="session-row-body">
                             <div class="session-row-title">Frontend Refactor</div>
-                            <div class="session-row-subtitle">Claude 3.5 Sonnet · React dashboard state management optimization</div>
+                            <div class="session-row-subtitle">Claude 3.5 Sonnet - React dashboard state management optimization</div>
+                            <div class="session-row-tags">
+                                <span class="session-row-tag skill">code-review</span>
+                                <span class="session-row-tag mcp">filesystem</span>
+                                <span class="session-row-tag tool">GitHub</span>
+                            </div>
                         </div>
-                        <div class="session-row-tags">
-                            <span class="session-row-tag skill">code-review</span>
-                            <span class="session-row-tag mcp">filesystem</span>
-                            <span class="session-row-tag tool">GitHub</span>
-                        </div>
-                        <div class="session-row-context">
+                        <div class="session-row-progress">
                             <div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">124K / 200K tokens</div></div>
-                            <div class="session-row-context-bar"><div class="session-row-context-fill medium" style="width: 62%"></div></div>
-                            <span class="session-row-context-pct">62%</span>
-                        </div>
-                        <div class="session-row-status">
-                            <span class="session-row-status-dot running"></span>
-                            <span class="session-row-status-label running">Running</span>
+                            <div class="session-row-progress-bar"><div class="session-row-progress-fill medium" style="width: 62%"></div></div>
+                            <div class="session-row-progress-meta">
+                                <span class="meta-pct">62%</span>
+                                <span class="meta-sep" aria-hidden="true">•</span>
+                                <span class="session-row-status-dot running"></span>
+                                <span class="session-row-status-label running">Running</span>
+                            </div>
                         </div>
                         <span class="session-row-time">2h</span>
                         <div class="session-row-actions" onclick="event.stopPropagation()">
-                            <button class="session-row-action stop" onclick="stopSession('frontend-refactor')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
-                            <button class="session-row-action open" onclick="window.location.href='details.html?session=frontend-refactor'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                            <button type="button" class="session-row-action stop" onclick="stopSession('frontend-refactor')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
+                            <button type="button" class="session-row-action open" onclick="window.location.href='details.html?session=frontend-refactor'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
                         </div>
                     </div>
 
@@ -609,25 +748,26 @@
                         <div class="session-row-icon cursor">Cu</div>
                         <div class="session-row-body">
                             <div class="session-row-title">API Integration</div>
-                            <div class="session-row-subtitle">Cursor Agent · REST API endpoints and auth middleware</div>
+                            <div class="session-row-subtitle">Cursor Agent - REST API endpoints and auth middleware</div>
+                            <div class="session-row-tags">
+                                <span class="session-row-tag mcp">postgres</span>
+                                <span class="session-row-tag mcp">filesystem</span>
+                            </div>
                         </div>
-                        <div class="session-row-tags">
-                            <span class="session-row-tag mcp">postgres</span>
-                            <span class="session-row-tag mcp">filesystem</span>
-                        </div>
-                        <div class="session-row-context">
+                        <div class="session-row-progress">
                             <div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">56K / 200K tokens</div></div>
-                            <div class="session-row-context-bar"><div class="session-row-context-fill low" style="width: 28%"></div></div>
-                            <span class="session-row-context-pct">28%</span>
-                        </div>
-                        <div class="session-row-status">
-                            <span class="session-row-status-dot running"></span>
-                            <span class="session-row-status-label running">Running</span>
+                            <div class="session-row-progress-bar"><div class="session-row-progress-fill low" style="width: 28%"></div></div>
+                            <div class="session-row-progress-meta">
+                                <span class="meta-pct">28%</span>
+                                <span class="meta-sep" aria-hidden="true">•</span>
+                                <span class="session-row-status-dot running"></span>
+                                <span class="session-row-status-label running">Running</span>
+                            </div>
                         </div>
                         <span class="session-row-time">45m</span>
                         <div class="session-row-actions" onclick="event.stopPropagation()">
-                            <button class="session-row-action stop" onclick="stopSession('api-integration')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
-                            <button class="session-row-action open" onclick="window.location.href='details.html?session=api-integration'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                            <button type="button" class="session-row-action stop" onclick="stopSession('api-integration')" title="Stop"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button>
+                            <button type="button" class="session-row-action open" onclick="window.location.href='details.html?session=api-integration'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
                         </div>
                     </div>
 
@@ -638,25 +778,26 @@
                         <div class="session-row-icon opencode">OC</div>
                         <div class="session-row-body">
                             <div class="session-row-title">Test Suite Setup</div>
-                            <div class="session-row-subtitle">OpenCode · E2E testing with Playwright, fixtures and page objects</div>
+                            <div class="session-row-subtitle">OpenCode - E2E testing with Playwright, fixtures and page objects</div>
+                            <div class="session-row-tags">
+                                <span class="session-row-tag skill">test-automation</span>
+                                <span class="session-row-tag mcp">filesystem</span>
+                            </div>
                         </div>
-                        <div class="session-row-tags">
-                            <span class="session-row-tag skill">test-automation</span>
-                            <span class="session-row-tag mcp">filesystem</span>
-                        </div>
-                        <div class="session-row-context">
+                        <div class="session-row-progress">
                             <div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">178K / 200K tokens</div></div>
-                            <div class="session-row-context-bar"><div class="session-row-context-fill high" style="width: 89%"></div></div>
-                            <span class="session-row-context-pct">89%</span>
-                        </div>
-                        <div class="session-row-status">
-                            <span class="session-row-status-dot stopped"></span>
-                            <span class="session-row-status-label stopped">Stopped</span>
+                            <div class="session-row-progress-bar"><div class="session-row-progress-fill high" style="width: 89%"></div></div>
+                            <div class="session-row-progress-meta">
+                                <span class="meta-pct">89%</span>
+                                <span class="meta-sep" aria-hidden="true">•</span>
+                                <span class="session-row-status-dot stopped"></span>
+                                <span class="session-row-status-label stopped">Stopped</span>
+                            </div>
                         </div>
                         <span class="session-row-time">1d</span>
                         <div class="session-row-actions" onclick="event.stopPropagation()">
-                            <button class="session-row-action play" onclick="startSession('test-suite')" title="Start"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
-                            <button class="session-row-action open" onclick="window.location.href='details.html?session=test-suite'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                            <button type="button" class="session-row-action play" onclick="startSession('test-suite')" title="Start"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+                            <button type="button" class="session-row-action open" onclick="window.location.href='details.html?session=test-suite'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
                         </div>
                     </div>
 
@@ -665,25 +806,26 @@
                         <div class="session-row-icon claude">C</div>
                         <div class="session-row-body">
                             <div class="session-row-title">Documentation Generator</div>
-                            <div class="session-row-subtitle">Claude 3.5 Sonnet · OpenAPI spec generation for 12 endpoints</div>
+                            <div class="session-row-subtitle">Claude 3.5 Sonnet - OpenAPI spec generation for 12 endpoints</div>
+                            <div class="session-row-tags">
+                                <span class="session-row-tag skill">api-docs-generator</span>
+                                <span class="session-row-tag mcp">filesystem</span>
+                            </div>
                         </div>
-                        <div class="session-row-tags">
-                            <span class="session-row-tag skill">api-docs-generator</span>
-                            <span class="session-row-tag mcp">filesystem</span>
-                        </div>
-                        <div class="session-row-context">
+                        <div class="session-row-progress">
                             <div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">70K / 200K tokens</div></div>
-                            <div class="session-row-context-bar"><div class="session-row-context-fill low" style="width: 35%"></div></div>
-                            <span class="session-row-context-pct">35%</span>
-                        </div>
-                        <div class="session-row-status">
-                            <span class="session-row-status-dot stopped"></span>
-                            <span class="session-row-status-label stopped">Stopped</span>
+                            <div class="session-row-progress-bar"><div class="session-row-progress-fill low" style="width: 35%"></div></div>
+                            <div class="session-row-progress-meta">
+                                <span class="meta-pct">35%</span>
+                                <span class="meta-sep" aria-hidden="true">•</span>
+                                <span class="session-row-status-dot stopped"></span>
+                                <span class="session-row-status-label stopped">Stopped</span>
+                            </div>
                         </div>
                         <span class="session-row-time">3d</span>
                         <div class="session-row-actions" onclick="event.stopPropagation()">
-                            <button class="session-row-action play" onclick="startSession('docs-generator')" title="Start"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
-                            <button class="session-row-action open" onclick="window.location.href='details.html?session=docs-generator'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                            <button type="button" class="session-row-action play" onclick="startSession('docs-generator')" title="Start"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+                            <button type="button" class="session-row-action open" onclick="window.location.href='details.html?session=docs-generator'" title="Open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
                         </div>
                     </div>
                 </div>
@@ -747,10 +889,12 @@
             rows.forEach(row => {
                 const titleEl = row.querySelector('.session-row-title');
                 const subtitleEl = row.querySelector('.session-row-subtitle');
+                const tagsEl = row.querySelector('.session-row-tags');
                 if (!titleEl || !subtitleEl) return;
                 const title = titleEl.textContent.toLowerCase();
                 const subtitle = subtitleEl.textContent.toLowerCase();
-                if (title.includes(filter) || subtitle.includes(filter)) {
+                const tags = tagsEl ? tagsEl.textContent.toLowerCase() : '';
+                if (title.includes(filter) || subtitle.includes(filter) || tags.includes(filter)) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';

@@ -59,42 +59,223 @@
     var VAULT_ICONS = {
         'github-pat': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
         'github-project': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+        gitlab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.65 14.39 12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51a.42.42 0 0 1 .8-.01l2.44 7.49h8.1l2.44-7.51a.42.42 0 0 1 .8 0l2.44 7.51 1.22 3.78a.84.84 0 0 1-.29.94z"/></svg>',
         jira: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>',
         slack: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>',
         openshift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
         'ansible-aap': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
     };
 
+    var GENERIC_SECRET_CARD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M12 11V7a4 4 0 0 0-4-4H8"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>';
+
+    var VAULT_EYE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    var VAULT_MORE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>';
+
     function vaultCardIcon(item, sectionType) {
+        if (sectionType === 'generic' || (item.id && String(item.id).indexOf('generic-') === 0)) {
+            return GENERIC_SECRET_CARD_ICON;
+        }
         return VAULT_ICONS[item.id] || (sectionType === 'infra'
             ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
             : VAULT_ICONS['github-pat']);
     }
 
-    function renderVaultItem(item, sectionType) {
-        var icon = vaultCardIcon(item, sectionType);
-        var metaStyle = item.metaTone === 'danger' ? ' style="color: #f87171;"' : '';
-        var metaSvg = item.metaTone === 'danger'
-            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
-            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>';
-        var statusClass = item.status === 'expired' ? 'expired' : 'active';
-        var statusLabel = item.status === 'expired' ? 'Expired' : 'Active';
-        var desc = escapeHtml(item.desc);
-        return (
-            '<a href="details.html?id=' + escapeHtml(item.id) + '" class="service-card" data-type="' + escapeHtml(sectionType) + '">' +
-            '<div class="service-card-icon ' + escapeHtml(sectionType) + '">' + icon + '</div>' +
-            '<div class="service-card-info">' +
-            '<div class="service-card-title-row">' +
-            '<div class="service-card-title">' + escapeHtml(item.title) + '</div>' +
-            '<span class="service-type-badge ' + escapeHtml(sectionType) + '">' + escapeHtml(item.badge) + '</span>' +
-            '</div>' +
-            '<div class="service-card-desc">' + desc + '</div>' +
-            '</div>' +
-            '<div class="service-card-footer">' +
-            '<div class="service-card-meta"><div class="service-card-meta-item"' + metaStyle + '>' + metaSvg + escapeHtml(item.meta) + '</div></div>' +
-            '<span class="service-card-status ' + statusClass + '">' + statusLabel + '</span>' +
-            '</div></a>'
+    function readVaultInlineSessionMock() {
+        try {
+            var raw = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('kaidenVaultInlineMock') : null;
+            if (!raw) return {};
+            var o = JSON.parse(raw);
+            return o && typeof o === 'object' ? o : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function mergeIntegrationCatalog(cfg, ORDER) {
+        var map = {};
+        (cfg.integrationCatalog || []).forEach(function (e) {
+            if (e && e.providerId) map[e.providerId] = e;
+        });
+        var mock = readVaultInlineSessionMock();
+        Object.keys(mock).forEach(function (pid) {
+            var m = mock[pid];
+            if (!m || !m.configured) return;
+            map[pid] = Object.assign({ providerId: pid }, map[pid] || {}, m, { configured: true });
+        });
+        var rows = [];
+        (ORDER || []).forEach(function (pid) {
+            if (pid === 'custom') return;
+            rows.push(map[pid] ? Object.assign({ providerId: pid }, map[pid]) : { providerId: pid, configured: false });
+        });
+        return rows;
+    }
+
+    function vaultExtractConnectionFromForm(form, providerMeta) {
+        if (!form || !providerMeta || !providerMeta.fields) return '—';
+        for (var i = 0; i < providerMeta.fields.length; i++) {
+            var f = providerMeta.fields[i];
+            if (f.type === 'password') continue;
+            var el = form.elements.namedItem(f.name);
+            if (el && el.value && String(el.value).trim()) return String(el.value).trim();
+        }
+        return '—';
+    }
+
+    function vaultMaskedFromPasswordFields(form, providerMeta) {
+        if (!form || !providerMeta || !providerMeta.fields) return '••••••••••••';
+        for (var i = 0; i < providerMeta.fields.length; i++) {
+            var f = providerMeta.fields[i];
+            if (f.type !== 'password') continue;
+            var el = form.elements.namedItem(f.name);
+            if (!el || !el.value) return '••••••••••••';
+            var v = String(el.value);
+            if (v.length <= 4) return '••••••••';
+            return v.slice(0, 4) + '••••••••••••';
+        }
+        return '••••••••••••';
+    }
+
+    function vaultRevealFromPasswordFields(form, providerMeta) {
+        if (!form || !providerMeta || !providerMeta.fields) return '••••••••••••';
+        for (var i = 0; i < providerMeta.fields.length; i++) {
+            var f = providerMeta.fields[i];
+            if (f.type !== 'password') continue;
+            var el = form.elements.namedItem(f.name);
+            if (!el || !el.value) return '••••••••••••';
+            var v = String(el.value);
+            if (v.length <= 6) return v + '••••••';
+            return v.slice(0, 6) + '••••••••••••';
+        }
+        return '••••••••••••';
+    }
+
+    function renderVaultInlineForm(pid, REG) {
+        var p = REG[pid];
+        if (!p) return '';
+        var parts = [];
+        parts.push('<p class="vault-inline-form-title">Connect ' + escapeHtml(p.label) + '</p>');
+        parts.push('<form class="vault-inline-form" data-provider="' + escapeHtml(pid) + '">');
+        parts.push('<div class="vault-inline-form-grid">');
+        p.fields.forEach(function (f) {
+            var fid = f.id + '_' + pid.replace(/[^a-z0-9-]/gi, '_');
+            var req = f.required ? ' required' : '';
+            var hintHtml = f.hint
+                ? '<p class="vault-inline-field-hint">' + escapeHtml(f.hint) + '</p>'
+                : '';
+            var label = '<label for="' + escapeHtml(fid) + '">' + escapeHtml(f.label) + '</label>';
+            var inputHtml;
+            if (f.type === 'password' && f.secretToggle) {
+                inputHtml =
+                    '<div class="vault-inline-secret-wrap">' +
+                    '<input type="password" class="vault-inline-input" id="' + escapeHtml(fid) + '" name="' + escapeHtml(f.name) + '" placeholder="' + escapeHtml(f.placeholder || '') + '" autocomplete="off"' + req + '>' +
+                    '<button type="button" class="vault-inline-toggle-secret">Show</button></div>';
+            } else {
+                inputHtml =
+                    '<input type="' + escapeHtml(f.type) + '" class="vault-inline-input" id="' + escapeHtml(fid) + '" name="' + escapeHtml(f.name) + '" placeholder="' + escapeHtml(f.placeholder || '') + '"' + req + '>';
+            }
+            parts.push('<div class="vault-inline-field">' + label + inputHtml + hintHtml + '</div>');
+        });
+        parts.push('</div>');
+        parts.push(
+            '<div class="vault-inline-form-actions">' +
+            '<button type="button" class="vault-inline-btn-cancel vault-inline-cancel">Cancel</button>' +
+            '<button type="submit" class="vault-inline-btn-save">Save &amp; connect</button></div>'
         );
+        parts.push('</form>');
+        return parts.join('');
+    }
+
+    function renderVaultCatalogRow(entry, REG) {
+        var pid = entry.providerId;
+        var p = REG[pid];
+        if (!p) return '';
+        var tone = p.defaultCategory === 'infra' ? 'infra' : 'api';
+        var iconHtml = p.icon || vaultCardIcon({ id: pid }, tone);
+        var conn = escapeHtml(entry.connection != null && entry.connection !== '' ? entry.connection : '—');
+        var configured = !!entry.configured;
+        var detailId = entry.detailId != null && String(entry.detailId) !== '' ? String(entry.detailId) : '';
+        var detailHref = '';
+        if (configured) {
+            detailHref = detailId
+                ? 'details.html?id=' + encodeURIComponent(detailId)
+                : 'index.html';
+        }
+        var mask = entry.masked != null ? String(entry.masked) : '••••••••••••';
+        var full = entry.revealValue != null ? String(entry.revealValue) : mask;
+        var expired = entry.status === 'expired';
+        var trClass = 'vault-catalog-row' + (expired ? ' vault-row-expired' : '') + (!configured ? ' vault-catalog-row--inactive' : '');
+
+        var sub = p.description || '';
+        if (sub.length > 88) sub = sub.slice(0, 86) + '…';
+        var nameInner;
+        if (configured && detailHref) {
+            nameInner =
+                '<a href="' + escapeHtml(detailHref) + '" class="vault-int-name" style="color: inherit; text-decoration: none;">' + escapeHtml(p.label) + '</a><div class="vault-int-sub">' + escapeHtml(sub) + '</div>';
+        } else {
+            nameInner = '<span class="vault-int-name">' + escapeHtml(p.label) + '</span><div class="vault-int-sub">' + escapeHtml(sub) + '</div>';
+        }
+
+        var secretCell;
+        var actionsCell;
+        if (configured) {
+            secretCell = '<span class="vault-secret-dots" data-mask="' + escapeHtml(mask) + '" data-full="' + escapeHtml(full) + '">' + escapeHtml(mask) + '</span>';
+            actionsCell =
+                '<div class="vault-row-actions">' +
+                '<button type="button" class="vault-icon-btn vault-secret-reveal" aria-pressed="false" aria-label="Show secret">' + VAULT_EYE_SVG + '</button>' +
+                '<a href="' + escapeHtml(detailHref) + '" class="vault-icon-btn" aria-label="Open details" title="Open details">' + VAULT_MORE_SVG + '</a>' +
+                '</div>';
+        } else {
+            secretCell = '<span>—</span>';
+            actionsCell =
+                '<button type="button" class="vault-configure-btn vault-config-toggle" aria-expanded="false" aria-controls="vault-inline-panel-' +
+                escapeHtml(pid) +
+                '">Configure</button>';
+        }
+
+        var mainRow =
+            '<tr class="' + trClass + '" data-provider="' + escapeHtml(pid) + '" data-type="' + escapeHtml(tone) + '">' +
+            '<td><div class="vault-int-cell"><span class="vault-int-icon ' + tone + '">' + iconHtml + '</span><div class="vault-int-text">' + nameInner + '</div></div></td>' +
+            '<td class="vault-connection-cell">' + conn + '</td>' +
+            '<td class="vault-secret-cell">' + secretCell + '</td>' +
+            '<td>' + actionsCell + '</td></tr>';
+
+        if (configured) return mainRow;
+
+        var panel =
+            '<tr class="vault-catalog-config-row" id="vault-inline-panel-' +
+            escapeHtml(pid) +
+            '" data-provider="' +
+            escapeHtml(pid) +
+            '" hidden>' +
+            '<td colspan="4" class="vault-catalog-config-cell">' +
+            renderVaultInlineForm(pid, REG) +
+            '</td></tr>';
+        return mainRow + panel;
+    }
+
+    function kaidenSaveVaultInlineForm(form) {
+        var pid = form.getAttribute('data-provider');
+        var REG = typeof window !== 'undefined' ? window.VAULT_PROVIDER_REGISTRY : null;
+        if (!pid || !REG || !REG[pid]) return;
+        var meta = REG[pid];
+        if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        var conn = vaultExtractConnectionFromForm(form, meta);
+        var masked = vaultMaskedFromPasswordFields(form, meta);
+        var reveal = vaultRevealFromPasswordFields(form, meta);
+        var mock = readVaultInlineSessionMock();
+        mock[pid] = {
+            configured: true,
+            connection: conn,
+            masked: masked,
+            revealValue: reveal
+        };
+        try {
+            sessionStorage.setItem('kaidenVaultInlineMock', JSON.stringify(mock));
+        } catch (e) {}
+        window.location.reload();
     }
 
     function renderKnowledgeRow(row) {
@@ -126,37 +307,193 @@
         grid.innerHTML = (block.projects || []).map(renderProjectCard).join('');
     }
 
+    /**
+     * Generic-secret rows for the main table when services.json cannot load (e.g. file://).
+     * Kept in sync with assets/data/demo-scenario/services.json → full.tableGenericSecrets.
+     */
+    var VAULT_DEMO_GENERIC_TABLE_ROWS = [
+        {
+            configured: true,
+            detailId: 'generic-payments-api',
+            title: 'Payments API',
+            subtitle: 'Bearer {value} · Authorization on matching requests',
+            connection: 'api.payments.partner.com · /v2/*',
+            masked: 'sk_live••••••••••••',
+            revealValue: 'sk_live••••••••4qXp',
+            status: 'active'
+        },
+        {
+            configured: true,
+            detailId: 'generic-corp-internal',
+            title: 'Internal tools',
+            subtitle: 'Wildcard host · internal dashboards & APIs',
+            connection: '*.tools.internal.corp.example',
+            masked: 'tok_••••••••••••••••',
+            revealValue: 'tok_••••••••k9Lm',
+            status: 'active'
+        },
+        {
+            configured: false,
+            title: 'Partner staging API',
+            subtitle: 'Not configured — inject header on api.partner.io',
+            connection: '—'
+        }
+    ];
+
+    /** When JSON is missing or fetch failed (e.g. file://), still show every predefined provider with Configure. */
+    var DEFAULT_VAULT_SERVICES_CFG = {
+        subtitle: '',
+        integrationCatalog: [],
+        tableGenericSecrets: [],
+        catalogLead: null
+    };
+
+    function renderVaultGenericSectionHeaderRow(label) {
+        var text = label != null && label !== '' ? label : 'Generic secrets';
+        return (
+            '<tr class="vault-catalog-section-row" data-generic-section="1">' +
+            '<td colspan="4" class="vault-catalog-section-cell">' + escapeHtml(text) + '</td></tr>'
+        );
+    }
+
+    /** Sample / configured generic header secrets in the main catalog table (not provider registry). */
+    function renderVaultGenericCatalogRow(g) {
+        var configured = !!g.configured;
+        var title = escapeHtml(g.title || 'Generic secret');
+        var sub = escapeHtml(g.subtitle || 'Header injection');
+        var conn = escapeHtml(g.connection != null && g.connection !== '' ? g.connection : '—');
+        var detailId = g.detailId != null && String(g.detailId) !== '' ? String(g.detailId) : '';
+        var detailHref = '';
+        if (configured) {
+            detailHref = detailId ? 'details.html?id=' + encodeURIComponent(detailId) : 'index.html';
+        }
+        var mask = g.masked != null ? String(g.masked) : '••••••••••••';
+        var full = g.revealValue != null ? String(g.revealValue) : mask;
+        var expired = g.status === 'expired';
+        var trClass =
+            'vault-catalog-row vault-catalog-row--generic' +
+            (expired ? ' vault-row-expired' : '') +
+            (!configured ? ' vault-catalog-row--inactive' : '');
+
+        var nameInner;
+        if (configured && detailHref) {
+            nameInner =
+                '<a href="' +
+                escapeHtml(detailHref) +
+                '" class="vault-int-name" style="color: inherit; text-decoration: none;">' +
+                title +
+                '</a><div class="vault-int-sub">' +
+                sub +
+                '</div>';
+        } else {
+            nameInner = '<span class="vault-int-name">' + title + '</span><div class="vault-int-sub">' + sub + '</div>';
+        }
+
+        var secretCell;
+        var actionsCell;
+        if (configured) {
+            secretCell =
+                '<span class="vault-secret-dots" data-mask="' +
+                escapeHtml(mask) +
+                '" data-full="' +
+                escapeHtml(full) +
+                '">' +
+                escapeHtml(mask) +
+                '</span>';
+            actionsCell =
+                '<div class="vault-row-actions">' +
+                '<button type="button" class="vault-icon-btn vault-secret-reveal" aria-pressed="false" aria-label="Show secret">' +
+                VAULT_EYE_SVG +
+                '</button>' +
+                '<a href="' +
+                escapeHtml(detailHref) +
+                '" class="vault-icon-btn" aria-label="Open details" title="Open details">' +
+                VAULT_MORE_SVG +
+                '</a>' +
+                '</div>';
+        } else {
+            secretCell = '<span>—</span>';
+            actionsCell = '<a href="create.html" class="vault-configure-btn">Add secret</a>';
+        }
+
+        return (
+            '<tr class="' +
+            trClass +
+            '" data-type="generic">' +
+            '<td><div class="vault-int-cell"><span class="vault-int-icon generic">' +
+            GENERIC_SECRET_CARD_ICON +
+            '</span><div class="vault-int-text">' +
+            nameInner +
+            '</div></div></td>' +
+            '<td class="vault-connection-cell">' +
+            conn +
+            '</td>' +
+            '<td class="vault-secret-cell">' +
+            secretCell +
+            '</td>' +
+            '<td>' +
+            actionsCell +
+            '</td></tr>'
+        );
+    }
+
     function hydrateServices(d) {
         var sub = document.getElementById('vaultSubtitle');
         var emptyEl = document.getElementById('vaultEmptyState');
         var listEl = document.getElementById('vaultMockList');
-        if (!d.services || !listEl) return;
-        var cfg = d.services[currentDemoViewKey()];
-        if (!cfg) return;
+        var tbody = document.getElementById('vaultCatalogBody');
+        var catLead = document.getElementById('vaultCatalogLead');
+
+        if (!tbody) return;
+
+        d = d || {};
+        var vk = currentDemoViewKey();
+        var svcRoot = d.services && typeof d.services === 'object' ? d.services : null;
+        var fetchedSlice = svcRoot ? svcRoot[vk] : null;
+        var emb = typeof window.__kaidenVaultPageFallback === 'object' && window.__kaidenVaultPageFallback
+            ? window.__kaidenVaultPageFallback
+            : null;
+        var embeddedSlice = emb ? emb[vk] : null;
+        /* Prefer live fetch; use embedded mirror when fetch failed (file://) or slice missing */
+        var rawCfg = fetchedSlice != null ? fetchedSlice : embeddedSlice;
+        var cfg = rawCfg
+            ? Object.assign({}, DEFAULT_VAULT_SERVICES_CFG, rawCfg)
+            : Object.assign({}, DEFAULT_VAULT_SERVICES_CFG);
+        if (!rawCfg && vk === 'full' && (!cfg.tableGenericSecrets || !cfg.tableGenericSecrets.length)) {
+            cfg.tableGenericSecrets = VAULT_DEMO_GENERIC_TABLE_ROWS.slice();
+        }
+
         if (sub) sub.textContent = cfg.subtitle || '';
 
-        if (cfg.mode === 'empty') {
-            document.body.setAttribute('data-demo-vault-mode', 'empty');
-            if (emptyEl) {
-                emptyEl.style.display = 'flex';
-            }
+        var REG = typeof window !== 'undefined' ? window.VAULT_PROVIDER_REGISTRY : null;
+        var ORDER = (typeof window !== 'undefined' && window.VAULT_PROVIDERS_ORDER) || (REG ? Object.keys(REG) : []);
+
+        if (emptyEl) emptyEl.style.display = 'none';
+        if (listEl) {
             listEl.innerHTML = '';
             listEl.style.display = 'none';
+        }
+
+        if (catLead && cfg.catalogLead != null && cfg.catalogLead !== '') catLead.textContent = cfg.catalogLead;
+
+        if (!REG) {
+            tbody.innerHTML = '';
             return;
         }
 
-        document.body.setAttribute('data-demo-vault-mode', 'list');
-        if (emptyEl) emptyEl.style.display = 'none';
-        listEl.style.display = 'contents';
-
-        var parts = [];
-        (cfg.sections || []).forEach(function (sec) {
-            parts.push('<div class="services-section-header" data-type="' + escapeHtml(sec.type) + '"><span>' + escapeHtml(sec.header) + '</span></div>');
-            (sec.items || []).forEach(function (item) {
-                parts.push(renderVaultItem(item, sec.type));
-            });
+        var rows = mergeIntegrationCatalog(cfg, ORDER);
+        var catalogParts = rows.map(function (e) {
+            return renderVaultCatalogRow(e, REG);
         });
-        listEl.innerHTML = parts.join('');
+        var genericTable = cfg.tableGenericSecrets || [];
+        if (genericTable.length) {
+            var gLabel = cfg.tableGenericSecretsHeading != null ? cfg.tableGenericSecretsHeading : 'Generic secrets';
+            catalogParts.push(renderVaultGenericSectionHeaderRow(gLabel));
+            genericTable.forEach(function (g) {
+                catalogParts.push(renderVaultGenericCatalogRow(g));
+            });
+        }
+        tbody.innerHTML = catalogParts.join('');
     }
 
     function hydrateKnowledges(d) {
@@ -246,6 +583,9 @@
         var pctStr = String(row.contextPct || '50%');
         var pctNum = parseInt(pctStr, 10);
         if (isNaN(pctNum)) pctNum = 52;
+        var fillCls = pctNum < 40 ? 'low' : (pctNum < 80 ? 'medium' : 'high');
+        var statusLabel = String(row.statusLabel || 'Running');
+        var statusSlug = statusLabel.toLowerCase().indexOf('stop') >= 0 ? 'stopped' : 'running';
         var tags = (row.tags || []).map(function (t) {
             var c = t.class || 'skill';
             return '<span class="session-row-tag ' + escapeHtml(c) + '">' + escapeHtml(t.label) + '</span>';
@@ -259,21 +599,21 @@
             '<div class="session-row-body">' +
             '<div class="session-row-title">' + escapeHtml(row.title) + '</div>' +
             '<div class="session-row-subtitle">' + escapeHtml(row.subtitle) + '</div>' +
-            '</div>' +
             '<div class="session-row-tags">' + tags + '</div>' +
-            '<div class="session-row-context">' +
+            '</div>' +
+            '<div class="session-row-progress">' +
             '<div class="session-row-context-tooltip"><div class="tooltip-label">Context Window</div><div class="tooltip-value">' + escapeHtml(row.contextTooltip || '') + '</div></div>' +
-            '<div class="session-row-context-bar"><div class="session-row-context-fill medium" style="width: ' + pctNum + '%"></div></div>' +
-            '<span class="session-row-context-pct">' + escapeHtml(pctStr) + '</span>' +
-            '</div>' +
-            '<div class="session-row-status">' +
-            '<span class="session-row-status-dot running"></span>' +
-            '<span class="session-row-status-label running">Running</span>' +
-            '</div>' +
+            '<div class="session-row-progress-bar"><div class="session-row-progress-fill ' + fillCls + '" style="width: ' + pctNum + '%"></div></div>' +
+            '<div class="session-row-progress-meta">' +
+            '<span class="meta-pct">' + escapeHtml(pctStr) + '</span>' +
+            '<span class="meta-sep" aria-hidden="true">•</span>' +
+            '<span class="session-row-status-dot ' + statusSlug + '"></span>' +
+            '<span class="session-row-status-label ' + statusSlug + '">' + escapeHtml(statusLabel) + '</span>' +
+            '</div></div>' +
             '<span class="session-row-time">' + escapeHtml(row.timeLabel || '') + '</span>' +
             '<div class="session-row-actions" onclick="event.stopPropagation()">' +
-            '<button class="session-row-action stop" onclick="stopSession(\'' + sidEsc + '\')" title="Stop">' + sessionRowSvgStop() + '</button>' +
-            '<button class="session-row-action open" onclick="window.location.href=\'' + detailsHref + '\'" title="Open">' + sessionRowSvgOpen() + '</button>' +
+            '<button type="button" class="session-row-action stop" onclick="stopSession(\'' + sidEsc + '\')" title="Stop">' + sessionRowSvgStop() + '</button>' +
+            '<button type="button" class="session-row-action open" onclick="window.location.href=\'' + detailsHref + '\'" title="Open">' + sessionRowSvgOpen() + '</button>' +
             '</div></div>';
     }
 
@@ -281,12 +621,14 @@
         var d = window.__kaidenDemoScreenData;
         if (d) {
             if (d.projects) hydrateProjects(d);
-            if (d.services) hydrateServices(d);
             if (d.knowledges) hydrateKnowledges(d);
         }
+        /* Secret Vault: always hydrate when the page has the catalog table (even if services.json failed). */
+        hydrateServices(d || {});
         /* Agents list: post-onboarding empty state or coding-agent single row — even if JSON failed. */
         hydrateSessions(d || {});
     }
 
     window.kaidenHydrateDemoPages = run;
+    window.kaidenSaveVaultInlineForm = kaidenSaveVaultInlineForm;
 })();

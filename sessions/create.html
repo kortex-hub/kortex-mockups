@@ -123,6 +123,29 @@
             color: #9ca3af;
             margin: 0 0 28px 0;
             line-height: 1.6;
+            max-width: 640px;
+        }
+
+        .create-session-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.28);
+            padding: 5px 10px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .create-session-hero-badge svg {
+            width: 12px;
+            height: 12px;
+            opacity: 0.9;
         }
 
         /* Stepped create flow */
@@ -842,6 +865,222 @@
         .ca-workspace-source-intro a:hover {
             color: #c4b5fd;
             text-decoration: underline;
+        }
+
+        /* Workspace source — card picker + Git sandbox clone */
+        .ca-workspace-source-picker {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        @media (max-width: 640px) {
+            .ca-workspace-source-picker {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ca-workspace-source-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 1px solid #3d3e4f;
+            background: rgba(15, 15, 20, 0.45);
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            color: inherit;
+            transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+        }
+
+        .ca-workspace-source-option:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            background: rgba(139, 92, 246, 0.04);
+        }
+
+        .ca-workspace-source-option.is-selected {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.09);
+            box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.12), 0 8px 28px rgba(0, 0, 0, 0.22);
+        }
+
+        .ca-workspace-source-option:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35);
+        }
+
+        .ca-ws-opt-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+        }
+
+        .ca-workspace-source-option.is-selected .ca-ws-opt-icon {
+            background: rgba(139, 92, 246, 0.22);
+            color: #c4b5fd;
+        }
+
+        .ca-workspace-source-option[data-ca-ws-kind="git"] .ca-ws-opt-icon {
+            background: rgba(6, 182, 212, 0.12);
+            color: #67e8f9;
+        }
+
+        .ca-workspace-source-option[data-ca-ws-kind="git"].is-selected .ca-ws-opt-icon {
+            background: rgba(6, 182, 212, 0.2);
+            color: #a5f3fc;
+        }
+
+        .ca-ws-opt-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .ca-ws-opt-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ca-ws-opt-title {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .ca-ws-opt-desc {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.45;
+        }
+
+        .ca-workspace-panel {
+            display: none;
+            padding-top: 2px;
+            animation: caWizardFade 0.22s ease;
+        }
+
+        .ca-workspace-panel.is-active {
+            display: block;
+        }
+
+        .ca-git-fields-grid {
+            display: grid;
+            grid-template-columns: 1fr 140px;
+            gap: 12px;
+            align-items: start;
+        }
+
+        @media (max-width: 560px) {
+            .ca-git-fields-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ca-git-sandbox-card {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.22);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(30, 31, 43, 0.65) 100%);
+        }
+
+        .ca-git-sandbox-toggle {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .ca-git-sandbox-toggle input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .ca-toggle-track {
+            flex-shrink: 0;
+            width: 44px;
+            height: 26px;
+            border-radius: 999px;
+            background: #2e3040;
+            border: 1px solid #4b5563;
+            position: relative;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            margin-top: 2px;
+        }
+
+        .ca-toggle-track::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .ca-git-sandbox-toggle input:focus-visible + .ca-toggle-track {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35);
+        }
+
+        .ca-git-sandbox-toggle input:checked + .ca-toggle-track {
+            background: rgba(139, 92, 246, 0.45);
+            border-color: rgba(167, 139, 250, 0.65);
+        }
+
+        .ca-git-sandbox-toggle input:checked + .ca-toggle-track::after {
+            transform: translateX(18px);
+            background: #fff;
+        }
+
+        .ca-git-sandbox-copy strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+
+        .ca-git-sandbox-copy .ca-git-sandbox-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .ca-git-preview-box {
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid #3d3e4f;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .ca-git-preview-box code {
+            display: block;
+            margin-top: 6px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 12px;
+            color: #c4b5fd;
+            word-break: break-all;
         }
 
         /* Model catalog (tables aligned with models/index.html) */
@@ -2589,10 +2828,15 @@
                 <!-- Content -->
                 <div class="create-session-content">
                     <div class="create-session-container">
-                        <h1 class="create-session-title">Create Coding Agent Workspace</h1>
+                        <div class="create-session-hero-badge" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                            Guided setup
+                        </div>
+                        <h1 class="create-session-title">Create coding agent workspace</h1>
                         <p class="create-session-subtitle">
-                            Configure your coding agent with the skills, tools, and access permissions it needs. 
-                            The session will run in a secure sandbox environment.
+                            Wire up your agent, model, tools, and access in a short flow. Everything runs in an isolated sandbox unless you choose a cloud dev environment in the last step.
                         </p>
 
                         <nav class="ca-wizard-stepper" aria-label="Create workspace steps">
@@ -2693,44 +2937,100 @@
                                     </svg>
                                 </div>
                                 <div class="config-section-info">
-                                    <h3>Session Details</h3>
-                                    <p>Name your workspace, point to a local directory or a Git repository, and add an optional description</p>
+                                    <h3>Workspace</h3>
+                                    <p>Give the session a name, choose where the code lives, and add a short description if it helps your team.</p>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="sessionName">Session Name</label>
-                                <input type="text" id="sessionName" placeholder="e.g., Frontend Refactoring">
+                                <label for="sessionName">Session name</label>
+                                <input type="text" id="sessionName" placeholder="e.g. Frontend refactor sprint">
                             </div>
 
                             <p class="ca-workspace-source-intro">
-                                Point Kaiden to a local working directory or a Git repository URL — same idea as <a href="../projects/index.html">creating a project</a>. For Git, the workspace uses a default clone path derived from the repo name (you can align this with your project record later).
+                                Pick one source type. Git can be cloned straight into the sandbox so nothing has to exist on your laptop first — same patterns as <a href="../projects/index.html">Projects</a>.
                             </p>
 
-                            <div class="form-group">
-                                <label for="caLocalPath">Local working directory</label>
-                                <div class="ca-np-path-input-wrapper">
-                                    <input type="text" class="ca-np-path-input" id="caLocalPath" placeholder="/home/user/dev/my-project" autocomplete="off" oninput="caWorkspaceSourceInput('local')">
-                                    <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseWorkspaceFolder()" title="Mock: set a sample path">
+                            <div class="ca-workspace-source-picker" role="radiogroup" aria-label="Workspace code source">
+                                <button type="button" class="ca-workspace-source-option is-selected" id="caWsOptLocal" data-ca-ws-kind="local" aria-pressed="true" onclick="caSetWorkspaceSourceKind('local')">
+                                    <span class="ca-ws-opt-icon" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                        Browse
-                                    </button>
+                                    </span>
+                                    <span class="ca-ws-opt-body">
+                                        <span class="ca-ws-opt-title">Local folder</span>
+                                        <span class="ca-ws-opt-desc">Mount or open a directory you already have — fastest when the repo is on disk.</span>
+                                    </span>
+                                </button>
+                                <button type="button" class="ca-workspace-source-option" id="caWsOptGit" data-ca-ws-kind="git" aria-pressed="false" onclick="caSetWorkspaceSourceKind('git')">
+                                    <span class="ca-ws-opt-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-5m14 7v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                    </span>
+                                    <span class="ca-ws-opt-body">
+                                        <span class="ca-ws-opt-title">Git repository</span>
+                                        <span class="ca-ws-opt-desc">Point at a remote URL and optionally clone into the sandbox when the session starts.</span>
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div class="ca-workspace-panel is-active" id="caWorkspacePanelLocal" role="region" aria-label="Local folder">
+                                <div class="form-group">
+                                    <label for="caLocalPath">Working directory</label>
+                                    <div class="ca-np-path-input-wrapper">
+                                        <input type="text" class="ca-np-path-input" id="caLocalPath" placeholder="/home/user/dev/my-project" autocomplete="off">
+                                        <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseWorkspaceFolder()" title="Mock: set a sample path">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                            Browse
+                                        </button>
+                                    </div>
+                                    <p class="ca-workspace-source-hint">Path visible to the agent inside its file-access policy (see step 4).</p>
                                 </div>
                             </div>
 
-                            <div class="ca-np-or-divider" aria-hidden="true">or</div>
-
-                            <div class="form-group">
-                                <label for="caGitUrl">Git repository URL</label>
-                                <div class="ca-np-git-input-wrapper">
-                                    <input type="url" class="ca-np-git-input" id="caGitUrl" placeholder="https://github.com/org/repo" autocomplete="off" inputmode="url" oninput="caWorkspaceSourceInput('git')">
+                            <div class="ca-workspace-panel" id="caWorkspacePanelGit" role="region" aria-label="Git repository">
+                                <div class="ca-git-fields-grid">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label for="caGitUrl">Repository URL</label>
+                                        <div class="ca-np-git-input-wrapper">
+                                            <input type="url" class="ca-np-git-input" id="caGitUrl" placeholder="https://github.com/org/repo" autocomplete="off" inputmode="url" oninput="caUpdateGitSandboxPreview()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label for="caGitBranch">Branch <span style="font-weight:500;color:#6b7280;">(optional)</span></label>
+                                        <input type="text" class="ca-np-path-input" id="caGitBranch" placeholder="main" autocomplete="off" style="width:100%;box-sizing:border-box;">
+                                    </div>
                                 </div>
-                                <p class="ca-workspace-source-hint">HTTPS or SSH URL. Leave local directory empty when using Git.</p>
+                                <p class="ca-workspace-source-hint" style="margin-top: 10px;">HTTPS or SSH. Credentials come from Secret Vault or your Git integration when needed.</p>
+
+                                <div class="ca-git-sandbox-card">
+                                    <label class="ca-git-sandbox-toggle" for="caGitCloneSandbox">
+                                        <input type="checkbox" id="caGitCloneSandbox" checked onchange="caSyncGitSandboxUI()">
+                                        <span class="ca-toggle-track" aria-hidden="true"></span>
+                                        <span class="ca-git-sandbox-copy">
+                                            <strong>Clone inside sandbox</strong>
+                                            <p class="ca-git-sandbox-sub">The platform runs <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#d1d5db;">git clone</code> when the workspace starts. No local checkout required.</p>
+                                        </span>
+                                    </label>
+                                    <div class="ca-git-preview-box" id="caGitSandboxPreviewWrap">
+                                        <span>Sandbox working tree (preview)</span>
+                                        <code id="caGitSandboxPreviewPath">/workspace/repos/repo</code>
+                                    </div>
+                                    <div class="form-group" id="caGitLinkedLocalWrap" style="margin-top: 16px; margin-bottom: 0; display: none;">
+                                        <label for="caGitLinkedLocalPath">Existing checkout path</label>
+                                        <div class="ca-np-path-input-wrapper">
+                                            <input type="text" class="ca-np-path-input" id="caGitLinkedLocalPath" placeholder="/home/user/dev/my-project" autocomplete="off">
+                                            <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseGitLinkedFolder()" title="Mock: set a sample path">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                Browse
+                                            </button>
+                                        </div>
+                                        <p class="ca-workspace-source-hint">Use this when the repo is already on disk and you only want the remote URL on record.</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="sessionDescription">Description (optional)</label>
-                                <textarea id="sessionDescription" placeholder="Describe what this session will accomplish..."></textarea>
+                                <label for="sessionDescription">Description <span style="font-weight:500;color:#6b7280;">(optional)</span></label>
+                                <textarea id="sessionDescription" placeholder="What should this session focus on?"></textarea>
                             </div>
                         </div>
 
@@ -3758,6 +4058,7 @@
             'api-gateway': {
                 sessionName: 'API Gateway workspace',
                 gitRepository: 'https://github.com/acme/api-gateway',
+                gitCloneInSandbox: true,
                 description: 'Edge API gateway: routing, authentication, and rate limits for microservices.',
                 catalogModel: 'gpt-5.3-codex',
                 agent: 'opencode',
@@ -3770,33 +4071,76 @@
         };
 
         let selectedProjectSlug = null;
+        /** Step 1: 'local' | 'git' — drives which workspace panel is active. */
+        let caWorkspaceSourceKind = 'local';
 
-        /** Default clone path for mock (mirrors projects/index.html deriveFromGit). */
-        function deriveWorkingDirFromGitUrl(url) {
+        /** Preview path when Git is cloned inside the sandbox (distinct from host paths). */
+        function deriveSandboxClonePath(url) {
             var raw = (url || '').trim();
-            if (!raw) return '';
+            if (!raw) return '/workspace/repos/repo';
             var cleaned = raw.replace(/\.git$/i, '').replace(/^git@[^:]+:/, '').replace(/^https?:\/\//i, '');
             var parts = cleaned.split('/').filter(Boolean);
             var repoName = parts.length ? parts[parts.length - 1].replace(/\.git$/i, '') : 'repo';
-            return '~/dev/' + repoName;
+            return '/workspace/repos/' + repoName;
         }
 
-        function caWorkspaceSourceInput(which) {
-            var localEl = document.getElementById('caLocalPath');
-            var gitEl = document.getElementById('caGitUrl');
-            if (!localEl || !gitEl) return;
-            if (which === 'local' && localEl.value.trim()) {
-                gitEl.value = '';
-            } else if (which === 'git' && gitEl.value.trim()) {
-                localEl.value = '';
+        function caSetWorkspaceSourceKind(kind) {
+            caWorkspaceSourceKind = kind === 'git' ? 'git' : 'local';
+            var locBtn = document.getElementById('caWsOptLocal');
+            var gitBtn = document.getElementById('caWsOptGit');
+            var pLoc = document.getElementById('caWorkspacePanelLocal');
+            var pGit = document.getElementById('caWorkspacePanelGit');
+            if (locBtn) {
+                locBtn.classList.toggle('is-selected', caWorkspaceSourceKind === 'local');
+                locBtn.setAttribute('aria-pressed', caWorkspaceSourceKind === 'local' ? 'true' : 'false');
             }
+            if (gitBtn) {
+                gitBtn.classList.toggle('is-selected', caWorkspaceSourceKind === 'git');
+                gitBtn.setAttribute('aria-pressed', caWorkspaceSourceKind === 'git' ? 'true' : 'false');
+            }
+            if (pLoc) pLoc.classList.toggle('is-active', caWorkspaceSourceKind === 'local');
+            if (pGit) pGit.classList.toggle('is-active', caWorkspaceSourceKind === 'git');
+            caSyncGitSandboxUI();
+        }
+
+        function caUpdateGitSandboxPreview() {
+            var el = document.getElementById('caGitSandboxPreviewPath');
+            var gitInp = document.getElementById('caGitUrl');
+            if (el && gitInp) {
+                el.textContent = deriveSandboxClonePath(gitInp.value);
+            }
+        }
+
+        function caSyncGitSandboxUI() {
+            var chk = document.getElementById('caGitCloneSandbox');
+            var wrap = document.getElementById('caGitLinkedLocalWrap');
+            var previewWrap = document.getElementById('caGitSandboxPreviewWrap');
+            var on = !!(chk && chk.checked);
+            if (previewWrap) previewWrap.style.display = on ? '' : 'none';
+            if (wrap) {
+                wrap.style.display = !on && caWorkspaceSourceKind === 'git' ? 'block' : 'none';
+            }
+            if (on) {
+                caUpdateGitSandboxPreview();
+            }
+        }
+
+        function initWorkspaceSourceUI() {
+            caSetWorkspaceSourceKind(caWorkspaceSourceKind);
+            caUpdateGitSandboxPreview();
         }
 
         function caSimulateBrowseWorkspaceFolder() {
             var el = document.getElementById('caLocalPath');
             if (el) {
                 el.value = '/home/user/dev/my-project';
-                caWorkspaceSourceInput('local');
+            }
+        }
+
+        function caSimulateBrowseGitLinkedFolder() {
+            var el = document.getElementById('caGitLinkedLocalPath');
+            if (el) {
+                el.value = '/home/user/dev/my-project';
             }
         }
 
@@ -3894,11 +4238,26 @@
                     alert('Please enter a session name');
                     return false;
                 }
-                var localPath = (document.getElementById('caLocalPath') && document.getElementById('caLocalPath').value || '').trim();
+                if (caWorkspaceSourceKind === 'local') {
+                    var localPath = (document.getElementById('caLocalPath') && document.getElementById('caLocalPath').value || '').trim();
+                    if (!localPath) {
+                        alert('Enter a working directory for this workspace');
+                        return false;
+                    }
+                    return true;
+                }
                 var gitUrl = (document.getElementById('caGitUrl') && document.getElementById('caGitUrl').value || '').trim();
-                if (!localPath && !gitUrl) {
-                    alert('Enter a local working directory or a Git repository URL');
+                var cloneSandbox = !!(document.getElementById('caGitCloneSandbox') && document.getElementById('caGitCloneSandbox').checked);
+                if (!gitUrl) {
+                    alert('Enter a Git repository URL');
                     return false;
+                }
+                if (!cloneSandbox) {
+                    var linked = (document.getElementById('caGitLinkedLocalPath') && document.getElementById('caGitLinkedLocalPath').value || '').trim();
+                    if (!linked) {
+                        alert('Either enable "Clone inside sandbox" or enter the path to an existing checkout');
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -4008,16 +4367,28 @@
             const nameInput = document.getElementById('sessionName');
             const localInp = document.getElementById('caLocalPath');
             const gitInp = document.getElementById('caGitUrl');
+            const gitBranchInp = document.getElementById('caGitBranch');
+            const linkedInp = document.getElementById('caGitLinkedLocalPath');
+            const cloneChk = document.getElementById('caGitCloneSandbox');
             const descInput = document.getElementById('sessionDescription');
             if (nameInput) nameInput.value = preset.sessionName;
             if (preset.gitRepository) {
                 if (gitInp) gitInp.value = preset.gitRepository;
                 if (localInp) localInp.value = '';
+                if (gitBranchInp) gitBranchInp.value = preset.gitBranch || '';
+                if (cloneChk) cloneChk.checked = preset.gitCloneInSandbox !== false;
+                if (linkedInp) linkedInp.value = preset.gitLinkedLocalPath || '';
+                caSetWorkspaceSourceKind('git');
             } else {
                 if (localInp) localInp.value = preset.workingDir || '';
                 if (gitInp) gitInp.value = '';
+                if (gitBranchInp) gitBranchInp.value = '';
+                if (cloneChk) cloneChk.checked = true;
+                if (linkedInp) linkedInp.value = '';
+                caSetWorkspaceSourceKind('local');
             }
             if (descInput) descInput.value = preset.description;
+            caSyncGitSandboxUI();
 
             if (isSkillsModuleEnabled()) {
                 setPdSelectableRows('skills-config-section', preset.skills);
@@ -4372,6 +4743,7 @@
             initSkillsSection();
             initMcpSection();
             initSecretVaultSection();
+            initWorkspaceSourceUI();
             initProjectFromUrl();
             initAgentConfigSidebar();
             initCreateAgentWizardStepper();
@@ -4557,17 +4929,23 @@
             const description = document.getElementById('sessionDescription').value;
             const localPath = (document.getElementById('caLocalPath') && document.getElementById('caLocalPath').value || '').trim();
             const gitUrl = (document.getElementById('caGitUrl') && document.getElementById('caGitUrl').value || '').trim();
+            const gitBranch = (document.getElementById('caGitBranch') && document.getElementById('caGitBranch').value || '').trim();
+            const linkedLocal = (document.getElementById('caGitLinkedLocalPath') && document.getElementById('caGitLinkedLocalPath').value || '').trim();
+            const cloneSandbox = !!(document.getElementById('caGitCloneSandbox') && document.getElementById('caGitCloneSandbox').checked);
             var workingDir;
             var workspaceSourceType;
             var gitRepositoryUrl;
-            if (localPath) {
+            var gitCloneInSandbox = false;
+            if (caWorkspaceSourceKind === 'local') {
                 workspaceSourceType = 'local';
                 gitRepositoryUrl = null;
+                gitCloneInSandbox = false;
                 workingDir = localPath;
             } else {
                 workspaceSourceType = 'git';
                 gitRepositoryUrl = gitUrl;
-                workingDir = deriveWorkingDirFromGitUrl(gitUrl);
+                gitCloneInSandbox = cloneSandbox;
+                workingDir = cloneSandbox ? deriveSandboxClonePath(gitUrl) : linkedLocal;
             }
 
             if (!name) {
@@ -4575,9 +4953,20 @@
                 return;
             }
 
-            if (!localPath && !gitUrl) {
-                alert('Enter a local working directory or a Git repository URL');
-                return;
+            if (caWorkspaceSourceKind === 'local') {
+                if (!localPath) {
+                    alert('Enter a working directory for this workspace');
+                    return;
+                }
+            } else {
+                if (!gitUrl) {
+                    alert('Enter a Git repository URL');
+                    return;
+                }
+                if (!cloneSandbox && !linkedLocal) {
+                    alert('Either enable "Clone inside sandbox" or enter the path to an existing checkout');
+                    return;
+                }
             }
 
             if (!selectedAgent) {
@@ -4635,6 +5024,8 @@
                 workingDir,
                 workspaceSourceType,
                 gitRepositoryUrl,
+                gitCloneInSandbox: workspaceSourceType === 'git' ? gitCloneInSandbox : false,
+                gitBranch: workspaceSourceType === 'git' && gitBranch ? gitBranch : null,
                 description,
                 agent: selectedAgent,
                 catalogModelId: selectedCatalogModelId,

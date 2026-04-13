@@ -1,0 +1,104 @@
+/** Synced from assets/data/demo-scenario/services.json — used when fetch fails (e.g. file://). */
+window.__kaidenVaultPageFallback = {
+    "onboarding": {
+        "subtitle": "0 of 6 integrations connected · add secrets when you connect tools",
+        "mode": "empty",
+        "catalogLead": "Every built-in provider is listed here—expand a row with Configure to connect. You can still add a fully custom secret from the button above.",
+        "integrationCatalog": [],
+        "tableGenericSecrets": []
+    },
+    "postOnboarding": {
+        "subtitle": "0 of 6 integrations connected · add secrets when you connect tools",
+        "mode": "empty",
+        "catalogLead": "Every built-in provider is listed here—expand a row with Configure to connect. You can still add a fully custom secret from the button above.",
+        "integrationCatalog": [],
+        "tableGenericSecrets": []
+    },
+    "codingAgent": {
+        "subtitle": "0 of 6 integrations connected · add secrets when you connect tools",
+        "mode": "empty",
+        "catalogLead": "Every built-in provider is listed here—expand a row with Configure to connect. You can still add a fully custom secret from the button above.",
+        "integrationCatalog": [],
+        "tableGenericSecrets": []
+    },
+    "full": {
+        "subtitle": "5 of 6 built-in integrations · 2 generic header secrets",
+        "mode": "list",
+        "catalogLead": "Built-in providers use Configure on each row. Generic secrets (header injection by host/path) appear below them. Add another generic secret with the button above.",
+        "integrationCatalog": [
+            {
+                "providerId": "github",
+                "configured": true,
+                "detailId": "github-pat",
+                "connection": "acme-corp · PAT",
+                "masked": "ghp_••••••••••••••••",
+                "revealValue": "ghp_R8kLm2••••••••••••v4Qx"
+            },
+            {
+                "providerId": "jira",
+                "configured": true,
+                "detailId": "jira",
+                "connection": "you@acme.com · cloud",
+                "masked": "ATATT3x••••••••••••9kLm",
+                "revealValue": "ATATT3xFf••••••••••9kLm"
+            },
+            {
+                "providerId": "gitlab",
+                "configured": false
+            },
+            {
+                "providerId": "slack",
+                "configured": true,
+                "detailId": "slack",
+                "connection": "ACME workspace",
+                "masked": "xoxb-••••••••••••abcd",
+                "revealValue": "xoxb-1234••••••••abcd"
+            },
+            {
+                "providerId": "openshift",
+                "configured": true,
+                "detailId": "openshift",
+                "connection": "api.dev.openshift.corp.example",
+                "masked": "sha256~••••••••••••Qm3z",
+                "revealValue": "sha256~Dk8x••••••••••Qm3z"
+            },
+            {
+                "providerId": "ansible-aap",
+                "configured": true,
+                "detailId": "ansible-aap",
+                "connection": "https://aap.corp.example",
+                "masked": "aap_••••••••••••expired",
+                "revealValue": "aap_bHR5c••••••••expired",
+                "status": "expired"
+            }
+        ],
+        "tableGenericSecrets": [
+            {
+                "configured": true,
+                "detailId": "generic-payments-api",
+                "title": "Payments API",
+                "subtitle": "Bearer {value} · Authorization on matching requests",
+                "connection": "api.payments.partner.com · /v2/*",
+                "masked": "sk_live••••••••••••",
+                "revealValue": "sk_live••••••••4qXp",
+                "status": "active"
+            },
+            {
+                "configured": true,
+                "detailId": "generic-corp-internal",
+                "title": "Internal tools",
+                "subtitle": "Wildcard host · internal dashboards & APIs",
+                "connection": "*.tools.internal.corp.example",
+                "masked": "tok_••••••••••••••••",
+                "revealValue": "tok_••••••••k9Lm",
+                "status": "active"
+            },
+            {
+                "configured": false,
+                "title": "Partner staging API",
+                "subtitle": "Not configured — inject header on api.partner.io",
+                "connection": "—"
+            }
+        ]
+    }
+};

@@ -1550,8 +1550,8 @@
 
                     <div class="pd-sidebar-project-info">
                         <div class="pd-sidebar-project-icon">KB</div>
-                        <div class="pd-sidebar-project-name">Doc updater</div>
-                        <div class="pd-sidebar-project-path">~/dev/doc-updater</div>
+                        <div class="pd-sidebar-project-name">Kortex Backend</div>
+                        <div class="pd-sidebar-project-path">~/dev/kortex-backend</div>
                     </div>
 
                     <div class="pd-nav-title">Sections</div>
@@ -1680,20 +1680,20 @@
                             <div class="pd-field-group">
                                 <div class="pd-field">
                                     <label class="pd-field-label">Project Name</label>
-                                    <input type="text" class="pd-field-input" value="Doc updater">
+                                    <input type="text" class="pd-field-input" value="Kortex Backend">
                                 </div>
                                 <div class="pd-field">
                                     <label class="pd-field-label">Description</label>
-                                    <textarea class="pd-field-input">Automatic documentation updater: when new features land, the agent checks whether project docs need updates before we deploy to OpenShift.</textarea>
+                                    <textarea class="pd-field-input">Core backend service for the Kortex platform. Handles API endpoints, authentication, agent orchestration, and data management.</textarea>
                                 </div>
                                 <div class="pd-overview-row">
                                     <div class="pd-field">
                                         <label class="pd-field-label">Working Directory</label>
-                                        <input type="text" class="pd-field-input mono" value="~/dev/doc-updater">
+                                        <input type="text" class="pd-field-input mono" value="~/dev/kortex-backend">
                                     </div>
                                     <div class="pd-field">
                                         <label class="pd-field-label">Git Remote</label>
-                                        <input type="text" class="pd-field-input mono" value="github.com/acme/doc-updater">
+                                        <input type="text" class="pd-field-input mono" value="github.com/acme/backend">
                                     </div>
                                 </div>
                             </div>
@@ -2285,7 +2285,7 @@
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                                     </div>
                                     <div class="pd-fs-path-info">
-                                        <div class="pd-fs-path-name">~/dev/doc-updater</div>
+                                        <div class="pd-fs-path-name">~/dev/kortex-backend</div>
                                         <div class="pd-fs-path-note">Project working directory</div>
                                     </div>
                                     <span class="pd-fs-path-badge rw">read-write</span>
@@ -2346,6 +2346,33 @@
                                     <span class="pd-fs-path-badge deny">blocked</span>
                                     <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="pd-overview-card" style="margin-top: 8px;">
+                            <div class="pd-overview-card-title">Workspace File Sync</div>
+                            <p class="pd-np-desc">Filesystem policy settings are synced to the <span style="font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; color: #d1d5db;">agentdev-workspace.yaml</span> file under <span style="font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; color: #d1d5db;">agentConfig.permissions.filesystem</span>.</p>
+                            <div class="pd-np-yaml-preview">
+                                <div class="pd-np-yaml-header">
+                                    <span>agentdev-workspace.yaml</span>
+                                    <span class="pd-np-yaml-synced">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Synced
+                                    </span>
+                                </div>
+                                <pre class="pd-np-yaml-code">agentConfig:
+  permissions:
+    filesystem:
+      mode: strict
+      readWrite:
+        - "~/dev/kortex-backend"
+        - "/sandbox"
+        - "/tmp"
+      readOnly:
+        - "/usr/local/go"
+        - "/usr/local/bin"
+      blocked:
+        - "~/.ssh"</pre>
                             </div>
                         </div>
                     </div>

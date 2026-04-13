@@ -1,4 +1,4 @@
-<!-- Reference sidebar (keep in sync with assets/js/sidebar-loader.js buildSidebarHTML); subpages use data-nav-root + ${R} in JS. Optional projects: demo-scenario.js sets html.kaiden-optional-projects + sidebar-loader hides data-section="projects" when modules.optionalProjectsMode is true. -->
+<!-- Reference sidebar (keep in sync with assets/js/sidebar-loader.js buildSidebarHTML); subpages use data-nav-root + ${R} in JS. Includes Coding agents → coding-agent/index.html. Optional projects: demo-scenario.js sets html.kaiden-optional-projects + sidebar-loader hides data-section="projects" when modules.optionalProjectsMode is true. -->
 <nav class="sidebar">
     <a href="../sessions/index.html" class="nav-item" data-section="sessions">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7,6 +7,13 @@
             <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
         </svg>
         <span>Agents</span>
+    </a>
+    <a href="../coding-agent/index.html" class="nav-item" data-section="coding-agent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"/>
+            <line x1="12" y1="19" x2="20" y2="19"/>
+        </svg>
+        <span>Coding agents</span>
     </a>
     <a href="../projects/index.html" class="nav-item" data-section="projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

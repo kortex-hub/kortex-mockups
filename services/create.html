@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaiden - Add Secret · Secret Vault</title>
+    <title>Kaiden - Generic Secret · Secret Vault</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
@@ -79,27 +79,6 @@
             margin: 0 0 28px;
         }
 
-        .vault-create-callout {
-            display: flex;
-            gap: 12px;
-            padding: 14px 16px;
-            margin-bottom: 28px;
-            border-radius: 10px;
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            background: rgba(139, 92, 246, 0.06);
-            font-size: 13px;
-            color: #a1a1aa;
-            line-height: 1.5;
-        }
-
-        .vault-create-callout svg {
-            width: 20px;
-            height: 20px;
-            color: #a78bfa;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
         .vault-create-form {
             display: flex;
             flex-direction: column;
@@ -114,15 +93,14 @@
             margin-bottom: 8px;
         }
 
-        .vault-field .vault-field-hint {
-            font-weight: 400;
+        .vault-field-hint-below {
+            margin: 8px 0 0;
+            font-size: 12px;
+            line-height: 1.45;
             color: #6b7280;
-            margin-left: 4px;
         }
 
-        .vault-input,
-        .vault-select,
-        .vault-textarea {
+        .vault-input {
             width: 100%;
             box-sizing: border-box;
             padding: 11px 14px;
@@ -135,29 +113,12 @@
             transition: border-color 0.15s ease;
         }
 
-        .vault-input:focus,
-        .vault-select:focus,
-        .vault-textarea:focus {
+        .vault-input:focus {
             outline: none;
             border-color: var(--vault-pd-accent);
         }
 
-        .vault-input::placeholder,
-        .vault-textarea::placeholder { color: #6b7280; }
-
-        .vault-select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 40px;
-        }
-
-        .vault-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+        .vault-input::placeholder { color: #6b7280; }
 
         .vault-secret-wrap {
             position: relative;
@@ -189,78 +150,69 @@
             background: rgba(139, 92, 246, 0.2);
         }
 
-        .vault-radio-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .vault-radio-pill {
-            position: relative;
-        }
-
-        .vault-radio-pill input {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .vault-radio-pill span {
-            display: inline-flex;
-            align-items: center;
-            padding: 9px 16px;
-            border-radius: 10px;
+        .vault-injection-details {
             border: 1px solid var(--vault-pd-border);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--vault-pd-muted);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+        }
+
+        .vault-injection-details > summary {
+            list-style: none;
             cursor: pointer;
-            transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-        }
-
-        .vault-radio-pill input:focus-visible + span {
-            outline: 2px solid var(--vault-pd-accent);
-            outline-offset: 2px;
-        }
-
-        .vault-radio-pill input:checked + span {
-            border-color: rgba(139, 92, 246, 0.55);
-            background: rgba(139, 92, 246, 0.1);
-            color: #e5e7eb;
-        }
-
-        .vault-radio-pill:hover span {
-            border-color: #52525b;
-            color: #d4d4d8;
-        }
-
-        .vault-expiry-row {
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .vault-expiry-row .vault-input[type="date"] {
-            max-width: 200px;
-        }
-
-        .vault-check {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 13px;
-            color: #d4d4d8;
-            cursor: pointer;
+            font-weight: 600;
+            color: #e5e7eb;
             user-select: none;
         }
 
-        .vault-check input {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--vault-pd-accent);
-            cursor: pointer;
+        .vault-injection-details > summary::-webkit-details-marker { display: none; }
+
+        .vault-injection-details .vault-injection-summary-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vault-pd-muted);
+        }
+
+        .vault-injection-details .vault-injection-summary-icon svg { width: 18px; height: 18px; }
+
+        .vault-injection-details .vault-injection-summary-text { flex: 1; }
+
+        .vault-injection-details .vault-injection-chevron {
+            color: #6b7280;
+            transition: transform 0.2s ease;
+        }
+
+        .vault-injection-details .vault-injection-chevron svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+        }
+
+        .vault-injection-details[open] .vault-injection-chevron {
+            transform: rotate(180deg);
+        }
+
+        .vault-injection-panel {
+            padding: 0 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            border-top: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .vault-label-opt {
+            font-weight: 400;
+            color: #6b7280;
+        }
+
+        .vault-field--flush {
+            margin: 0;
         }
 
         .vault-form-actions {
@@ -330,81 +282,67 @@
                         <nav class="vault-create-breadcrumb" aria-label="Breadcrumb">
                             <a href="index.html">Secret Vault</a>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-                            <span>Add Secret</span>
+                            <span>Generic Secret</span>
                         </nav>
 
-                        <h1 class="vault-create-title">Add Secret</h1>
-                        <p class="vault-create-lead">Store API tokens, OAuth secrets, and infrastructure keys in one place. Values are encrypted and only exposed to agents and flows you attach them to.</p>
-
-                        <div class="vault-create-callout" role="note">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            <div>After saving, you can connect this credential from agent workspaces, MCP servers, and Settings integrations. You won’t be able to read the full secret back—only rotate or replace it.</div>
-                        </div>
+                        <h1 class="vault-create-title" id="genericSecretTitle">Generic Secret</h1>
+                        <p class="vault-create-lead">Configure a custom secret to inject as a header into matching requests.</p>
 
                         <form class="vault-create-form" id="vaultCreateForm">
+                            <input type="hidden" name="vault_kind" value="generic_header">
+
                             <div class="vault-field">
-                                <label for="vaultName">Display name</label>
-                                <input type="text" id="vaultName" name="name" class="vault-input" placeholder="e.g. GitHub · docs repo" autocomplete="off" required>
+                                <label for="genericSecretName">Name</label>
+                                <input type="text" id="genericSecretName" name="name" class="vault-input" placeholder="e.g. GitHub Token" autocomplete="off" required>
                             </div>
 
                             <div class="vault-field">
-                                <label>Category</label>
-                                <div class="vault-radio-row" role="radiogroup" aria-label="Credential category">
-                                    <label class="vault-radio-pill">
-                                        <input type="radio" name="category" value="api" checked>
-                                        <span>API token</span>
-                                    </label>
-                                    <label class="vault-radio-pill">
-                                        <input type="radio" name="category" value="infra">
-                                        <span>Infrastructure</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="vault-field">
-                                <label for="vaultKind">Credential type</label>
-                                <select id="vaultKind" name="kind" class="vault-select" aria-label="Credential type">
-                                    <option value="pat">Personal access token (PAT)</option>
-                                    <option value="oauth">OAuth / refresh token</option>
-                                    <option value="bot">Bot token</option>
-                                    <option value="project">Fine-grained / project token</option>
-                                    <option value="apikey">Generic API key</option>
-                                    <option value="cluster">Cluster or platform token</option>
-                                    <option value="service">Service account</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="vault-field">
-                                <label for="vaultSecret">Secret value</label>
+                                <label for="genericSecretValue">Secret value</label>
                                 <div class="vault-secret-wrap">
-                                    <input type="password" id="vaultSecret" name="secret" class="vault-input" placeholder="Paste token or key" autocomplete="off" required aria-describedby="vaultSecretHint">
-                                    <button type="button" class="vault-toggle-secret" id="vaultToggleSecret" aria-pressed="false">Show</button>
+                                    <input type="password" id="genericSecretValue" name="secret_value" class="vault-input" placeholder="Enter secret value" autocomplete="off" required aria-describedby="hintSecretEncrypted">
+                                    <button type="button" class="vault-toggle-secret" id="toggleGenericSecret" aria-pressed="false">Show</button>
                                 </div>
-                                <p id="vaultSecretHint" style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Use the real credential here. This mock does not send data anywhere.</p>
+                                <p class="vault-field-hint-below" id="hintSecretEncrypted">Encrypted at rest. You won’t be able to view this value again.</p>
                             </div>
 
                             <div class="vault-field">
-                                <label for="vaultDescription">Description <span class="vault-field-hint">(optional)</span></label>
-                                <textarea id="vaultDescription" name="description" class="vault-textarea" placeholder="Where it’s used, scopes, or rotation notes"></textarea>
+                                <label for="genericHostPattern">Host pattern</label>
+                                <input type="text" id="genericHostPattern" name="host_pattern" class="vault-input" placeholder="e.g. api.example.com or *.example.com" autocomplete="off" required aria-describedby="hintHostPattern">
+                                <p class="vault-field-hint-below" id="hintHostPattern">The host this secret applies to. Use *.example.com for wildcard subdomains.</p>
                             </div>
 
-                            <div class="vault-field">
-                                <label>Expiration <span class="vault-field-hint">(optional)</span></label>
-                                <div class="vault-expiry-row">
-                                    <input type="date" id="vaultExpiry" name="expiry" class="vault-input" aria-label="Expiration date">
-                                    <label class="vault-check">
-                                        <input type="checkbox" id="vaultNoExpiry" name="no_expiry" value="1">
-                                        No expiry
-                                    </label>
+                            <details class="vault-injection-details" open>
+                                <summary>
+                                    <span class="vault-injection-summary-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </span>
+                                    <span class="vault-injection-summary-text">Injection settings</span>
+                                    <span class="vault-injection-chevron" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                    </span>
+                                </summary>
+                                <div class="vault-injection-panel">
+                                    <div class="vault-field vault-field--flush">
+                                        <label for="genericPathPattern">Path pattern <span class="vault-label-opt">(optional)</span></label>
+                                        <input type="text" id="genericPathPattern" name="path_pattern" class="vault-input" placeholder="e.g. /v1/*" autocomplete="off">
+                                    </div>
+                                    <div class="vault-field vault-field--flush">
+                                        <label for="genericHeaderName">Header name</label>
+                                        <input type="text" id="genericHeaderName" name="header_name" class="vault-input" value="Authorization" autocomplete="off">
+                                    </div>
+                                    <div class="vault-field vault-field--flush">
+                                        <label for="genericValueFormat">Value format <span class="vault-label-opt">(optional)</span></label>
+                                        <input type="text" id="genericValueFormat" name="value_format" class="vault-input" placeholder="Bearer {value}" autocomplete="off" aria-describedby="hintValueFormat">
+                                        <p class="vault-field-hint-below" id="hintValueFormat">Use {value} as a placeholder for the secret. Defaults to the raw value.</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </details>
 
                             <div class="vault-form-actions">
                                 <a href="index.html" class="vault-btn-secondary">Cancel</a>
                                 <button type="submit" class="vault-btn-primary">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                    Save Secret
+                                    Add Secret
                                 </button>
                             </div>
                         </form>
@@ -416,30 +354,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const secretInput = document.getElementById('vaultSecret');
-            const toggleBtn = document.getElementById('vaultToggleSecret');
-            const noExpiry = document.getElementById('vaultNoExpiry');
-            const expiryInput = document.getElementById('vaultExpiry');
-
-            if (toggleBtn && secretInput) {
-                toggleBtn.addEventListener('click', function() {
-                    const showing = secretInput.type === 'text';
-                    secretInput.type = showing ? 'password' : 'text';
-                    toggleBtn.textContent = showing ? 'Show' : 'Hide';
-                    toggleBtn.setAttribute('aria-pressed', showing ? 'false' : 'true');
+            var toggle = document.getElementById('toggleGenericSecret');
+            var input = document.getElementById('genericSecretValue');
+            if (toggle && input) {
+                toggle.addEventListener('click', function() {
+                    var showing = input.type === 'text';
+                    input.type = showing ? 'password' : 'text';
+                    toggle.textContent = showing ? 'Show' : 'Hide';
+                    toggle.setAttribute('aria-pressed', showing ? 'false' : 'true');
                 });
             }
 
-            if (noExpiry && expiryInput) {
-                function syncExpiry() {
-                    expiryInput.disabled = noExpiry.checked;
-                    if (noExpiry.checked) expiryInput.value = '';
-                }
-                noExpiry.addEventListener('change', syncExpiry);
-                syncExpiry();
-            }
-
             document.getElementById('vaultCreateForm').addEventListener('submit', function(e) {
+                if (!this.checkValidity()) return;
                 e.preventDefault();
                 window.location.href = 'index.html';
             });

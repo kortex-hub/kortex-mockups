@@ -468,6 +468,195 @@
             color: #fcd34d;
         }
 
+        /* Filesystem policy (mirrors project details; shown on agent workspace overview) */
+        .session-fs-policy-card {
+            margin-top: 12px;
+        }
+
+        .session-fs-note {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(250, 204, 21, 0.04);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .session-fs-note svg {
+            width: 18px;
+            height: 18px;
+            color: #facc15;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .session-fs-note-text {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.55;
+        }
+
+        .session-fs-note-text strong {
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        .session-fs-project-line {
+            font-size: 12px;
+            color: #6b7280;
+            margin: -8px 0 14px;
+        }
+
+        .session-fs-project-line a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .session-fs-project-line a:hover {
+            text-decoration: underline;
+        }
+
+        .session-fs-mode-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            color: #facc15;
+            margin-bottom: 12px;
+        }
+
+        .session-fs-paths {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .session-fs-path-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            padding: 10px 12px;
+            background: rgba(37, 38, 49, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+        }
+
+        .session-fs-path-main {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .session-fs-path-code {
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        .session-fs-path-desc {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .session-fs-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .session-fs-badge.rw {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        .session-fs-badge.ro {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            color: #93c5fd;
+        }
+
+        .session-fs-badge.blocked {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+
+        .session-fs-yaml-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 6px;
+        }
+
+        .session-fs-yaml-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .session-fs-yaml-desc code {
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 11px;
+            color: #d1d5db;
+        }
+
+        .session-fs-yaml-preview {
+            background: #0d0e14;
+            border: 1px solid #2d2e3f;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .session-fs-yaml-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #2d2e3f;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .session-fs-yaml-synced {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #34d399;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .session-fs-yaml-synced svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .session-fs-yaml-code {
+            padding: 14px;
+            margin: 0;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #d1d5db;
+            overflow-x: auto;
+        }
+
         .resource-icon svg {
             width: 14px;
             height: 14px;
@@ -1280,7 +1469,7 @@
                             <div class="session-header-icon claude">C</div>
                             <div class="session-header-text">
                                 <h1>Frontend Refactor</h1>
-                                <span>Working in ~/projects/dashboard</span>
+                                <span>Working in ~/dev/kortex-backend</span>
                             </div>
                         </div>
                         <div class="session-status-badge">
@@ -1376,7 +1565,7 @@
                                 <div class="info-grid">
                                     <div class="info-item"><div class="info-label">Status</div><div class="info-value running">Running</div></div>
                                     <div class="info-item"><div class="info-label">Started</div><div class="info-value">2h 14m ago</div></div>
-                                    <div class="info-item"><div class="info-label">Directory</div><div class="info-value">~/projects/dashboard</div></div>
+                                    <div class="info-item"><div class="info-label">Directory</div><div class="info-value">~/dev/kortex-backend</div></div>
                                     <div class="info-item"><div class="info-label">Modified</div><div class="info-value">6 files</div></div>
                                 </div>
                             </div>
@@ -1470,13 +1659,109 @@
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                                         Filesystem
                                     </div>
+                                    <span class="summary-card-badge">Strict</span>
                                 </div>
                                 <div class="resources-list">
                                     <div class="resource-item">
                                         <div class="resource-icon filesystem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-                                        <div class="resource-info"><div class="resource-name">~/projects/dashboard</div><div class="resource-status">Read/Write</div></div>
+                                        <div class="resource-info"><div class="resource-name">~/dev/kortex-backend</div><div class="resource-status">read-write</div></div>
                                     </div>
                                 </div>
+                                <p style="margin:10px 0 0;font-size:11px;color:#6b7280;line-height:1.45;">Full declared paths and <span style="font-family:'SF Mono',monospace;font-size:10px;color:#9ca3af;">agentdev-workspace.yaml</span> sync below.</p>
+                            </div>
+                        </div>
+
+                        <div class="summary-card session-fs-policy-card" id="session-filesystem-policy">
+                            <div class="summary-card-header">
+                                <div class="summary-card-title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Filesystem policy
+                                </div>
+                                <span class="summary-card-badge">6 paths</span>
+                            </div>
+
+                            <div class="session-fs-note">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                <div class="session-fs-note-text">
+                                    <strong>Project-scoped filesystem policy.</strong> This workspace uses the same declared paths as the parent project. Agents can only read and write inside these paths (strict mode).
+                                </div>
+                            </div>
+
+                            <p class="session-fs-project-line">Effective policy from <a href="../projects/details.html#filesystem">Kortex Backend</a> · <a href="../projects/details.html#filesystem">Edit in project settings</a></p>
+
+                            <div class="session-fs-mode-pill">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Strict mode
+                            </div>
+
+                            <div class="session-fs-paths">
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">~/dev/kortex-backend</span>
+                                        <span class="session-fs-path-desc">Project working directory</span>
+                                    </div>
+                                    <span class="session-fs-badge rw">read-write</span>
+                                </div>
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">/sandbox</span>
+                                        <span class="session-fs-path-desc">Agent scratch workspace</span>
+                                    </div>
+                                    <span class="session-fs-badge rw">read-write</span>
+                                </div>
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">/tmp</span>
+                                        <span class="session-fs-path-desc">Temporary files</span>
+                                    </div>
+                                    <span class="session-fs-badge rw">read-write</span>
+                                </div>
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">/usr/local/go</span>
+                                        <span class="session-fs-path-desc">Go toolchain</span>
+                                    </div>
+                                    <span class="session-fs-badge ro">read-only</span>
+                                </div>
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">/usr/local/bin</span>
+                                        <span class="session-fs-path-desc">System binaries (make, git, etc.)</span>
+                                    </div>
+                                    <span class="session-fs-badge ro">read-only</span>
+                                </div>
+                                <div class="session-fs-path-row">
+                                    <div class="session-fs-path-main">
+                                        <span class="session-fs-path-code">~/.ssh</span>
+                                        <span class="session-fs-path-desc">SSH keys — explicitly blocked</span>
+                                    </div>
+                                    <span class="session-fs-badge blocked">blocked</span>
+                                </div>
+                            </div>
+
+                            <div class="session-fs-yaml-title">Workspace File Sync</div>
+                            <p class="session-fs-yaml-desc">Synced to <code>agentdev-workspace.yaml</code> under <code>agentConfig.permissions.filesystem</code>.</p>
+                            <div class="session-fs-yaml-preview">
+                                <div class="session-fs-yaml-header">
+                                    <span>agentdev-workspace.yaml</span>
+                                    <span class="session-fs-yaml-synced">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Synced
+                                    </span>
+                                </div>
+                                <pre class="session-fs-yaml-code">agentConfig:
+  permissions:
+    filesystem:
+      mode: strict
+      readWrite:
+        - "~/dev/kortex-backend"
+        - "/sandbox"
+        - "/tmp"
+      readOnly:
+        - "/usr/local/go"
+        - "/usr/local/bin"
+      blocked:
+        - "~/.ssh"</pre>
                             </div>
                         </div>
 
@@ -1528,7 +1813,7 @@
                                     </div>
                                 </div>
                                 <div class="terminal-body">
-                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-command">npm run build</span></div>
+                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-command">npm run build</span></div>
                                     <div class="terminal-output">
 > dashboard@1.0.0 build
 > vite build
@@ -1536,7 +1821,7 @@
 vite v5.0.12 building for production...
 ✓ 234 modules transformed.
                                     </div>
-                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-cursor"></span></div>
+                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-cursor"></span></div>
                                 </div>
                             </div>
                         </div>
@@ -1584,7 +1869,7 @@ vite v5.0.12 building for production...
                                     </div>
                                 </div>
                                 <div class="terminal-body" style="min-height: 400px;">
-                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-command">npm run build</span></div>
+                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-command">npm run build</span></div>
                                     <div class="terminal-output">
 > dashboard@1.0.0 build
 > vite build
@@ -1596,7 +1881,7 @@ dist/assets/index-BfJ4d1Hn.css    12.34 kB │ gzip: 3.21 kB
 dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
 ✓ built in 2.34s
                                     </div>
-                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-command">npm test</span></div>
+                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-command">npm test</span></div>
                                     <div class="terminal-output">
 > dashboard@1.0.0 test
 > vitest run
@@ -1610,7 +1895,7 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
    Start at  14:23:45
    Duration  1.23s
                                     </div>
-                                    <div><span class="terminal-prompt">~/projects/dashboard $</span> <span class="terminal-cursor"></span></div>
+                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-cursor"></span></div>
                                 </div>
                             </div>
                         </div>
