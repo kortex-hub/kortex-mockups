@@ -10,7 +10,7 @@ Scenario and scope are defined in **[Sprint-290.md](Sprint-290.md)** (CLI workfl
 kortex-mockups/
 ├── Sprint-290.md
 ├── index.html              # Redirects to welcome/index.html (preserves ?demo=…)
-├── welcome/index.html      # Fresh-install landing → onboarding or extensions
+├── welcome/index.html      # Fresh-install landing → guided onboarding
 ├── assets/
 │   ├── css/styles.css
 │   └── js/
@@ -26,7 +26,7 @@ kortex-mockups/
 
 ## Getting started
 
-Open `index.html` in a browser to land on **Welcome**, then choose **Start guided setup** (onboarding) or **Browse extension catalog**.
+Open `index.html` in a browser to land on **Welcome**, then choose **Start guided setup** to open onboarding.
 
 Subpages load `demo-scenario.js` then `assets/js/sidebar-loader.js` with `data-nav-root=".."` on `<body>` where needed.
 
