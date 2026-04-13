@@ -35,7 +35,7 @@ Subpages load `demo-scenario.js` then `assets/js/sidebar-loader.js` with `data-n
 - **Demo bar** — On every screen that loads `demo-scenario.js`, a **fixed top bar** shows three steps. **Start** (or a step dot) begins the scenario; while active: **Play** / **Prev** / **Next** / **Restart** (back to step 1) / **Exit**.
 - **`?demo=onboarding`** or **`?demo=empty`** (legacy) — `{ active: true, step: 0 }`.
 - **Step 1 — Onboarding:** Clicking the first step dot (or **Start**) opens **`onboarding/index.html`** (Setup). Elsewhere, **Extensions** + **Settings** only, lists cleared; **Extensions** catalog shows **Available** only.
-- **Step 2 — Post-onboarding:** Jumps to **Agents** (`sessions/index.html`); agent list is **empty** (no workspaces yet). Other `postOnboarding` JSON still applies on Projects, Vault, Knowledges.
+- **Step 2 — Post-onboarding:** Jumps to **Workspaces** (`sessions/index.html`); list is **empty** (no workspaces yet). Other `postOnboarding` JSON still applies on Projects, Vault, Knowledges.
 - **Step 3 — Full workspace:** Rich mocks (`full` key in the same JSON files).
 - **`?demo=full`** or **`?demo=reset`** — Exits demo mode and reloads.
 

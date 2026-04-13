@@ -12,7 +12,7 @@ As a developer, I want to list, create, and monitor coding agent sessions in one
 
 ## Context
 
-In the shell mockups, primary navigation label is **Agents** (`shared/components/sidebar.html` → `sessions/index.html`). **Alerts** (`agent-feed/index.html`) is the cross-session feed for items that need attention versus background activity.
+In the shell mockups, primary navigation label is **Workspaces** (`shared/components/sidebar.html` → `sessions/index.html`). **Alerts** (`agent-feed/index.html`) is the cross-session feed for items that need attention versus background activity.
 
 ## Features / scope
 

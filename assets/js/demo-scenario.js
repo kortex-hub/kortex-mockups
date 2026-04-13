@@ -70,7 +70,7 @@
         {
             id: 'post-onboarding',
             title: 'After setup',
-            subtitle: 'Agents list — no workspaces yet; slim projects and vault until the coding-agent step'
+            subtitle: 'Workspaces list — empty until you create one; slim projects and vault until the coding-agent step'
         },
         {
             id: 'coding-agent',
@@ -430,7 +430,7 @@
             if (i === 0) {
                 segLabel = (active ? 'Go to step ' : 'Start demo at step ') + '1: ' + STEPS[i].title + ' — open Setup';
             } else if (i === 1) {
-                segLabel = (active ? 'Go to step ' : 'Start demo at step ') + '2: ' + STEPS[i].title + ' — open Agents';
+                segLabel = (active ? 'Go to step ' : 'Start demo at step ') + '2: ' + STEPS[i].title + ' — open Workspaces';
             } else if (i === 2) {
                 segLabel = (active ? 'Go to step ' : 'Start demo at step ') + '3: ' + STEPS[i].title + ' — open workspace session';
             } else {

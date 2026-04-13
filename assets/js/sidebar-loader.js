@@ -30,7 +30,7 @@ function buildSidebarHTML() {
             <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
             <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
         </svg>
-        <span>Agents</span>
+        <span>Workspaces</span>
     </a>
 
     <a href="${R}/coding-agent/index.html" class="nav-item" data-section="coding-agent">

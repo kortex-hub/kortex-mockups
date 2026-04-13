@@ -29,7 +29,7 @@ As a user, I need to see all coding agent workspaces at a glance and open or cre
 ## Sub-tasks
 
 - [ ] List API or static data model matches row fields (title, subtitle, status, provider).
-- [ ] Navigation: sidebar **Agents** highlights; deep link from other pages works.
+- [ ] Navigation: sidebar **Workspaces** highlights; deep link from other pages works.
 - [ ] Create flow entry point routes to `sessions/create.html` (or equivalent route).
 - [ ] Accessibility: row focus, keyboard activation, meaningful labels for status.
 
