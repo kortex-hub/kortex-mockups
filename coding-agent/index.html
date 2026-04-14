@@ -136,24 +136,6 @@
             font-weight: 600;
         }
 
-        .services-cat-badge {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            color: #a1a1aa;
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            margin-top: 1px;
-        }
-
-        .services-cat-item.active .services-cat-badge {
-            background: rgba(168, 85, 247, 0.15);
-            color: #d8b4fe;
-            border-color: rgba(168, 85, 247, 0.25);
-        }
-
         .services-sidebar-divider {
             height: 1px;
             background: var(--models-nav-border);
@@ -556,6 +538,75 @@
         .cag-reset-btn:hover {
             color: #a1a1aa;
         }
+
+        /* Right-click: set default runtime */
+        .cag-ctx-menu {
+            position: fixed;
+            z-index: 9999;
+            min-width: 200px;
+            padding: 4px;
+            margin: 0;
+            list-style: none;
+            background: #18181b;
+            border: 1px solid #3f3f46;
+            border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .cag-ctx-menu[hidden] {
+            display: none !important;
+        }
+
+        .cag-ctx-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #e4e4e7;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .cag-ctx-item:hover,
+        .cag-ctx-item:focus {
+            background: rgba(168, 85, 247, 0.18);
+            color: #fafafa;
+            outline: none;
+        }
+
+        .cag-ctx-item:disabled {
+            opacity: 0.45;
+            cursor: default;
+            background: transparent;
+        }
+
+        body.coding-agent-page .services-sidebar .cag-default-label {
+            flex-shrink: 0;
+            margin-left: auto;
+            align-self: center;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #a1a1aa;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        body.coding-agent-page .services-sidebar .services-cat-item.active .cag-default-label {
+            background: rgba(168, 85, 247, 0.15);
+            color: #d8b4fe;
+            border-color: rgba(168, 85, 247, 0.25);
+        }
     </style>
 </head>
 <body class="coding-agent-page">
@@ -576,9 +627,9 @@
                             </div>
                             <div class="services-cat-body">
                                 <span class="services-cat-name">Claude Code</span>
-                                <span class="services-cat-meta">Anthropic · terminal</span>
+                                <span class="services-cat-meta">Anthropic</span>
                             </div>
-                            <span class="services-cat-badge">API</span>
+                            <span class="cag-default-label" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabClaudeVertex" aria-controls="cagPanelClaudeVertex" data-cag="claude-vertex" onclick="cagPick('claude-vertex', this)">
                             <div class="services-cat-icon" aria-hidden="true">
@@ -586,19 +637,19 @@
                             </div>
                             <div class="services-cat-body">
                                 <span class="services-cat-name">Claude Code (Vertex AI)</span>
-                                <span class="services-cat-meta">Google Cloud · Vertex</span>
+                                <span class="services-cat-meta">Google Cloud</span>
                             </div>
-                            <span class="services-cat-badge">Vertex</span>
+                            <span class="cag-default-label" hidden>Default</span>
                         </button>
-                        <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabCursor" aria-controls="cagPanelCursor" data-cag="cursor" onclick="cagPick('cursor', this)">
+                        <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabCodex" aria-controls="cagPanelCodex" data-cag="codex" onclick="cagPick('codex', this)">
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
                             </div>
                             <div class="services-cat-body">
-                                <span class="services-cat-name">Cursor</span>
-                                <span class="services-cat-meta">IDE bridge</span>
+                                <span class="services-cat-name">Codex</span>
+                                <span class="services-cat-meta">OpenAI</span>
                             </div>
-                            <span class="services-cat-badge">IDE</span>
+                            <span class="cag-default-label" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabGoose" aria-controls="cagPanelGoose" data-cag="goose" onclick="cagPick('goose', this)">
                             <div class="services-cat-icon" aria-hidden="true">
@@ -606,9 +657,9 @@
                             </div>
                             <div class="services-cat-body">
                                 <span class="services-cat-name">Goose</span>
-                                <span class="services-cat-meta">Block · terminal</span>
+                                <span class="services-cat-meta">Block</span>
                             </div>
-                            <span class="services-cat-badge">CLI</span>
+                            <span class="cag-default-label" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabOpencode" aria-controls="cagPanelOpencode" data-cag="opencode" onclick="cagPick('opencode', this)">
                             <div class="services-cat-icon" aria-hidden="true">
@@ -618,14 +669,14 @@
                                 <span class="services-cat-name">OpenCode</span>
                                 <span class="services-cat-meta">Ollama · Ramalama</span>
                             </div>
-                            <span class="services-cat-badge">Local</span>
+                            <span class="cag-default-label" hidden>Default</span>
                         </button>
                     </div>
 
                     <div class="services-sidebar-divider"></div>
                     <div class="services-sidebar-section">
                         <div class="services-sidebar-section-title">About</div>
-                        <p class="services-sidebar-note">Pick a runtime to edit its defaults for <strong>kdn</strong>. Session creation still chooses which agent a workspace uses.</p>
+                        <p class="services-sidebar-note">Pick a runtime to edit its defaults for <strong>kdn</strong>. <strong>Right-click</strong> a runtime to set it as the default (same as Settings → Default agent). Session creation still chooses which agent a workspace uses.</p>
                     </div>
                 </aside>
 
@@ -633,7 +684,7 @@
                     <div class="cag-title-row">
                         <h1 class="cag-main-title" id="cagMainTitle">Claude Code</h1>
                     </div>
-                    <p class="cag-main-subtitle" id="cagMainSubtitle">Anthropic · cloud API · terminal</p>
+                    <p class="cag-main-subtitle" id="cagMainSubtitle">Anthropic · cloud API</p>
 
                     <p class="cag-intro">
                         Defaults apply when this runtime is active. Model catalog: <a href="../models/index.html" class="cag-inline-link">Models</a>.
@@ -741,7 +792,7 @@
                         </div>
                     </div>
 
-                    <div class="cag-detail" id="cagPanelCursor" role="tabpanel" aria-labelledby="cagTabCursor" data-cag="cursor" hidden>
+                    <div class="cag-detail" id="cagPanelCodex" role="tabpanel" aria-labelledby="cagTabCodex" data-cag="codex" hidden>
                         <div class="cag-agent-block">
                             <header class="cag-agent-block-head">
                                 <div class="cag-card-pill">Defaults for this runtime</div>
@@ -749,8 +800,8 @@
                             </header>
                             <div class="cag-agent-body">
                                 <div class="cag-field">
-                                    <label for="cag-model-cursor">Default model</label>
-                                    <select id="cag-model-cursor" class="cag-select">
+                                    <label for="cag-model-codex">Default model</label>
+                                    <select id="cag-model-codex" class="cag-select">
                                         <option value="composer-2-fast">composer-2-fast</option>
                                         <option value="gpt-5.3-codex">gpt-5.3-codex</option>
                                         <option value="claude-4.6-sonnet-medium">claude-4.6-sonnet-medium</option>
@@ -771,8 +822,8 @@
                                     </div>
                                 </div>
                                 <div class="cag-field">
-                                    <label for="cag-instructions-cursor">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-cursor" class="cag-textarea" placeholder="Merged into context for Cursor sessions."></textarea>
+                                    <label for="cag-instructions-codex">Extra instructions <span class="cag-optional">optional</span></label>
+                                    <textarea id="cag-instructions-codex" class="cag-textarea" placeholder="Merged into context for Codex sessions."></textarea>
                                 </div>
                             </div>
                         </div>
@@ -864,14 +915,163 @@
         </main>
     </div>
 
+    <div id="cagCtxMenu" class="cag-ctx-menu" hidden role="menu" aria-label="Runtime actions">
+        <button type="button" class="cag-ctx-item" role="menuitem" id="cagCtxSetDefault">Set as default runtime</button>
+    </div>
+
     <script>
+        /**
+         * Default sidebar tab: Settings → Agent defaults → Default agent (kaidenSettings.agentDefaults.defaultAgent),
+         * or right-click a runtime → Set as default. Values match data-cag.
+         * Optional URL override for mocks: ?cag=claude-vertex
+         */
+        var cagIds = ['claude', 'claude-vertex', 'codex', 'goose', 'opencode'];
+
         var cagMeta = {
-            claude: { title: 'Claude Code', subtitle: 'Anthropic · cloud API · terminal' },
-            'claude-vertex': { title: 'Claude Code (Vertex AI)', subtitle: 'Google Cloud · Vertex · Claude via GCP' },
-            cursor: { title: 'Cursor', subtitle: 'Cursor · IDE bridge' },
-            goose: { title: 'Goose', subtitle: 'Block · extensible terminal agent' },
+            claude: { title: 'Claude Code', subtitle: 'Anthropic · cloud API' },
+            'claude-vertex': { title: 'Claude Code (Vertex AI)', subtitle: 'Google Cloud · Claude via GCP' },
+            codex: { title: 'Codex', subtitle: 'OpenAI' },
+            goose: { title: 'Goose', subtitle: 'Block · extensible agent' },
             opencode: { title: 'OpenCode', subtitle: 'Local · Ollama & Ramalama' }
         };
+
+        function cagNormalizeAgentId(id) {
+            if (id === 'cursor') return 'codex';
+            return id;
+        }
+
+        function cagDefaultFromSettings() {
+            try {
+                var raw = localStorage.getItem('kaidenSettings');
+                if (!raw) return null;
+                var o = JSON.parse(raw);
+                var id = o && o.agentDefaults && o.agentDefaults.defaultAgent;
+                if (typeof id !== 'string') return null;
+                id = cagNormalizeAgentId(id);
+                if (cagIds.indexOf(id) !== -1) return id;
+            } catch (e) { /* ignore */ }
+            return null;
+        }
+
+        function cagDefaultFromURL() {
+            try {
+                var id = new URLSearchParams(window.location.search).get('cag');
+                if (!id) return null;
+                id = cagNormalizeAgentId(id);
+                if (cagIds.indexOf(id) !== -1) return id;
+            } catch (e) { /* ignore */ }
+            return null;
+        }
+
+        function cagApplyInitialPick() {
+            var id = cagDefaultFromURL() || cagDefaultFromSettings() || 'claude';
+            var btn = document.querySelector('.services-cat-item[data-cag="' + id + '"]');
+            if (btn) cagPick(id, btn);
+            cagRefreshDefaultMarkers();
+        }
+
+        function cagEffectiveSavedDefault() {
+            return cagDefaultFromSettings() || 'claude';
+        }
+
+        function cagRefreshDefaultMarkers() {
+            var def = cagEffectiveSavedDefault();
+            document.querySelectorAll('.services-cat-item[data-cag]').forEach(function (btn) {
+                var id = btn.getAttribute('data-cag');
+                var isDef = id === def;
+                btn.classList.toggle('cag-default-runtime', isDef);
+                var lab = btn.querySelector('.cag-default-label');
+                if (lab) {
+                    if (isDef) lab.removeAttribute('hidden');
+                    else lab.setAttribute('hidden', '');
+                }
+            });
+        }
+
+        function cagPersistDefaultAgent(id) {
+            if (cagIds.indexOf(id) === -1) return;
+            try {
+                var raw = localStorage.getItem('kaidenSettings');
+                var o = raw ? JSON.parse(raw) : {};
+                if (!o.agentDefaults) o.agentDefaults = {};
+                o.agentDefaults.defaultAgent = id;
+                localStorage.setItem('kaidenSettings', JSON.stringify(o));
+            } catch (e) { /* ignore */ }
+            cagRefreshDefaultMarkers();
+        }
+
+        var cagCtxPendingId = null;
+
+        function cagCloseCtxMenu() {
+            var menu = document.getElementById('cagCtxMenu');
+            if (!menu) return;
+            menu.setAttribute('hidden', '');
+            menu.setAttribute('aria-hidden', 'true');
+            cagCtxPendingId = null;
+        }
+
+        function cagOpenCtxMenu(clientX, clientY, id) {
+            var menu = document.getElementById('cagCtxMenu');
+            var item = document.getElementById('cagCtxSetDefault');
+            if (!menu || !item) return;
+            cagCtxPendingId = id;
+            menu.removeAttribute('hidden');
+            menu.setAttribute('aria-hidden', 'false');
+            menu.style.left = '-9999px';
+            menu.style.top = '0';
+            var w = menu.offsetWidth;
+            var h = menu.offsetHeight;
+            var left = Math.min(clientX, window.innerWidth - w - 8);
+            var top = Math.min(clientY, window.innerHeight - h - 8);
+            left = Math.max(8, left);
+            top = Math.max(8, top);
+            menu.style.left = left + 'px';
+            menu.style.top = top + 'px';
+            var saved = cagEffectiveSavedDefault();
+            item.disabled = id === saved;
+            item.textContent = id === saved ? 'Already default runtime' : 'Set as default runtime';
+            setTimeout(function () {
+                if (!item.disabled) item.focus();
+            }, 0);
+        }
+
+        function cagBindCtxMenu() {
+            var list = document.querySelector('.services-cat-list');
+            var menu = document.getElementById('cagCtxMenu');
+            var item = document.getElementById('cagCtxSetDefault');
+            if (!list || !menu || !item) return;
+
+            list.addEventListener('contextmenu', function (ev) {
+                var btn = ev.target.closest('.services-cat-item[data-cag]');
+                if (!btn) return;
+                ev.preventDefault();
+                var id = btn.getAttribute('data-cag');
+                cagOpenCtxMenu(ev.clientX, ev.clientY, id);
+            });
+
+            item.addEventListener('click', function () {
+                if (item.disabled || !cagCtxPendingId) return;
+                cagPersistDefaultAgent(cagCtxPendingId);
+                cagCloseCtxMenu();
+            });
+
+            document.addEventListener('mousedown', function (ev) {
+                if (menu.hidden) return;
+                if (menu.contains(ev.target)) return;
+                cagCloseCtxMenu();
+            }, true);
+
+            document.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Escape' && !menu.hidden) {
+                    ev.preventDefault();
+                    cagCloseCtxMenu();
+                }
+            });
+
+            window.addEventListener('scroll', function () {
+                if (!menu.hidden) cagCloseCtxMenu();
+            }, true);
+        }
 
         function cagPick(id, el) {
             document.querySelectorAll('.services-cat-item[data-cag]').forEach(function (btn) {
@@ -921,7 +1121,7 @@
                 var on;
                 if (id === 'claude' || id === 'claude-vertex' || id === 'goose') {
                     on = i < 2;
-                } else if (id === 'cursor') {
+                } else if (id === 'codex') {
                     on = i === 0;
                 } else {
                     on = i > 0;
@@ -953,6 +1153,20 @@
                 if (c) c.checked = false;
             }
         }
+
+        function cagBoot() {
+            cagApplyInitialPick();
+            cagBindCtxMenu();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', cagBoot);
+        } else {
+            cagBoot();
+        }
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'kaidenSettings') cagApplyInitialPick();
+        });
     </script>
 </body>
 </html>

@@ -1930,8 +1930,8 @@
             color: #ffffff;
         }
 
-        .agent-icon.cursor {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        .agent-icon.codex {
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #ffffff;
         }
 
@@ -3086,16 +3086,16 @@
                                             <div class="agent-description">Anthropic Claude in the terminal — strong reasoning and multi-file edits</div>
                                         </div>
                                     </div>
-                                    <div class="agent-card" data-agent="cursor" role="listitem" onclick="selectAgent(this, 'cursor')">
+                                    <div class="agent-card" data-agent="codex" role="listitem" onclick="selectAgent(this, 'codex')">
                                         <div class="agent-card-check" aria-hidden="true">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                                 <polyline points="20 6 9 17 4 12"/>
                                             </svg>
                                         </div>
-                                        <div class="agent-icon cursor">Cu</div>
+                                        <div class="agent-icon codex">X</div>
                                         <div class="agent-card-body">
-                                            <div class="agent-name">Cursor</div>
-                                            <div class="agent-description">Cursor agent — IDE-integrated flow and fast edit loops</div>
+                                            <div class="agent-name">Codex</div>
+                                            <div class="agent-description">OpenAI Codex — IDE and CLI flow with fast edit loops</div>
                                         </div>
                                     </div>
                                     <div class="agent-card" data-agent="opencode" role="listitem" onclick="selectAgent(this, 'opencode')">
@@ -4032,7 +4032,7 @@
                 workingDir: '~/dev/docs-portal',
                 description: 'Documentation portal UI: React app for internal product docs and dashboards.',
                 catalogModel: 'gpt-5.4-medium',
-                agent: 'cursor',
+                agent: 'codex',
                 skills: ['api-docs-generator', 'code-review'],
                 mcpServers: ['GitHub MCP'],
                 vaultSecrets: ['github', 'github-project', 'slack'],

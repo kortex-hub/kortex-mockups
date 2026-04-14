@@ -394,13 +394,15 @@
                                 <div class="settings-item-info">
                                     <h4 class="settings-item-label">Default Agent</h4>
                                     <p class="settings-item-description">
-                                        The coding agent to use when creating new tasks.
+                                        Default coding runtime for new tasks and the first tab on <strong>Coding agents</strong>.
                                     </p>
                                 </div>
                                 <div class="settings-item-control">
                                     <select class="settings-select" id="defaultAgent">
-                                        <option value="claude" selected>Claude</option>
-                                        <option value="cursor">Cursor</option>
+                                        <option value="claude" selected>Claude Code</option>
+                                        <option value="claude-vertex">Claude Code (Vertex AI)</option>
+                                        <option value="codex">Codex</option>
+                                        <option value="goose">Goose</option>
                                         <option value="opencode">OpenCode</option>
                                     </select>
                                 </div>
@@ -1042,7 +1044,10 @@
                     }
 
                     if (settings.agentDefaults) {
-                        if (settings.agentDefaults.defaultAgent) document.getElementById('defaultAgent').value = settings.agentDefaults.defaultAgent;
+                        if (settings.agentDefaults.defaultAgent) {
+                            var da = settings.agentDefaults.defaultAgent === 'cursor' ? 'codex' : settings.agentDefaults.defaultAgent;
+                            document.getElementById('defaultAgent').value = da;
+                        }
                         if (settings.agentDefaults.defaultProfile) document.getElementById('defaultProfile').value = settings.agentDefaults.defaultProfile;
                         if (settings.agentDefaults.defaultFileAccess) document.getElementById('defaultFileAccess').value = settings.agentDefaults.defaultFileAccess;
                         if (settings.agentDefaults.confirmWrites === false) document.getElementById('confirmWrites').classList.remove('active');
