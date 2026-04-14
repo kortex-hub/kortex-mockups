@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Workspace Settings</title>
+    <script>
+        try {
+            if (new URLSearchParams(location.search).get('embed') === '1') {
+                document.documentElement.classList.add('settings-embed');
+            }
+        } catch (e) { /* ignore */ }
+    </script>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -356,35 +364,24 @@
             transform: translateX(20px);
         }
 
-        /* Agent Selection */
-        .agent-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        /* Agent — read-only (set at workspace creation) */
+        .agent-readonly {
+            padding: 4px 0 8px;
         }
 
-        .agent-option {
+        .agent-readonly-agent {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 2px solid #3d3e4f;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            gap: 14px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
         }
 
-        .agent-option:hover {
-            border-color: #6b7280;
+        .agent-readonly-model-row {
+            padding: 16px 0 8px;
         }
 
-        .agent-option.selected {
-            border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .agent-option-icon {
+        .agent-readonly-icon {
             width: 40px;
             height: 40px;
             border-radius: 10px;
@@ -396,215 +393,394 @@
             flex-shrink: 0;
         }
 
-        .agent-option-icon.claude {
+        .agent-readonly-icon.claude {
             background: linear-gradient(135deg, #d97706, #f59e0b);
             color: #ffffff;
         }
 
-        .agent-option-icon.codex {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
+        .agent-readonly-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #9ca3af;
+            margin-bottom: 4px;
         }
 
-        .agent-option-icon.opencode {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
-            font-size: 13px;
-            letter-spacing: -0.04em;
+        .agent-readonly-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #e5e7eb;
         }
 
-        .agent-option-info h4 {
+        /* Project-details style lists — match sessions/create.html (Tools & secrets step) */
+        .settings-content .ca-pd-asset-section {
+            margin-bottom: 0;
+        }
+
+        .settings-content .ca-pd-asset-section + .ca-pd-asset-section {
+            margin-top: 28px;
+        }
+
+        .pd-asset-block {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .pd-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+        }
+
+        .pd-block-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pd-block-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pd-block-icon svg {
+            width: 15px;
+            height: 15px;
+            color: #fff;
+        }
+
+        .pd-block-title {
             font-size: 14px;
             font-weight: 600;
             color: #e5e7eb;
-            margin: 0 0 2px 0;
+            margin: 0;
         }
 
-        .agent-option-info span {
+        .pd-block-count {
             font-size: 12px;
-            color: #9ca3af;
+            color: #6b7280;
         }
 
-        .agent-option-check {
-            margin-left: auto;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #4b5563;
+        .pd-block-add-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .agent-option.selected .agent-option-check {
-            background: #8b5cf6;
-            border-color: #8b5cf6;
-        }
-
-        .agent-option-check svg {
-            width: 12px;
-            height: 12px;
-            color: #ffffff;
-            opacity: 0;
-        }
-
-        .agent-option.selected .agent-option-check svg {
-            opacity: 1;
-        }
-
-        /* Selectable Items */
-        .selectable-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-        }
-
-        .selectable-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 14px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 1.5px solid #3d3e4f;
-            border-radius: 8px;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 1px dashed #4b5563;
+            background: transparent;
+            color: #6b7280;
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s;
+            text-decoration: none;
         }
 
-        .selectable-item:hover {
-            border-color: #6b7280;
+        a.pd-block-add-btn {
+            font-family: inherit;
         }
 
-        .selectable-item.selected {
+        .pd-block-add-btn:hover {
             border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.1);
+            color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.06);
         }
 
-        .selectable-checkbox {
-            width: 18px;
-            height: 18px;
-            border-radius: 5px;
-            border: 2px solid #4b5563;
+        .pd-block-add-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .pd-block-items {
+            padding: 4px 8px;
+        }
+
+        .pd-block-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.15s;
+        }
+
+        .pd-block-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pd-block-item + .pd-block-item {
+            border-top: 1px solid rgba(61, 62, 79, 0.3);
+        }
+
+        .pd-block-item:hover + .pd-block-item {
+            border-top-color: transparent;
+        }
+
+        .pd-block-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
 
-        .selectable-item.selected .selectable-checkbox {
-            background: #8b5cf6;
-            border-color: #8b5cf6;
+        .pd-block-item-icon svg {
+            width: 17px;
+            height: 17px;
+            color: #fff;
         }
 
-        .selectable-checkbox svg {
-            width: 10px;
-            height: 10px;
-            color: #ffffff;
-            opacity: 0;
+        .pd-block-item-icon.mcp {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
         }
 
-        .selectable-item.selected .selectable-checkbox svg {
-            opacity: 1;
+        .pd-block-item-icon.skill {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
-        .selectable-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+        .pd-block-item-icon.knowledge {
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
         }
 
-        .selectable-icon.skill {
-            background: rgba(16, 185, 129, 0.15);
-            color: #6ee7b7;
+        .pd-block-item-info {
+            flex: 1;
+            min-width: 0;
         }
 
-        .selectable-icon.mcp {
-            background: rgba(6, 182, 212, 0.15);
-            color: #67e8f9;
-        }
-
-        .selectable-icon svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .selectable-name {
+        .pd-block-item-name {
             font-size: 13px;
             font-weight: 500;
             color: #e5e7eb;
         }
 
-        /* File Access Options */
-        .file-access-options {
-            display: grid;
-            gap: 12px;
+        .pd-block-item-meta {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
         }
 
-        .file-access-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 16px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 2px solid #3d3e4f;
-            border-radius: 10px;
+        .pd-block-item.ca-pd-selectable {
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .file-access-option:hover {
-            border-color: #6b7280;
-        }
-
-        .file-access-option.selected {
-            border-color: #8b5cf6;
+        .pd-block-item.ca-pd-selectable.selected {
             background: rgba(139, 92, 246, 0.08);
         }
 
-        .file-access-radio {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
+        .pd-block-item.ca-pd-selectable.selected:hover {
+            background: rgba(139, 92, 246, 0.11);
+        }
+
+        .pd-block-item.ca-pd-selectable.selected:hover + .pd-block-item {
+            border-top-color: transparent;
+        }
+
+        .ca-pd-select-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             border: 2px solid #4b5563;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 2px;
+            transition: all 0.15s;
         }
 
-        .file-access-option.selected .file-access-radio {
+        .pd-block-item.ca-pd-selectable.selected .ca-pd-select-check {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             border-color: #8b5cf6;
         }
 
-        .file-access-radio::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #8b5cf6;
+        .ca-pd-select-check svg {
+            width: 14px;
+            height: 14px;
+            color: #fff;
             opacity: 0;
         }
 
-        .file-access-option.selected .file-access-radio::after {
+        .pd-block-item.ca-pd-selectable.selected .ca-pd-select-check svg {
             opacity: 1;
         }
 
-        .file-access-info h4 {
+        /* Sandbox filesystem & network — sessions/create.html wizard */
+        .settings-content .ws-settings-sandbox .ob-step-panel {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-onboarding-model-catalog {
+            max-width: 900px;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-sandbox-step {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-sandbox-section {
+            margin: 0;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-sandbox-section .model-config-panel-title {
+            margin: 0 0 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .settings-content .ws-settings-sandbox .ws-sandbox-lead {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.45;
+            max-width: 640px;
+        }
+
+        .settings-content .ws-settings-sandbox .ws-sandbox-lead a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .settings-content .ws-settings-sandbox .ws-sandbox-lead a:hover {
+            text-decoration: underline;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-fs-custom-hint {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(61, 62, 79, 0.65);
+            border-radius: 10px;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-fs-custom-hint.is-visible {
+            display: block;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-fs-custom-hint .ob-fs-custom-hint-lead {
+            margin: 0 0 12px;
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-config-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-config-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-config-input {
+            padding: 9px 13px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .settings-content .ws-settings-sandbox .ob-config-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .settings-content .ws-settings-sandbox .ob-config-hint {
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.45;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-custom-subtitle {
+            margin: 0 0 8px;
             font-size: 14px;
             font-weight: 600;
             color: #e5e7eb;
-            margin: 0 0 4px 0;
+            letter-spacing: -0.02em;
         }
 
-        .file-access-info p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin: 0;
+        .settings-content .ws-settings-sandbox .settings-fs-path-input {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-access-select {
+            min-width: 132px;
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-path-actions {
+            width: 1%;
+            white-space: nowrap;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-add-path-wrap {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-add-path-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-add-path-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .settings-content .ws-settings-sandbox .settings-fs-add-path-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         /* Danger Zone */
@@ -640,442 +816,14 @@
             height: 16px;
         }
 
-        /* Network Policy Styles */
-        .policy-mode-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
+        /* Loaded inside workspace details (iframe): hide app sidebar */
+        html.settings-embed #sidebar-container {
+            display: none !important;
         }
 
-        .policy-mode-option {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 20px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 2px solid #3d3e4f;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .policy-mode-option:hover {
-            border-color: #6b7280;
-        }
-
-        .policy-mode-option.selected {
-            border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.08);
-        }
-
-        .policy-mode-option.selected.allow-mode {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.08);
-        }
-
-        .policy-mode-option.selected.deny-mode {
-            border-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.08);
-        }
-
-        .policy-mode-radio {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .policy-mode-option.selected .policy-mode-radio {
-            border-color: #8b5cf6;
-        }
-
-        .policy-mode-option.selected.allow-mode .policy-mode-radio {
-            border-color: #10b981;
-        }
-
-        .policy-mode-option.selected.deny-mode .policy-mode-radio {
-            border-color: #f59e0b;
-        }
-
-        .policy-mode-radio::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #8b5cf6;
-            opacity: 0;
-        }
-
-        .policy-mode-option.selected .policy-mode-radio::after {
-            opacity: 1;
-        }
-
-        .policy-mode-option.selected.allow-mode .policy-mode-radio::after {
-            background: #10b981;
-        }
-
-        .policy-mode-option.selected.deny-mode .policy-mode-radio::after {
-            background: #f59e0b;
-        }
-
-        .policy-mode-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .policy-mode-icon.allow {
-            background: rgba(16, 185, 129, 0.15);
-            color: #6ee7b7;
-        }
-
-        .policy-mode-icon.deny {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fcd34d;
-        }
-
-        .policy-mode-icon svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .policy-mode-info h4 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #e5e7eb;
-            margin: 0 0 4px 0;
-        }
-
-        .policy-mode-info p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        /* Rules List */
-        .rules-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .rule-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: rgba(37, 38, 49, 0.6);
-            border: 1px solid #3d3e4f;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .rule-item:hover {
-            border-color: #4b5563;
-        }
-
-        .rule-item.blocked {
-            border-left: 3px solid #ef4444;
-        }
-
-        .rule-item.allowed {
-            border-left: 3px solid #10b981;
-        }
-
-        .rule-item.bypass {
-            border-left: 3px solid #06b6d4;
-        }
-
-        .rule-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .rule-icon.blocked {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-        }
-
-        .rule-icon.allowed {
-            background: rgba(16, 185, 129, 0.15);
-            color: #6ee7b7;
-        }
-
-        .rule-icon.bypass {
-            background: rgba(6, 182, 212, 0.15);
-            color: #67e8f9;
-        }
-
-        .rule-icon svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .rule-info {
+        html.settings-embed .main-content {
             flex: 1;
             min-width: 0;
-        }
-
-        .rule-value {
-            font-size: 13px;
-            font-weight: 500;
-            color: #e5e7eb;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        .rule-desc {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 2px;
-        }
-
-        .rule-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .rule-badge.default {
-            background: rgba(107, 114, 128, 0.2);
-            color: #9ca3af;
-        }
-
-        .rule-badge.custom {
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
-        }
-
-        .rule-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .rule-action-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            border: none;
-            background: rgba(255, 255, 255, 0.05);
-            color: #9ca3af;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .rule-action-btn:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-        }
-
-        .rule-action-btn svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* Add Rule Input */
-        .add-rule-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .add-rule-input {
-            flex: 1;
-            padding: 10px 14px;
-            background: rgba(37, 38, 49, 0.8);
-            border: 1.5px solid #3d3e4f;
-            border-radius: 8px;
-            color: #e5e7eb;
-            font-size: 13px;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        .add-rule-input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
-        }
-
-        .add-rule-input::placeholder {
-            color: #6b7280;
-            font-family: inherit;
-        }
-
-        .add-rule-btn {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            border: none;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .add-rule-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-        }
-
-        .add-rule-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        /* Security Info Box */
-        .security-info-box {
-            display: flex;
-            gap: 14px;
-            padding: 16px;
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .security-info-box.info {
-            background: rgba(6, 182, 212, 0.08);
-            border-color: rgba(6, 182, 212, 0.2);
-        }
-
-        .security-info-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(245, 158, 11, 0.15);
-            color: #fcd34d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .security-info-box.info .security-info-icon {
-            background: rgba(6, 182, 212, 0.15);
-            color: #67e8f9;
-        }
-
-        .security-info-icon svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .security-info-content h4 {
-            font-size: 13px;
-            font-weight: 600;
-            color: #fcd34d;
-            margin: 0 0 4px 0;
-        }
-
-        .security-info-box.info .security-info-content h4 {
-            color: #67e8f9;
-        }
-
-        .security-info-content p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        /* Network Log Preview */
-        .network-log-preview {
-            background: #0d0e14;
-            border: 1px solid #2d2e3f;
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .network-log-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .network-log-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .network-log-badge {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .network-log-badge.live {
-            background: rgba(16, 185, 129, 0.15);
-            color: #6ee7b7;
-        }
-
-        .network-log-entries {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .log-entry {
-            display: flex;
-            gap: 12px;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(45, 46, 63, 0.5);
-        }
-
-        .log-entry:last-child {
-            border-bottom: none;
-        }
-
-        .log-status {
-            width: 60px;
-            flex-shrink: 0;
-        }
-
-        .log-status.allowed {
-            color: #6ee7b7;
-        }
-
-        .log-status.blocked {
-            color: #f87171;
-        }
-
-        .log-host {
-            flex: 1;
-            color: #e5e7eb;
-        }
-
-        .log-time {
-            color: #6b7280;
-            flex-shrink: 0;
         }
     </style>
 </head>
@@ -1090,7 +838,7 @@
                 <!-- Header -->
                 <div class="settings-header">
                     <div class="settings-header-left">
-                        <button class="settings-back-btn" onclick="window.location.href='details.html'">
+                        <button type="button" class="settings-back-btn" onclick="handleSettingsBack()">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
@@ -1116,26 +864,26 @@
                     <!-- Navigation -->
                     <div class="settings-nav">
                         <div class="settings-nav-title">Settings</div>
-                        <div class="settings-nav-item active" onclick="showSection('general')">
+                        <div class="settings-nav-item active" data-settings-section="general" onclick="showSection('general')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="3"/>
                                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                             </svg>
                             <span>General</span>
                         </div>
-                        <div class="settings-nav-item" onclick="showSection('agent')">
+                        <div class="settings-nav-item" data-settings-section="agent" onclick="showSection('agent')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
                             </svg>
                             <span>Agent</span>
                         </div>
-                        <div class="settings-nav-item" id="skills-settings-nav" onclick="showSection('skills')">
+                        <div class="settings-nav-item" id="skills-settings-nav" data-settings-section="skills" onclick="showSection('skills')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
                             </svg>
                             <span>Skills</span>
                         </div>
-                        <div class="settings-nav-item" id="mcp-settings-nav" onclick="showSection('mcp')">
+                        <div class="settings-nav-item" id="mcp-settings-nav" data-settings-section="mcp" onclick="showSection('mcp')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="7" height="7"/>
                                 <rect x="14" y="3" width="7" height="7"/>
@@ -1144,13 +892,22 @@
                             </svg>
                             <span>MCP Servers</span>
                         </div>
-                        <div class="settings-nav-item" onclick="showSection('access')">
+                        <div class="settings-nav-item" id="knowledge-settings-nav" data-settings-section="knowledge" onclick="showSection('knowledge')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                            <span>Knowledge</span>
+                        </div>
+                        <div class="settings-nav-item" data-settings-section="access" onclick="showSection('access')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
                             <span>File Access</span>
                         </div>
-                        <div class="settings-nav-item" onclick="showSection('network')">
+                        <div class="settings-nav-item" data-settings-section="network" onclick="showSection('network')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/>
                                 <line x1="2" y1="12" x2="22" y2="12"/>
@@ -1158,7 +915,7 @@
                             </svg>
                             <span>Network</span>
                         </div>
-                        <div class="settings-nav-item" onclick="showSection('advanced')">
+                        <div class="settings-nav-item" data-settings-section="advanced" onclick="showSection('advanced')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="4 17 10 11 4 5"/>
                                 <line x1="12" y1="19" x2="20" y2="19"/>
@@ -1227,227 +984,125 @@
                             </div>
                         </div>
 
-                        <!-- Agent Section -->
+                        <!-- Agent Section (read-only: agent + model fixed at creation) -->
                         <div class="settings-section" id="section-agent">
-                            <h2 class="settings-section-title">Agent Configuration</h2>
-                            <p class="settings-section-desc">Choose and configure the AI agent for this workspace.</p>
+                            <h2 class="settings-section-title">Agent</h2>
+                            <p class="settings-section-desc">The coding agent and model for this workspace. To use a different agent or model, create a new workspace.</p>
 
                             <div class="settings-card">
                                 <div class="settings-card-header">
                                     <div>
-                                        <h3 class="settings-card-title">Select Agent</h3>
-                                        <p class="settings-card-desc">Choose the AI model to power this workspace</p>
+                                        <h3 class="settings-card-title">Agent &amp; model</h3>
+                                        <p class="settings-card-desc">Read only — chosen when this workspace was created</p>
                                     </div>
                                 </div>
-                                <div class="agent-options">
-                                    <div class="agent-option selected" onclick="selectAgent(this)">
-                                        <div class="agent-option-icon claude">C</div>
-                                        <div class="agent-option-info">
-                                            <h4>Claude</h4>
-                                            <span>Sonnet 3.5</span>
-                                        </div>
-                                        <div class="agent-option-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                <div class="agent-readonly">
+                                    <div class="agent-readonly-agent">
+                                        <div class="agent-readonly-icon claude" aria-hidden="true">C</div>
+                                        <div>
+                                            <div class="agent-readonly-label">Agent</div>
+                                            <div class="agent-readonly-value">Claude Code</div>
                                         </div>
                                     </div>
-                                    <div class="agent-option" onclick="selectAgent(this)">
-                                        <div class="agent-option-icon codex">X</div>
-                                        <div class="agent-option-info">
-                                            <h4>Codex</h4>
-                                            <span>Agent</span>
-                                        </div>
-                                        <div class="agent-option-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
+                                    <div class="agent-readonly-model-row">
+                                        <div class="agent-readonly-label">Model</div>
+                                        <div class="agent-readonly-value">claude-4.6-sonnet-medium</div>
                                     </div>
-                                    <div class="agent-option" onclick="selectAgent(this)">
-                                        <div class="agent-option-icon opencode">OC</div>
-                                        <div class="agent-option-info">
-                                            <h4>OpenCode</h4>
-                                            <span>Open runtime</span>
-                                        </div>
-                                        <div class="agent-option-check">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Agent Behavior</h3>
-                                        <p class="settings-card-desc">Fine-tune how the agent operates</p>
-                                    </div>
-                                </div>
-                                <div class="toggle-row">
-                                    <div class="toggle-info">
-                                        <div class="toggle-label">Verbose mode</div>
-                                        <div class="toggle-desc">Agent explains its reasoning in detail</div>
-                                    </div>
-                                    <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
-                                </div>
-                                <div class="toggle-row">
-                                    <div class="toggle-info">
-                                        <div class="toggle-label">Auto-execute commands</div>
-                                        <div class="toggle-desc">Allow agent to run terminal commands without confirmation</div>
-                                    </div>
-                                    <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Skills Section -->
+                        <!-- Skills Section (same list pattern as create workspace) -->
                         <div class="settings-section" id="section-skills">
                             <h2 class="settings-section-title">Skills</h2>
-                            <p class="settings-section-desc">Enable or disable skills to customize agent capabilities.</p>
+                            <p class="settings-section-desc">Enable skills for this workspace — same layout as when creating a workspace.</p>
 
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Local Skills</h3>
-                                        <p class="settings-card-desc">Skills available from your local workspace</p>
+                            <div class="ca-pd-asset-section" id="skills-settings-section">
+                                <div class="pd-asset-block">
+                                    <div class="pd-block-header">
+                                        <div class="pd-block-title-row">
+                                            <div class="pd-block-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                            </div>
+                                            <h3 class="pd-block-title">Skills</h3>
+                                            <span class="pd-block-count">6 skills</span>
+                                        </div>
+                                        <a href="../skills/index.html" class="pd-block-add-btn">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            Add Skill
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="selectable-grid">
-                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                    <div class="pd-block-items">
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Kubernetes</div>
+                                                <div class="pd-block-item-meta">Pre-built &middot; Deploy &amp; manage clusters</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="16 18 22 12 16 6"/>
-                                                <polyline points="8 6 2 12 8 18"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M8 8h8M8 16h8"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">OpenShift</div>
+                                                <div class="pd-block-item-meta">Pre-built &middot; Build &amp; deploy on OCP</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <span class="selectable-name">code-review</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Podman</div>
+                                                <div class="pd-block-item-meta">Pre-built &middot; Build &amp; run containers</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">RHEL</div>
+                                                <div class="pd-block-item-meta">Pre-built &middot; Administer Linux systems</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <span class="selectable-name">api-docs-generator</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-card" style="margin-top: 16px;">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Enterprise Skills</h3>
-                                        <p class="settings-card-desc">Skills available from your OpenShift environment at <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 12px;">ocp.internal.example.com</code></p>
-                                    </div>
-                                    <span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">INTERNAL</span>
-                                </div>
-                                <div class="selectable-grid">
-                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l2-2-2-2"/><path d="M8 18l-2-2 2-2"/><line x1="12" y1="2" x2="12" y2="6"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">code-review</div>
+                                                <div class="pd-block-item-meta">Custom &middot; Analyze code quality &amp; security</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12h8M8 8h8M8 16h8"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">openshift-deployment</span>
-                                    </div>
-                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">podman-build</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                                <path d="M2 17l10 5 10-5"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">tekton-pipelines</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">security-scanning</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">quay-registry</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon skill">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">internal-db-templates</span>
-                                    </div>
-                                </div>
-                                <div style="margin-top: 12px; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2);">
-                                    <div style="display: flex; align-items: flex-start; gap: 8px;">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" style="width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px;">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M12 16v-4M12 8h.01"/>
-                                        </svg>
-                                        <div style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-                                            These skills are synced from your organization's OpenShift cluster. They provide access to internal tooling, CI/CD pipelines, and enterprise-specific deployment patterns.
-                                            <div style="margin-top: 8px; color: #64748b;">
-                                                <strong style="color: #94a3b8;">Source:</strong> <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">skills.ocp.internal.example.com/enterprise/v2</code>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon skill">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">api-docs-generator</div>
+                                                <div class="pd-block-item-meta">Custom &middot; Generate API documentation</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
                                         </div>
                                     </div>
@@ -1455,551 +1110,422 @@
                             </div>
                         </div>
 
-                        <!-- MCP Section -->
+                        <!-- MCP Section (same list pattern as create workspace) -->
                         <div class="settings-section" id="section-mcp">
                             <h2 class="settings-section-title">MCP Servers</h2>
-                            <p class="settings-section-desc">Connect to Model Context Protocol servers for extended capabilities.</p>
+                            <p class="settings-section-desc">Choose MCP servers for this workspace — same layout as when creating a workspace.</p>
 
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Available MCP Servers</h3>
-                                        <p class="settings-card-desc">Select the MCP servers to connect to</p>
+                            <div class="ca-pd-asset-section" id="mcp-settings-section">
+                                <div class="pd-asset-block">
+                                    <div class="pd-block-header">
+                                        <div class="pd-block-title-row">
+                                            <div class="pd-block-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                            </div>
+                                            <h3 class="pd-block-title">MCP Servers</h3>
+                                            <span class="pd-block-count">6 servers</span>
+                                        </div>
+                                        <a href="../mcp/index.html" class="pd-block-add-btn">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            Add Server
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="selectable-grid">
-                                    <!-- Installed MCP Servers -->
-                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                    <div class="pd-block-items">
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">RHEL MCP</div>
+                                                <div class="pd-block-item-meta">Installed &middot; System management &amp; config</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                                <path d="M2 17l10 5 10-5"/>
-                                                <path d="M2 12l10 5 10-5"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">OpenShift MCP</div>
+                                                <div class="pd-block-item-meta">Installed &middot; Cluster &amp; deployment mgmt</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <span class="selectable-name">RHEL MCP</span>
-                                    </div>
-                                    <div class="selectable-item selected" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">GitHub MCP</div>
+                                                <div class="pd-block-item-meta">Available &middot; Repos, issues &amp; PRs</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12h8M8 8h8M8 16h8"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M12 22V12"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Ansible MCP</div>
+                                                <div class="pd-block-item-meta">Available &middot; Playbooks &amp; automation</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <span class="selectable-name">OpenShift MCP</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Podman MCP</div>
+                                                <div class="pd-block-item-meta">Available &middot; Containers &amp; pods</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/>
-                                            </svg>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon mcp">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Kubernetes MCP</div>
+                                                <div class="pd-block-item-meta">Available &middot; K8s cluster management</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
                                         </div>
-                                        <span class="selectable-name">GitHub MCP</span>
-                                    </div>
-                                    <!-- Available MCP Servers -->
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                                <path d="M12 22V12"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">Ansible MCP</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                                <path d="M9 9h6v6H9z"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">Podman MCP</span>
-                                    </div>
-                                    <div class="selectable-item" onclick="this.classList.toggle('selected')">
-                                        <div class="selectable-checkbox">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="selectable-icon mcp">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M12 6v12M6 12h12M7.5 7.5l9 9M16.5 7.5l-9 9"/>
-                                            </svg>
-                                        </div>
-                                        <span class="selectable-name">Kubernetes MCP</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Access Section -->
+                        <!-- Knowledge Section -->
+                        <div class="settings-section" id="section-knowledge">
+                            <h2 class="settings-section-title">Knowledge</h2>
+                            <p class="settings-section-desc">Attach knowledge bases so the agent can retrieve context from your indexed documents.</p>
+
+                            <div class="ca-pd-asset-section" id="knowledge-settings-section">
+                                <div class="pd-asset-block">
+                                    <div class="pd-block-header">
+                                        <div class="pd-block-title-row">
+                                            <div class="pd-block-icon" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                            </div>
+                                            <h3 class="pd-block-title">Knowledge bases</h3>
+                                            <span class="pd-block-count">5 collections</span>
+                                        </div>
+                                        <a href="../knowledges/index.html" class="pd-block-add-btn">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            Add knowledge
+                                        </a>
+                                    </div>
+                                    <div class="pd-block-items">
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon knowledge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Kortex Backend — developer docs</div>
+                                                <div class="pd-block-item-meta">Indexed &middot; Markdown &amp; OpenAPI</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                        </div>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon knowledge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Runbooks &amp; SRE playbooks</div>
+                                                <div class="pd-block-item-meta">Indexed &middot; Confluence export</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                        </div>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon knowledge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Public API reference (RAG)</div>
+                                                <div class="pd-block-item-meta">Available &middot; Embeddings refreshed weekly</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                        </div>
+                                        <div class="pd-block-item ca-pd-selectable" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon knowledge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Design system &amp; UX guidelines</div>
+                                                <div class="pd-block-item-meta">Available &middot; Figma + Storybook</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                        </div>
+                                        <div class="pd-block-item ca-pd-selectable selected" onclick="toggleWorkspaceSettingsItem(this)">
+                                            <div class="pd-block-item-icon knowledge">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                                            </div>
+                                            <div class="pd-block-item-info">
+                                                <div class="pd-block-item-name">Team wiki — Frontend guild</div>
+                                                <div class="pd-block-item-meta">Indexed &middot; Notion sync</div>
+                                            </div>
+                                            <div class="ca-pd-select-check" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File access — same catalog table as create workspace (Sandbox · Filesystem) -->
                         <div class="settings-section" id="section-access">
-                            <h2 class="settings-section-title">File System Access</h2>
-                            <p class="settings-section-desc">Configure which directories the agent can access.</p>
+                            <h2 class="settings-section-title">File system</h2>
+                            <p class="settings-section-desc">Host <strong>file access</strong> for this workspace — same presets as the create-workspace flow. The first table picks the scope; when <strong>Custom Paths</strong> is selected, the second table lists every allowed directory (edit paths, access mode, add or remove rows).</p>
 
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Access Level</h3>
-                                        <p class="settings-card-desc">Choose the scope of file system access</p>
-                                    </div>
-                                </div>
-                                <div class="file-access-options">
-                                    <div class="file-access-option selected" onclick="selectAccess(this)">
-                                        <div class="file-access-radio"></div>
-                                        <div class="file-access-info">
-                                            <h4>Working Directory Only</h4>
-                                            <p>Agent can only access the specified working directory and its subdirectories.</p>
-                                        </div>
-                                    </div>
-                                    <div class="file-access-option" onclick="selectAccess(this)">
-                                        <div class="file-access-radio"></div>
-                                        <div class="file-access-info">
-                                            <h4>Home Directory</h4>
-                                            <p>Agent can access your entire home directory (~/) and all subdirectories.</p>
-                                        </div>
-                                    </div>
-                                    <div class="file-access-option" onclick="selectAccess(this)">
-                                        <div class="file-access-radio"></div>
-                                        <div class="file-access-info">
-                                            <h4>Custom Paths</h4>
-                                            <p>Specify exact directories the agent can access.</p>
-                                        </div>
-                                    </div>
-                                    <div class="file-access-option" onclick="selectAccess(this)">
-                                        <div class="file-access-radio"></div>
-                                        <div class="file-access-info">
-                                            <h4>Full System Access</h4>
-                                            <p>Agent can access the entire filesystem. Use with caution.</p>
-                                        </div>
+                            <div class="ws-settings-sandbox">
+                                <div class="ob-sandbox-step">
+                                    <div class="ob-step-panel ob-onboarding-model-catalog">
+                                        <section class="ob-sandbox-section" aria-labelledby="settingsSandboxFsHeading">
+                                            <input type="hidden" id="settingsDefaultFs" value="custom" aria-hidden="true">
+                                            <h3 class="model-config-panel-title" id="settingsSandboxFsHeading">File system</h3>
+                                            <p class="ws-sandbox-lead">Same layout as <a href="../models/index.html">Models</a> — pick one scope for agent read/write on the host.</p>
+                                            <div class="models-table-wrap" id="settingsSandboxFsWrap">
+                                                <table class="models-data-table" aria-label="Workspace file system access">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="models-table-status" scope="col">Status</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Access</th>
+                                                            <th scope="col">Notes</th>
+                                                            <th class="ob-models-pick-cell" scope="col">Use</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="ob-catalog-model-row" data-fs="workspace" role="button" tabindex="0" onclick="settingsSelectFsCatalogRow(this)" onkeydown="settingsFsCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">No host filesystem access</div>
+                                                                <div class="models-table-name-sub">The agent cannot read or write files on your host. Use for API-only or fully remote workflows.</div>
+                                                                <span class="models-table-ram">Recommended</span>
+                                                            </td>
+                                                            <td>None</td>
+                                                            <td>Strict isolation</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogFs" value="workspace" aria-label="Use no host filesystem access" onchange="settingsSelectFsCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row" data-fs="home" role="button" tabindex="0" onclick="settingsSelectFsCatalogRow(this)" onkeydown="settingsFsCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Home Directory</div>
+                                                                <div class="models-table-name-sub">Agent can access your entire home directory (~/) and all subdirectories.</div>
+                                                            </td>
+                                                            <td>Home (~)</td>
+                                                            <td>Local development</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogFs" value="home" aria-label="Use Home Directory" onchange="settingsSelectFsCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-fs="custom" role="button" tabindex="0" onclick="settingsSelectFsCatalogRow(this)" onkeydown="settingsFsCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Custom Paths</div>
+                                                                <div class="models-table-name-sub">Specify exact directories the agent can access.</div>
+                                                            </td>
+                                                            <td>Listed paths</td>
+                                                            <td>Table below</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogFs" value="custom" checked aria-label="Use Custom Paths" onchange="settingsSelectFsCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row" data-fs="full" role="button" tabindex="0" onclick="settingsSelectFsCatalogRow(this)" onkeydown="settingsFsCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Full System Access</div>
+                                                                <div class="models-table-name-sub">Agent can access the entire filesystem. Use with caution.</div>
+                                                            </td>
+                                                            <td>Full host</td>
+                                                            <td>High privilege</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogFs" value="full" aria-label="Use Full System Access" onchange="settingsSelectFsCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="ob-fs-custom-hint is-visible" id="settingsFsCustomHint" aria-live="polite">
+                                                <h4 class="settings-fs-custom-subtitle" id="settingsFsCustomPathsHeading">Custom allowed paths</h4>
+                                                <p class="ob-fs-custom-hint-lead">Directories the agent may read or write on the host. Use absolute paths; tilde (~) is expanded when the workspace starts.</p>
+                                                <div class="models-table-wrap">
+                                                    <table class="models-data-table" id="settingsFsCustomPathsTable" aria-labelledby="settingsFsCustomPathsHeading">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Path</th>
+                                                                <th scope="col">Access</th>
+                                                                <th class="settings-fs-path-actions" scope="col">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="ob-config-input settings-fs-path-input" value="~/projects/dashboard" placeholder="/home/you/dev/my-project" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Allowed path">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="ob-config-input settings-fs-access-select" aria-label="Access mode for this path">
+                                                                        <option value="rw" selected>Read &amp; write</option>
+                                                                        <option value="ro">Read only</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="settings-fs-path-actions">
+                                                                    <button type="button" class="models-table-icon-btn" onclick="settingsRemoveFsCustomPathRow(this)" title="Remove path" aria-label="Remove path">
+                                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="ob-config-input settings-fs-path-input" value="~/Documents/specs" placeholder="/path/to/folder" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Allowed path">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="ob-config-input settings-fs-access-select" aria-label="Access mode for this path">
+                                                                        <option value="rw" selected>Read &amp; write</option>
+                                                                        <option value="ro">Read only</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="settings-fs-path-actions">
+                                                                    <button type="button" class="models-table-icon-btn" onclick="settingsRemoveFsCustomPathRow(this)" title="Remove path" aria-label="Remove path">
+                                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="settings-fs-add-path-wrap">
+                                                    <button type="button" class="settings-fs-add-path-btn" onclick="settingsAddFsCustomPathRow()">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                                        Add path
+                                                    </button>
+                                                </div>
+                                                <p class="ob-config-hint" id="settingsFsCustomPathHint">Changes apply when you save workspace settings.</p>
+                                            </div>
+                                        </section>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Network Section -->
+                        <!-- Network — same catalog table as create workspace (Sandbox · Networking) -->
                         <div class="settings-section" id="section-network">
-                            <h2 class="settings-section-title">Network Policies</h2>
-                            <p class="settings-section-desc">Control what external resources the sandbox can access through HTTP/HTTPS filtering.</p>
+                            <h2 class="settings-section-title">Networking</h2>
+                            <p class="settings-section-desc"><strong>Outbound network</strong> for this workspace sandbox — same presets as the create-workspace flow. Separate from file system access.</p>
 
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Policy Mode</h3>
-                                        <p class="settings-card-desc">Choose the default behavior for network requests</p>
-                                    </div>
-                                </div>
-                                <div class="policy-mode-selector">
-                                    <div class="policy-mode-option selected allow-mode" onclick="selectPolicyMode(this, 'allow')">
-                                        <div class="policy-mode-radio"></div>
-                                        <div class="policy-mode-icon allow">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="policy-mode-info">
-                                            <h4>Allow Mode</h4>
-                                            <p>Permit all traffic except what's explicitly blocked. Best for development.</p>
-                                        </div>
-                                    </div>
-                                    <div class="policy-mode-option deny-mode" onclick="selectPolicyMode(this, 'deny')">
-                                        <div class="policy-mode-radio"></div>
-                                        <div class="policy-mode-icon deny">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
-                                            </svg>
-                                        </div>
-                                        <div class="policy-mode-info">
-                                            <h4>Deny Mode</h4>
-                                            <p>Block all traffic except what's explicitly allowed. Best for production.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="security-info-box">
-                                    <div class="security-info-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                                            <line x1="12" y1="9" x2="12" y2="13"/>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                        </svg>
-                                    </div>
-                                    <div class="security-info-content">
-                                        <h4>Security Considerations</h4>
-                                        <p>Network policies control HTTP/HTTPS traffic. Connection to external services over other protocols (raw TCP/UDP) are blocked. Use policies as one layer of security alongside the sandbox isolation.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Blocked CIDR Ranges</h3>
-                                        <p class="settings-card-desc">IP address ranges that are blocked from access</p>
-                                    </div>
-                                </div>
-                                <div class="rules-list" id="blocked-cidrs">
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">10.0.0.0/8</div>
-                                            <div class="rule-desc">Private network (Class A)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">127.0.0.0/8</div>
-                                            <div class="rule-desc">Loopback addresses</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">172.16.0.0/12</div>
-                                            <div class="rule-desc">Private network (Class B)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">192.168.0.0/16</div>
-                                            <div class="rule-desc">Private network (Class C)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">169.254.0.0/16</div>
-                                            <div class="rule-desc">Link-local addresses</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                </div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" placeholder="e.g., 203.0.113.0/24" id="new-blocked-cidr">
-                                    <button class="add-rule-btn" onclick="addBlockedCidr()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"/>
-                                            <line x1="5" y1="12" x2="19" y2="12"/>
-                                        </svg>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Allowed Hosts</h3>
-                                        <p class="settings-card-desc">Domains that are explicitly permitted (used in deny mode)</p>
-                                    </div>
-                                </div>
-                                <div class="rules-list" id="allowed-hosts">
-                                    <div class="rule-item allowed">
-                                        <div class="rule-icon allowed">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">*.anthropic.com</div>
-                                            <div class="rule-desc">Claude API and services</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item allowed">
-                                        <div class="rule-icon allowed">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">*.npmjs.org</div>
-                                            <div class="rule-desc">NPM package registry</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="rule-item allowed">
-                                        <div class="rule-icon allowed">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">*.pypi.org</div>
-                                            <div class="rule-desc">Python Package Index</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="rule-item allowed">
-                                        <div class="rule-icon allowed">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">github.com</div>
-                                            <div class="rule-desc">GitHub repositories</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="rule-item allowed">
-                                        <div class="rule-icon allowed">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">*.githubusercontent.com</div>
-                                            <div class="rule-desc">GitHub raw content</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" placeholder="e.g., api.example.com:443 or *.example.com" id="new-allowed-host">
-                                    <button class="add-rule-btn" onclick="addAllowedHost()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"/>
-                                            <line x1="5" y1="12" x2="19" y2="12"/>
-                                        </svg>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Blocked Hosts</h3>
-                                        <p class="settings-card-desc">Domains that are explicitly blocked (used in allow mode)</p>
-                                    </div>
-                                </div>
-                                <div class="rules-list" id="blocked-hosts">
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="15" y1="9" x2="9" y2="15"/>
-                                                <line x1="9" y1="9" x2="15" y2="15"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">internal.corp.com</div>
-                                            <div class="rule-desc">Internal corporate services</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" placeholder="e.g., restricted.example.com" id="new-blocked-host">
-                                    <button class="add-rule-btn" onclick="addBlockedHost()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"/>
-                                            <line x1="5" y1="12" x2="19" y2="12"/>
-                                        </svg>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">HTTPS Bypass Rules</h3>
-                                        <p class="settings-card-desc">Hosts that bypass HTTPS inspection (for certificate pinning)</p>
-                                    </div>
-                                </div>
-                                <div class="rules-list" id="bypass-hosts">
-                                    <div class="rule-item bypass">
-                                        <div class="rule-icon bypass">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                                <path d="M9 12l2 2 4-4"/>
-                                            </svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">api.service-with-pinning.com</div>
-                                            <div class="rule-desc">Service with certificate pinning</div>
-                                        </div>
-                                        <span class="rule-badge custom">Custom</span>
-                                        <div class="rule-actions">
-                                            <button class="rule-action-btn" onclick="removeRule(this)">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="3 6 5 6 21 6"/>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" placeholder="e.g., api.pinned-service.com" id="new-bypass-host">
-                                    <button class="add-rule-btn" onclick="addBypassHost()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="12" y1="5" x2="12" y2="19"/>
-                                            <line x1="5" y1="12" x2="19" y2="12"/>
-                                        </svg>
-                                        Add
-                                    </button>
-                                </div>
-
-                                <div class="security-info-box info">
-                                    <div class="security-info-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <line x1="12" y1="16" x2="12" y2="12"/>
-                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
-                                        </svg>
-                                    </div>
-                                    <div class="security-info-content">
-                                        <h4>About Bypass Mode</h4>
-                                        <p>Bypassed traffic acts as a simple TCP tunnel without content inspection. Use only when necessary for services with certificate pinning. The proxy cannot inject credentials or detect domain fronting for bypassed connections.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="settings-card">
-                                <div class="settings-card-header">
-                                    <div>
-                                        <h3 class="settings-card-title">Network Activity Log</h3>
-                                        <p class="settings-card-desc">Monitor recent network requests from this workspace</p>
-                                    </div>
-                                </div>
-                                <div class="network-log-preview">
-                                    <div class="network-log-header">
-                                        <span class="network-log-title">Recent Activity</span>
-                                        <span class="network-log-badge live">Live</span>
-                                    </div>
-                                    <div class="network-log-entries">
-                                        <div class="log-entry">
-                                            <span class="log-status allowed">ALLOWED</span>
-                                            <span class="log-host">api.anthropic.com:443</span>
-                                            <span class="log-time">14:35:21</span>
-                                        </div>
-                                        <div class="log-entry">
-                                            <span class="log-status allowed">ALLOWED</span>
-                                            <span class="log-host">registry.npmjs.org:443</span>
-                                            <span class="log-time">14:32:18</span>
-                                        </div>
-                                        <div class="log-entry">
-                                            <span class="log-status blocked">BLOCKED</span>
-                                            <span class="log-host">internal.corp.com:443</span>
-                                            <span class="log-time">14:30:15</span>
-                                        </div>
-                                        <div class="log-entry">
-                                            <span class="log-status allowed">ALLOWED</span>
-                                            <span class="log-host">raw.githubusercontent.com:443</span>
-                                            <span class="log-time">14:30:45</span>
-                                        </div>
+                            <div class="ws-settings-sandbox" style="margin-top: 8px;">
+                                <div class="ob-sandbox-step">
+                                    <div class="ob-step-panel ob-onboarding-model-catalog">
+                                        <section class="ob-sandbox-section" aria-labelledby="settingsSandboxNetHeading">
+                                            <input type="hidden" id="settingsDefaultNet" value="registries" aria-hidden="true">
+                                            <h3 class="model-config-panel-title" id="settingsSandboxNetHeading">Network policy</h3>
+                                            <p class="ws-sandbox-lead">Same layout as <a href="../models/index.html">Models</a> — click a row or use <strong>Use</strong>.</p>
+                                            <div class="models-table-wrap" id="settingsSandboxNetWrap">
+                                                <table class="models-data-table" aria-label="Workspace network policy">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="models-table-status" scope="col">Status</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Egress</th>
+                                                            <th scope="col">Notes</th>
+                                                            <th class="ob-models-pick-cell" scope="col">Use</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="ob-catalog-model-row" data-net="blocked" role="button" tabindex="0" onclick="settingsSelectNetCatalogRow(this)" onkeydown="settingsNetCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Deny All</div>
+                                                                <div class="models-table-name-sub">No outbound HTTP/HTTPS from the sandbox.</div>
+                                                            </td>
+                                                            <td>None</td>
+                                                            <td>Strict</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogNet" value="blocked" aria-label="Deny all outbound" onchange="settingsSelectNetCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-net="registries" role="button" tabindex="0" onclick="settingsSelectNetCatalogRow(this)" onkeydown="settingsNetCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Developer Preset</div>
+                                                                <div class="models-table-name-sub">Allow npm, PyPI, and similar registries — not arbitrary public hosts.</div>
+                                                                <span class="models-table-ram">Recommended</span>
+                                                            </td>
+                                                            <td>Registries</td>
+                                                            <td>Balanced default</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogNet" value="registries" checked aria-label="Developer preset network" onchange="settingsSelectNetCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row" data-net="agent_mode" role="button" tabindex="0" onclick="settingsSelectNetCatalogRow(this)" onkeydown="settingsNetCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Agent mode</div>
+                                                                <div class="models-table-name-sub">The agent requests each outbound access; you approve before traffic leaves the sandbox.</div>
+                                                            </td>
+                                                            <td>Per request</td>
+                                                            <td>Human in the loop</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogNet" value="agent_mode" aria-label="Agent mode network" onchange="settingsSelectNetCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="ob-catalog-model-row" data-net="open" role="button" tabindex="0" onclick="settingsSelectNetCatalogRow(this)" onkeydown="settingsNetCatalogRowKey(event)">
+                                                            <td class="models-table-status">
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                                            </td>
+                                                            <td>
+                                                                <div class="models-table-name-main">Unrestricted</div>
+                                                                <div class="models-table-name-sub">Permit all outbound traffic. Best for trusted dev setups.</div>
+                                                            </td>
+                                                            <td>All hosts</td>
+                                                            <td>Trusted setups</td>
+                                                            <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                                <input type="radio" name="settingsCatalogNet" value="open" aria-label="Unrestricted network" onchange="settingsSelectNetCatalogRow(this.closest('tr'))">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p class="ob-config-hint" style="margin-top:14px;margin-bottom:0;max-width:52rem;line-height:1.5;"><strong>Allowlists and more</strong> — Fine-grained host allowlists and static egress rules live in project settings when you need them.</p>
+                                        </section>
                                     </div>
                                 </div>
                             </div>
@@ -2076,6 +1602,22 @@
 
     <script src="../assets/js/scripts.js"></script>
     <script>
+        function isSettingsEmbedded() {
+            return document.documentElement.classList.contains('settings-embed');
+        }
+
+        function leaveSettingsToDetails() {
+            if (isSettingsEmbedded() && window.parent !== window && typeof window.parent.showTab === 'function') {
+                window.parent.showTab('overview');
+                return;
+            }
+            window.location.href = 'details.html';
+        }
+
+        function handleSettingsBack() {
+            leaveSettingsToDetails();
+        }
+
         // Check if Skills module is enabled in settings
         function isSkillsModuleEnabled() {
             try {
@@ -2128,41 +1670,110 @@
         });
 
         function showSection(sectionId) {
-            // Update nav
             document.querySelectorAll('.settings-nav-item').forEach(item => {
-                item.classList.remove('active');
+                const match = item.getAttribute('data-settings-section') === sectionId;
+                item.classList.toggle('active', match);
             });
-            event.currentTarget.classList.add('active');
 
-            // Update content
             document.querySelectorAll('.settings-section').forEach(section => {
                 section.classList.remove('active');
             });
-            document.getElementById('section-' + sectionId).classList.add('active');
+            const target = document.getElementById('section-' + sectionId);
+            if (target) target.classList.add('active');
         }
 
-        function selectAgent(element) {
-            document.querySelectorAll('.agent-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
+        function toggleWorkspaceSettingsItem(row) {
+            row.classList.toggle('selected');
         }
 
-        function selectAccess(element) {
-            document.querySelectorAll('.file-access-option').forEach(opt => {
-                opt.classList.remove('selected');
+        function settingsSelectFsCatalogRow(row) {
+            var wrap = document.getElementById('settingsSandboxFsWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
             });
-            element.classList.add('selected');
+            row.classList.add('ob-catalog-model-row--selected');
+            var radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            var key = row.getAttribute('data-fs');
+            var hid = document.getElementById('settingsDefaultFs');
+            if (hid && key) hid.value = key;
+            var hint = document.getElementById('settingsFsCustomHint');
+            if (hint) hint.classList.toggle('is-visible', key === 'custom');
+            if (key === 'custom') {
+                var table = document.getElementById('settingsFsCustomPathsTable');
+                var firstInp = table && table.querySelector('.settings-fs-path-input');
+                if (firstInp) setTimeout(function () { firstInp.focus(); }, 0);
+            }
+        }
+
+        function settingsAddFsCustomPathRow() {
+            var table = document.getElementById('settingsFsCustomPathsTable');
+            if (!table) return;
+            var tbody = table.querySelector('tbody');
+            if (!tbody) return;
+            var tr = document.createElement('tr');
+            tr.innerHTML =
+                '<td><input type="text" class="ob-config-input settings-fs-path-input" value="" placeholder="/path/to/folder" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Allowed path"></td>' +
+                '<td><select class="ob-config-input settings-fs-access-select" aria-label="Access mode for this path">' +
+                '<option value="rw" selected>Read &amp; write</option><option value="ro">Read only</option></select></td>' +
+                '<td class="settings-fs-path-actions"><button type="button" class="models-table-icon-btn" onclick="settingsRemoveFsCustomPathRow(this)" title="Remove path" aria-label="Remove path">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
+            tbody.appendChild(tr);
+            var inp = tr.querySelector('.settings-fs-path-input');
+            if (inp) setTimeout(function () { inp.focus(); }, 0);
+        }
+
+        function settingsRemoveFsCustomPathRow(btn) {
+            var tr = btn && btn.closest('tr');
+            var tbody = tr && tr.parentElement;
+            if (!tbody || !tr) return;
+            if (tbody.rows.length <= 1) {
+                var inp = tr.querySelector('.settings-fs-path-input');
+                var sel = tr.querySelector('.settings-fs-access-select');
+                if (inp) inp.value = '';
+                if (sel) sel.value = 'rw';
+                return;
+            }
+            tr.remove();
+        }
+
+        function settingsFsCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            settingsSelectFsCatalogRow(ev.currentTarget);
+        }
+
+        function settingsSelectNetCatalogRow(row) {
+            var wrap = document.getElementById('settingsSandboxNetWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            var radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            var key = row.getAttribute('data-net');
+            var hid = document.getElementById('settingsDefaultNet');
+            if (hid && key) hid.value = key;
+        }
+
+        function settingsNetCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            settingsSelectNetCatalogRow(ev.currentTarget);
         }
 
         function saveSettings() {
             alert('Settings saved successfully!');
-            window.location.href = 'details.html';
+            if (!isSettingsEmbedded()) {
+                window.location.href = 'details.html';
+            }
         }
 
         function discardChanges() {
             if (confirm('Are you sure you want to discard all changes?')) {
-                window.location.href = 'details.html';
+                leaveSettingsToDetails();
             }
         }
 
@@ -2178,100 +1789,6 @@
             }
         }
 
-        // Network Policy Functions
-        function selectPolicyMode(element, mode) {
-            document.querySelectorAll('.policy-mode-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
-        }
-
-        function addBlockedCidr() {
-            const input = document.getElementById('new-blocked-cidr');
-            const value = input.value.trim();
-            if (!value) return;
-            
-            const rulesList = document.getElementById('blocked-cidrs');
-            const newRule = createRuleItem(value, 'blocked', 'Custom CIDR block', true);
-            rulesList.appendChild(newRule);
-            input.value = '';
-        }
-
-        function addAllowedHost() {
-            const input = document.getElementById('new-allowed-host');
-            const value = input.value.trim();
-            if (!value) return;
-            
-            const rulesList = document.getElementById('allowed-hosts');
-            const newRule = createRuleItem(value, 'allowed', 'Custom allowed host', true);
-            rulesList.appendChild(newRule);
-            input.value = '';
-        }
-
-        function addBlockedHost() {
-            const input = document.getElementById('new-blocked-host');
-            const value = input.value.trim();
-            if (!value) return;
-            
-            const rulesList = document.getElementById('blocked-hosts');
-            const newRule = createRuleItem(value, 'blocked', 'Custom blocked host', true);
-            rulesList.appendChild(newRule);
-            input.value = '';
-        }
-
-        function addBypassHost() {
-            const input = document.getElementById('new-bypass-host');
-            const value = input.value.trim();
-            if (!value) return;
-            
-            const rulesList = document.getElementById('bypass-hosts');
-            const newRule = createRuleItem(value, 'bypass', 'HTTPS bypass rule', true);
-            rulesList.appendChild(newRule);
-            input.value = '';
-        }
-
-        function createRuleItem(value, type, description, removable) {
-            const div = document.createElement('div');
-            div.className = `rule-item ${type}`;
-            
-            const iconSvg = type === 'blocked' 
-                ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
-                : type === 'allowed'
-                ? '<circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/>'
-                : '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>';
-            
-            div.innerHTML = `
-                <div class="rule-icon ${type}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        ${iconSvg}
-                    </svg>
-                </div>
-                <div class="rule-info">
-                    <div class="rule-value">${value}</div>
-                    <div class="rule-desc">${description}</div>
-                </div>
-                <span class="rule-badge custom">Custom</span>
-                ${removable ? `
-                <div class="rule-actions">
-                    <button class="rule-action-btn" onclick="removeRule(this)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                        </svg>
-                    </button>
-                </div>
-                ` : ''}
-            `;
-            
-            return div;
-        }
-
-        function removeRule(button) {
-            const ruleItem = button.closest('.rule-item');
-            if (ruleItem) {
-                ruleItem.remove();
-            }
-        }
     </script>
 </body>
 </html>

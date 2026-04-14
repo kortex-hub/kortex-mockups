@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Create Coding Agent Workspace</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -107,6 +108,96 @@
             margin: 0 auto;
         }
 
+        /* Onboarding-style sandbox steps (filesystem & network tables) */
+        .ca-sandbox-ob .ob-step-panel {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .ca-sandbox-ob .ob-onboarding-model-catalog {
+            max-width: 900px;
+        }
+
+        .ca-sandbox-ob .ob-sandbox-step {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .ca-sandbox-ob .ob-sandbox-section {
+            margin: 0;
+        }
+
+        .ca-sandbox-ob .ob-sandbox-section .model-config-panel-title {
+            margin: 0 0 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .ca-sandbox-ob .ob-fs-custom-hint {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(61, 62, 79, 0.65);
+            border-radius: 10px;
+        }
+
+        .ca-sandbox-ob .ob-fs-custom-hint.is-visible {
+            display: block;
+        }
+
+        .ca-sandbox-ob .ob-fs-custom-hint .ob-fs-custom-hint-lead {
+            margin: 0 0 12px;
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .ca-sandbox-ob .ob-config-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .ca-sandbox-ob .ob-config-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .ca-sandbox-ob .ob-config-input {
+            padding: 9px 13px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #3d3e4f;
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .ca-sandbox-ob .ob-config-input:focus {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .ca-sandbox-ob .ob-config-hint {
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.45;
+        }
+
         .create-session-title {
             font-size: 32px;
             font-weight: 700;
@@ -148,111 +239,134 @@
             opacity: 0.9;
         }
 
-        /* Stepped create flow */
+        /* Stepped create flow — same stepper visual language as onboarding (ob-stepper) */
         .ca-wizard-stepper {
-            margin: 0 0 36px;
-        }
-
-        .ca-wizard-stepper-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 8px;
-            position: relative;
-        }
-
-        .ca-wizard-stepper-list::before {
-            content: '';
-            position: absolute;
-            top: 18px;
-            left: 12%;
-            right: 12%;
-            height: 2px;
-            background: rgba(61, 62, 79, 0.9);
-            z-index: 0;
-            pointer-events: none;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 0 36px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 2px;
+            box-sizing: border-box;
         }
 
         .ca-wizard-stepper-item {
-            flex: 1;
-            min-width: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            flex-shrink: 0;
+            gap: 6px;
+            font-size: 9px;
+            font-weight: 600;
+            color: #4b5563;
+            white-space: nowrap;
+            transition: color 0.25s;
         }
 
-        .ca-wizard-stepper-trigger {
+        @media (min-width: 640px) {
+            .ca-wizard-stepper-item {
+                font-size: 10px;
+            }
+        }
+
+        .ca-wizard-stepper-item.active {
+            color: #c4b5fd;
+        }
+
+        .ca-wizard-stepper-item.done {
+            color: #34d399;
+        }
+
+        .ca-wizard-stepper-hit {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            width: 100%;
-            padding: 0 4px 8px;
+            gap: 6px;
             border: none;
             background: transparent;
-            cursor: pointer;
-            font-family: inherit;
+            padding: 0;
+            margin: 0;
+            font: inherit;
+            font-size: inherit;
+            font-weight: inherit;
             color: inherit;
-            border-radius: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            border-radius: 8px;
             transition: background 0.15s ease;
         }
 
-        .ca-wizard-stepper-trigger:hover:not(:disabled) {
+        .ca-wizard-stepper-hit:hover:not(:disabled) {
             background: rgba(139, 92, 246, 0.06);
         }
 
-        .ca-wizard-stepper-trigger:disabled {
+        .ca-wizard-stepper-hit:disabled {
             cursor: default;
         }
 
-        .ca-wizard-stepper-num {
-            width: 36px;
-            height: 36px;
+        .ca-wizard-stepper-dot {
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
+            border: 2px solid #3d3e4f;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 700;
-            color: #9ca3af;
-            background: #1e1f2b;
-            border: 2px solid #4b5563;
-            transition: all 0.2s ease;
+            color: #4b5563;
+            flex-shrink: 0;
+            transition: all 0.25s;
         }
 
-        .ca-wizard-stepper-item.is-complete .ca-wizard-stepper-num {
-            background: rgba(16, 185, 129, 0.2);
+        .ca-wizard-stepper-item.active .ca-wizard-stepper-dot {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+        }
+
+        .ca-wizard-stepper-item.done .ca-wizard-stepper-dot {
             border-color: #34d399;
-            color: #6ee7b7;
-        }
-
-        .ca-wizard-stepper-item.is-active .ca-wizard-stepper-num {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            border-color: #a78bfa;
-            color: #fff;
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
         }
 
         .ca-wizard-stepper-text {
-            font-size: 12px;
-            font-weight: 500;
-            color: #6b7280;
-            line-height: 1.35;
-            max-width: 140px;
+            font-weight: inherit;
         }
 
-        .ca-wizard-stepper-item.is-active .ca-wizard-stepper-text {
-            color: #e5e7eb;
+        .ca-wizard-stepper-item.active .ca-wizard-stepper-text {
+            font-weight: 700;
+            color: inherit;
         }
 
-        .ca-wizard-stepper-item.is-complete .ca-wizard-stepper-text {
-            color: #9ca3af;
+        .ca-wizard-stepper-line {
+            flex: 1;
+            height: 1px;
+            background: #3d3e4f;
+            margin: 0 10px;
+            min-width: 16px;
+            flex-shrink: 1;
+            transition: background 0.25s;
+        }
+
+        .ca-wizard-stepper-line.done {
+            background: rgba(52, 211, 153, 0.4);
+        }
+
+        html.ca-wizard-hide-agent-model-step .ca-wizard-stepper-item[data-step-index="2"] {
+            display: none;
+        }
+
+        html.ca-wizard-hide-agent-model-step .ca-wizard-stepper-line[data-after-step="2"] {
+            display: none;
+        }
+
+        html.ca-wizard-hide-agent-model-step .ca-wizard-stepper-line[data-after-step="1"] {
+            flex: 2;
+            min-width: 24px;
         }
 
         .ca-wizard-step {
@@ -262,6 +376,10 @@
 
         .ca-wizard-step.is-active {
             display: block;
+        }
+
+        html.ca-wizard-hide-agent-model-step #caWizardPanel2 {
+            display: none !important;
         }
 
         @keyframes caWizardFade {
@@ -448,12 +566,81 @@
             color: #a78bfa;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            margin: 0 0 20px;
+            margin: 0 0 8px;
+        }
+
+        .ca-wizard-step-lead {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.45;
+            margin: 0 0 22px;
+            max-width: 520px;
+        }
+
+        .ca-step1-details {
+            margin-top: 16px;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 62, 79, 0.85);
+            background: rgba(24, 25, 32, 0.35);
+        }
+
+        .ca-step1-details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #d1d5db;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .ca-step1-details > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .ca-step1-details > summary::after {
+            content: '';
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #6b7280;
+            border-bottom: 2px solid #6b7280;
+            transform: rotate(45deg);
+            transition: transform 0.15s ease;
+            margin-top: -2px;
+        }
+
+        .ca-step1-details[open] > summary::after {
+            transform: rotate(-135deg);
+            margin-top: 2px;
+        }
+
+        #caWizardPanel1 > .ca-step1-details:last-of-type {
+            margin-bottom: 28px;
+        }
+
+        .ca-step1-details-hint {
+            font-weight: 400;
+            color: #6b7280;
+        }
+
+        .ca-step1-details-body {
+            padding: 0 16px 16px;
+            border-top: 1px solid rgba(61, 62, 79, 0.55);
+        }
+
+        .ca-step1-details.ca-project-section .ca-step1-details-body {
+            padding-top: 14px;
         }
 
         /* Project picker (mirrors Projects tab) */
         .ca-project-section {
-            margin-bottom: 40px;
+            margin-bottom: 0;
         }
 
         .ca-project-section-head {
@@ -2058,6 +2245,102 @@
         }
 
         /* Project details–style asset blocks (Skills & MCP) */
+        .ca-tools-quick-card {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+        }
+
+        .ca-tools-quick-summary {
+            margin: 0 0 12px;
+            font-size: 14px;
+            line-height: 1.55;
+            color: #d1d5db;
+        }
+
+        .ca-tools-quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ca-tools-include-all-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+            font-family: inherit;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .ca-tools-include-all-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .ca-tools-customize-details {
+            background: transparent;
+            border: none;
+            margin-bottom: 8px;
+        }
+
+        .ca-tools-customize-summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #3d3e4f;
+            background: rgba(37, 38, 49, 0.45);
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            user-select: none;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .ca-tools-customize-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .ca-tools-customize-summary::before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 5px solid #9ca3af;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            transform: rotate(0deg);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .ca-tools-customize-details[open] > .ca-tools-customize-summary::before {
+            transform: rotate(90deg);
+        }
+
+        .ca-tools-customize-summary:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.25);
+        }
+
+        .ca-tools-customize-inner {
+            padding: 20px 0 4px;
+        }
+
+        .ca-tools-customize-inner .ca-pd-asset-section:first-of-type {
+            margin-top: 0;
+        }
+
         .ca-pd-asset-section {
             margin-bottom: 40px;
         }
@@ -2470,156 +2753,6 @@
             background: rgba(239, 68, 68, 0.25);
         }
 
-        /* Deployment Target Section */
-        .deployment-target-section {
-            padding: 24px 32px;
-            border-top: 1px solid #3d3e4f;
-            background: rgba(37, 38, 49, 0.4);
-        }
-
-        .deployment-target-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .deployment-target-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .deployment-target-title svg {
-            width: 20px;
-            height: 20px;
-            color: #a78bfa;
-        }
-
-        .deployment-target-desc {
-            font-size: 13px;
-            color: #9ca3af;
-        }
-
-        .deployment-options {
-            display: flex;
-            gap: 16px;
-        }
-
-        .deployment-option {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 20px;
-            background: rgba(30, 31, 42, 0.6);
-            border: 2px solid #3d3e4f;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .deployment-option:hover {
-            border-color: #6366f1;
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .deployment-option.selected {
-            border-color: #6366f1;
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .deployment-radio {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #6b7280;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .deployment-option.selected .deployment-radio {
-            border-color: #6366f1;
-        }
-
-        .deployment-radio-inner {
-            width: 10px;
-            height: 10px;
-            background: #6366f1;
-            border-radius: 50%;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.2s ease;
-        }
-
-        .deployment-option.selected .deployment-radio-inner {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .deployment-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .deployment-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .deployment-icon.local {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: #fff;
-        }
-
-        .deployment-icon.devspaces {
-            background: linear-gradient(135deg, #EE0000 0%, #A30000 100%);
-            color: #fff;
-        }
-
-        .deployment-content {
-            flex: 1;
-        }
-
-        .deployment-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .deployment-desc {
-            font-size: 12px;
-            color: #9ca3af;
-            line-height: 1.4;
-        }
-
-        .deployment-badge {
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            padding: 3px 8px;
-            background: linear-gradient(135deg, #EE0000 0%, #A30000 100%);
-            color: #fff;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-        }
-
         /* Footer Actions — above fixed .global-status-bar (z-index 1000) */
         .create-session-footer {
             position: relative;
@@ -2745,6 +2878,34 @@
             height: 18px;
         }
 
+        .btn-defaults-create {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.18);
+            color: #ede9fe;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+            text-align: center;
+        }
+
+        .btn-defaults-create:hover {
+            background: rgba(139, 92, 246, 0.28);
+            border-color: rgba(167, 139, 250, 0.65);
+        }
+
+        .btn-defaults-create:active {
+            transform: translateY(1px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .agent-grid {
@@ -2765,18 +2926,6 @@
 
             .selectable-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .ca-wizard-stepper-list {
-                flex-wrap: wrap;
-            }
-
-            .ca-wizard-stepper-list::before {
-                display: none;
-            }
-
-            .ca-wizard-stepper-item {
-                flex: 1 1 45%;
             }
 
             .ca-agent-model-shell {
@@ -2835,204 +2984,137 @@
                             Guided setup
                         </div>
                         <h1 class="create-session-title">Create coding agent workspace</h1>
-                        <p class="create-session-subtitle">
-                            Wire up your agent, model, tools, and access in a short flow. Everything runs in an isolated sandbox unless you choose a cloud dev environment in the last step.
+                        <p class="create-session-subtitle" id="caCreateSessionSubtitle">
+                            Add your code location first, then tune agent, tools, and access in the following steps.
                         </p>
 
                         <nav class="ca-wizard-stepper" aria-label="Create workspace steps">
-                            <ol class="ca-wizard-stepper-list" role="list">
-                                <li class="ca-wizard-stepper-item is-active" data-step-index="1">
-                                    <button type="button" class="ca-wizard-stepper-trigger" data-wizard-go="1" aria-current="step">
-                                        <span class="ca-wizard-stepper-num">1</span>
-                                        <span class="ca-wizard-stepper-text">Project &amp; workspace</span>
-                                    </button>
-                                </li>
-                                <li class="ca-wizard-stepper-item" data-step-index="2">
-                                    <button type="button" class="ca-wizard-stepper-trigger" data-wizard-go="2" disabled aria-current="false">
-                                        <span class="ca-wizard-stepper-num">2</span>
-                                        <span class="ca-wizard-stepper-text">Agent &amp; model</span>
-                                    </button>
-                                </li>
-                                <li class="ca-wizard-stepper-item" data-step-index="3">
-                                    <button type="button" class="ca-wizard-stepper-trigger" data-wizard-go="3" disabled aria-current="false">
-                                        <span class="ca-wizard-stepper-num">3</span>
-                                        <span class="ca-wizard-stepper-text">Tools &amp; secrets</span>
-                                    </button>
-                                </li>
-                                <li class="ca-wizard-stepper-item" data-step-index="4">
-                                    <button type="button" class="ca-wizard-stepper-trigger" data-wizard-go="4" disabled aria-current="false">
-                                        <span class="ca-wizard-stepper-num">4</span>
-                                        <span class="ca-wizard-stepper-text">Files, network &amp; deploy</span>
-                                    </button>
-                                </li>
-                            </ol>
+                            <div class="ca-wizard-stepper-item active" data-step-index="1">
+                                <button type="button" class="ca-wizard-stepper-hit" data-wizard-go="1" aria-current="step">
+                                    <span class="ca-wizard-stepper-dot">1</span>
+                                    <span class="ca-wizard-stepper-text">Workspace</span>
+                                </button>
+                            </div>
+                            <div class="ca-wizard-stepper-line" data-after-step="1" aria-hidden="true"></div>
+                            <div class="ca-wizard-stepper-item" data-step-index="2">
+                                <button type="button" class="ca-wizard-stepper-hit" data-wizard-go="2" disabled aria-current="false">
+                                    <span class="ca-wizard-stepper-dot">2</span>
+                                    <span class="ca-wizard-stepper-text">Agent &amp; model</span>
+                                </button>
+                            </div>
+                            <div class="ca-wizard-stepper-line" data-after-step="2" aria-hidden="true"></div>
+                            <div class="ca-wizard-stepper-item" data-step-index="3">
+                                <button type="button" class="ca-wizard-stepper-hit" data-wizard-go="3" disabled aria-current="false">
+                                    <span class="ca-wizard-stepper-dot">3</span>
+                                    <span class="ca-wizard-stepper-text">Tools &amp; secrets</span>
+                                </button>
+                            </div>
+                            <div class="ca-wizard-stepper-line" data-after-step="3" aria-hidden="true"></div>
+                            <div class="ca-wizard-stepper-item" data-step-index="4">
+                                <button type="button" class="ca-wizard-stepper-hit" data-wizard-go="4" disabled aria-current="false">
+                                    <span class="ca-wizard-stepper-dot">4</span>
+                                    <span class="ca-wizard-stepper-text">Filesystem</span>
+                                </button>
+                            </div>
+                            <div class="ca-wizard-stepper-line" data-after-step="4" aria-hidden="true"></div>
+                            <div class="ca-wizard-stepper-item" data-step-index="5">
+                                <button type="button" class="ca-wizard-stepper-hit" data-wizard-go="5" disabled aria-current="false">
+                                    <span class="ca-wizard-stepper-dot">5</span>
+                                    <span class="ca-wizard-stepper-text">Networking</span>
+                                </button>
+                            </div>
                         </nav>
 
                         <div class="ca-wizard-step is-active" data-wizard-step="1" id="caWizardPanel1" role="tabpanel" aria-labelledby="caWizardHeading1">
-                            <h2 class="ca-wizard-step-title" id="caWizardHeading1">Project &amp; workspace</h2>
-
-                        <!-- Link to an existing project (same slugs as Projects tab) -->
-                        <div class="ca-project-section" id="project-picker-section">
-                            <div class="ca-project-section-head">
-                                <div>
-                                    <h3>Project</h3>
-                                    <p>Optional: pick a project to load its path, skills, MCP servers, Secret Vault credentials, and access defaults. Matches the projects on the Projects page.</p>
-                                </div>
-                                <a href="../projects/index.html" class="ca-project-browse">All projects</a>
-                            </div>
-                            <div class="ca-project-none selected" id="caProjectNone" data-project-slug="" role="button" tabindex="0" onclick="selectProjectFromList(null)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectProjectFromList(null);}">
-                                <span class="ca-project-none-radio" aria-hidden="true"></span>
-                                <span>Start without a project — configure everything manually below</span>
-                            </div>
-                            <div class="ca-project-grid" id="caProjectGrid">
-                                <button type="button" class="ca-project-card" data-project-slug="doc-updater" onclick="selectProjectFromList('doc-updater')">
-                                    <div class="ca-project-card-top">
-                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">KB</div>
-                                        <div class="ca-project-card-text">
-                                            <div class="ca-project-card-name">Doc updater</div>
-                                            <div class="ca-project-card-path">~/dev/doc-updater</div>
-                                        </div>
-                                    </div>
-                                    <div class="ca-project-card-meta">3 skills · 2 MCP · Doc &amp; OpenShift</div>
-                                </button>
-                                <button type="button" class="ca-project-card" data-project-slug="frontend-app" onclick="selectProjectFromList('frontend-app')">
-                                    <div class="ca-project-card-top">
-                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">FA</div>
-                                        <div class="ca-project-card-text">
-                                            <div class="ca-project-card-name">Frontend App</div>
-                                            <div class="ca-project-card-path">~/dev/docs-portal</div>
-                                        </div>
-                                    </div>
-                                    <div class="ca-project-card-meta">2 skills · 1 MCP · Docs portal</div>
-                                </button>
-                                <button type="button" class="ca-project-card" data-project-slug="infra-platform" onclick="selectProjectFromList('infra-platform')">
-                                    <div class="ca-project-card-top">
-                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">IP</div>
-                                        <div class="ca-project-card-text">
-                                            <div class="ca-project-card-name">Infrastructure Platform</div>
-                                            <div class="ca-project-card-path">~/dev/infra-platform</div>
-                                        </div>
-                                    </div>
-                                    <div class="ca-project-card-meta">4 skills · 3 MCP · Platform ops</div>
-                                </button>
-                                <button type="button" class="ca-project-card" data-project-slug="api-gateway" onclick="selectProjectFromList('api-gateway')">
-                                    <div class="ca-project-card-top">
-                                        <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">AG</div>
-                                        <div class="ca-project-card-text">
-                                            <div class="ca-project-card-name">API Gateway</div>
-                                            <div class="ca-project-card-path">~/dev/api-gateway</div>
-                                        </div>
-                                    </div>
-                                    <div class="ca-project-card-meta">2 skills · 2 MCP · APIs</div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Session details -->
-                        <div class="config-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon session">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>Workspace</h3>
-                                    <p>Give the session a name, choose where the code lives, and add a short description if it helps your team.</p>
-                                </div>
-                            </div>
+                            <h2 class="ca-wizard-step-title" id="caWizardHeading1">Workspace</h2>
+                            <p class="ca-wizard-step-lead" id="caWizardStep1Lead">Local folder or Git remote — we detect it, analyze the tree, and name the workspace.</p>
 
                             <div class="form-group">
-                                <label for="sessionName">Session name</label>
-                                <input type="text" id="sessionName" placeholder="e.g. Frontend refactor sprint">
-                            </div>
-
-                            <p class="ca-workspace-source-intro">
-                                Pick one source type. Git can be cloned straight into the sandbox so nothing has to exist on your laptop first — same patterns as <a href="../projects/index.html">Projects</a>.
-                            </p>
-
-                            <div class="ca-workspace-source-picker" role="radiogroup" aria-label="Workspace code source">
-                                <button type="button" class="ca-workspace-source-option is-selected" id="caWsOptLocal" data-ca-ws-kind="local" aria-pressed="true" onclick="caSetWorkspaceSourceKind('local')">
-                                    <span class="ca-ws-opt-icon" aria-hidden="true">
+                                <label for="caWorkspaceSource">Folder or repository</label>
+                                <div class="ca-np-path-input-wrapper">
+                                    <input type="text" class="ca-np-path-input" id="caWorkspaceSource" placeholder="https://github.com/org/repository" autocomplete="off" oninput="caOnUnifiedWorkspaceInput()">
+                                    <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseWorkspaceFolder()" title="Mock: insert a sample local path">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    </span>
-                                    <span class="ca-ws-opt-body">
-                                        <span class="ca-ws-opt-title">Local folder</span>
-                                        <span class="ca-ws-opt-desc">Mount or open a directory you already have — fastest when the repo is on disk.</span>
-                                    </span>
-                                </button>
-                                <button type="button" class="ca-workspace-source-option" id="caWsOptGit" data-ca-ws-kind="git" aria-pressed="false" onclick="caSetWorkspaceSourceKind('git')">
-                                    <span class="ca-ws-opt-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-5m14 7v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                                    </span>
-                                    <span class="ca-ws-opt-body">
-                                        <span class="ca-ws-opt-title">Git repository</span>
-                                        <span class="ca-ws-opt-desc">Point at a remote URL and optionally clone into the sandbox when the session starts.</span>
-                                    </span>
-                                </button>
+                                        Browse
+                                    </button>
+                                </div>
+                                <p class="ca-workspace-source-hint" id="caWorkspaceDetectHint">Path, HTTPS/SSH URL, or GitHub <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#d1d5db;">owner/repo</code>. Use <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#d1d5db;">./</code> for local folders that look like <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#d1d5db;">a/b</code>.</p>
                             </div>
 
-                            <div class="ca-workspace-panel is-active" id="caWorkspacePanelLocal" role="region" aria-label="Local folder">
-                                <div class="form-group">
-                                    <label for="caLocalPath">Working directory</label>
-                                    <div class="ca-np-path-input-wrapper">
-                                        <input type="text" class="ca-np-path-input" id="caLocalPath" placeholder="/home/user/dev/my-project" autocomplete="off">
-                                        <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseWorkspaceFolder()" title="Mock: set a sample path">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                            Browse
+                            <input type="hidden" id="caLocalPath" value="">
+                            <input type="hidden" id="caGitUrl" value="">
+                            <input type="hidden" id="caGitBranch" value="">
+                            <input type="hidden" id="caGitLinkedLocalPath" value="">
+                            <input type="checkbox" id="caGitCloneSandbox" checked style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" tabindex="-1" aria-hidden="true" onchange="caSyncGitSandboxUI()">
+
+                            <details class="ca-step1-details" id="caStep1DescriptionDetails">
+                                <summary>Description <span class="ca-step1-details-hint">(optional)</span></summary>
+                                <div class="ca-step1-details-body">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label for="sessionDescription" class="ca-step1-details-hint" style="display:block;margin-bottom:8px;">What should this workspace focus on?</label>
+                                        <textarea id="sessionDescription" placeholder="Short note for your team (optional)"></textarea>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <details class="ca-step1-details ca-project-section" id="project-picker-section">
+                                <summary>Saved project <span class="ca-step1-details-hint">(optional)</span></summary>
+                                <div class="ca-step1-details-body">
+                                    <div class="ca-project-section-head">
+                                        <div>
+                                            <h3>Load defaults from a project</h3>
+                                            <p>Path, skills, MCP, vault, and access presets — same cards as on Projects.</p>
+                                        </div>
+                                        <a href="../projects/index.html" class="ca-project-browse">All projects</a>
+                                    </div>
+                                    <div class="ca-project-none selected" id="caProjectNone" data-project-slug="" role="button" tabindex="0" onclick="selectProjectFromList(null)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectProjectFromList(null);}">
+                                        <span class="ca-project-none-radio" aria-hidden="true"></span>
+                                        <span>None — keep what I entered above</span>
+                                    </div>
+                                    <div class="ca-project-grid" id="caProjectGrid">
+                                        <button type="button" class="ca-project-card" data-project-slug="doc-updater" onclick="selectProjectFromList('doc-updater')">
+                                            <div class="ca-project-card-top">
+                                                <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">KB</div>
+                                                <div class="ca-project-card-text">
+                                                    <div class="ca-project-card-name">Doc updater</div>
+                                                    <div class="ca-project-card-path">~/dev/doc-updater</div>
+                                                </div>
+                                            </div>
+                                            <div class="ca-project-card-meta">3 skills · 2 MCP · Doc &amp; OpenShift</div>
+                                        </button>
+                                        <button type="button" class="ca-project-card" data-project-slug="frontend-app" onclick="selectProjectFromList('frontend-app')">
+                                            <div class="ca-project-card-top">
+                                                <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">FA</div>
+                                                <div class="ca-project-card-text">
+                                                    <div class="ca-project-card-name">Frontend App</div>
+                                                    <div class="ca-project-card-path">~/dev/docs-portal</div>
+                                                </div>
+                                            </div>
+                                            <div class="ca-project-card-meta">2 skills · 1 MCP · Docs portal</div>
+                                        </button>
+                                        <button type="button" class="ca-project-card" data-project-slug="infra-platform" onclick="selectProjectFromList('infra-platform')">
+                                            <div class="ca-project-card-top">
+                                                <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">IP</div>
+                                                <div class="ca-project-card-text">
+                                                    <div class="ca-project-card-name">Infrastructure Platform</div>
+                                                    <div class="ca-project-card-path">~/dev/infra-platform</div>
+                                                </div>
+                                            </div>
+                                            <div class="ca-project-card-meta">4 skills · 3 MCP · Platform ops</div>
+                                        </button>
+                                        <button type="button" class="ca-project-card" data-project-slug="api-gateway" onclick="selectProjectFromList('api-gateway')">
+                                            <div class="ca-project-card-top">
+                                                <div class="ca-project-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">AG</div>
+                                                <div class="ca-project-card-text">
+                                                    <div class="ca-project-card-name">API Gateway</div>
+                                                    <div class="ca-project-card-path">~/dev/api-gateway</div>
+                                                </div>
+                                            </div>
+                                            <div class="ca-project-card-meta">2 skills · 2 MCP · APIs</div>
                                         </button>
                                     </div>
-                                    <p class="ca-workspace-source-hint">Path visible to the agent inside its file-access policy (see step 4).</p>
                                 </div>
-                            </div>
-
-                            <div class="ca-workspace-panel" id="caWorkspacePanelGit" role="region" aria-label="Git repository">
-                                <div class="ca-git-fields-grid">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="caGitUrl">Repository URL</label>
-                                        <div class="ca-np-git-input-wrapper">
-                                            <input type="url" class="ca-np-git-input" id="caGitUrl" placeholder="https://github.com/org/repo" autocomplete="off" inputmode="url" oninput="caUpdateGitSandboxPreview()">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label for="caGitBranch">Branch <span style="font-weight:500;color:#6b7280;">(optional)</span></label>
-                                        <input type="text" class="ca-np-path-input" id="caGitBranch" placeholder="main" autocomplete="off" style="width:100%;box-sizing:border-box;">
-                                    </div>
-                                </div>
-                                <p class="ca-workspace-source-hint" style="margin-top: 10px;">HTTPS or SSH. Credentials come from Secret Vault or your Git integration when needed.</p>
-
-                                <div class="ca-git-sandbox-card">
-                                    <label class="ca-git-sandbox-toggle" for="caGitCloneSandbox">
-                                        <input type="checkbox" id="caGitCloneSandbox" checked onchange="caSyncGitSandboxUI()">
-                                        <span class="ca-toggle-track" aria-hidden="true"></span>
-                                        <span class="ca-git-sandbox-copy">
-                                            <strong>Clone inside sandbox</strong>
-                                            <p class="ca-git-sandbox-sub">The platform runs <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;color:#d1d5db;">git clone</code> when the workspace starts. No local checkout required.</p>
-                                        </span>
-                                    </label>
-                                    <div class="ca-git-preview-box" id="caGitSandboxPreviewWrap">
-                                        <span>Sandbox working tree (preview)</span>
-                                        <code id="caGitSandboxPreviewPath">/workspace/repos/repo</code>
-                                    </div>
-                                    <div class="form-group" id="caGitLinkedLocalWrap" style="margin-top: 16px; margin-bottom: 0; display: none;">
-                                        <label for="caGitLinkedLocalPath">Existing checkout path</label>
-                                        <div class="ca-np-path-input-wrapper">
-                                            <input type="text" class="ca-np-path-input" id="caGitLinkedLocalPath" placeholder="/home/user/dev/my-project" autocomplete="off">
-                                            <button type="button" class="ca-np-browse-btn" onclick="caSimulateBrowseGitLinkedFolder()" title="Mock: set a sample path">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                                Browse
-                                            </button>
-                                        </div>
-                                        <p class="ca-workspace-source-hint">Use this when the repo is already on disk and you only want the remote URL on record.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sessionDescription">Description <span style="font-weight:500;color:#6b7280;">(optional)</span></label>
-                                <textarea id="sessionDescription" placeholder="What should this session focus on?"></textarea>
-                            </div>
-                        </div>
+                            </details>
 
                         </div>
 
@@ -3387,6 +3469,18 @@
 
                         <div class="ca-wizard-step" data-wizard-step="3" id="caWizardPanel3" role="tabpanel" aria-labelledby="caWizardHeading3" aria-hidden="true">
                             <h2 class="ca-wizard-step-title" id="caWizardHeading3">Tools &amp; secrets</h2>
+                            <p class="ca-wizard-step-lead" id="caToolsStepLead">Every skill, MCP server, and attachable vault credential is included by default so you can go faster. Expand <strong>Customize</strong> when you want a smaller toolset.</p>
+
+                            <div class="ca-tools-quick-card" role="region" aria-label="Tools and secrets summary">
+                                <p class="ca-tools-quick-summary" id="caToolsQuickSummaryLine"></p>
+                                <div class="ca-tools-quick-actions">
+                                    <button type="button" class="ca-tools-include-all-btn" id="caToolsIncludeAllBtn">Include all available</button>
+                                </div>
+                            </div>
+
+                            <details class="ca-tools-customize-details" id="caToolsCustomizeDetails">
+                                <summary class="ca-tools-customize-summary">Customize skills, MCP servers, and vault</summary>
+                                <div class="ca-tools-customize-inner">
 
                         <!-- Skills (project details–style list) -->
                         <div class="ca-pd-asset-section" id="skills-config-section">
@@ -3680,290 +3774,192 @@
                             </div>
                         </div>
 
+                                </div>
+                            </details>
+
                         </div>
 
-                        <div class="ca-wizard-step" data-wizard-step="4" id="caWizardPanel4" role="tabpanel" aria-labelledby="caWizardHeading4" aria-hidden="true">
-                            <h2 class="ca-wizard-step-title" id="caWizardHeading4">Filesystem, network &amp; deploy</h2>
-
-                        <!-- File Access Section -->
-                        <div class="config-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon access">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>File System Access</h3>
-                                    <p>Define which directories the agent can access on your host system</p>
-                                </div>
-                            </div>
-
-                            <div class="file-access-grid">
-                                <div class="file-access-card selected" data-file-access="workspace" onclick="selectFileAccess(this, 'workspace')">
-                                    <div class="file-access-radio"></div>
-                                    <div class="file-access-icon workspace">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="file-access-content">
-                                        <h4>Working Directory Only</h4>
-                                        <p>Agent can only access the specified working directory and its subdirectories.</p>
-                                    </div>
-                                </div>
-                                <div class="file-access-card" data-file-access="home" onclick="selectFileAccess(this, 'home')">
-                                    <div class="file-access-radio"></div>
-                                    <div class="file-access-icon home">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                                            <polyline points="9 22 9 12 15 12 15 22"/>
-                                        </svg>
-                                    </div>
-                                    <div class="file-access-content">
-                                        <h4>Home Directory</h4>
-                                        <p>Agent can access your entire home directory (~/) and all subdirectories.</p>
-                                    </div>
-                                </div>
-                                <div class="file-access-card" data-file-access="custom" onclick="selectFileAccess(this, 'custom')">
-                                    <div class="file-access-radio"></div>
-                                    <div class="file-access-icon custom">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="3"/>
-                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
-                                        </svg>
-                                    </div>
-                                    <div class="file-access-content">
-                                        <h4>Custom Paths</h4>
-                                        <p>Specify exact directories the agent can access.</p>
-                                    </div>
-                                </div>
-                                <div class="file-access-card" data-file-access="full" onclick="selectFileAccess(this, 'full')">
-                                    <div class="file-access-radio"></div>
-                                    <div class="file-access-icon full">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                                            <line x1="12" y1="9" x2="12" y2="13"/>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                        </svg>
-                                    </div>
-                                    <div class="file-access-content">
-                                        <h4>Full System Access</h4>
-                                        <p>Agent can access the entire filesystem. Use with caution.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="custom-paths-container" id="customPathsContainer">
-                                <div class="path-input-row">
-                                    <input type="text" class="path-input" placeholder="/path/to/allowed/directory">
-                                    <button class="remove-path-btn" onclick="removePath(this)" title="Remove">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <line x1="18" y1="6" x2="6" y2="18"/>
-                                            <line x1="6" y1="6" x2="18" y2="18"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <button class="add-path-btn" onclick="addPath()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="12" y1="5" x2="12" y2="19"/>
-                                        <line x1="5" y1="12" x2="19" y2="12"/>
-                                    </svg>
-                                    Add Another Path
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="config-section" id="network-access-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon network">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="2" y1="12" x2="22" y2="12"/>
-                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>Network Policies</h3>
-                                    <p>Control what external resources the sandbox can access through HTTP/HTTPS filtering — same options as <a href="settings.html" class="ca-inline-link" style="font-weight:500;">workspace settings</a>.</p>
-                                </div>
-                            </div>
-
-                            <div class="ca-np-subcard">
-                                <div class="ca-np-subcard-title">Policy mode</div>
-                                <p class="ca-np-subcard-desc">Choose the default behavior for network requests</p>
-                                <div class="policy-mode-selector">
-                                    <div class="policy-mode-option selected allow-mode" data-ca-policy-mode="allow" onclick="caSelectPolicyMode(this, 'allow')">
-                                        <div class="policy-mode-radio"></div>
-                                        <div class="policy-mode-icon allow">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12l2 2 4-4"/>
-                                            </svg>
+                                                <div class="ca-wizard-step ca-sandbox-ob" data-wizard-step="4" id="caWizardPanel4" role="tabpanel" aria-labelledby="caWizardHeading4" aria-hidden="true">
+                            <h2 class="ca-wizard-step-title" id="caWizardHeading4">Sandbox · Filesystem</h2>
+                            <p class="ca-wizard-step-lead">Host <strong>file access</strong> for this workspace. Same presets as first-run setup — click a row or use <strong>Use</strong>.</p>
+                            <div class="ob-sandbox-step">
+                                <div class="ob-step-panel ob-onboarding-model-catalog">
+                                    <section class="ob-sandbox-section" aria-labelledby="caSandboxFsHeading">
+                                        <input type="hidden" id="caDefaultFs" value="workspace" aria-hidden="true">
+                                        <h3 class="model-config-panel-title" id="caSandboxFsHeading">File system</h3>
+                                        <p class="ca-wizard-step-lead" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Models</a> — pick one scope for agent read/write on the host.</p>
+                                        <div class="models-table-wrap" id="caSandboxFsWrap">
+                                            <table class="models-data-table" aria-label="Workspace file system access">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="models-table-status" scope="col">Status</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Access</th>
+                                                        <th scope="col">Notes</th>
+                                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-fs="workspace" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">No host filesystem access</div>
+                                                            <div class="models-table-name-sub">The agent cannot read or write files on your host. Use for API-only or fully remote workflows.</div>
+                                                            <span class="models-table-ram">Recommended</span>
+                                                        </td>
+                                                        <td>None</td>
+                                                        <td>Strict isolation</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogFs" value="workspace" checked aria-label="Use no host filesystem access" onchange="caSelectFsCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row" data-fs="home" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Home Directory</div>
+                                                            <div class="models-table-name-sub">Agent can access your entire home directory (~/) and all subdirectories.</div>
+                                                        </td>
+                                                        <td>Home (~)</td>
+                                                        <td>Local development</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogFs" value="home" aria-label="Use Home Directory" onchange="caSelectFsCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row" data-fs="custom" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Custom Paths</div>
+                                                            <div class="models-table-name-sub">Specify exact directories the agent can access.</div>
+                                                        </td>
+                                                        <td>Listed paths</td>
+                                                        <td>Set path below</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogFs" value="custom" aria-label="Use Custom Paths" onchange="caSelectFsCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row" data-fs="full" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Full System Access</div>
+                                                            <div class="models-table-name-sub">Agent can access the entire filesystem. Use with caution.</div>
+                                                        </td>
+                                                        <td>Full host</td>
+                                                        <td>High privilege</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogFs" value="full" aria-label="Use Full System Access" onchange="caSelectFsCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="policy-mode-info">
-                                            <h4>Allow Mode</h4>
-                                            <p>Permit all traffic except what's explicitly blocked. Best for development.</p>
+                                        <div class="ob-fs-custom-hint" id="caFsCustomHint" aria-live="polite">
+                                            <p class="ob-fs-custom-hint-lead">Allowed path for <strong>custom</strong> access. You can refine paths later in project or workspace settings.</p>
+                                            <div class="ob-config-field">
+                                                <label class="ob-config-label" for="caFsCustomPath">Allowed path</label>
+                                                <input type="text" class="ob-config-input" id="caFsCustomPath" placeholder="/home/you/dev/my-project" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="caFsCustomPathHint">
+                                            </div>
+                                            <p class="ob-config-hint" id="caFsCustomPathHint">Use an absolute path on the host. Tilde (~) is expanded when the workspace starts.</p>
                                         </div>
-                                    </div>
-                                    <div class="policy-mode-option deny-mode" data-ca-policy-mode="deny" onclick="caSelectPolicyMode(this, 'deny')">
-                                        <div class="policy-mode-radio"></div>
-                                        <div class="policy-mode-icon deny">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
-                                            </svg>
-                                        </div>
-                                        <div class="policy-mode-info">
-                                            <h4>Deny Mode</h4>
-                                            <p>Block all traffic except what's explicitly allowed. Best for production.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="security-info-box">
-                                    <div class="security-info-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                                            <line x1="12" y1="9" x2="12" y2="13"/>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                        </svg>
-                                    </div>
-                                    <div class="security-info-content">
-                                        <h4>Security considerations</h4>
-                                        <p>Network policies control HTTP/HTTPS traffic. Connections to external services over other protocols (raw TCP/UDP) are blocked. Use policies as one layer of security alongside sandbox isolation.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ca-np-subcard" id="caBlockedCidrSection">
-                                <h3 class="ca-np-subcard-title" id="caCidrSectionTitle">Blocked CIDR ranges</h3>
-                                <p class="ca-np-subcard-desc" id="caCidrSectionDesc">IP address ranges that are blocked from access</p>
-                                <div class="rules-list" id="ca-blocked-cidrs">
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">10.0.0.0/8</div>
-                                            <div class="rule-desc">Private network (Class A)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">127.0.0.0/8</div>
-                                            <div class="rule-desc">Loopback addresses</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">172.16.0.0/12</div>
-                                            <div class="rule-desc">Private network (Class B)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">192.168.0.0/16</div>
-                                            <div class="rule-desc">Private network (Class C)</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                    <div class="rule-item blocked">
-                                        <div class="rule-icon blocked">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                                        </div>
-                                        <div class="rule-info">
-                                            <div class="rule-value">169.254.0.0/16</div>
-                                            <div class="rule-desc">Link-local addresses</div>
-                                        </div>
-                                        <span class="rule-badge default">Default</span>
-                                    </div>
-                                </div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" id="ca-new-blocked-cidr" placeholder="e.g., 203.0.113.0/24" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();caAddBlockedCidr();}">
-                                    <button type="button" class="add-rule-btn" onclick="caAddBlockedCidr()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="ca-np-subcard" id="caAllowedCidrSection" style="display: none;">
-                                <h3 class="ca-np-subcard-title">Allowed CIDR ranges</h3>
-                                <p class="ca-np-subcard-desc">IP ranges explicitly permitted when using deny mode. Add at least the destinations your agent needs.</p>
-                                <div class="rules-list" id="ca-allowed-cidrs"></div>
-                                <div class="add-rule-row">
-                                    <input type="text" class="add-rule-input" id="ca-new-allowed-cidr" placeholder="e.g., 104.18.0.0/15" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();caAddAllowedCidr();}">
-                                    <button type="button" class="add-rule-btn" onclick="caAddAllowedCidr()">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                        Add
-                                    </button>
+                                    </section>
                                 </div>
                             </div>
                         </div>
 
+                        <div class="ca-wizard-step ca-sandbox-ob" data-wizard-step="5" id="caWizardPanel5" role="tabpanel" aria-labelledby="caWizardHeading5" aria-hidden="true">
+                            <h2 class="ca-wizard-step-title" id="caWizardHeading5">Sandbox · Networking</h2>
+                            <p class="ca-wizard-step-lead"><strong>Outbound network</strong> for this workspace sandbox. Separate from filesystem access on the previous step.</p>
+                            <div class="ob-sandbox-step">
+                                <div class="ob-step-panel ob-onboarding-model-catalog">
+                                    <section class="ob-sandbox-section" aria-labelledby="caSandboxNetHeading">
+                                        <input type="hidden" id="caDefaultNet" value="registries" aria-hidden="true">
+                                        <h3 class="model-config-panel-title" id="caSandboxNetHeading">Network policy</h3>
+                                        <p class="ca-wizard-step-lead" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Models</a> — click a row or use <strong>Use</strong>.</p>
+                                        <div class="models-table-wrap" id="caSandboxNetWrap">
+                                            <table class="models-data-table" aria-label="Workspace network policy">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="models-table-status" scope="col">Status</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Egress</th>
+                                                        <th scope="col">Notes</th>
+                                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="ob-catalog-model-row" data-net="blocked" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Deny All</div>
+                                                            <div class="models-table-name-sub">No outbound HTTP/HTTPS from the sandbox.</div>
+                                                        </td>
+                                                        <td>None</td>
+                                                        <td>Strict</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogNet" value="blocked" aria-label="Deny all outbound" onchange="caSelectNetCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-net="registries" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Developer Preset</div>
+                                                            <div class="models-table-name-sub">Allow npm, PyPI, and similar registries — not arbitrary public hosts.</div>
+                                                            <span class="models-table-ram">Recommended</span>
+                                                        </td>
+                                                        <td>Registries</td>
+                                                        <td>Balanced default</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogNet" value="registries" checked aria-label="Developer preset network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row" data-net="agent_mode" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Agent mode</div>
+                                                            <div class="models-table-name-sub">The agent requests each outbound access; you approve before traffic leaves the sandbox.</div>
+                                                        </td>
+                                                        <td>Per request</td>
+                                                        <td>Human in the loop</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogNet" value="agent_mode" aria-label="Agent mode network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="ob-catalog-model-row" data-net="open" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
+                                                        <td class="models-table-status">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                                        </td>
+                                                        <td>
+                                                            <div class="models-table-name-main">Unrestricted</div>
+                                                            <div class="models-table-name-sub">Permit all outbound traffic. Best for trusted dev setups.</div>
+                                                        </td>
+                                                        <td>All hosts</td>
+                                                        <td>Trusted setups</td>
+                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                                            <input type="radio" name="caCatalogNet" value="open" aria-label="Unrestricted network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <p class="ob-config-hint" style="margin-top:14px;margin-bottom:0;max-width:52rem;line-height:1.5;"><strong>Allowlists and more</strong> — Fine-grained host allowlists and static egress rules live in project or workspace settings when you need them.</p>
+                                    </section>
+                                </div>
+                            </div>
                         </div>
 
-                    </div>
-                </div>
-
-                <!-- Deployment Target Section (only visible when DevSpaces is enabled) -->
-                <div class="deployment-target-section" id="deploymentTargetSection">
-                    <div class="deployment-target-header">
-                        <div class="deployment-target-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                <line x1="8" y1="21" x2="16" y2="21"/>
-                                <line x1="12" y1="17" x2="12" y2="21"/>
-                            </svg>
-                            Deployment Target
-                        </div>
-                        <span class="deployment-target-desc">Choose where to run your coding agent workspace</span>
-                    </div>
-                    <div class="deployment-options">
-                        <div class="deployment-option selected" data-deployment="local" onclick="selectDeployment(this, 'local')">
-                            <div class="deployment-radio">
-                                <div class="deployment-radio-inner"></div>
-                            </div>
-                            <div class="deployment-icon local">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                    <line x1="8" y1="21" x2="16" y2="21"/>
-                                    <line x1="12" y1="17" x2="12" y2="21"/>
-                                </svg>
-                            </div>
-                            <div class="deployment-content">
-                                <div class="deployment-name">Local Sandbox</div>
-                                <div class="deployment-desc">Run the workspace locally in a secured container on your machine</div>
-                            </div>
-                        </div>
-                        <div class="deployment-option devspaces-option" id="devspacesOption" data-deployment="devspaces" onclick="selectDeployment(this, 'devspaces')">
-                            <div class="deployment-radio">
-                                <div class="deployment-radio-inner"></div>
-                            </div>
-                            <div class="deployment-icon devspaces">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M8 12h8M8 8h8M8 16h8"/>
-                                </svg>
-                            </div>
-                            <div class="deployment-content">
-                                <div class="deployment-name">Red Hat DevSpaces</div>
-                                <div class="deployment-desc">Run remotely in a cloud-based OpenShift DevSpaces environment</div>
-                            </div>
-                            <div class="deployment-badge">Cloud</div>
-                        </div>
                     </div>
                 </div>
 
@@ -3978,6 +3974,9 @@
                     <div class="footer-actions">
                         <button type="button" class="btn-wizard-back" id="caWizardBackBtn" onclick="caWizardGoPrev()" style="display: none;">Back</button>
                         <button class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
+                        <button type="button" class="btn-defaults-create" id="caWizardDefaultsCreateBtn" onclick="caUseAllDefaultsAndCreateWorkspace()" title="Apply saved defaults, include all available skills, MCP, and vault attachments, then create the workspace" aria-label="Use all defaults and create workspace">
+                            Use all defaults and create workspace
+                        </button>
                         <button type="button" class="btn-next" id="caWizardNextBtn" onclick="caWizardGoNext()">
                             Continue
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -3999,11 +3998,51 @@
         let selectedAgent = null;
         let selectedCatalogModelId = null;
         let selectedFileAccess = 'workspace';
-        /** Network policy wizard state (mirrors workspace settings → Network). */
+        /** Network policy wizard state (legacy; sandbox table drives egress via caSandboxNetPresetKey). */
         let caNetworkPolicyMode = 'allow';
+        /** Preset key for sandbox network table: blocked | registries | agent_mode | open */
+        let caSandboxNetPresetKey = 'registries';
         let selectedDeployment = 'local';
         let createWizardStep = 1;
-        const CA_WIZARD_TOTAL_STEPS = 4;
+        const CA_WIZARD_TOTAL_STEPS = 5;
+
+        /** Agent and model use Settings defaults; step 2 is hidden. Add ?showAgentStep=1 to the URL to show agent and model. */
+        function caShouldSkipAgentModelWizardStep() {
+            try {
+                var p = new URLSearchParams(window.location.search);
+                if ((p.get('showAgentStep') || '').match(/^1|true|yes$/i)) return false;
+            } catch (e) { /* ignore */ }
+            return true;
+        }
+
+        function caWizardDisplayStepCount() {
+            return caShouldSkipAgentModelWizardStep() ? 4 : 5;
+        }
+
+        function caPhysicalStepToDisplayStep(physical) {
+            if (!caShouldSkipAgentModelWizardStep()) return physical;
+            if (physical <= 1) return 1;
+            return physical - 1;
+        }
+
+        function caConfigureWizardAgentModelStepVisibility() {
+            var skip = caShouldSkipAgentModelWizardStep();
+            document.documentElement.classList.toggle('ca-wizard-hide-agent-model-step', skip);
+            var dispNum;
+            for (var phys = 1; phys <= 5; phys++) {
+                var numEl = document.querySelector('.ca-wizard-stepper-item[data-step-index="' + phys + '"] .ca-wizard-stepper-dot');
+                if (!numEl) continue;
+                if (skip && phys === 2) continue;
+                dispNum = skip ? (phys <= 1 ? 1 : phys - 1) : phys;
+                numEl.textContent = String(dispNum);
+            }
+            var sub = document.getElementById('caCreateSessionSubtitle');
+            if (sub) {
+                sub.textContent = skip
+                    ? 'Add your code location, then tools, and sandbox access. Agent and model use your saved defaults.'
+                    : 'Add your code location first, then agent, tools, and sandbox filesystem & networking.';
+            }
+        }
         /** Selected vault credential ids (aligned with Secret Vault tab in services/index.html). */
         let selectedVaultSecrets = {
             github: false,
@@ -4016,7 +4055,6 @@
         /** Presets keyed like projects/index.html → openProject(slug) and aligned with project details content. */
         const CREATE_AGENT_PROJECTS = {
             'doc-updater': {
-                sessionName: 'Doc updater workspace',
                 workingDir: '~/dev/doc-updater',
                 description: 'Automatic documentation updater: when new features land, the agent checks whether project docs need updates before we deploy to OpenShift.',
                 catalogModel: 'claude-4.6-sonnet-medium',
@@ -4028,7 +4066,6 @@
                 deployment: 'local'
             },
             'frontend-app': {
-                sessionName: 'Frontend App workspace',
                 workingDir: '~/dev/docs-portal',
                 description: 'Documentation portal UI: React app for internal product docs and dashboards.',
                 catalogModel: 'gpt-5.4-medium',
@@ -4040,7 +4077,6 @@
                 deployment: 'local'
             },
             'infra-platform': {
-                sessionName: 'Infrastructure Platform workspace',
                 workingDir: '~/dev/infra-platform',
                 description: 'Terraform, Ansible, and OpenShift configs for shared internal platform services.',
                 catalogModel: 'ibm-granite-3.3-8b-instruct',
@@ -4056,7 +4092,6 @@
                 }
             },
             'api-gateway': {
-                sessionName: 'API Gateway workspace',
                 gitRepository: 'https://github.com/acme/api-gateway',
                 gitCloneInSandbox: true,
                 description: 'Edge API gateway: routing, authentication, and rate limits for microservices.',
@@ -4071,8 +4106,103 @@
         };
 
         let selectedProjectSlug = null;
-        /** Step 1: 'local' | 'git' — drives which workspace panel is active. */
+        /** Step 1: 'local' | 'git' — derived from the unified folder/repository field. */
         let caWorkspaceSourceKind = 'local';
+
+        function caDetectWorkspaceSourceKind(raw) {
+            var s = (raw || '').trim();
+            if (!s) return 'local';
+            if (/^git@/i.test(s)) return 'git';
+            if (/^https?:\/\//i.test(s)) return 'git';
+            if (/^ssh:\/\//i.test(s)) return 'git';
+            if (/\.git(\/)?$/i.test(s)) return 'git';
+            if (/github\.com\//i.test(s)) return 'git';
+            if (/^[a-zA-Z]:[\\/]/.test(s)) return 'local';
+            if (s.startsWith('/') || s.startsWith('~') || s.startsWith('./') || s.startsWith('../')) return 'local';
+            if (/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(s)) return 'git';
+            return 'local';
+        }
+
+        function caNormalizeGitRepositoryInput(raw) {
+            var s = (raw || '').trim();
+            if (!s) return '';
+            if (/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(s) && !/^git@/i.test(s) && !/:\/\//.test(s)) {
+                return 'https://github.com/' + s.replace(/\.git$/i, '');
+            }
+            if (/^github\.com\//i.test(s)) {
+                return 'https://' + s.replace(/^\/+/, '');
+            }
+            return s;
+        }
+
+        function caSyncWorkspaceSourceFromUnifiedInput() {
+            var uni = document.getElementById('caWorkspaceSource');
+            var localInp = document.getElementById('caLocalPath');
+            var gitInp = document.getElementById('caGitUrl');
+            var raw = (uni && uni.value || '').trim();
+            if (!raw) {
+                caWorkspaceSourceKind = 'local';
+                if (localInp) localInp.value = '';
+                if (gitInp) gitInp.value = '';
+                return;
+            }
+            var kind = caDetectWorkspaceSourceKind(raw);
+            caWorkspaceSourceKind = kind;
+            if (kind === 'git') {
+                var url = caNormalizeGitRepositoryInput(raw);
+                if (gitInp) gitInp.value = url;
+                if (localInp) localInp.value = '';
+            } else {
+                if (localInp) localInp.value = raw;
+                if (gitInp) gitInp.value = '';
+            }
+            caUpdateGitSandboxPreview();
+        }
+
+        function caRefreshUnifiedWorkspaceField() {
+            var uni = document.getElementById('caWorkspaceSource');
+            if (!uni) return;
+            if (caWorkspaceSourceKind === 'git') {
+                var g = document.getElementById('caGitUrl');
+                uni.value = (g && g.value) ? String(g.value).trim() : '';
+            } else {
+                var l = document.getElementById('caLocalPath');
+                uni.value = (l && l.value) ? String(l.value).trim() : '';
+            }
+        }
+
+        function caOnUnifiedWorkspaceInput() {
+            caSyncWorkspaceSourceFromUnifiedInput();
+            var hint = document.getElementById('caWorkspaceDetectHint');
+            var raw = (document.getElementById('caWorkspaceSource') && document.getElementById('caWorkspaceSource').value || '').trim();
+            if (!hint) return;
+            if (!raw) {
+                hint.textContent = 'Path, HTTPS/SSH URL, or GitHub owner/repo. Use ./ for local paths that look like a/b.';
+                return;
+            }
+            if (caWorkspaceSourceKind === 'git') {
+                hint.textContent = 'Git repo — clone in sandbox when applicable; analyze on start. Credentials from vault or Git integration.';
+            } else {
+                hint.textContent = 'Local folder — analyzed under the filesystem policy you choose in this wizard.';
+            }
+        }
+
+        function caDeriveSessionNameFromWorkspace() {
+            caSyncWorkspaceSourceFromUnifiedInput();
+            if (caWorkspaceSourceKind === 'git') {
+                var u = (document.getElementById('caGitUrl') && document.getElementById('caGitUrl').value || '').trim();
+                if (!u) return 'workspace';
+                var cleaned = u.replace(/\.git$/i, '').replace(/^git@[^:]+:/, '').replace(/^https?:\/\//i, '');
+                var parts = cleaned.split(/[/\\]+/).filter(Boolean);
+                var leaf = parts.length ? parts[parts.length - 1].replace(/\.git$/i, '') : 'workspace';
+                return leaf || 'workspace';
+            }
+            var p = (document.getElementById('caLocalPath') && document.getElementById('caLocalPath').value || '').trim();
+            var segs = p.replace(/\\/g, '/').split('/').filter(Boolean);
+            var leaf = segs.length ? segs[segs.length - 1] : 'workspace';
+            if (leaf === '.' || leaf === '..') leaf = 'workspace';
+            return leaf || 'workspace';
+        }
 
         /** Preview path when Git is cloned inside the sandbox (distinct from host paths). */
         function deriveSandboxClonePath(url) {
@@ -4082,25 +4212,6 @@
             var parts = cleaned.split('/').filter(Boolean);
             var repoName = parts.length ? parts[parts.length - 1].replace(/\.git$/i, '') : 'repo';
             return '/workspace/repos/' + repoName;
-        }
-
-        function caSetWorkspaceSourceKind(kind) {
-            caWorkspaceSourceKind = kind === 'git' ? 'git' : 'local';
-            var locBtn = document.getElementById('caWsOptLocal');
-            var gitBtn = document.getElementById('caWsOptGit');
-            var pLoc = document.getElementById('caWorkspacePanelLocal');
-            var pGit = document.getElementById('caWorkspacePanelGit');
-            if (locBtn) {
-                locBtn.classList.toggle('is-selected', caWorkspaceSourceKind === 'local');
-                locBtn.setAttribute('aria-pressed', caWorkspaceSourceKind === 'local' ? 'true' : 'false');
-            }
-            if (gitBtn) {
-                gitBtn.classList.toggle('is-selected', caWorkspaceSourceKind === 'git');
-                gitBtn.setAttribute('aria-pressed', caWorkspaceSourceKind === 'git' ? 'true' : 'false');
-            }
-            if (pLoc) pLoc.classList.toggle('is-active', caWorkspaceSourceKind === 'local');
-            if (pGit) pGit.classList.toggle('is-active', caWorkspaceSourceKind === 'git');
-            caSyncGitSandboxUI();
         }
 
         function caUpdateGitSandboxPreview() {
@@ -4126,35 +4237,125 @@
         }
 
         function initWorkspaceSourceUI() {
-            caSetWorkspaceSourceKind(caWorkspaceSourceKind);
-            caUpdateGitSandboxPreview();
+            caOnUnifiedWorkspaceInput();
         }
 
         function caSimulateBrowseWorkspaceFolder() {
-            var el = document.getElementById('caLocalPath');
-            if (el) {
-                el.value = '/home/user/dev/my-project';
+            var uni = document.getElementById('caWorkspaceSource');
+            if (uni) {
+                uni.value = '/home/user/dev/my-project';
+            }
+            caOnUnifiedWorkspaceInput();
+        }
+
+        function caSyncFileAccessFromSandboxUi() {
+            var hid = document.getElementById('caDefaultFs');
+            var v = hid ? hid.value : 'workspace';
+            selectedFileAccess = v || 'workspace';
+        }
+
+        function caSelectFsCatalogRow(row) {
+            var wrap = document.getElementById('caSandboxFsWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            var radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            var key = row.getAttribute('data-fs');
+            var hid = document.getElementById('caDefaultFs');
+            if (hid && key) hid.value = key;
+            selectedFileAccess = key || 'workspace';
+            var hint = document.getElementById('caFsCustomHint');
+            if (hint) hint.classList.toggle('is-visible', key === 'custom');
+            if (key === 'custom') {
+                var inp = document.getElementById('caFsCustomPath');
+                if (inp) setTimeout(function () { inp.focus(); }, 0);
             }
         }
 
-        function caSimulateBrowseGitLinkedFolder() {
-            var el = document.getElementById('caGitLinkedLocalPath');
-            if (el) {
-                el.value = '/home/user/dev/my-project';
-            }
+        function caFsCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            caSelectFsCatalogRow(ev.currentTarget);
         }
 
-        function applyDeploymentSectionVisibility() {
-            const deploymentSection = document.getElementById('deploymentTargetSection');
-            if (!deploymentSection) return;
-            if (createWizardStep !== CA_WIZARD_TOTAL_STEPS) {
-                deploymentSection.style.display = 'none';
+        function caToggleFsCustomHintForStep() {
+            var fsh = document.getElementById('caDefaultFs');
+            var obh = document.getElementById('caFsCustomHint');
+            if (fsh && obh) obh.classList.toggle('is-visible', fsh.value === 'custom');
+        }
+
+        function caSelectNetCatalogRow(row) {
+            var wrap = document.getElementById('caSandboxNetWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            var radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            var key = row.getAttribute('data-net');
+            var hid = document.getElementById('caDefaultNet');
+            if (hid && key) hid.value = key;
+            caSandboxNetPresetKey = key || 'registries';
+        }
+
+        function caNetCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            caSelectNetCatalogRow(ev.currentTarget);
+        }
+
+        function caNetworkPolicyFromSandboxPreset() {
+            var k = caSandboxNetPresetKey || 'registries';
+            if (k === 'blocked') return { mode: 'deny', allowedCidrs: [] };
+            if (k === 'registries') {
+                return {
+                    mode: 'deny',
+                    allowedCidrs: ['registry.npmjs.org', 'pypi.org', 'files.pythonhosted.org', 'proxy.golang.org', 'sum.golang.org', 'github.com', 'objects.githubusercontent.com']
+                };
+            }
+            if (k === 'agent_mode') return { mode: 'allow' };
+            return { mode: 'allow' };
+        }
+
+        function caApplyNetworkPresetToSandboxTable(preset) {
+            var np = preset && preset.networkPolicy;
+            caSandboxNetPresetKey = 'registries';
+            if (!np) {
+                var defRow = document.querySelector('#caSandboxNetWrap tr[data-net="registries"]');
+                if (defRow) caSelectNetCatalogRow(defRow);
                 return;
             }
-            if (isDevSpacesEnabled()) {
-                deploymentSection.style.display = '';
+            if (np.mode === 'allow') {
+                caSandboxNetPresetKey = 'open';
             } else {
-                deploymentSection.style.display = 'none';
+                var a = np.allowedCidrs || [];
+                if (a.length === 0) {
+                    caSandboxNetPresetKey = 'blocked';
+                } else if (a.indexOf('0.0.0.0/0') >= 0 || a.indexOf('::/0') >= 0) {
+                    caSandboxNetPresetKey = 'open';
+                } else {
+                    caSandboxNetPresetKey = 'registries';
+                }
+            }
+            var row = document.querySelector('#caSandboxNetWrap tr[data-net="' + caSandboxNetPresetKey + '"]');
+            if (row) caSelectNetCatalogRow(row);
+        }
+
+        function caApplyFileAccessToSandboxTable(fileAccess, customFsPath) {
+            var fa = fileAccess || 'workspace';
+            var row = document.querySelector('#caSandboxFsWrap tr[data-fs="' + fa + '"]');
+            if (row) {
+                caSelectFsCatalogRow(row);
+            } else {
+                selectedFileAccess = fa;
+            }
+            if (fa === 'custom' && customFsPath) {
+                var inp = document.getElementById('caFsCustomPath');
+                if (inp) inp.value = customFsPath;
             }
         }
 
@@ -4193,10 +4394,14 @@
             });
             document.querySelectorAll('.ca-wizard-stepper-item').forEach(function(li) {
                 var s = parseInt(li.getAttribute('data-step-index'), 10);
-                li.classList.toggle('is-active', s === createWizardStep);
-                li.classList.toggle('is-complete', s < createWizardStep);
+                li.classList.toggle('active', s === createWizardStep);
+                li.classList.toggle('done', s < createWizardStep);
             });
-            document.querySelectorAll('.ca-wizard-stepper-trigger[data-wizard-go]').forEach(function(btn) {
+            document.querySelectorAll('.ca-wizard-stepper-line[data-after-step]').forEach(function(line) {
+                var after = parseInt(line.getAttribute('data-after-step'), 10);
+                line.classList.toggle('done', createWizardStep > after);
+            });
+            document.querySelectorAll('.ca-wizard-stepper-hit[data-wizard-go]').forEach(function(btn) {
                 var s = parseInt(btn.getAttribute('data-wizard-go'), 10);
                 var current = s === createWizardStep;
                 btn.disabled = s > createWizardStep;
@@ -4205,13 +4410,20 @@
             var backBtn = document.getElementById('caWizardBackBtn');
             var nextBtn = document.getElementById('caWizardNextBtn');
             var startBtn = document.getElementById('caWizardStartBtn');
+            var defaultsCreateBtn = document.getElementById('caWizardDefaultsCreateBtn');
             if (backBtn) backBtn.style.display = createWizardStep > 1 ? 'inline-flex' : 'none';
             if (nextBtn) nextBtn.style.display = createWizardStep < CA_WIZARD_TOTAL_STEPS ? 'inline-flex' : 'none';
             if (startBtn) startBtn.style.display = createWizardStep === CA_WIZARD_TOTAL_STEPS ? 'inline-flex' : 'none';
-            applyDeploymentSectionVisibility();
+            if (defaultsCreateBtn) defaultsCreateBtn.style.display = createWizardStep === 1 ? 'inline-flex' : 'none';
             updateWizardFooterCopy();
             if (createWizardStep === 2) {
                 setCaAgentConfigSubpanel('runtime');
+            }
+            if (createWizardStep === 3) {
+                caUpdateToolsStepSummary();
+            }
+            if (createWizardStep === 4) {
+                caToggleFsCustomHintForStep();
             }
             var sc = document.querySelector('.create-session-content');
             if (sc) sc.scrollTop = 0;
@@ -4224,7 +4436,9 @@
                 ? 'Workspace will run in Red Hat DevSpaces cloud environment'
                 : 'Workspace will run in a secured sandbox environment';
             if (createWizardStep < CA_WIZARD_TOTAL_STEPS) {
-                el.textContent = 'Step ' + createWizardStep + ' of ' + CA_WIZARD_TOTAL_STEPS + ' · ' + sandbox;
+                var disp = caPhysicalStepToDisplayStep(createWizardStep);
+                var totalDisp = caWizardDisplayStepCount();
+                el.textContent = 'Step ' + disp + ' of ' + totalDisp + ' · ' + sandbox;
             } else {
                 el.textContent = sandbox;
             }
@@ -4232,10 +4446,10 @@
 
         function validateCreateWizardStep(step) {
             if (step === 1) {
-                var nameEl = document.getElementById('sessionName');
-                var name = (nameEl && nameEl.value || '').trim();
-                if (!name) {
-                    alert('Please enter a session name');
+                caSyncWorkspaceSourceFromUnifiedInput();
+                var raw = (document.getElementById('caWorkspaceSource') && document.getElementById('caWorkspaceSource').value || '').trim();
+                if (!raw) {
+                    alert('Enter a folder path or a repository URL');
                     return false;
                 }
                 if (caWorkspaceSourceKind === 'local') {
@@ -4249,7 +4463,7 @@
                 var gitUrl = (document.getElementById('caGitUrl') && document.getElementById('caGitUrl').value || '').trim();
                 var cloneSandbox = !!(document.getElementById('caGitCloneSandbox') && document.getElementById('caGitCloneSandbox').checked);
                 if (!gitUrl) {
-                    alert('Enter a Git repository URL');
+                    alert('Enter a valid Git repository URL');
                     return false;
                 }
                 if (!cloneSandbox) {
@@ -4275,20 +4489,53 @@
                 }
                 return true;
             }
+            if (step === 4) {
+                caSyncFileAccessFromSandboxUi();
+                if (selectedFileAccess === 'custom') {
+                    var cpath = (document.getElementById('caFsCustomPath') && document.getElementById('caFsCustomPath').value || '').trim();
+                    if (!cpath) {
+                        alert('Enter an allowed path for custom filesystem access');
+                        return false;
+                    }
+                }
+                return true;
+            }
             return true;
+        }
+
+        function caUseAllDefaultsAndCreateWorkspace() {
+            if (!validateCreateWizardStep(1)) return;
+            if (!selectedProjectSlug) {
+                applyWorkspaceCreatePreset(buildUserDefaultWorkspacePreset());
+                caSelectAllWorkspaceAssets();
+            } else if (!caShouldSkipAgentModelWizardStep()) {
+                var pp = CREATE_AGENT_PROJECTS[selectedProjectSlug];
+                if (pp) {
+                    caApplyDefaultAgentAndModelFromPreset(pp);
+                }
+            }
+            startSession();
         }
 
         function caWizardGoNext() {
             if (!validateCreateWizardStep(createWizardStep)) return;
-            setCreateWizardStep(createWizardStep + 1);
+            var next = createWizardStep + 1;
+            if (caShouldSkipAgentModelWizardStep() && createWizardStep === 1) {
+                next = 3;
+            }
+            setCreateWizardStep(next);
         }
 
         function caWizardGoPrev() {
-            setCreateWizardStep(createWizardStep - 1);
+            var prev = createWizardStep - 1;
+            if (caShouldSkipAgentModelWizardStep() && createWizardStep === 3) {
+                prev = 1;
+            }
+            setCreateWizardStep(prev);
         }
 
         function initCreateAgentWizardStepper() {
-            document.querySelectorAll('.ca-wizard-stepper-trigger[data-wizard-go]').forEach(function(btn) {
+            document.querySelectorAll('.ca-wizard-stepper-hit[data-wizard-go]').forEach(function(btn) {
                 btn.addEventListener('click', function() {
                     var target = parseInt(this.getAttribute('data-wizard-go'), 10);
                     if (target < createWizardStep) {
@@ -4314,6 +4561,12 @@
         function selectProjectFromList(slug) {
             selectedProjectSlug = slug || null;
             updateProjectPickerUI();
+            if (selectedProjectSlug) {
+                const projDetails = document.getElementById('project-picker-section');
+                if (projDetails && projDetails.tagName === 'DETAILS') {
+                    projDetails.open = true;
+                }
+            }
             if (selectedProjectSlug && CREATE_AGENT_PROJECTS[selectedProjectSlug]) {
                 applyProjectPreset(selectedProjectSlug);
             }
@@ -4331,6 +4584,131 @@
                     row.classList.remove('selected');
                 }
             });
+        }
+
+        function caSelectAllSelectableSkills() {
+            const section = document.getElementById('skills-config-section');
+            if (!section) return;
+            section.querySelectorAll('.pd-block-item.ca-pd-selectable').forEach(function (row) {
+                row.classList.add('selected');
+            });
+        }
+
+        function caSelectAllSelectableMcp() {
+            const section = document.getElementById('mcp-config-section');
+            if (!section) return;
+            section.querySelectorAll('.pd-block-item.ca-pd-selectable').forEach(function (row) {
+                row.classList.add('selected');
+            });
+        }
+
+        function caSelectAllSelectableVaultSecrets() {
+            clearVaultSecretSelections();
+            document.querySelectorAll('#secret-vault-config-section .ca-vault-row.ca-pd-selectable').forEach(function (row) {
+                const id = row.getAttribute('data-vault-id');
+                if (!id || row.classList.contains('ca-vault-disabled')) return;
+                if (!isVaultSecretSelectable(id)) return;
+                row.classList.add('selected');
+                if (Object.prototype.hasOwnProperty.call(selectedVaultSecrets, id)) {
+                    selectedVaultSecrets[id] = true;
+                }
+            });
+        }
+
+        function caSelectAllWorkspaceAssets() {
+            if (isSkillsModuleEnabled()) {
+                caSelectAllSelectableSkills();
+            } else {
+                setPdSelectableRows('skills-config-section', []);
+            }
+            if (isMcpModuleEnabled()) {
+                caSelectAllSelectableMcp();
+            } else {
+                setPdSelectableRows('mcp-config-section', []);
+            }
+            caSelectAllSelectableVaultSecrets();
+            caUpdateToolsStepSummary();
+        }
+
+        function caGetToolsSelectionCounts() {
+            const skillsOn = isSkillsModuleEnabled();
+            const mcpOn = isMcpModuleEnabled();
+            let skillsSel = 0;
+            let skillsTot = 0;
+            let mcpSel = 0;
+            let mcpTot = 0;
+            let vaultSel = 0;
+            let vaultTot = 0;
+            if (skillsOn) {
+                const sec = document.getElementById('skills-config-section');
+                if (sec) {
+                    skillsTot = sec.querySelectorAll('.pd-block-item.ca-pd-selectable').length;
+                    skillsSel = sec.querySelectorAll('.pd-block-item.ca-pd-selectable.selected').length;
+                }
+            }
+            if (mcpOn) {
+                const sec = document.getElementById('mcp-config-section');
+                if (sec) {
+                    mcpTot = sec.querySelectorAll('.pd-block-item.ca-pd-selectable').length;
+                    mcpSel = sec.querySelectorAll('.pd-block-item.ca-pd-selectable.selected').length;
+                }
+            }
+            const vsec = document.getElementById('secret-vault-config-section');
+            if (vsec) {
+                vsec.querySelectorAll('.ca-vault-row.ca-pd-selectable').forEach(function (row) {
+                    const id = row.getAttribute('data-vault-id');
+                    if (!id || row.classList.contains('ca-vault-disabled')) return;
+                    if (!isVaultSecretSelectable(id)) return;
+                    vaultTot++;
+                    if (row.classList.contains('selected')) vaultSel++;
+                });
+            }
+            return { skillsOn: skillsOn, mcpOn: mcpOn, skillsSel: skillsSel, skillsTot: skillsTot, mcpSel: mcpSel, mcpTot: mcpTot, vaultSel: vaultSel, vaultTot: vaultTot };
+        }
+
+        function caIsFullToolsSelection(c) {
+            c = c || caGetToolsSelectionCounts();
+            if (c.skillsOn && c.skillsSel !== c.skillsTot) return false;
+            if (c.mcpOn && c.mcpSel !== c.mcpTot) return false;
+            if (c.vaultTot > 0 && c.vaultSel !== c.vaultTot) return false;
+            return true;
+        }
+
+        function caUpdateToolsStepSummary() {
+            const el = document.getElementById('caToolsQuickSummaryLine');
+            const btn = document.getElementById('caToolsIncludeAllBtn');
+            if (!el) return;
+            const c = caGetToolsSelectionCounts();
+            const full = caIsFullToolsSelection(c);
+            const parts = [];
+            if (c.skillsOn) {
+                parts.push(c.skillsSel + '/' + c.skillsTot + ' skills');
+            }
+            if (c.mcpOn) {
+                parts.push(c.mcpSel + '/' + c.mcpTot + ' MCP servers');
+            }
+            if (c.vaultTot > 0) {
+                parts.push(c.vaultSel + '/' + c.vaultTot + ' vault credentials');
+            } else {
+                parts.push('0 attachable vault credentials (enable GitHub/Jira in Settings to attach more)');
+            }
+            if (full) {
+                el.textContent = 'Everything available is included (' + parts.join(' · ') + '). Expand Customize below only if you want to limit what is attached.';
+            } else {
+                el.textContent = 'Custom selection: ' + parts.join(' · ') + '. Use “Include all available” or expand Customize to change individual items.';
+            }
+            if (btn) {
+                btn.style.display = full ? 'none' : 'inline-flex';
+            }
+        }
+
+        function caInitWorkspaceToolsDefaults() {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                if ((params.get('applyDefaults') || '').match(/^(1|true|defaults)$/i)) return;
+            } catch (e) { /* ignore */ }
+            if (selectedProjectSlug) return;
+            caSelectAllWorkspaceAssets();
         }
 
         function isVaultSecretSelectable(vaultId) {
@@ -4360,51 +4738,39 @@
             });
         }
 
-        function applyProjectPreset(slug) {
-            const preset = CREATE_AGENT_PROJECTS[slug];
+        /** Agent / model / FS / network / tools slice of a workspace preset (shared by project presets and saved user defaults). */
+        function applyWorkspaceCreatePreset(preset) {
             if (!preset) return;
 
-            const nameInput = document.getElementById('sessionName');
-            const localInp = document.getElementById('caLocalPath');
-            const gitInp = document.getElementById('caGitUrl');
-            const gitBranchInp = document.getElementById('caGitBranch');
-            const linkedInp = document.getElementById('caGitLinkedLocalPath');
-            const cloneChk = document.getElementById('caGitCloneSandbox');
-            const descInput = document.getElementById('sessionDescription');
-            if (nameInput) nameInput.value = preset.sessionName;
-            if (preset.gitRepository) {
-                if (gitInp) gitInp.value = preset.gitRepository;
-                if (localInp) localInp.value = '';
-                if (gitBranchInp) gitBranchInp.value = preset.gitBranch || '';
-                if (cloneChk) cloneChk.checked = preset.gitCloneInSandbox !== false;
-                if (linkedInp) linkedInp.value = preset.gitLinkedLocalPath || '';
-                caSetWorkspaceSourceKind('git');
-            } else {
-                if (localInp) localInp.value = preset.workingDir || '';
-                if (gitInp) gitInp.value = '';
-                if (gitBranchInp) gitBranchInp.value = '';
-                if (cloneChk) cloneChk.checked = true;
-                if (linkedInp) linkedInp.value = '';
-                caSetWorkspaceSourceKind('local');
-            }
-            if (descInput) descInput.value = preset.description;
-            caSyncGitSandboxUI();
-
             if (isSkillsModuleEnabled()) {
-                setPdSelectableRows('skills-config-section', preset.skills);
+                if (preset.skills && preset.skills.length > 0) {
+                    setPdSelectableRows('skills-config-section', preset.skills);
+                } else {
+                    caSelectAllSelectableSkills();
+                }
+            } else {
+                setPdSelectableRows('skills-config-section', []);
             }
             if (isMcpModuleEnabled()) {
-                setPdSelectableRows('mcp-config-section', preset.mcpServers);
+                if (preset.mcpServers && preset.mcpServers.length > 0) {
+                    setPdSelectableRows('mcp-config-section', preset.mcpServers);
+                } else {
+                    caSelectAllSelectableMcp();
+                }
+            } else {
+                setPdSelectableRows('mcp-config-section', []);
             }
 
-            applyVaultSecretsFromPreset(preset.vaultSecrets);
-
-            const fa = document.querySelector('.file-access-card[data-file-access="' + preset.fileAccess + '"]');
-            if (fa) {
-                selectFileAccess(fa, preset.fileAccess);
+            if (preset.vaultSecrets && preset.vaultSecrets.length > 0) {
+                applyVaultSecretsFromPreset(preset.vaultSecrets);
+            } else {
+                caSelectAllSelectableVaultSecrets();
             }
 
-            caApplyNetworkPolicyPreset(preset);
+            const fileAccess = preset.fileAccess || 'workspace';
+            caApplyFileAccessToSandboxTable(fileAccess, preset.customFsPath || '');
+
+            caApplyNetworkPresetToSandboxTable(preset);
 
             const catalogSearch = document.getElementById('caModelCatalogSearch');
             if (catalogSearch) catalogSearch.value = '';
@@ -4414,22 +4780,202 @@
                 selectCatalogModelById(preset.catalogModel);
             }
 
-            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + preset.agent + '"]');
+            const agentKey = preset.agent || 'opencode';
+            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + agentKey + '"]');
             if (agentCard) {
-                selectAgent(agentCard, preset.agent);
+                selectAgent(agentCard, agentKey);
             }
 
             if (preset.deployment === 'devspaces' && isDevSpacesEnabled()) {
-                const devEl = document.querySelector('.deployment-option[data-deployment="devspaces"]');
-                if (devEl) {
-                    selectDeployment(devEl, 'devspaces');
-                }
+                selectedDeployment = 'devspaces';
             } else {
-                const loc = document.querySelector('.deployment-option[data-deployment="local"]');
-                if (loc) {
-                    selectDeployment(loc, 'local');
+                selectedDeployment = 'local';
+            }
+
+            caUpdateToolsStepSummary();
+        }
+
+        function applyProjectPreset(slug) {
+            const preset = CREATE_AGENT_PROJECTS[slug];
+            if (!preset) return;
+
+            const localInp = document.getElementById('caLocalPath');
+            const gitInp = document.getElementById('caGitUrl');
+            const gitBranchInp = document.getElementById('caGitBranch');
+            const linkedInp = document.getElementById('caGitLinkedLocalPath');
+            const cloneChk = document.getElementById('caGitCloneSandbox');
+            const descInput = document.getElementById('sessionDescription');
+            if (preset.gitRepository) {
+                if (gitInp) gitInp.value = preset.gitRepository;
+                if (localInp) localInp.value = '';
+                if (gitBranchInp) gitBranchInp.value = preset.gitBranch || '';
+                if (cloneChk) cloneChk.checked = preset.gitCloneInSandbox !== false;
+                if (linkedInp) linkedInp.value = preset.gitLinkedLocalPath || '';
+                caWorkspaceSourceKind = 'git';
+            } else {
+                if (localInp) localInp.value = preset.workingDir || '';
+                if (gitInp) gitInp.value = '';
+                if (gitBranchInp) gitBranchInp.value = '';
+                if (cloneChk) cloneChk.checked = true;
+                if (linkedInp) linkedInp.value = '';
+                caWorkspaceSourceKind = 'local';
+            }
+            if (descInput) descInput.value = preset.description;
+            caRefreshUnifiedWorkspaceField();
+            caOnUnifiedWorkspaceInput();
+            caSyncGitSandboxUI();
+
+            applyWorkspaceCreatePreset(preset);
+        }
+
+        function parseKaidenSettingsForWorkspace() {
+            try {
+                const raw = localStorage.getItem('kaidenSettings');
+                if (!raw) return null;
+                const o = JSON.parse(raw);
+                return o && typeof o === 'object' ? o : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function mapSettingsDefaultModelToCatalogId(dm) {
+            const map = {
+                'granite-3.1': 'ibm-granite-3.3-8b-instruct',
+                'granite-3.1-dense': 'ibm-granite-3.3-8b-instruct',
+                'llama-3.2': 'llama3.2-3b',
+                'mistral': 'mistral-small-internal'
+            };
+            return map[dm] || 'ibm-granite-3.3-8b-instruct';
+        }
+
+        function mapSettingsNetworkPolicyToCreatePreset(np) {
+            if (np === 'deny') {
+                return { mode: 'deny', allowedCidrs: ['0.0.0.0/0', '::/0'] };
+            }
+            if (np === 'restricted') {
+                return {
+                    mode: 'deny',
+                    allowedCidrs: ['registry.npmjs.org', 'pypi.org', 'files.pythonhosted.org', 'proxy.golang.org', 'sum.golang.org', 'github.com', 'objects.githubusercontent.com']
+                };
+            }
+            return { mode: 'allow' };
+        }
+
+        function mapAgentKeyForCreateCard(agent) {
+            if (!agent) return 'opencode';
+            if (agent === 'claude-vertex') return 'claude';
+            if (agent === 'goose') return 'opencode';
+            return agent;
+        }
+
+        function buildUserDefaultWorkspacePreset() {
+            const s = parseKaidenSettingsForWorkspace();
+            const ws = s && s.workspaceSandboxDefaults;
+            if (ws && typeof ws === 'object') {
+                const ad = s.agentDefaults || {};
+                const catalogFallback = mapSettingsDefaultModelToCatalogId((s.general || {}).defaultModel);
+                return {
+                    workingDir: '',
+                    description: '',
+                    skills: ws.skills || [],
+                    mcpServers: ws.mcpServers || [],
+                    vaultSecrets: ws.vaultSecrets || [],
+                    fileAccess: ws.fileAccess || 'workspace',
+                    customFsPath: ws.customFsPath || '',
+                    networkPolicy: ws.networkPolicy,
+                    catalogModel: ws.catalogModel || catalogFallback,
+                    agent: mapAgentKeyForCreateCard(ws.agent || ad.defaultAgent),
+                    deployment: ws.deployment === 'devspaces' ? 'devspaces' : 'local'
+                };
+            }
+            if (!s) {
+                return {
+                    workingDir: '',
+                    description: '',
+                    skills: [],
+                    mcpServers: [],
+                    vaultSecrets: [],
+                    fileAccess: 'workspace',
+                    networkPolicy: { mode: 'allow' },
+                    catalogModel: 'ibm-granite-3.3-8b-instruct',
+                    agent: 'claude',
+                    deployment: 'local'
+                };
+            }
+            const ad = s.agentDefaults || {};
+            const netPol = mapSettingsNetworkPolicyToCreatePreset((s.network || {}).networkPolicy || 'allow');
+            return {
+                workingDir: '',
+                description: '',
+                skills: [],
+                mcpServers: [],
+                vaultSecrets: [],
+                fileAccess: ad.defaultFileAccess || 'workspace',
+                customFsPath: '',
+                networkPolicy: netPol,
+                catalogModel: mapSettingsDefaultModelToCatalogId((s.general || {}).defaultModel),
+                agent: mapAgentKeyForCreateCard(ad.defaultAgent),
+                deployment: 'local'
+            };
+        }
+
+        function caApplyDefaultAgentAndModelFromPreset(preset) {
+            if (!preset) return;
+            const catalogSearch = document.getElementById('caModelCatalogSearch');
+            if (catalogSearch) catalogSearch.value = '';
+            filterCatalogModels('');
+            applyWorkspaceCatalogVisibility();
+            if (preset.catalogModel) {
+                selectCatalogModelById(preset.catalogModel);
+            }
+            if (!selectedCatalogModelId) {
+                const firstPickable = document.querySelector('#workspace-model-catalog tr.ca-catalog-model-row:not(.ca-catalog-row-hidden):not(.ca-catalog-filtered-out):not(.ca-catalog-row-disabled)');
+                if (firstPickable) {
+                    const id = firstPickable.getAttribute('data-catalog-id');
+                    if (id) selectCatalogModelRow(firstPickable, id);
                 }
             }
+            const agentKey = preset.agent || 'opencode';
+            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + agentKey + '"]');
+            if (agentCard) {
+                selectAgent(agentCard, agentKey);
+            }
+        }
+
+        function applyUserDefaultWorkspaceFromStorage() {
+            selectedProjectSlug = null;
+            updateProjectPickerUI();
+
+            const localInp = document.getElementById('caLocalPath');
+            const gitInp = document.getElementById('caGitUrl');
+            const gitBranchInp = document.getElementById('caGitBranch');
+            const linkedInp = document.getElementById('caGitLinkedLocalPath');
+            const cloneChk = document.getElementById('caGitCloneSandbox');
+            const descInput = document.getElementById('sessionDescription');
+            const uni = document.getElementById('caWorkspaceSource');
+
+            const preset = buildUserDefaultWorkspacePreset();
+            var defaultPath = (preset.workingDir && String(preset.workingDir).trim()) ? preset.workingDir.trim() : '~/dev/new-workspace';
+            if (localInp) localInp.value = defaultPath;
+            if (gitInp) gitInp.value = '';
+            if (gitBranchInp) gitBranchInp.value = '';
+            if (cloneChk) cloneChk.checked = true;
+            if (linkedInp) linkedInp.value = '';
+            if (descInput) descInput.value = preset.description || '';
+            caWorkspaceSourceKind = 'local';
+            if (uni) uni.value = defaultPath;
+            caOnUnifiedWorkspaceInput();
+            caSyncGitSandboxUI();
+
+            applyWorkspaceCreatePreset(preset);
+        }
+
+        function initApplySandboxDefaultsFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const v = (params.get('applyDefaults') || '').toLowerCase();
+            if (v !== '1' && v !== 'true' && v !== 'defaults') return;
+            applyUserDefaultWorkspaceFromStorage();
         }
 
         function initProjectFromUrl() {
@@ -4437,6 +4983,10 @@
             const params = new URLSearchParams(window.location.search);
             const p = params.get('project');
             if (p && CREATE_AGENT_PROJECTS[p]) {
+                const projDetails = document.getElementById('project-picker-section');
+                if (projDetails && projDetails.tagName === 'DETAILS') {
+                    projDetails.open = true;
+                }
                 selectProjectFromList(p);
             }
         }
@@ -4472,6 +5022,8 @@
             if (stepperLabel) stepperLabel.textContent = 'Workspace';
             const h2 = document.getElementById('caWizardHeading1');
             if (h2) h2.textContent = 'Workspace';
+            const lead = document.getElementById('caWizardStep1Lead');
+            if (lead) lead.textContent = 'Local folder or Git URL — we detect it and analyze the tree.';
         }
 
         // Check if DevSpaces is enabled in settings (must match settings/index.html → kaidenSettings)
@@ -4524,12 +5076,11 @@
             }
         }
 
-        // Initialize DevSpaces visibility based on settings (final step only; see applyDeploymentSectionVisibility)
+        // Deployment target is chosen from presets / settings only (no wizard step).
         function initDevSpacesOption() {
             if (!isDevSpacesEnabled()) {
                 selectedDeployment = 'local';
             }
-            applyDeploymentSectionVisibility();
         }
 
         // Initialize Skills visibility based on settings
@@ -4575,6 +5126,7 @@
             if (Object.prototype.hasOwnProperty.call(selectedVaultSecrets, vaultId)) {
                 selectedVaultSecrets[vaultId] = row.classList.contains('selected');
             }
+            caUpdateToolsStepSummary();
         }
 
         function initSecretVaultSection() {
@@ -4741,6 +5293,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initDevSpacesOption();
             initWorkspaceModelCatalog();
+            caConfigureWizardAgentModelStepVisibility();
             initOptionalProjectsSection();
             initOptionalProjectsWizardCopy();
             initSkillsSection();
@@ -4748,8 +5301,19 @@
             initSecretVaultSection();
             initWorkspaceSourceUI();
             initProjectFromUrl();
+            initApplySandboxDefaultsFromUrl();
+            caInitWorkspaceToolsDefaults();
+            var caToolsIncludeAllBtn = document.getElementById('caToolsIncludeAllBtn');
+            if (caToolsIncludeAllBtn) {
+                caToolsIncludeAllBtn.addEventListener('click', function () {
+                    caSelectAllWorkspaceAssets();
+                });
+            }
             initAgentConfigSidebar();
             initCreateAgentWizardStepper();
+            if (caShouldSkipAgentModelWizardStep() && !selectedAgent) {
+                caApplyDefaultAgentAndModelFromPreset(buildUserDefaultWorkspacePreset());
+            }
         });
 
         function selectAgent(card, agent) {
@@ -4760,30 +5324,11 @@
 
         function toggleItem(item) {
             item.classList.toggle('selected');
-        }
-
-        function selectDeployment(option, type) {
-            document.querySelectorAll('.deployment-option').forEach(o => o.classList.remove('selected'));
-            option.classList.add('selected');
-            selectedDeployment = type;
-            updateWizardFooterCopy();
-        }
-
-        function selectFileAccess(card, type) {
-            document.querySelectorAll('.file-access-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedFileAccess = type;
-
-            // Show/hide custom paths input
-            const customContainer = document.getElementById('customPathsContainer');
-            if (type === 'custom') {
-                customContainer.classList.add('visible');
-            } else {
-                customContainer.classList.remove('visible');
-            }
+            caUpdateToolsStepSummary();
         }
 
         function caClearCustomNetworkRules() {
+            if (!document.getElementById('ca-blocked-cidrs')) return;
             document.querySelectorAll('#ca-blocked-cidrs .rule-item, #ca-allowed-cidrs .rule-item').forEach(function (item) {
                 if (item.querySelector('.rule-actions')) {
                     item.remove();
@@ -4796,31 +5341,11 @@
         }
 
         function caApplyNetworkPolicyPreset(preset) {
-            caClearCustomNetworkRules();
-            var np = preset && preset.networkPolicy ? preset.networkPolicy : null;
-            var mode = np && np.mode === 'deny' ? 'deny' : 'allow';
-            var opt = document.querySelector('#network-access-section .policy-mode-option[data-ca-policy-mode="' + mode + '"]');
-            if (opt) {
-                caSelectPolicyMode(opt, mode);
-            }
-            if (!np) return;
-            var blockedList = document.getElementById('ca-blocked-cidrs');
-            var allowedList = document.getElementById('ca-allowed-cidrs');
-            (np.customBlockedCidrs || []).forEach(function (c) {
-                var v = (c || '').trim();
-                if (v && blockedList) {
-                    blockedList.appendChild(caCreateRuleItem(v, 'blocked', 'Custom CIDR block', true));
-                }
-            });
-            (np.allowedCidrs || []).forEach(function (c) {
-                var v = (c || '').trim();
-                if (v && allowedList) {
-                    allowedList.appendChild(caCreateRuleItem(v, 'allowed', 'Custom allowed range', true));
-                }
-            });
+            caApplyNetworkPresetToSandboxTable(preset);
         }
 
         function caSelectPolicyMode(element, mode) {
+            if (!element || !document.getElementById('network-access-section')) return;
             document.querySelectorAll('#network-access-section .policy-mode-option').forEach(function (opt) {
                 opt.classList.remove('selected');
             });
@@ -4904,31 +5429,12 @@
             return policy;
         }
 
-        function addPath() {
-            const container = document.getElementById('customPathsContainer');
-            const newRow = document.createElement('div');
-            newRow.className = 'path-input-row';
-            newRow.innerHTML = `
-                <input type="text" class="path-input" placeholder="/path/to/allowed/directory">
-                <button class="remove-path-btn" onclick="removePath(this)" title="Remove">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            `;
-            container.insertBefore(newRow, container.lastElementChild);
-        }
-
-        function removePath(btn) {
-            const rows = document.querySelectorAll('.path-input-row');
-            if (rows.length > 1) {
-                btn.closest('.path-input-row').remove();
-            }
-        }
-
         function startSession() {
-            const name = document.getElementById('sessionName').value;
+            if (caShouldSkipAgentModelWizardStep()) {
+                caApplyDefaultAgentAndModelFromPreset(buildUserDefaultWorkspacePreset());
+            }
+            caSyncWorkspaceSourceFromUnifiedInput();
+            const name = caDeriveSessionNameFromWorkspace();
             const description = document.getElementById('sessionDescription').value;
             const localPath = (document.getElementById('caLocalPath') && document.getElementById('caLocalPath').value || '').trim();
             const gitUrl = (document.getElementById('caGitUrl') && document.getElementById('caGitUrl').value || '').trim();
@@ -4951,8 +5457,9 @@
                 workingDir = cloneSandbox ? deriveSandboxClonePath(gitUrl) : linkedLocal;
             }
 
-            if (!name) {
-                alert('Please enter a session name');
+            var unified = (document.getElementById('caWorkspaceSource') && document.getElementById('caWorkspaceSource').value || '').trim();
+            if (!unified) {
+                alert('Enter a folder path or a repository URL');
                 return;
             }
 
@@ -4963,7 +5470,7 @@
                 }
             } else {
                 if (!gitUrl) {
-                    alert('Enter a Git repository URL');
+                    alert('Enter a valid Git repository URL');
                     return;
                 }
                 if (!cloneSandbox && !linkedLocal) {
@@ -4996,8 +5503,18 @@
                 }
             }
 
-            const networkPolicy = caCollectNetworkPolicyForConfig();
-            if (networkPolicy.mode === 'deny' && (!networkPolicy.allowedCidrs || networkPolicy.allowedCidrs.length === 0)) {
+            caSyncFileAccessFromSandboxUi();
+            if (selectedFileAccess === 'custom') {
+                var customPathVal = (document.getElementById('caFsCustomPath') && document.getElementById('caFsCustomPath').value || '').trim();
+                if (!customPathVal) {
+                    alert('Enter an allowed path for custom filesystem access');
+                    return;
+                }
+            }
+
+            const networkPolicy = caNetworkPolicyFromSandboxPreset();
+            var netPreset = caSandboxNetPresetKey || 'registries';
+            if (networkPolicy.mode === 'deny' && (!networkPolicy.allowedCidrs || networkPolicy.allowedCidrs.length === 0) && netPreset !== 'blocked') {
                 alert('Deny mode blocks all traffic unless you add at least one allowed CIDR range.');
                 return;
             }
@@ -5034,7 +5551,11 @@
                 catalogModelId: selectedCatalogModelId,
                 modelProvider: legacyProvider,
                 fileAccess: selectedFileAccess,
+                customFsPath: selectedFileAccess === 'custom'
+                    ? (document.getElementById('caFsCustomPath') && document.getElementById('caFsCustomPath').value || '').trim()
+                    : '',
                 networkPolicy: networkPolicy,
+                sandboxNetPreset: netPreset,
                 skills: selectedSkills,
                 mcpServers: selectedMcpServers,
                 vaultSecrets: vaultSecretIds,

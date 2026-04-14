@@ -369,6 +369,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.kaidenHydrateDemoPages();
     }
 
+    /* Workspace settings shown inside details.html iframe — parent already has app chrome. */
+    if (document.documentElement.classList.contains('settings-embed')) {
+        return;
+    }
+
     const bodyClass = document.body.className;
     let activeSection = bodyClass.split(' ').find(c => c.endsWith('-page'))?.replace('-page', '');
 

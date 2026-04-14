@@ -581,6 +581,89 @@
             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.38);
         }
 
+        .sessions-new-workspace-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .sessions-new-workspace-dropdown > summary {
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 16px 11px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #ffffff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sessions-new-workspace-dropdown > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .sessions-new-workspace-dropdown[open] > summary {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.38);
+        }
+
+        .sessions-new-workspace-summary__chev {
+            flex-shrink: 0;
+            opacity: 0.92;
+            transition: transform 0.2s ease;
+        }
+
+        .sessions-new-workspace-dropdown[open] .sessions-new-workspace-summary__chev {
+            transform: rotate(180deg);
+        }
+
+        .sessions-new-workspace-panel {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            min-width: 288px;
+            max-width: min(360px, calc(100vw - 48px));
+            padding: 6px;
+            background: linear-gradient(165deg, #2a2b36 0%, #1f2028 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+            z-index: 40;
+        }
+
+        .sessions-new-workspace-item {
+            display: block;
+            padding: 11px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e5e7eb;
+            transition: background 0.12s ease;
+        }
+
+        .sessions-new-workspace-item:hover {
+            background: rgba(139, 92, 246, 0.12);
+        }
+
+        .sessions-new-workspace-item__title {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .sessions-new-workspace-item__desc {
+            display: block;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
         .sessions-empty-state {
             display: flex;
             flex-direction: column;
@@ -636,9 +719,24 @@
                             </svg>
                             Create from CLI
                         </button>
-                        <button type="button" class="create-session-btn" onclick="window.location.href='create.html'">
-                            + New Agent
-                        </button>
+                        <details class="sessions-new-workspace-dropdown">
+                            <summary class="sessions-new-workspace-summary" aria-label="New workspace, choose how to create">
+                                <span class="sessions-new-workspace-summary__text">New workspace</span>
+                                <svg class="sessions-new-workspace-summary__chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </summary>
+                            <div class="sessions-new-workspace-panel" role="menu" aria-label="New workspace options">
+                                <a class="sessions-new-workspace-item" role="menuitem" href="create.html?applyDefaults=1">
+                                    <span class="sessions-new-workspace-item__title">From my saved defaults</span>
+                                    <span class="sessions-new-workspace-item__desc">Use the agent sandbox presets from Setup and Settings (model, filesystem, network).</span>
+                                </a>
+                                <a class="sessions-new-workspace-item" role="menuitem" href="create.html">
+                                    <span class="sessions-new-workspace-item__title">Configure step by step</span>
+                                    <span class="sessions-new-workspace-item__desc">Choose source, tools, and sandbox options in the full create flow.</span>
+                                </a>
+                            </div>
+                        </details>
                     </div>
                 </div>
 

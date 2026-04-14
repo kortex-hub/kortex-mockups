@@ -53,6 +53,15 @@
  * / Exit / ?demo=reset stay predictable.
  */
 (function () {
+    /** No demo bar inside iframes (e.g. settings embedded in workspace details) — parent page already shows it. */
+    function isKaidenDemoBarSuppressed() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
     var STORAGE_KEY = 'kaidenDemoState';
     var LEGACY_KEY = 'kaidenDemoScenario';
     var ONBOARDING_DONE_KEY = 'kaidenOnboardingComplete';
@@ -111,7 +120,9 @@
         (document.head || document.documentElement).appendChild(link);
     }
 
-    ensureDemoBarStyles();
+    if (!isKaidenDemoBarSuppressed()) {
+        ensureDemoBarStyles();
+    }
 
     function readRawState() {
         try {
@@ -403,6 +414,13 @@
     }
 
     function renderDemoBar() {
+        if (isKaidenDemoBarSuppressed()) {
+            var rm = document.getElementById('kaidenDemoBar');
+            if (rm) rm.remove();
+            document.body.classList.remove('kaiden-demo-bar-open');
+            return;
+        }
+
         document.body.classList.add('kaiden-demo-bar-open');
 
         var state = readRawState();
@@ -558,7 +576,9 @@
 
     window.addEventListener('storage', function (ev) {
         if (ev.key === STORAGE_KEY || ev.key === LEGACY_KEY) {
-            renderDemoBar();
+            if (!isKaidenDemoBarSuppressed()) {
+                renderDemoBar();
+            }
         }
     });
 })();

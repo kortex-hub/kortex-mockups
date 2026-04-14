@@ -10,10 +10,16 @@
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* Session Details Page Styles */
+        /* Match models/index.html: main uses flex column; header strip + flex main area */
+        body.sessions-page .main-content {
+            min-height: 0;
+        }
+
         .session-details-layout {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            flex: 1;
+            min-height: 0;
             background: #0f0f14;
             overflow: hidden;
         }
@@ -156,16 +162,6 @@
 
         .session-control-btn.stop:hover {
             background: rgba(239, 68, 68, 0.25);
-        }
-
-        .session-control-btn.settings {
-            background: rgba(255, 255, 255, 0.05);
-            color: #9ca3af;
-        }
-
-        .session-control-btn.settings:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e5e7eb;
         }
 
         /* Main Content Area */
@@ -468,195 +464,6 @@
             color: #fcd34d;
         }
 
-        /* Filesystem policy (mirrors project details; shown on agent workspace overview) */
-        .session-fs-policy-card {
-            margin-top: 12px;
-        }
-
-        .session-fs-note {
-            display: flex;
-            gap: 12px;
-            padding: 12px 16px;
-            background: rgba(250, 204, 21, 0.04);
-            border: 1px solid rgba(250, 204, 21, 0.15);
-            border-radius: 10px;
-            margin-bottom: 16px;
-        }
-
-        .session-fs-note svg {
-            width: 18px;
-            height: 18px;
-            color: #facc15;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        .session-fs-note-text {
-            font-size: 12px;
-            color: #9ca3af;
-            line-height: 1.55;
-        }
-
-        .session-fs-note-text strong {
-            color: #e5e7eb;
-            font-weight: 600;
-        }
-
-        .session-fs-project-line {
-            font-size: 12px;
-            color: #6b7280;
-            margin: -8px 0 14px;
-        }
-
-        .session-fs-project-line a {
-            color: #a78bfa;
-            text-decoration: none;
-        }
-
-        .session-fs-project-line a:hover {
-            text-decoration: underline;
-        }
-
-        .session-fs-mode-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid rgba(250, 204, 21, 0.2);
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-
-        .session-fs-paths {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
-        .session-fs-path-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-            padding: 10px 12px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-        }
-
-        .session-fs-path-main {
-            flex: 1;
-            min-width: 140px;
-        }
-
-        .session-fs-path-code {
-            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 12px;
-            color: #e5e7eb;
-        }
-
-        .session-fs-path-desc {
-            display: block;
-            font-size: 11px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
-        .session-fs-badge {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .session-fs-badge.rw {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.15);
-            color: #4ade80;
-        }
-
-        .session-fs-badge.ro {
-            background: rgba(96, 165, 250, 0.1);
-            border: 1px solid rgba(96, 165, 250, 0.15);
-            color: #93c5fd;
-        }
-
-        .session-fs-badge.blocked {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-        }
-
-        .session-fs-yaml-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #e5e7eb;
-            margin-bottom: 6px;
-        }
-
-        .session-fs-yaml-desc {
-            font-size: 12px;
-            color: #6b7280;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .session-fs-yaml-desc code {
-            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 11px;
-            color: #d1d5db;
-        }
-
-        .session-fs-yaml-preview {
-            background: #0d0e14;
-            border: 1px solid #2d2e3f;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .session-fs-yaml-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            border-bottom: 1px solid #2d2e3f;
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        .session-fs-yaml-synced {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: #34d399;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .session-fs-yaml-synced svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        .session-fs-yaml-code {
-            padding: 14px;
-            margin: 0;
-            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #d1d5db;
-            overflow-x: auto;
-        }
-
         .resource-icon svg {
             width: 14px;
             height: 14px;
@@ -709,11 +516,6 @@
         .stat-box-label {
             font-size: 11px;
             color: #6b7280;
-        }
-
-        /* Terminal Preview */
-        .terminal-preview {
-            margin-top: 0;
         }
 
         .terminal-window {
@@ -1115,329 +917,12 @@
             height: 100%;
         }
 
-        /* Wispr Voice Recording Styles */
-        .wispr-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .settings-tab-frame {
             flex: 1;
-            padding: 48px 24px;
-            background: linear-gradient(180deg, #0d0d12 0%, #0f0f16 100%);
-        }
-
-        .wispr-content {
-            max-width: 600px;
             width: 100%;
-            text-align: center;
-        }
-
-        .wispr-header {
-            margin-bottom: 48px;
-        }
-
-        .wispr-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #e5e7eb;
-            margin: 0 0 12px 0;
-        }
-
-        .wispr-subtitle {
-            font-size: 15px;
-            color: #9ca3af;
-            line-height: 1.6;
-        }
-
-        .wispr-recorder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 48px;
-        }
-
-        .wispr-button {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
+            min-height: 0;
             border: none;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
-        }
-
-        .wispr-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
-        }
-
-        .wispr-button.recording {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.4);
-            animation: recordingPulse 1.5s infinite;
-        }
-
-        @keyframes recordingPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(239, 68, 68, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 12px 48px rgba(239, 68, 68, 0.6); }
-        }
-
-        .wispr-button svg {
-            width: 48px;
-            height: 48px;
-            color: #ffffff;
-        }
-
-        .wispr-button-ring {
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            border: 2px solid rgba(139, 92, 246, 0.3);
-            animation: ringPulse 2s infinite;
-        }
-
-        .wispr-button.recording .wispr-button-ring {
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        @keyframes ringPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.5; }
-        }
-
-        .wispr-status {
-            margin-top: 24px;
-            font-size: 14px;
-            color: #9ca3af;
-        }
-
-        .wispr-status.recording {
-            color: #f87171;
-            font-weight: 500;
-        }
-
-        .wispr-timer {
-            font-size: 32px;
-            font-weight: 700;
-            color: #e5e7eb;
-            font-family: 'Monaco', 'Menlo', monospace;
-            margin-top: 8px;
-        }
-
-        .wispr-waveform {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            height: 60px;
-            margin-top: 24px;
-        }
-
-        .waveform-bar {
-            width: 4px;
-            background: linear-gradient(180deg, #8b5cf6, #a78bfa);
-            border-radius: 2px;
-            animation: waveformIdle 1s infinite ease-in-out;
-        }
-
-        .wispr-button.recording ~ .wispr-waveform .waveform-bar {
-            animation: waveformActive 0.5s infinite ease-in-out;
-        }
-
-        .waveform-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
-        .waveform-bar:nth-child(2) { height: 35px; animation-delay: 0.1s; }
-        .waveform-bar:nth-child(3) { height: 25px; animation-delay: 0.2s; }
-        .waveform-bar:nth-child(4) { height: 45px; animation-delay: 0.3s; }
-        .waveform-bar:nth-child(5) { height: 30px; animation-delay: 0.4s; }
-        .waveform-bar:nth-child(6) { height: 50px; animation-delay: 0.5s; }
-        .waveform-bar:nth-child(7) { height: 35px; animation-delay: 0.6s; }
-        .waveform-bar:nth-child(8) { height: 40px; animation-delay: 0.7s; }
-        .waveform-bar:nth-child(9) { height: 25px; animation-delay: 0.8s; }
-        .waveform-bar:nth-child(10) { height: 30px; animation-delay: 0.9s; }
-        .waveform-bar:nth-child(11) { height: 45px; animation-delay: 1s; }
-        .waveform-bar:nth-child(12) { height: 20px; animation-delay: 1.1s; }
-
-        @keyframes waveformIdle {
-            0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
-            50% { opacity: 0.5; transform: scaleY(0.7); }
-        }
-
-        @keyframes waveformActive {
-            0%, 100% { transform: scaleY(0.4); }
-            50% { transform: scaleY(1); }
-        }
-
-        .wispr-recordings {
-            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
-            border: 1px solid #3d3e4f;
-            border-radius: 16px;
-            padding: 24px;
-            text-align: left;
-        }
-
-        .wispr-recordings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .wispr-recordings-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e5e7eb;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .wispr-recordings-title svg {
-            width: 16px;
-            height: 16px;
-            color: #a78bfa;
-        }
-
-        .recording-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 16px;
-            background: rgba(37, 38, 49, 0.5);
-            border: 1px solid #3d3e4f;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .recording-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .recording-item:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-            background: rgba(139, 92, 246, 0.05);
-        }
-
-        .recording-play-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .recording-play-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .recording-play-btn svg {
-            width: 16px;
-            height: 16px;
-            margin-left: 2px;
-        }
-
-        .recording-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .recording-text {
-            font-size: 13px;
-            color: #e5e7eb;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .recording-meta {
-            font-size: 11px;
-            color: #6b7280;
-        }
-
-        .recording-duration {
-            font-size: 13px;
-            font-weight: 500;
-            color: #9ca3af;
-            font-family: 'Monaco', 'Menlo', monospace;
-        }
-
-        .recording-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .recording-action-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            background: rgba(255, 255, 255, 0.05);
-            color: #9ca3af;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .recording-action-btn:hover {
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
-        }
-
-        .recording-action-btn.send {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
-        }
-
-        .recording-action-btn.send:hover {
-            transform: scale(1.05);
-        }
-
-        .recording-action-btn svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .wispr-tips {
-            margin-top: 32px;
-            padding: 16px 20px;
-            background: rgba(139, 92, 246, 0.08);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-            border-radius: 10px;
-        }
-
-        .wispr-tips-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: #a78bfa;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .wispr-tips-list {
-            font-size: 13px;
-            color: #9ca3af;
-            line-height: 1.6;
-        }
-
-        .wispr-tips-list li {
-            margin-bottom: 4px;
+            background: #0f0f14;
         }
 
         /* Syntax highlighting */
@@ -1456,6 +941,7 @@
 
         <!-- Session Details UI -->
         <main class="main-content">
+            <div class="header"></div>
             <div class="session-details-layout">
                 <!-- Header Bar -->
                 <div class="session-header-bar">
@@ -1478,13 +964,6 @@
                         </div>
                     </div>
                     <div class="session-header-right">
-                        <button class="session-control-btn settings" onclick="window.location.href='settings.html'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"/>
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
-                            </svg>
-                            Settings
-                        </button>
                         <button class="session-control-btn stop" onclick="stopSession()">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                 <rect x="6" y="6" width="12" height="12" rx="2"/>
@@ -1520,14 +999,12 @@
                         Files
                         <span class="tab-badge">6</span>
                     </button>
-                    <button class="session-tab" data-tab="wispr" onclick="showTab('wispr')">
+                    <button class="session-tab" data-tab="settings" onclick="showTab('settings')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                            <line x1="12" y1="19" x2="12" y2="23"/>
-                            <line x1="8" y1="23" x2="16" y2="23"/>
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                         </svg>
-                        Wispr
+                        Settings
                     </button>
                 </div>
 
@@ -1667,162 +1144,6 @@
                                         <div class="resource-info"><div class="resource-name">~/dev/kortex-backend</div><div class="resource-status">read-write</div></div>
                                     </div>
                                 </div>
-                                <p style="margin:10px 0 0;font-size:11px;color:#6b7280;line-height:1.45;">Full declared paths and <span style="font-family:'SF Mono',monospace;font-size:10px;color:#9ca3af;">agentdev-workspace.yaml</span> sync below.</p>
-                            </div>
-                        </div>
-
-                        <div class="summary-card session-fs-policy-card" id="session-filesystem-policy">
-                            <div class="summary-card-header">
-                                <div class="summary-card-title">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Filesystem policy
-                                </div>
-                                <span class="summary-card-badge">6 paths</span>
-                            </div>
-
-                            <div class="session-fs-note">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                <div class="session-fs-note-text">
-                                    <strong>Project-scoped filesystem policy.</strong> This workspace uses the same declared paths as the parent project. Agents can only read and write inside these paths (strict mode).
-                                </div>
-                            </div>
-
-                            <p class="session-fs-project-line">Effective policy from <a href="../projects/details.html#filesystem">Kortex Backend</a> · <a href="../projects/details.html#filesystem">Edit in project settings</a></p>
-
-                            <div class="session-fs-mode-pill">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                Strict mode
-                            </div>
-
-                            <div class="session-fs-paths">
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">~/dev/kortex-backend</span>
-                                        <span class="session-fs-path-desc">Project working directory</span>
-                                    </div>
-                                    <span class="session-fs-badge rw">read-write</span>
-                                </div>
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">/sandbox</span>
-                                        <span class="session-fs-path-desc">Agent scratch workspace</span>
-                                    </div>
-                                    <span class="session-fs-badge rw">read-write</span>
-                                </div>
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">/tmp</span>
-                                        <span class="session-fs-path-desc">Temporary files</span>
-                                    </div>
-                                    <span class="session-fs-badge rw">read-write</span>
-                                </div>
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">/usr/local/go</span>
-                                        <span class="session-fs-path-desc">Go toolchain</span>
-                                    </div>
-                                    <span class="session-fs-badge ro">read-only</span>
-                                </div>
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">/usr/local/bin</span>
-                                        <span class="session-fs-path-desc">System binaries (make, git, etc.)</span>
-                                    </div>
-                                    <span class="session-fs-badge ro">read-only</span>
-                                </div>
-                                <div class="session-fs-path-row">
-                                    <div class="session-fs-path-main">
-                                        <span class="session-fs-path-code">~/.ssh</span>
-                                        <span class="session-fs-path-desc">SSH keys — explicitly blocked</span>
-                                    </div>
-                                    <span class="session-fs-badge blocked">blocked</span>
-                                </div>
-                            </div>
-
-                            <div class="session-fs-yaml-title">Workspace File Sync</div>
-                            <p class="session-fs-yaml-desc">Synced to <code>agentdev-workspace.yaml</code> under <code>agentConfig.permissions.filesystem</code>.</p>
-                            <div class="session-fs-yaml-preview">
-                                <div class="session-fs-yaml-header">
-                                    <span>agentdev-workspace.yaml</span>
-                                    <span class="session-fs-yaml-synced">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                        Synced
-                                    </span>
-                                </div>
-                                <pre class="session-fs-yaml-code">agentConfig:
-  permissions:
-    filesystem:
-      mode: strict
-      readWrite:
-        - "~/dev/kortex-backend"
-        - "/sandbox"
-        - "/tmp"
-      readOnly:
-        - "/usr/local/go"
-        - "/usr/local/bin"
-      blocked:
-        - "~/.ssh"</pre>
-                            </div>
-                        </div>
-
-                        <!-- Terminal Preview -->
-                        <div class="summary-card terminal-preview">
-                            <div class="summary-card-header">
-                                <div class="summary-card-title">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="4 17 10 11 4 5"/>
-                                        <line x1="12" y1="19" x2="20" y2="19"/>
-                                    </svg>
-                                    Terminal Preview
-                                </div>
-                            </div>
-
-                            <div class="terminal-window">
-                                <div class="terminal-header">
-                                    <div class="terminal-titlebar">
-                                        <div class="terminal-traffic-lights">
-                                            <div class="terminal-traffic-light red"></div>
-                                            <div class="terminal-traffic-light yellow"></div>
-                                            <div class="terminal-traffic-light green"></div>
-                                        </div>
-                                        <div class="terminal-tabs-bar">
-                                            <div class="terminal-tab">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="4 17 10 11 4 5"/>
-                                                    <line x1="12" y1="19" x2="20" y2="19"/>
-                                                </svg>
-                                                <span>kortex</span>
-                                                <span class="tab-dot"></span>
-                                            </div>
-                                            <div class="terminal-tab active">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="4 17 10 11 4 5"/>
-                                                    <line x1="12" y1="19" x2="20" y2="19"/>
-                                                </svg>
-                                                <span>sandbox: claude-code</span>
-                                                <span class="tab-dot"></span>
-                                                <span class="terminal-tab-close">×</span>
-                                            </div>
-                                            <div class="terminal-tab-add">+</div>
-                                        </div>
-                                        <div class="terminal-actions">
-                                            <button class="terminal-action-btn expand" onclick="showTab('terminal')">
-                                                Open Full Terminal
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="terminal-body">
-                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-command">npm run build</span></div>
-                                    <div class="terminal-output">
-> dashboard@1.0.0 build
-> vite build
-
-vite v5.0.12 building for production...
-✓ 234 modules transformed.
-                                    </div>
-                                    <div><span class="terminal-prompt">~/dev/kortex-backend $</span> <span class="terminal-cursor"></span></div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1955,109 +1276,9 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
                     </div>
                 </div>
 
-                <!-- Tab: Wispr -->
-                <div id="wisprTab" class="tab-content">
-                    <div class="wispr-container">
-                        <div class="wispr-content">
-                            <div class="wispr-header">
-                                <h2 class="wispr-title">Wispr Your Intent</h2>
-                                <p class="wispr-subtitle">
-                                    Record a voice memo to communicate your intent to the agent. 
-                                    Speak naturally and the agent will understand your instructions.
-                                </p>
-                            </div>
-
-                            <div class="wispr-recorder">
-                                <button class="wispr-button" id="wisprButton" onclick="toggleRecording()">
-                                    <span class="wispr-button-ring"></span>
-                                    <svg id="wisprIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                        <line x1="12" y1="19" x2="12" y2="23"/>
-                                        <line x1="8" y1="23" x2="16" y2="23"/>
-                                    </svg>
-                                </button>
-                                <div class="wispr-status" id="wisprStatus">Click to start recording</div>
-                                <div class="wispr-timer" id="wisprTimer" style="display: none;">00:00</div>
-                                <div class="wispr-waveform" id="wisprWaveform" style="display: none;">
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                    <div class="waveform-bar"></div>
-                                </div>
-                            </div>
-
-                            <div class="wispr-recordings">
-                                <div class="wispr-recordings-header">
-                                    <div class="wispr-recordings-title">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                                        </svg>
-                                        Recent Voice Memos
-                                    </div>
-                                </div>
-
-                                <div class="recording-item">
-                                    <button class="recording-play-btn" onclick="playRecording(1)">
-                                        <svg viewBox="0 0 24 24" fill="currentColor">
-                                            <polygon points="5 3 19 12 5 21 5 3"/>
-                                        </svg>
-                                    </button>
-                                    <div class="recording-info">
-                                        <div class="recording-text">"Refactor the authentication module to use JWT tokens..."</div>
-                                        <div class="recording-meta">2 minutes ago • Transcribed & sent to agent</div>
-                                    </div>
-                                    <div class="recording-duration">0:24</div>
-                                    <div class="recording-actions">
-                                        <button class="recording-action-btn" title="Delete">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="3 6 5 6 21 6"/>
-                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="recording-item">
-                                    <button class="recording-play-btn" onclick="playRecording(2)">
-                                        <svg viewBox="0 0 24 24" fill="currentColor">
-                                            <polygon points="5 3 19 12 5 21 5 3"/>
-                                        </svg>
-                                    </button>
-                                    <div class="recording-info">
-                                        <div class="recording-text">"Add unit tests for the dashboard components..."</div>
-                                        <div class="recording-meta">15 minutes ago • Transcribed & sent to agent</div>
-                                    </div>
-                                    <div class="recording-duration">0:18</div>
-                                    <div class="recording-actions">
-                                        <button class="recording-action-btn" title="Delete">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="3 6 5 6 21 6"/>
-                                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="wispr-tips">
-                                <div class="wispr-tips-title">Tips for best results</div>
-                                <ul class="wispr-tips-list">
-                                    <li>Speak clearly and at a natural pace</li>
-                                    <li>Be specific about file names and locations</li>
-                                    <li>Describe what you want, not how to do it</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Tab: Settings (embedded workspace settings) -->
+                <div id="settingsTab" class="tab-content">
+                    <iframe class="settings-tab-frame" title="Workspace settings" src="settings.html?embed=1"></iframe>
                 </div>
             </div>
         </main>
@@ -2159,78 +1380,6 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
             });
         });
 
-        // Wispr Voice Recording Functions
-        let isRecording = false;
-        let recordingTimer = null;
-        let recordingSeconds = 0;
-
-        function toggleRecording() {
-            const button = document.getElementById('wisprButton');
-            const status = document.getElementById('wisprStatus');
-            const timer = document.getElementById('wisprTimer');
-            const waveform = document.getElementById('wisprWaveform');
-            const icon = document.getElementById('wisprIcon');
-
-            if (!isRecording) {
-                // Start recording
-                isRecording = true;
-                button.classList.add('recording');
-                status.textContent = 'Recording...';
-                status.classList.add('recording');
-                timer.style.display = 'block';
-                waveform.style.display = 'flex';
-                
-                // Change icon to stop
-                icon.innerHTML = '<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>';
-                
-                // Start timer
-                recordingSeconds = 0;
-                updateTimer();
-                recordingTimer = setInterval(() => {
-                    recordingSeconds++;
-                    updateTimer();
-                }, 1000);
-            } else {
-                // Stop recording
-                isRecording = false;
-                button.classList.remove('recording');
-                status.textContent = 'Processing your voice memo...';
-                status.classList.remove('recording');
-                
-                // Stop timer
-                clearInterval(recordingTimer);
-                
-                // Simulate processing
-                setTimeout(() => {
-                    status.textContent = 'Click to start recording';
-                    timer.style.display = 'none';
-                    waveform.style.display = 'none';
-                    
-                    // Reset icon
-                    icon.innerHTML = `
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                        <line x1="12" y1="19" x2="12" y2="23"/>
-                        <line x1="8" y1="23" x2="16" y2="23"/>
-                    `;
-                    
-                    // Show success message
-                    alert('Voice memo recorded and sent to the agent!');
-                }, 1500);
-            }
-        }
-
-        function updateTimer() {
-            const timer = document.getElementById('wisprTimer');
-            const minutes = Math.floor(recordingSeconds / 60);
-            const seconds = recordingSeconds % 60;
-            timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function playRecording(id) {
-            alert(`Playing recording ${id}...`);
-        }
-
         // Keyboard shortcuts
         document.addEventListener('keydown', function(event) {
             // Cmd/Ctrl + 1-4 to switch tabs
@@ -2246,7 +1395,7 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
                     showTab('files');
                 } else if (event.key === '4') {
                     event.preventDefault();
-                    showTab('wispr');
+                    showTab('settings');
                 }
             }
         });
@@ -2697,8 +1846,8 @@ spec:
                 
                 // Update terminal
                 if (session.terminalOutput) {
-                    document.querySelector('#terminalTab .terminal-body').innerHTML = session.terminalOutput;
-                    document.querySelector('.terminal-preview .terminal-body').innerHTML = session.terminalOutput;
+                    const terminalBody = document.querySelector('#terminalTab .terminal-body');
+                    if (terminalBody) terminalBody.innerHTML = session.terminalOutput;
                 }
                 
                 // Update skills card
