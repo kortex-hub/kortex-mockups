@@ -6523,11 +6523,3 @@ html.kaiden-optional-projects #naProjectSection {
     display: none !important;
 }
 
-html.kaiden-optional-projects #obStep4.ob-step {
-    display: none !important;
-}
-
-html.kaiden-optional-projects .ob-ready-stat--projects {
-    display: none !important;
-}
-

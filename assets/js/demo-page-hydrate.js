@@ -500,9 +500,11 @@
         var tbody = document.querySelector('.knowledges-page table.rag-table tbody');
         var emptyEl = document.getElementById('kbEmptyState');
         var panel = document.getElementById('kbTablePanel');
-        if (!d.knowledges || !tbody) return;
-        var block = d.knowledges[currentDemoViewKey()];
-        if (!block) return;
+        if (!tbody) return;
+        d = d || {};
+        var root = d.knowledges && typeof d.knowledges === 'object' ? d.knowledges : {};
+        var block = root[currentDemoViewKey()];
+        if (!block) block = { rows: [] };
         var rows = block.rows || [];
         if (rows.length === 0) {
             document.body.setAttribute('data-demo-kb-mode', 'empty');
@@ -630,7 +632,10 @@
         var d = window.__kaidenDemoScreenData;
         if (d) {
             if (d.projects) hydrateProjects(d);
-            if (d.knowledges) hydrateKnowledges(d);
+        }
+        /* Knowledges: always hydrate on list page (empty state when JSON missing or rows []). */
+        if (document.body.classList.contains('knowledges-page')) {
+            hydrateKnowledges(d || {});
         }
         /* Secret Vault: always hydrate when the page has the catalog table (even if services.json failed). */
         hydrateServices(d || {});

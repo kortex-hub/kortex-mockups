@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden — Setup</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <style>
         body.onboarding-page {
@@ -715,6 +716,240 @@
             margin-top: 4px;
         }
 
+        .ob-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 720px;
+            gap: 16px;
+        }
+
+        .ob-header-bar .ob-btn-ghost {
+            flex-shrink: 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .ob-header-bar .ob-btn-ghost:hover {
+            color: #c4b5fd;
+        }
+
+        .ob-agent-tile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        @media (min-width: 900px) {
+            .ob-agent-tile-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .ob-agent-tile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ob-agent-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 16px;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .ob-agent-tile:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+        }
+
+        .ob-agent-tile.selected {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .ob-agent-tile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ob-agent-tile-icon img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .ob-agent-tile-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .ob-agent-tile-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.45;
+        }
+
+        .ob-agent-tile-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.12);
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        .ob-agent-api-box {
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            padding: 16px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 16px;
+        }
+
+        .ob-agent-api-box h4 {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            margin: 0 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .ob-agent-api-box p,
+        .ob-agent-api-box li {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.55;
+            margin: 0 0 8px;
+        }
+
+        .ob-agent-api-box ul {
+            margin: 0 0 8px;
+            padding-left: 18px;
+        }
+
+        .ob-agent-api-box code {
+            font-size: 11px;
+            background: rgba(139, 92, 246, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #c4b5fd;
+        }
+
+        .ob-agent-api-panel-hidden {
+            display: none !important;
+        }
+
+        .ob-model-step-group {
+            margin-top: 4px;
+        }
+
+        .ob-model-step-hidden {
+            display: none !important;
+        }
+
+        .ob-model-catalog-subhead {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #6b7280;
+            margin: 16px 0 8px;
+        }
+
+        .ob-model-step-group > .ob-model-catalog-subhead:first-of-type {
+            margin-top: 4px;
+        }
+
+        .ob-onboarding-model-catalog {
+            max-width: 900px;
+        }
+
+        .ob-sandbox-step {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .ob-sandbox-step > .ob-step-panel.ob-sandbox-panel {
+            flex: 0 0 auto;
+        }
+
+        .ob-sandbox-section {
+            margin: 0;
+        }
+
+        .ob-sandbox-section-head {
+            margin-bottom: 16px;
+            max-width: 720px;
+        }
+
+        .ob-sandbox-section .model-config-panel-title {
+            margin: 0 0 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .ob-sandbox-section-lead {
+            margin: 0;
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.55;
+        }
+
+        .ob-fs-custom-hint {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(61, 62, 79, 0.65);
+            border-radius: 10px;
+        }
+
+        .ob-fs-custom-hint.is-visible {
+            display: block;
+        }
+
+        .ob-fs-custom-hint .ob-fs-custom-hint-lead {
+            margin: 0 0 12px;
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .ob-fs-custom-hint .ob-config-field {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .ob-fs-custom-hint .ob-config-hint {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
         .ob-agent-subsection-title {
             font-size: 13px;
             font-weight: 600;
@@ -1213,35 +1448,6 @@
             cursor: default;
         }
 
-        .ob-model-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .ob-model-chip {
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
-            border-radius: 7px;
-            color: #9ca3af;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .ob-model-chip:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-            color: #c4b5fd;
-        }
-
-        .ob-model-chip.active {
-            border-color: rgba(139, 92, 246, 0.5);
-            background: rgba(139, 92, 246, 0.1);
-            color: #c4b5fd;
-        }
-
         /* ═══════════════════════════════════════
            Scan AI Assets (onboarding step 3)
            ═══════════════════════════════════════ */
@@ -1489,6 +1695,8 @@
 
         .ob-ready-summary {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
             margin-top: 8px;
         }
@@ -1567,40 +1775,38 @@
 
         <!-- Header with logo + stepper -->
         <div class="onboarding-header">
-            <div class="ob-logo">
-                <div class="ob-logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                        <polyline points="2 17 12 22 22 17"/>
-                        <polyline points="2 12 12 17 22 12"/>
-                    </svg>
+            <div class="ob-header-bar">
+                <div class="ob-logo">
+                    <div class="ob-logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                            <polyline points="2 17 12 22 22 17"/>
+                            <polyline points="2 12 12 17 22 12"/>
+                        </svg>
+                    </div>
+                    Kaiden
                 </div>
-                Kaiden
+                <button type="button" class="ob-btn ob-btn-ghost" id="obUseDefaultsHeader" onclick="skipOnboardingWithDefaults()">Use all defaults</button>
             </div>
 
             <div class="ob-stepper" id="obStepper">
                 <div class="ob-stepper-item active" id="obStepInd1">
                     <div class="ob-stepper-dot">1</div>
-                    Coding Agents
+                    Coding agent
                 </div>
                 <div class="ob-stepper-line" id="obStepLine1"></div>
                 <div class="ob-stepper-item" id="obStepInd2">
                     <div class="ob-stepper-dot">2</div>
-                    LLM Providers
+                    Model
                 </div>
                 <div class="ob-stepper-line" id="obStepLine2"></div>
                 <div class="ob-stepper-item" id="obStepInd3">
                     <div class="ob-stepper-dot">3</div>
-                    AI Assets
+                    Sandbox
                 </div>
                 <div class="ob-stepper-line" id="obStepLine3"></div>
                 <div class="ob-stepper-item" id="obStepInd4">
                     <div class="ob-stepper-dot">4</div>
-                    Project
-                </div>
-                <div class="ob-stepper-line" id="obStepLine4"></div>
-                <div class="ob-stepper-item" id="obStepInd5">
-                    <div class="ob-stepper-dot">5</div>
                     Ready
                 </div>
             </div>
@@ -1609,478 +1815,597 @@
         <!-- Body -->
         <div class="onboarding-body">
 
-            <!-- ═══ Step 4: Project (listed after steps 1–3 in flow; id obStep4) ═══ -->
-            <div class="ob-step" id="obStep4">
-                <h3 class="ob-section-title">Add Your Projects</h3>
-                <p class="ob-section-desc">Point Kaiden at your code. You can add local directories or clone from a git repository. We'll analyze each project to detect its language, frameworks, and structure.</p>
-
-                <div class="ob-step-panel">
-                <div class="ob-project-input-area">
-                    <div class="ob-input-row">
-                        <input type="text" class="ob-input" id="obProjectPath" placeholder="/home/user/projects/my-app" oninput="updateAddProjectBtn()">
-                        <button class="ob-input-btn" onclick="simulateProjectBrowse()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                            Browse
-                        </button>
-                        <button class="ob-add-btn" id="obAddPathBtn" disabled onclick="addProjectFromPath()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            Add
-                        </button>
-                    </div>
-
-                    <div class="ob-or-divider">or</div>
-
-                    <div class="ob-input-row">
-                        <input type="text" class="ob-input" id="obProjectGit" placeholder="https://github.com/openkaiden/kaiden-demo-app" oninput="updateAddProjectBtn()">
-                        <button class="ob-add-btn" id="obAddGitBtn" disabled onclick="addProjectFromGit()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            Clone & Add
-                        </button>
-                    </div>
-                    <p class="ob-project-git-hint">Sample repo for demos: <a href="https://github.com/openkaiden/kaiden-demo-app" target="_blank" rel="noopener noreferrer">openkaiden/kaiden-demo-app</a> — after clone we show detected stack files and let you set filesystem and network policy for agents.</p>
-                </div>
-
-                <div class="ob-project-list" id="obProjectList">
-                    <div class="ob-project-empty" id="obProjectEmpty">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        <span>No projects added yet</span>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-            <!-- ═══ Panel obStep1: LLM Providers (wizard step 2) ═══ -->
-            <div class="ob-step" id="obStep1">
-                <h3 class="ob-section-title">Configure LLM Providers</h3>
-                <p class="ob-section-desc">Connect Kaiden to language models for AI-powered assistance. Enable local models for privacy-first workflows, or connect remote APIs for maximum capability.</p>
-
-                <div class="ob-llm-type-panel">
-                    <div class="ob-inference-category-head">
-                        <div class="ob-inference-category-icon local">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v2M15 1v2M9 21v2M15 21v2M20 9h2M20 15h2M2 9h2M2 15h2"/></svg>
-                        </div>
-                        <div class="ob-inference-category-text">
-                            <div class="ob-inference-category-kicker">On your machine</div>
-                            <div class="ob-inference-category-title">Local inference</div>
-                            <p class="ob-inference-category-sub">Runs <strong>directly on this host</strong> via Ollama and Ramalama as you have them installed and running. This screen only lists <strong>models each runtime reports as loaded</strong>; it does not tell you whether a daemon is up. <strong>Listen URL and port</strong> come from each tool’s own configuration — <strong>not editable in this wizard.</strong></p>
-                        </div>
-                    </div>
-                    <div class="ob-provider-list">
-
-                        <!-- Ollama — always visible, no enable toggle -->
-                        <div class="ob-provider-card ob-provider-card--static" id="provOllama">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-icon local ob-provider-icon-ollama">
-                                    <!-- Ollama mark: Simple Icons (CC0) -->
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M16.361 10.26a.894.894 0 0 0-.558.47l-.072.148.001.207c0 .193.004.217.059.353.076.193.152.312.291.448.24.238.51.3.872.205a.86.86 0 0 0 .517-.436.752.752 0 0 0 .08-.498c-.064-.453-.33-.782-.724-.897a1.06 1.06 0 0 0-.466 0zm-9.203.005c-.305.096-.533.32-.65.639a1.187 1.187 0 0 0-.06.52c.057.309.31.59.598.667.362.095.632.033.872-.205.14-.136.215-.255.291-.448.055-.136.059-.16.059-.353l.001-.207-.072-.148a.894.894 0 0 0-.565-.472 1.02 1.02 0 0 0-.474.007Zm4.184 2c-.131.071-.223.25-.195.383.031.143.157.288.353.407.105.063.112.072.117.136.004.038-.01.146-.029.243-.02.094-.036.194-.036.222.002.074.07.195.143.253.064.052.076.054.255.059.164.005.198.001.264-.03.169-.082.212-.234.15-.525-.052-.243-.042-.28.087-.355.137-.08.281-.219.324-.314a.365.365 0 0 0-.175-.48.394.394 0 0 0-.181-.033c-.126 0-.207.03-.355.124l-.085.053-.053-.032c-.219-.13-.259-.145-.391-.143a.396.396 0 0 0-.193.032zm.39-2.195c-.373.036-.475.05-.654.086-.291.06-.68.195-.951.328-.94.46-1.589 1.226-1.787 2.114-.04.176-.045.234-.045.53 0 .294.005.357.043.524.264 1.16 1.332 2.017 2.714 2.173.3.033 1.596.033 1.896 0 1.11-.125 2.064-.727 2.493-1.571.114-.226.169-.372.22-.602.039-.167.044-.23.044-.523 0-.297-.005-.355-.045-.531-.288-1.29-1.539-2.304-3.072-2.497a6.873 6.873 0 0 0-.855-.031zm.645.937a3.283 3.283 0 0 1 1.44.514c.223.148.537.458.671.662.166.251.26.508.303.82.02.143.01.251-.043.482-.08.345-.332.705-.672.957a3.115 3.115 0 0 1-.689.348c-.382.122-.632.144-1.525.138-.582-.006-.686-.01-.853-.042-.57-.107-1.022-.334-1.35-.68-.264-.28-.385-.535-.45-.946-.03-.192.025-.509.137-.776.136-.326.488-.73.836-.963.403-.269.934-.46 1.422-.512.187-.02.586-.02.773-.002zm-5.503-11a1.653 1.653 0 0 0-.683.298C5.617.74 5.173 1.666 4.985 2.819c-.07.436-.119 1.04-.119 1.503 0 .544.064 1.24.155 1.721.02.107.031.202.023.208a8.12 8.12 0 0 1-.187.152 5.324 5.324 0 0 0-.949 1.02 5.49 5.49 0 0 0-.94 2.339 6.625 6.625 0 0 0-.023 1.357c.091.78.325 1.438.727 2.04l.13.195-.037.064c-.269.452-.498 1.105-.605 1.732-.084.496-.095.629-.095 1.294 0 .67.009.803.088 1.266.095.555.288 1.143.503 1.534.071.128.243.393.264.407.007.003-.014.067-.046.141a7.405 7.405 0 0 0-.548 1.873c-.062.417-.071.552-.071.991 0 .56.031.832.148 1.279L3.42 24h1.478l-.05-.091c-.297-.552-.325-1.575-.068-2.597.117-.472.25-.819.498-1.296l.148-.29v-.177c0-.165-.003-.184-.057-.293a.915.915 0 0 0-.194-.25 1.74 1.74 0 0 1-.385-.543c-.424-.92-.506-2.286-.208-3.451.124-.486.329-.918.544-1.154a.787.787 0 0 0 .223-.531c0-.195-.07-.355-.224-.522a3.136 3.136 0 0 1-.817-1.729c-.14-.96.114-2.005.69-2.834.563-.814 1.353-1.336 2.237-1.475.199-.033.57-.028.776.01.226.04.367.028.512-.041.179-.085.268-.19.374-.431.093-.215.165-.333.36-.576.234-.29.46-.489.822-.729.413-.27.884-.467 1.352-.561.17-.035.25-.04.569-.04.319 0 .398.005.569.04a4.07 4.07 0 0 1 1.914.997c.117.109.398.457.488.602.034.057.095.177.132.267.105.241.195.346.374.43.14.068.286.082.503.045.343-.058.607-.053.943.016 1.144.23 2.14 1.173 2.581 2.437.385 1.108.276 2.267-.296 3.153-.097.15-.193.27-.333.419-.301.322-.301.722-.001 1.053.493.539.801 1.866.708 3.036-.062.772-.26 1.463-.533 1.854a2.096 2.096 0 0 1-.224.258.916.916 0 0 0-.194.25c-.054.109-.057.128-.057.293v.178l.148.29c.248.476.38.823.498 1.295.253 1.008.231 2.01-.059 2.581a.845.845 0 0 0-.044.098c0 .006.329.009.732.009h.73l.02-.074.036-.134c.019-.076.057-.3.088-.516.029-.217.029-1.016 0-1.258-.11-.875-.295-1.57-.597-2.226-.032-.074-.053-.138-.046-.141.008-.005.057-.074.108-.152.376-.569.607-1.284.724-2.228.031-.26.031-1.378 0-1.628-.083-.645-.182-1.082-.348-1.525a6.083 6.083 0 0 0-.329-.7l-.038-.064.131-.194c.402-.604.636-1.262.727-2.04a6.625 6.625 0 0 0-.024-1.358 5.512 5.512 0 0 0-.939-2.339 5.325 5.325 0 0 0-.95-1.02 8.097 8.097 0 0 1-.186-.152.692.692 0 0 1 .023-.208c.208-1.087.201-2.443-.017-3.503-.19-.924-.535-1.658-.98-2.082-.354-.338-.716-.482-1.15-.455-.996.059-1.8 1.205-2.116 3.01a6.805 6.805 0 0 0-.097.726c0 .036-.007.066-.015.066a.96.96 0 0 1-.149-.078A4.857 4.857 0 0 0 12 3.03c-.832 0-1.687.243-2.456.698a.958.958 0 0 1-.148.078c-.008 0-.015-.03-.015-.066a6.71 6.71 0 0 0-.097-.725C8.997 1.392 8.337.319 7.46.048a2.096 2.096 0 0 0-.585-.041Zm.293 1.402c.248.197.523.759.682 1.388.03.113.06.244.069.292.007.047.026.152.041.233.067.365.098.76.102 1.24l.002.475-.12.175-.118.178h-.278c-.324 0-.646.041-.954.124l-.238.06c-.033.007-.038-.003-.057-.144a8.438 8.438 0 0 1 .016-2.323c.124-.788.413-1.501.696-1.711.067-.05.079-.049.157.013zm9.825-.012c.17.126.358.46.498.888.28.854.36 2.028.212 3.145-.019.14-.024.151-.057.144l-.238-.06a3.693 3.693 0 0 0-.954-.124h-.278l-.119-.178-.119-.175.002-.474c.004-.669.066-1.19.214-1.772.157-.623.434-1.185.68-1.382.078-.062.09-.063.159-.012z"/></svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">Ollama</div>
-                                    <div class="ob-provider-desc">Open-source models locally — Granite, Llama, Mistral and more</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config" onclick="event.stopPropagation()">
-                                <div class="ob-provider-config-divider"></div>
-                                <p class="ob-runtime-fixed-note">How Kaiden reaches Ollama follows your Ollama install on this machine (address, port, TLS). Those settings are not changed here.</p>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">Models currently loaded</label>
-                                    <div class="ob-models-detected-list">
-                                        <span class="ob-model-detected-pill">Granite 3.1 8B</span>
-                                        <span class="ob-model-detected-pill">Llama 3.2 8B</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ramalama — always visible, no enable toggle -->
-                        <div class="ob-provider-card ob-provider-card--static" id="provRamalama">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-icon local ob-provider-icon--brand-img" title="Ramalama">
-                                    <!-- Official mark: https://github.com/containers/ramalama/tree/main/logos -->
-                                    <img src="../assets/brands/ramalama.svg" alt="" width="26" height="26">
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">Ramalama</div>
-                                    <div class="ob-provider-desc">Host-local serving — OpenAI-compatible API, Granite and popular open models</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config" onclick="event.stopPropagation()">
-                                <div class="ob-provider-config-divider"></div>
-                                <p class="ob-runtime-fixed-note">How Kaiden reaches Ramalama follows your Ramalama setup on this machine. Those settings are not changed here.</p>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">Models currently loaded</label>
-                                    <p class="ob-models-detected-empty">None reported — when Ramalama is serving models, they will appear here.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ob-llm-type-panel">
-                    <div class="ob-inference-category-head">
-                        <div class="ob-inference-category-icon openshift">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                        </div>
-                        <div class="ob-inference-category-text">
-                            <div class="ob-inference-category-kicker">Your organization</div>
-                            <div class="ob-inference-category-title">In-house &amp; governed serving</div>
-                            <p class="ob-inference-category-sub">Models hosted on infrastructure you control — for example OpenShift AI or a private OpenAI-compatible endpoint. At this stage you only confirm URL and credentials; model or deployment choice comes later.</p>
-                        </div>
-                    </div>
-                    <div class="ob-provider-list">
-
-                        <!-- OpenShift AI -->
-                        <div class="ob-provider-card" id="provOpenshiftAI" onclick="toggleProvider('provOpenshiftAI', event)">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-toggle"></div>
-                                <div class="ob-provider-icon openshift">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">OpenShift AI</div>
-                                    <div class="ob-provider-desc">Connect to governed model serving on your OpenShift AI cluster</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config">
-                                <div class="ob-provider-config-divider"></div>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">OpenShift AI URL</label>
-                                    <input type="text" class="ob-config-input" placeholder="https://ai.openshift.example.com/v1" onclick="event.stopPropagation()">
-                                </div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">Auth token</label>
-                                    <input type="password" class="ob-config-input" placeholder="Bearer or OAuth token">
-                                </div>
-                                <button class="ob-config-test-btn" onclick="event.stopPropagation(); testConnection(this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Test Connection
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ob-llm-type-panel">
-                    <div class="ob-inference-category-head">
-                        <div class="ob-inference-category-icon remote">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                        </div>
-                        <div class="ob-inference-category-text">
-                            <div class="ob-inference-category-kicker">Third-party APIs</div>
-                            <div class="ob-inference-category-title">Cloud &amp; hosted inference</div>
-                            <p class="ob-inference-category-sub">Managed providers you enable with an API key. Requests go to the vendor over the internet; pick only the services your policy allows.</p>
-                        </div>
-                    </div>
-                    <div class="ob-provider-list">
-
-                        <!-- OpenAI (brand mark — Simple Icons) -->
-                        <div class="ob-provider-card" id="provOpenai" onclick="toggleProvider('provOpenai', event)">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-toggle"></div>
-                                <div class="ob-provider-icon openai">
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9 6.065 6.065 0 0 0-5.777 4.206 5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.91 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.989 5.989 0 0 0 3.998-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.608a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.778-2.759a.795.795 0 0 0 .393-.681v-6.737l2.02 1.169a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.495 4.494zm-9.661-4.125a4.471 4.471 0 0 1-.535-3.015l.142.085 4.783 2.759a.771.771 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.141-1.646zM2.341 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.814 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.341 7.873zm16.596 3.856-5.834-3.387 2.015-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.677 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.011-3.023-.142-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.062l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zM8.306 12.863l-2.02-1.164a.08.08 0 0 1-.038-.057V6.074a4.5 4.5 0 0 1 7.376-3.454l-.142.08-8.42 4.839a.795.795 0 0 0-.393.681zm1.098-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5Z"/></svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">OpenAI</div>
-                                    <div class="ob-provider-desc">GPT-4o, GPT-4o mini, embeddings — requires API key</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config">
-                                <div class="ob-provider-config-divider"></div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">API Key</label>
-                                    <input type="password" class="ob-config-input" placeholder="sk-...">
-                                </div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">Organization ID (optional)</label>
-                                    <input type="text" class="ob-config-input" placeholder="org-...">
-                                </div>
-                                <button class="ob-config-test-btn" onclick="event.stopPropagation(); testConnection(this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Test Connection
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Anthropic (brand mark — Simple Icons) -->
-                        <div class="ob-provider-card" id="provAnthropic" onclick="toggleProvider('provAnthropic', event)">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-toggle"></div>
-                                <div class="ob-provider-icon anthropic">
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M17.304 3.541h-3.672l6.696 16.918h3.672L17.304 3.541zm-10.608 0H3.024l6.696 16.918h3.672L6.696 3.541z"/></svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">Anthropic</div>
-                                    <div class="ob-provider-desc">Claude 4 Sonnet, Claude 4 Opus — requires API key</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config">
-                                <div class="ob-provider-config-divider"></div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">API Key</label>
-                                    <input type="password" class="ob-config-input" placeholder="sk-ant-...">
-                                </div>
-                                <button class="ob-config-test-btn" onclick="event.stopPropagation(); testConnection(this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Test Connection
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Google Gemini -->
-                        <div class="ob-provider-card" id="provGemini" onclick="toggleProvider('provGemini', event)">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-toggle"></div>
-                                <div class="ob-provider-icon gemini">
-                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <defs>
-                                            <linearGradient id="obGeminiGrad" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
-                                                <stop stop-color="#4E8FF8"/>
-                                                <stop offset="0.45" stop-color="#9F6CFF"/>
-                                                <stop offset="0.75" stop-color="#E879F9"/>
-                                                <stop offset="1" stop-color="#F6A64D"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <path fill="url(#obGeminiGrad)" d="M12 2.2l1.85 5.68h5.98l-4.84 3.52 1.85 5.68L12 13.56 6.16 17.08l1.85-5.68L3.17 7.88h5.98L12 2.2z"/>
-                                    </svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">Google Gemini</div>
-                                    <div class="ob-provider-desc">Gemini 2.x, Flash — API key from Google AI Studio or Vertex AI</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config">
-                                <div class="ob-provider-config-divider"></div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">API Key</label>
-                                    <input type="password" class="ob-config-input" placeholder="AIza...">
-                                </div>
-                                <div class="ob-config-field" onclick="event.stopPropagation()">
-                                    <label class="ob-config-label">API base URL (optional)</label>
-                                    <input type="text" class="ob-config-input" placeholder="https://generativelanguage.googleapis.com/...">
-                                </div>
-                                <button class="ob-config-test-btn" onclick="event.stopPropagation(); testConnection(this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Test Connection
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ═══ Panel obStep2: Coding Agents (wizard step 1) ═══ -->
+            <!-- Panel obStep2: step 1 — coding agent -->
             <div class="ob-step active" id="obStep2">
-                <h3 class="ob-section-title">Coding agents</h3>
-                <p class="ob-section-desc">Turn on each runtime you want for <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn</code> (same switches as below). Expand <strong>Claude Code</strong> or <strong>Codex</strong> to store an API key when it is not on the host. Default workspace agent is chosen later. Claude on Vertex: enable <span style="font-weight:600;color:#d1d5db;">OTHER</span> and <code style="font-size:11px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;">agents.json</code> per docs.</p>
+                <h3 class="ob-section-title">Choose your coding agent</h3>
+                <p class="ob-section-desc">Pick one runtime for <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn</code>. The API notes below update for your choice. You can change this later in settings.</p>
 
-                <div class="ob-agent-subsection-title">Enable coding agents</div>
-                <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Use the switch on each row. Multiple agents can be enabled at once.</p>
-
-                <div class="ob-provider-list ob-coding-agent-list">
-                    <div class="ob-provider-card ob-coding-agent-enable selected" id="agentEnableOpencode" onclick="toggleProvider('agentEnableOpencode', event)">
-                        <div class="ob-provider-header">
-                            <div class="ob-provider-toggle" aria-hidden="true"></div>
-                            <div class="ob-provider-icon ob-provider-icon--brand-img" title="OpenCode">
-                                <img src="../assets/brands/opencode-logo-square.svg" alt="" width="26" height="26">
-                            </div>
-                            <div class="ob-provider-info">
-                                <div class="ob-provider-name">OpenCode</div>
-                                <div class="ob-provider-desc">Local open-source agent — pairs with Ramalama / Ollama on your machine</div>
-                            </div>
-                            <span class="ob-agent-badge">Recommended</span>
+                <div class="ob-agent-tile-grid" role="listbox" aria-label="Coding agent">
+                    <button type="button" class="ob-agent-tile selected" data-agent="opencode" role="option" aria-selected="true" onclick="selectCodingAgent('opencode', event)">
+                        <div class="ob-agent-tile-icon ob-provider-icon--brand-img" title="OpenCode">
+                            <img src="../assets/brands/opencode-logo-square.svg" alt="" width="26" height="26">
                         </div>
-                    </div>
-
-                    <div class="ob-provider-card ob-coding-agent-enable" id="agentEnableClaude" onclick="toggleProvider('agentEnableClaude', event)">
-                        <div class="ob-provider-header">
-                            <div class="ob-provider-toggle" aria-hidden="true"></div>
-                            <div class="ob-provider-icon anthropic">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M17.304 3.541h-3.672l6.696 16.918h3.672L17.304 3.541zm-10.608 0H3.024l6.696 16.918h3.672L6.696 3.541z"/></svg>
-                            </div>
-                            <div class="ob-provider-info">
-                                <div class="ob-provider-name">Claude Code</div>
-                                <div class="ob-provider-desc">Anthropic Claude in the terminal — remote / bridged setups</div>
-                            </div>
+                        <div class="ob-agent-tile-title">OpenCode</div>
+                        <div class="ob-agent-tile-desc">Open-source agent on your machine — uses Ollama or Ramalama for models.</div>
+                        <span class="ob-agent-tile-badge">Recommended</span>
+                    </button>
+                    <button type="button" class="ob-agent-tile" data-agent="claude" role="option" aria-selected="false" onclick="selectCodingAgent('claude', event)">
+                        <div class="ob-agent-tile-icon anthropic" style="background:rgba(204,120,92,0.18);">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20"><path fill="#fff" d="M17.304 3.541h-3.672l6.696 16.918h3.672L17.304 3.541zm-10.608 0H3.024l6.696 16.918h3.672L6.696 3.541z"/></svg>
                         </div>
-                        <div class="ob-provider-config" onclick="event.stopPropagation()">
-                            <div class="ob-provider-config-divider"></div>
-                            <p class="ob-config-hint">Stored encrypted as <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">ANTHROPIC_API_KEY</code> when not using Vertex AI in OTHER.</p>
-                            <div class="ob-config-field">
-                                <label class="ob-config-label" for="obAgentKeyClaude">API key <span style="font-weight:400;color:#6b7280;">(optional)</span></label>
-                                <input type="password" class="ob-config-input" id="obAgentKeyClaude" name="obAgentKeyClaude" placeholder="sk-ant-..." autocomplete="off" autocapitalize="off" spellcheck="false">
-                            </div>
+                        <div class="ob-agent-tile-title">Claude Code</div>
+                        <div class="ob-agent-tile-desc">Anthropic Claude in the terminal — uses the Anthropic API or your org bridge.</div>
+                    </button>
+                    <button type="button" class="ob-agent-tile" data-agent="claude-vertex" role="option" aria-selected="false" onclick="selectCodingAgent('claude-vertex', event)">
+                        <div class="ob-agent-tile-icon vertex" style="background:rgba(66,133,244,0.12);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#8ab4f8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                         </div>
-                    </div>
-
-                    <div class="ob-provider-card ob-coding-agent-enable" id="agentEnableCodex" onclick="toggleProvider('agentEnableCodex', event)">
-                        <div class="ob-provider-header">
-                            <div class="ob-provider-toggle" aria-hidden="true"></div>
-                            <div class="ob-provider-icon openai">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9 6.065 6.065 0 0 0-5.777 4.206 5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.91 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.989 5.989 0 0 0 3.998-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.608a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.778-2.759a.795.795 0 0 0 .393-.681v-6.737l2.02 1.169a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.495 4.494zm-9.661-4.125a4.471 4.471 0 0 1-.535-3.015l.142.085 4.783 2.759a.771.771 0 0 0 .781 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.141-1.646zM2.341 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.814 3.354-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.341 7.873zm16.596 3.856-5.834-3.387 2.015-1.164a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.677 8.104v-5.677a.79.79 0 0 0-.407-.667zm2.011-3.023-.142-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.062l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zM8.306 12.863l-2.02-1.164a.08.08 0 0 1-.038-.057V6.074a4.5 4.5 0 0 1 7.376-3.454l-.142.08-8.42 4.839a.795.795 0 0 0-.393.681zm1.098-2.365 2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5Z"/></svg>
-                            </div>
-                            <div class="ob-provider-info">
-                                <div class="ob-provider-name">Codex</div>
-                                <div class="ob-provider-desc">OpenAI Codex — agentic edits in the terminal or supported editors</div>
-                            </div>
+                        <div class="ob-agent-tile-title">Claude Code + Vertex AI</div>
+                        <div class="ob-agent-tile-desc">Claude Code with models served on Google Cloud Vertex AI instead of the Anthropic API.</div>
+                    </button>
+                    <button type="button" class="ob-agent-tile" data-agent="codex" role="option" aria-selected="false" onclick="selectCodingAgent('codex', event)">
+                        <div class="ob-agent-tile-icon openai" style="background:rgba(16,163,127,0.18);">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20"><path fill="#fff" d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9 6.065 6.065 0 0 0-5.777 4.206 5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.91 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.989 5.989 0 0 0 3.998-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.608a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.778-2.759a.795.795 0 0 0 .393-.681v-6.737l2.02 1.169a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.495 4.494z"/></svg>
                         </div>
-                        <div class="ob-provider-config" onclick="event.stopPropagation()">
-                            <div class="ob-provider-config-divider"></div>
-                            <p class="ob-config-hint">Stored encrypted as <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">OPENAI_API_KEY</code> unless <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">agents.json</code> uses another variable name.</p>
-                            <div class="ob-config-field">
-                                <label class="ob-config-label" for="obAgentKeyCodex">API key <span style="font-weight:400;color:#6b7280;">(optional)</span></label>
-                                <input type="password" class="ob-config-input" id="obAgentKeyCodex" name="obAgentKeyCodex" placeholder="sk-..." autocomplete="off" autocapitalize="off" spellcheck="false">
-                            </div>
-                        </div>
-                    </div>
+                        <div class="ob-agent-tile-title">Codex</div>
+                        <div class="ob-agent-tile-desc">OpenAI Codex — agentic edits in the terminal or supported editors.</div>
+                    </button>
                 </div>
 
-                <div class="ob-provider-section">
-                    <div class="ob-provider-section-label">OTHER</div>
-                    <div class="ob-provider-list">
-
-                        <!-- Claude Code + Vertex AI (kdn agents.json scenario) -->
-                        <div class="ob-provider-card" id="provClaudeVertex" onclick="toggleProvider('provClaudeVertex', event)">
-                            <div class="ob-provider-header">
-                                <div class="ob-provider-toggle"></div>
-                                <div class="ob-provider-icon vertex">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                                </div>
-                                <div class="ob-provider-info">
-                                    <div class="ob-provider-name">Claude Code with a model from Vertex AI</div>
-                                    <div class="ob-provider-desc">Enable when Claude Code is on — route inference through Google Cloud Vertex AI instead of the Anthropic API</div>
-                                </div>
-                            </div>
-                            <div class="ob-provider-config">
-                                <div class="ob-provider-config-divider"></div>
-                                <p class="ob-config-hint">These values map to <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">environment</code> entries for the Claude agent in <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">~/.kdn/config/agents.json</code>. Run <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:2px 5px;border-radius:4px;">gcloud auth application-default login</code> on the host before starting the workspace.</p>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">CLAUDE_CODE_USE_VERTEX</label>
-                                    <input type="text" class="ob-config-input" value="1" placeholder="1" onclick="event.stopPropagation()" readonly style="opacity:0.85;cursor:default;">
-                                </div>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">ANTHROPIC_VERTEX_PROJECT_ID</label>
-                                    <input type="text" class="ob-config-input" placeholder="my-gcp-project-id" onclick="event.stopPropagation()">
-                                </div>
-                                <div class="ob-config-field">
-                                    <label class="ob-config-label">CLOUD_ML_REGION</label>
-                                    <input type="text" class="ob-config-input" placeholder="us-east5" onclick="event.stopPropagation()">
-                                </div>
-                                <p class="ob-config-hint" style="margin-top:10px;">Mounts (add under <code style="font-size:10px;background:rgba(139,92,246,0.12);padding:2px 5px;border-radius:4px;color:#c4b5fd;">claude.mounts</code> in the same file):</p>
-                                <label class="ob-config-check-row" onclick="event.stopPropagation()">
-                                    <input type="checkbox" checked onclick="event.stopPropagation()">
-                                    <span>Mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">$HOME/.config/gcloud</code> read-only for application default credentials</span>
-                                </label>
-                                <label class="ob-config-check-row" onclick="event.stopPropagation()">
-                                    <input type="checkbox" onclick="event.stopPropagation()">
-                                    <span>Also mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude</code> and <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude.json</code> (optional; reuse host Claude Code settings)</span>
-                                </label>
-                                <p class="ob-config-hint" style="margin-top:8px;">No <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">ANTHROPIC_API_KEY</code> is required when using Vertex; credentials come from the mounted gcloud config.</p>
-                                <a class="ob-provider-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                    kdn README: Claude Code with a model from Vertex AI
-                                </a>
-                            </div>
+                <div class="ob-step-panel">
+                    <div class="ob-agent-api-box" id="obApiOpencode" data-agent-api="opencode">
+                        <h4>API &amp; credentials</h4>
+                        <p>OpenCode talks to a <strong>local</strong> OpenAI-compatible endpoint (Ollama or Ramalama). No cloud API key is required here if you run models on this host.</p>
+                        <ul>
+                            <li>Ensure Ollama or Ramalama is running and models are pulled.</li>
+                            <li>Listen URL and port come from that tool&rsquo;s own config, not from this wizard.</li>
+                        </ul>
+                    </div>
+                    <div class="ob-agent-api-box ob-agent-api-panel-hidden" id="obApiClaude" data-agent-api="claude">
+                        <h4>API &amp; credentials</h4>
+                        <p>Claude Code uses the <strong>Anthropic API</strong> unless your team routes traffic elsewhere. Optionally store a key now (encrypted as <code>ANTHROPIC_API_KEY</code>).</p>
+                        <div class="ob-config-field" style="margin-top:12px;">
+                            <label class="ob-config-label" for="obAgentKeyClaude">API key <span style="font-weight:400;color:#6b7280;">(optional)</span></label>
+                            <input type="password" class="ob-config-input" id="obAgentKeyClaude" name="obAgentKeyClaude" placeholder="sk-ant-..." autocomplete="off" autocapitalize="off" spellcheck="false">
+                        </div>
+                    </div>
+                    <div class="ob-agent-api-box ob-agent-api-panel-hidden" id="obApiClaudeVertex" data-agent-api="claude-vertex">
+                        <h4>Vertex AI &amp; <code style="font-size:11px;">agents.json</code></h4>
+                        <p class="ob-config-hint" style="margin-bottom:12px;">These values map to <code>environment</code> entries for the Claude agent in <code>~/.kdn/config/agents.json</code>. Run <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:2px 5px;border-radius:4px;">gcloud auth application-default login</code> on the host before starting the workspace.</p>
+                        <div class="ob-config-field">
+                            <label class="ob-config-label" for="obVertexClaudeCodeUse">CLAUDE_CODE_USE_VERTEX</label>
+                            <input type="text" class="ob-config-input" id="obVertexClaudeCodeUse" value="1" placeholder="1" readonly style="opacity:0.85;cursor:default;">
+                        </div>
+                        <div class="ob-config-field">
+                            <label class="ob-config-label" for="obVertexProjectId">ANTHROPIC_VERTEX_PROJECT_ID</label>
+                            <input type="text" class="ob-config-input" id="obVertexProjectId" placeholder="my-gcp-project-id">
+                        </div>
+                        <div class="ob-config-field">
+                            <label class="ob-config-label" for="obVertexRegion">CLOUD_ML_REGION</label>
+                            <input type="text" class="ob-config-input" id="obVertexRegion" placeholder="us-east5">
+                        </div>
+                        <p class="ob-config-hint" style="margin-top:10px;">Mounts (add under <code>claude.mounts</code> in the same file):</p>
+                        <label class="ob-config-check-row">
+                            <input type="checkbox" id="obVertexMountGcloud" checked>
+                            <span>Mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">$HOME/.config/gcloud</code> read-only for application default credentials</span>
+                        </label>
+                        <label class="ob-config-check-row">
+                            <input type="checkbox" id="obVertexMountClaudeHome">
+                            <span>Also mount <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude</code> and <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.claude.json</code> (optional; reuse host Claude Code settings)</span>
+                        </label>
+                        <p class="ob-config-hint" style="margin-top:8px;">No <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">ANTHROPIC_API_KEY</code> is required when using Vertex; credentials come from the mounted gcloud config.</p>
+                        <a class="ob-provider-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            kdn README: Claude Code with a model from Vertex AI
+                        </a>
+                    </div>
+                    <div class="ob-agent-api-box ob-agent-api-panel-hidden" id="obApiCodex" data-agent-api="codex">
+                        <h4>API &amp; credentials</h4>
+                        <p>Codex uses the <strong>OpenAI API</strong>. Optionally store a key now (encrypted as <code>OPENAI_API_KEY</code> unless your <code>agents.json</code> uses another variable).</p>
+                        <div class="ob-config-field" style="margin-top:12px;">
+                            <label class="ob-config-label" for="obAgentKeyCodex">API key <span style="font-weight:400;color:#6b7280;">(optional)</span></label>
+                            <input type="password" class="ob-config-input" id="obAgentKeyCodex" name="obAgentKeyCodex" placeholder="sk-..." autocomplete="off" autocapitalize="off" spellcheck="false">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ═══ Step 3: AI Assets ═══ -->
-            <div class="ob-step" id="obStep3">
-                <h3 class="ob-section-title">Discover AI Assets</h3>
-                <p class="ob-section-desc">This step looks for MCP tool configs and agent skills in your projects. After detection, everything we find is imported into Kaiden automatically. Knowledge bases are configured elsewhere, not here.</p>
+            <!-- Panel obStep1: step 2 — default model -->
+            <div class="ob-step" id="obStep1">
+                <h3 class="ob-section-title">Default model for the agent</h3>
+                <p class="ob-section-desc">This is the model <span id="obModelStepAgentLabel">OpenCode</span> will use by default in new workspaces. Names match the <a href="../models/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Models</a> catalog; enable or disable rows there. You can override per session later.</p>
 
-                <div class="ob-step-panel">
-                <div class="ob-scan-container">
-                    <div class="ob-scan-intro" id="obScanIntro">
-                        <p class="ob-scan-explainer-body">Kaiden walks your project roots and looks for MCP tool manifests under <code>.mcp/</code> and reusable agent skills. Matches are <strong>imported into Kaiden</strong> as soon as the scan finishes—no pick list. Knowledge bases and other catalogs are not part of this step.</p>
-                        <button type="button" class="ob-btn ob-btn-primary" onclick="startScan()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            Detect resources
-                        </button>
+                <div class="ob-step-panel ob-onboarding-model-catalog">
+                    <div class="ob-model-step-group" id="obModelGroupOpencode" data-agent-models="opencode">
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Same rows as <a href="../models/index.html" style="color:#a78bfa;">Models</a>. Click a line or use the <strong>Use</strong> control to pick your default.</p>
+                        <h3 class="model-config-panel-title">Local · Ollama &amp; Ramalama</h3>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" aria-label="Local running models">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Runtime</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-search="llama ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">llama3.2:3b</div>
+                                            <div class="models-table-name-sub">GGUF · loaded in memory</div>
+                                            <span class="models-table-ram">RAM usage: 3.93 GiB</span>
+                                        </td>
+                                        <td>2.0 GB</td>
+                                        <td>Ollama</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="llama3.2:3b" checked aria-label="Use llama3.2:3b as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="mistral ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">mistral:latest</div>
+                                            <div class="models-table-name-sub">GGUF · loaded in memory</div>
+                                            <span class="models-table-ram">RAM usage: 4.4 GiB</span>
+                                        </td>
+                                        <td>4.1 GB</td>
+                                        <td>Ollama</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="mistral:latest" aria-label="Use mistral:latest as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="qwen ramalama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">qwen2.5:7b</div>
+                                            <div class="models-table-name-sub">Not loaded — Ramalama stopped</div>
+                                            <span class="models-table-ram">RAM usage: N/A</span>
+                                        </td>
+                                        <td>4.7 GB</td>
+                                        <td>Ramalama</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="qwen2.5:7b" aria-label="Use qwen2.5:7b as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h3 class="model-config-panel-title" style="margin-top:18px;">In-house · OpenShift AI</h3>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" aria-label="OpenShift AI models">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Age</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row" data-search="granite ibm" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">ibm-granite-3.3-8b-instruct</div>
+                                            <div class="models-table-name-sub">OpenShift AI · Apache-2.0</div>
+                                            <span class="models-table-ram">VRAM est. 8.2 GiB</span>
+                                        </td>
+                                        <td>4.8 GB</td>
+                                        <td>2 weeks</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="ibm-granite-3.3-8b-instruct" aria-label="Use ibm-granite-3.3-8b-instruct as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="mistral" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">mistral-small-internal</div>
+                                            <div class="models-table-name-sub">OpenShift AI</div>
+                                            <span class="models-table-ram">VRAM est. 11 GiB</span>
+                                        </td>
+                                        <td>6.1 GB</td>
+                                        <td>1 month</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="mistral-small-internal" aria-label="Use mistral-small-internal as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="llama meta" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">llama-3.1-70b-instruct</div>
+                                            <div class="models-table-name-sub">OpenShift AI · pending approval</div>
+                                            <span class="models-table-ram">RAM usage: N/A</span>
+                                        </td>
+                                        <td>—</td>
+                                        <td>—</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="llama-3.1-70b-instruct" aria-label="Use llama-3.1-70b-instruct as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
-                    <div class="ob-scan-progress ob-scan-panel-hidden" id="obScanProgress">
-                        <div class="ob-scan-bar-track">
-                            <div class="ob-scan-bar-fill" id="obScanBar"></div>
-                        </div>
-                        <div class="ob-scan-status">
-                            <div class="ob-mini-spinner" id="obScanSpinner"></div>
-                            <span id="obScanText">Preparing scan...</span>
-                            <span class="path" id="obScanPath"></span>
-                        </div>
-                    </div>
-
-                    <div class="ob-scan-results" id="obScanResults">
-                        <div class="ob-scan-summary-bar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span id="obScanSummaryText">Scan complete — 8 assets imported into Kaiden</span>
-                        </div>
-
-                        <p class="ob-scan-import-hint">Everything listed below is <strong>registered in Kaiden</strong> automatically: MCP servers are available to agents, and skills show up in the catalog. You can review or remove items later under <strong>AI Assets</strong>.</p>
-
-                        <!-- MCP Tools -->
-                        <div class="ob-asset-group">
-                            <div class="ob-asset-group-label">
-                                MCP Tools
-                                <span class="ob-asset-group-count">5</span>
-                            </div>
-                            <div class="ob-asset-items">
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-                                    <span class="ob-asset-name">Filesystem</span>
-                                    <span class="ob-asset-source">.mcp/filesystem.json</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
-                                    <span class="ob-asset-name">GitHub</span>
-                                    <span class="ob-asset-source">.mcp/github.json</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
-                                    <span class="ob-asset-name">PostgreSQL</span>
-                                    <span class="ob-asset-source">.mcp/postgres.json</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-                                    <span class="ob-asset-name">Browser Automation</span>
-                                    <span class="ob-asset-source">.mcp/browser.json</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
-                                    <span class="ob-asset-name">Terminal</span>
-                                    <span class="ob-asset-source">.mcp/terminal.json</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Skills -->
-                        <div class="ob-asset-group">
-                            <div class="ob-asset-group-label">
-                                Skills
-                                <span class="ob-asset-group-count">3</span>
-                            </div>
-                            <div class="ob-asset-items">
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg></div>
-                                    <span class="ob-asset-name">Code Review</span>
-                                    <span class="ob-asset-source">skills/code-review/</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                                    <span class="ob-asset-name">Test Generation</span>
-                                    <span class="ob-asset-source">skills/test-gen/</span>
-                                </div>
-                                <div class="ob-asset-item">
-                                    <div class="ob-asset-icon skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                                    <span class="ob-asset-name">Security Audit</span>
-                                    <span class="ob-asset-source">skills/security-audit/</span>
-                                </div>
-                            </div>
+                    <div class="ob-model-step-group ob-model-step-hidden" id="obModelGroupClaude" data-agent-models="claude">
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Cloud catalog on <strong>Models</strong> — Anthropic rows (enabled). Click a row to choose.</p>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" aria-label="Cloud models — Anthropic">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Runtime</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-search="claude-4.6-sonnet-medium" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">claude-4.6-sonnet-medium</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>Anthropic</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelClaude" value="claude-4.6-sonnet-medium" checked aria-label="Use claude-4.6-sonnet-medium as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="claude-4.6-opus-high" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">claude-4.6-opus-high</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>Anthropic</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelClaude" value="claude-4.6-opus-high" aria-label="Use claude-4.6-opus-high as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                    <div class="ob-model-step-group ob-model-step-hidden" id="obModelGroupClaudeVertex" data-agent-models="claude-vertex">
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Same cloud model IDs; routing via Vertex in step 1.</p>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" aria-label="Vertex — Claude models">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Runtime</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">claude-4.6-sonnet-medium</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>Anthropic</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelClaudeVertex" value="claude-4.6-sonnet-medium" checked aria-label="Use claude-4.6-sonnet-medium as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">claude-4.6-opus-high</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>Anthropic</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelClaudeVertex" value="claude-4.6-opus-high" aria-label="Use claude-4.6-opus-high as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="ob-model-step-group ob-model-step-hidden" id="obModelGroupCodex" data-agent-models="codex">
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Composer and OpenAI rows (enabled), same order as <strong>Models → Cloud</strong>.</p>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" aria-label="Cloud models — Codex">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Size</th>
+                                        <th scope="col">Runtime</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">composer-2-fast</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>Composer</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelCodex" value="composer-2-fast" checked aria-label="Use composer-2-fast as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">gpt-5.3-codex</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>OpenAI</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelCodex" value="gpt-5.3-codex" aria-label="Use gpt-5.3-codex as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-with-icon">
+                                                <div class="models-table-name-stack">
+                                                    <div class="models-table-name-main">gpt-5.4-medium</div>
+                                                    <div class="models-table-name-sub">Cloud · enabled</div>
+                                                </div>
+                                                <svg class="models-table-name-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                            </div>
+                                        </td>
+                                        <td>—</td>
+                                        <td>OpenAI</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelCodex" value="gpt-5.4-medium" aria-label="Use gpt-5.4-medium as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="ob-config-hint" id="obModelSelectionPreview" style="margin-top:18px;" aria-live="polite"></p>
                 </div>
+            </div>
+
+            <!-- Panel obStep3: step 3 — sandbox defaults -->
+            <div class="ob-step" id="obStep3">
+                <h3 class="ob-section-title">Workspace sandbox defaults</h3>
+                <p class="ob-section-desc">Defaults for <strong>new</strong> workspaces. Sensible presets are already selected; change only if your policy requires it.</p>
+
+                <div class="ob-sandbox-step">
+                    <div class="ob-step-panel ob-sandbox-panel ob-onboarding-model-catalog">
+                    <section class="ob-sandbox-section" aria-labelledby="obSandboxFsHeading">
+                        <input type="hidden" id="obDefaultFs" name="obDefaultFs" value="home" aria-hidden="true">
+                        <h3 class="model-config-panel-title" id="obSandboxFsHeading">File system</h3>
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Models</a> — click a row or use <strong>Use</strong> to set your default. Presets match <a href="../sessions/create.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">create workspace</a>.</p>
+                        <div class="models-table-wrap" id="obSandboxFsWrap">
+                            <table class="models-data-table" aria-label="Default file system access">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Access</th>
+                                        <th scope="col">Notes</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row" data-fs="none" role="button" tabindex="0" onclick="obSelectFsCatalogRow(this)" onkeydown="obFsCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">No host filesystem access</div>
+                                            <div class="models-table-name-sub">The agent cannot read or write files on your host. Use for API-only or fully remote workflows.</div>
+                                        </td>
+                                        <td>None</td>
+                                        <td>Strict isolation</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogFs" value="none" aria-label="Use No host filesystem access as default" onchange="obSelectFsCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-fs="home" role="button" tabindex="0" onclick="obSelectFsCatalogRow(this)" onkeydown="obFsCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Home Directory</div>
+                                            <div class="models-table-name-sub">Agent can access your entire home directory (~/) and all subdirectories.</div>
+                                            <span class="models-table-ram">Recommended</span>
+                                        </td>
+                                        <td>Home (~)</td>
+                                        <td>Default for most setups</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogFs" value="home" checked aria-label="Use Home Directory as default" onchange="obSelectFsCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-fs="custom" role="button" tabindex="0" onclick="obSelectFsCatalogRow(this)" onkeydown="obFsCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Custom Paths</div>
+                                            <div class="models-table-name-sub">Specify exact directories the agent can access.</div>
+                                        </td>
+                                        <td>Listed paths</td>
+                                        <td>Set default path below</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogFs" value="custom" aria-label="Use Custom Paths as default" onchange="obSelectFsCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-fs="full" role="button" tabindex="0" onclick="obSelectFsCatalogRow(this)" onkeydown="obFsCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Full System Access</div>
+                                            <div class="models-table-name-sub">Agent can access the entire filesystem. Use with caution.</div>
+                                        </td>
+                                        <td>Full host</td>
+                                        <td>High privilege</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogFs" value="full" aria-label="Use Full System Access as default" onchange="obSelectFsCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="ob-fs-custom-hint" id="obFsCustomHint" aria-live="polite">
+                            <p class="ob-fs-custom-hint-lead">Set one default path agents may use for <strong>new</strong> workspaces. You can still change paths per workspace in the <a href="../sessions/create.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">create workspace</a> flow or project settings.</p>
+                            <div class="ob-config-field">
+                                <label class="ob-config-label" for="obFsCustomPath">Allowed path</label>
+                                <input type="text" class="ob-config-input" id="obFsCustomPath" name="obFsCustomPath" placeholder="/home/you/dev/my-project" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="obFsCustomPathHint">
+                            </div>
+                            <p class="ob-config-hint" id="obFsCustomPathHint">Use an absolute path on the host. Tilde (~) is expanded when the workspace starts.</p>
+                        </div>
+                    </section>
+                    </div>
+
+                    <div class="ob-step-panel ob-sandbox-panel ob-onboarding-model-catalog">
+                    <section class="ob-sandbox-section" aria-labelledby="obSandboxNetHeading">
+                        <input type="hidden" id="obDefaultNet" name="obDefaultNet" value="registries" aria-hidden="true">
+                        <h3 class="model-config-panel-title" id="obSandboxNetHeading">Network policy</h3>
+                        <p class="ob-provider-section-hint" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Models</a> — click a row or use <strong>Use</strong> for default outbound access from sandboxes.</p>
+                        <div class="models-table-wrap" id="obSandboxNetWrap">
+                            <table class="models-data-table" aria-label="Default network policy">
+                                <thead>
+                                    <tr>
+                                        <th class="models-table-status" scope="col">Status</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Egress</th>
+                                        <th scope="col">Notes</th>
+                                        <th class="ob-models-pick-cell" scope="col">Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="ob-catalog-model-row" data-net="blocked" role="button" tabindex="0" onclick="obSelectNetCatalogRow(this)" onkeydown="obNetCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Blocked</div>
+                                            <div class="models-table-name-sub">No outbound HTTP/HTTPS from the sandbox. Dependencies and APIs stay unavailable until you widen policy.</div>
+                                        </td>
+                                        <td>None</td>
+                                        <td>Strict</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogNet" value="blocked" aria-label="Use Blocked as default network policy" onchange="obSelectNetCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-net="registries" role="button" tabindex="0" onclick="obSelectNetCatalogRow(this)" onkeydown="obNetCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Developer Preset</div>
+                                            <div class="models-table-name-sub">Allow npm, PyPI, and similar registries — not arbitrary hosts on the public web.</div>
+                                            <span class="models-table-ram">Recommended</span>
+                                        </td>
+                                        <td>Registries</td>
+                                        <td>Balanced default</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogNet" value="registries" checked aria-label="Use Developer Preset as default" onchange="obSelectNetCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-net="agent_mode" role="button" tabindex="0" onclick="obSelectNetCatalogRow(this)" onkeydown="obNetCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Agent mode</div>
+                                            <div class="models-table-name-sub">The agent must request each outbound access; you approve or deny before traffic leaves the sandbox.</div>
+                                        </td>
+                                        <td>Per request</td>
+                                        <td>Human in the loop</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogNet" value="agent_mode" aria-label="Use Agent mode as default network policy" onchange="obSelectNetCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-net="open" role="button" tabindex="0" onclick="obSelectNetCatalogRow(this)" onkeydown="obNetCatalogRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">Unrestricted</div>
+                                            <div class="models-table-name-sub">Permit all outbound traffic. Best for trusted dev setups; use tighter defaults for production or sensitive code.</div>
+                                        </td>
+                                        <td>All hosts</td>
+                                        <td>Trusted setups</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogNet" value="open" aria-label="Use Unrestricted as default network policy" onchange="obSelectNetCatalogRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="ob-config-hint" style="margin-top:14px;margin-bottom:0;max-width:52rem;line-height:1.5;"><strong>Allowlists and more</strong> — Host allowlists, static egress rules, and other fine-grained network options are not chosen here; configure them per workspace or in project settings when you need them.</p>
+                    </section>
+                    </div>
                 </div>
             </div>
 
@@ -2096,24 +2421,24 @@
                 <p id="obReadyIntro">Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.</p>
 
                 <div class="ob-ready-summary">
-                    <div class="ob-ready-stat ob-ready-stat--projects">
-                        <div class="ob-ready-stat-val purple" id="readyProjects">0</div>
-                        <div class="ob-ready-stat-label">Projects</div>
+                    <div class="ob-ready-stat">
+                        <div class="ob-ready-stat-val purple" id="readyAgentName" style="font-size:15px;line-height:1.25;max-width:120px;word-break:break-word;">OpenCode</div>
+                        <div class="ob-ready-stat-label">Coding agent</div>
                     </div>
                     <div class="ob-ready-stat">
-                        <div class="ob-ready-stat-val green" id="readyProviders">0</div>
-                        <div class="ob-ready-stat-label">Providers</div>
+                        <div class="ob-ready-stat-val green" id="readyModelName" style="font-size:14px;line-height:1.25;max-width:120px;word-break:break-word;">—</div>
+                        <div class="ob-ready-stat-label">Default model</div>
                     </div>
                     <div class="ob-ready-stat">
-                        <div class="ob-ready-stat-val cyan" id="readyAssets">0</div>
-                        <div class="ob-ready-stat-label">AI Assets</div>
+                        <div class="ob-ready-stat-val cyan" id="readyFsLabel" style="font-size:12px;line-height:1.3;max-width:110px;word-break:break-word;">Home Directory</div>
+                        <div class="ob-ready-stat-label">Filesystem</div>
                     </div>
                     <div class="ob-ready-stat">
-                        <div class="ob-ready-stat-val" style="color:#fbbf24;font-size:15px;line-height:1.2;max-width:100px;word-break:break-word;" id="readyAgentLabel">—</div>
-                        <div class="ob-ready-stat-label">Agents enabled</div>
+                        <div class="ob-ready-stat-val" style="color:#fbbf24;font-size:12px;line-height:1.3;max-width:110px;word-break:break-word;" id="readyNetLabel">Developer Preset</div>
+                        <div class="ob-ready-stat-label">Network</div>
                     </div>
                 </div>
-                <p class="ob-ready-agent-line" id="readyAgentPick" style="text-align:center;font-size:12px;color:#9ca3af;margin-top:14px;"></p>
+                <p class="ob-ready-agent-line" id="readySummaryLine" style="text-align:center;font-size:12px;color:#9ca3af;margin-top:14px;max-width:520px;"></p>
                 </div>
             </div>
 
@@ -2128,7 +2453,7 @@
                 </button>
             </div>
             <div class="ob-footer-right">
-                <button class="ob-btn ob-btn-ghost" id="obSkipBtn" style="display:none;" onclick="skipStep()">Skip</button>
+                <button class="ob-btn ob-btn-ghost" id="obSkipBtn" style="display:none;" onclick="skipOnboardingWithDefaults()">Use all defaults</button>
                 <button class="ob-btn ob-btn-primary" id="obNextBtn" onclick="goNext()">
                     Continue
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2142,165 +2467,209 @@
 
     <script>
         let currentStep = 1;
-        const projects = [];
 
         function obSkipProjectStep() {
             return typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
         }
 
-        const sampleProjects = {
-            '/home/user/projects/my-app': {
-                name: 'my-app',
-                lang: 'TypeScript',
-                framework: 'React + Node.js',
-                path: '/home/user/projects/my-app'
-            },
-            '/home/user/projects/backend-api': {
-                name: 'backend-api',
-                lang: 'Python',
-                framework: 'FastAPI',
-                path: '/home/user/projects/backend-api'
-            },
-            '/Users/dev/services/auth-service': {
-                name: 'auth-service',
-                lang: 'Go',
-                framework: 'Gin',
-                path: '/Users/dev/services/auth-service'
-            }
+        const obAgentLabels = {
+            opencode: 'OpenCode',
+            claude: 'Claude Code',
+            'claude-vertex': 'Claude Code + Vertex AI',
+            codex: 'Codex'
         };
 
-        const sampleGitRepos = {
-            'github.com/kaiden-io/kaiden': {
-                name: 'Kaiden',
-                lang: 'Rust',
-                framework: 'Cargo workspace',
-                path: 'github.com/kaiden-io/kaiden'
-            },
-            'github.com/openkaiden/kaiden-demo-app': {
-                name: 'kaiden-demo-app',
-                lang: 'JavaScript',
-                framework: 'Node.js · Express',
-                path: 'github.com/openkaiden/kaiden-demo-app',
-                profile: {
-                    repoUrl: 'https://github.com/openkaiden/kaiden-demo-app',
-                    detections: [
-                        { label: 'Node.js', detail: 'package.json · package-lock.json' },
-                        { label: 'HTTP server', detail: 'server.js (Express-style entry)' },
-                        { label: 'Container images', detail: 'Dockerfile · docker-compose.yml' },
-                        { label: 'Static front-end', detail: 'public/' }
-                    ]
+        const obFsOptionLabels = {
+            none: 'No host filesystem access',
+            home: 'Home Directory',
+            custom: 'Custom Paths',
+            full: 'Full System Access'
+        };
+
+        const obNetOptionLabels = {
+            blocked: 'Blocked (no outbound)',
+            registries: 'Developer Preset',
+            agent_mode: 'Agent mode',
+            open: 'Unrestricted'
+        };
+
+        function obGetSelectedAgentKey() {
+            const t = document.querySelector('.ob-agent-tile.selected');
+            return (t && t.getAttribute('data-agent')) || 'opencode';
+        }
+
+        function obSelectFsCatalogRow(row) {
+            const wrap = document.getElementById('obSandboxFsWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            const key = row.getAttribute('data-fs');
+            const hid = document.getElementById('obDefaultFs');
+            if (hid && key) hid.value = key;
+            const hint = document.getElementById('obFsCustomHint');
+            if (hint) hint.classList.toggle('is-visible', key === 'custom');
+            if (key === 'custom') {
+                var inp = document.getElementById('obFsCustomPath');
+                if (inp) {
+                    setTimeout(function () {
+                        inp.focus();
+                    }, 0);
                 }
             }
-        };
-
-        function normaliseGitRepoInput(raw) {
-            let s = raw.trim().replace(/^https?:\/\//i, '').replace(/\.git$/i, '');
-            s = s.replace(/\/+$/, '');
-            if (s.toLowerCase().startsWith('www.')) s = s.slice(4);
-            return s.toLowerCase();
         }
 
-        function renderProjectCardExtra(id, profile) {
-            if (!profile || !profile.detections) return '';
-            const items = profile.detections.map(d =>
-                '<div class="ob-project-detect-item">' +
-                '<span class="ob-project-detect-name">' + d.label + '</span>' +
-                '<span class="ob-project-detect-meta">' + d.detail + '</span>' +
-                '</div>'
-            ).join('');
-            return (
-                '<div class="ob-project-card-extra">' +
-                '<div class="ob-project-detect">' +
-                '<div class="ob-project-extra-title">Detected in repository</div>' +
-                '<div class="ob-project-detect-list">' + items + '</div>' +
-                '</div>' +
-                '<div class="ob-project-agent-policy">' +
-                '<div class="ob-project-extra-title">Agent policy</div>' +
-                '<p class="ob-project-extra-desc">Controls how coding agents may use the filesystem and the network in this workspace. You can refine these later under Projects.</p>' +
-                '<div class="ob-project-policy-row">' +
-                '<label class="ob-project-policy-label" for="projFs-' + id + '">Filesystem mode</label>' +
-                '<select class="ob-config-select ob-project-policy-select" id="projFs-' + id + '" onclick="event.stopPropagation()">' +
-                '<option value="workspace" selected>Workspace only (default)</option>' +
-                '<option value="project-rw">Project tree read/write</option>' +
-                '<option value="ro-escape">Read-only outside workspace</option>' +
-                '</select></div>' +
-                '<div class="ob-project-policy-row">' +
-                '<label class="ob-project-policy-label" for="projNet-' + id + '">Network mode</label>' +
-                '<select class="ob-config-select ob-project-policy-select" id="projNet-' + id + '" onclick="event.stopPropagation()">' +
-                '<option value="blocked">Blocked (no outbound)</option>' +
-                '<option value="registries" selected>Package registries only (npm, PyPI, …)</option>' +
-                '<option value="allowlist">Allowlist (configure in Projects)</option>' +
-                '<option value="open">Unrestricted</option>' +
-                '</select></div>' +
-                '</div></div>'
-            );
+        function obFsCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            obSelectFsCatalogRow(ev.currentTarget);
         }
 
-        /** Map wizard step (1–5) to panel id: agents before LLMs → step 1 uses #obStep2, step 2 uses #obStep1. */
+        function obActiveFsLabel() {
+            const wrap = document.getElementById('obSandboxFsWrap');
+            if (!wrap) return '—';
+            const radio = wrap.querySelector('input[name="obCatalogFs"]:checked');
+            if (!radio) return '—';
+            const k = radio.value;
+            if (k === 'custom') {
+                const inp = document.getElementById('obFsCustomPath');
+                var p = inp && (inp.value || '').trim();
+                if (p) return 'Custom · ' + p;
+                return obFsOptionLabels.custom || 'Custom Paths';
+            }
+            const tr = radio.closest('tr');
+            const main = tr && tr.querySelector('.models-table-name-main');
+            if (main) {
+                var t = (main.textContent || '').replace(/\s+/g, ' ').trim();
+                if (t) return t;
+            }
+            return obFsOptionLabels[k] || k || '—';
+        }
+
+        function obTruncateForReadyStat(text, maxLen) {
+            if (!text || text.length <= maxLen) return text;
+            return text.slice(0, Math.max(0, maxLen - 1)) + '…';
+        }
+
+        function obSelectNetCatalogRow(row) {
+            const wrap = document.getElementById('obSandboxNetWrap');
+            if (!row || !wrap || !wrap.contains(row)) return;
+            wrap.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            const key = row.getAttribute('data-net');
+            const hid = document.getElementById('obDefaultNet');
+            if (hid && key) hid.value = key;
+        }
+
+        function obNetCatalogRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            obSelectNetCatalogRow(ev.currentTarget);
+        }
+
+        function obModelGroupIdForAgent(key) {
+            if (key === 'claude') return 'obModelGroupClaude';
+            if (key === 'claude-vertex') return 'obModelGroupClaudeVertex';
+            if (key === 'codex') return 'obModelGroupCodex';
+            return 'obModelGroupOpencode';
+        }
+
+        function selectCodingAgent(key, event) {
+            if (event) event.preventDefault();
+            document.querySelectorAll('.ob-agent-tile').forEach(function (el) {
+                const on = el.getAttribute('data-agent') === key;
+                el.classList.toggle('selected', on);
+                el.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            document.querySelectorAll('[data-agent-api]').forEach(function (box) {
+                const show = box.getAttribute('data-agent-api') === key;
+                box.classList.toggle('ob-agent-api-panel-hidden', !show);
+            });
+            document.querySelectorAll('[data-agent-models]').forEach(function (g) {
+                const show = g.getAttribute('data-agent-models') === key;
+                g.classList.toggle('ob-model-step-hidden', !show);
+            });
+            const label = document.getElementById('obModelStepAgentLabel');
+            if (label) label.textContent = obAgentLabels[key] || key;
+            if (currentStep === 2) updateObModelPreview();
+        }
+
+        function obSelectCatalogModelRow(row) {
+            if (!row || !row.classList || !row.classList.contains('ob-catalog-model-row')) return;
+            const group = row.closest('.ob-model-step-group');
+            if (!group) return;
+            group.querySelectorAll('.ob-catalog-model-row').forEach(function (r) {
+                r.classList.remove('ob-catalog-model-row--selected');
+            });
+            row.classList.add('ob-catalog-model-row--selected');
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            updateObModelPreview();
+        }
+
+        function obCatalogModelRowKey(ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            ev.preventDefault();
+            obSelectCatalogModelRow(ev.currentTarget);
+        }
+
+        function updateObModelPreview() {
+            const preview = document.getElementById('obModelSelectionPreview');
+            if (!preview) return;
+            if (currentStep !== 2) {
+                preview.textContent = '';
+                return;
+            }
+            var m = obActiveModelLabel();
+            preview.textContent = m && m !== '—' ? 'Selected: ' + m : '';
+        }
+
         function obPanelIdForWizardStep(n) {
             if (n === 1) return 2;
             if (n === 2) return 1;
+            if (n === 3) return 3;
+            if (n === 4) return 5;
             return n;
         }
 
         function goToStep(n) {
-            document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.ob-step').forEach(function (s) {
+                s.classList.remove('active');
+            });
             document.getElementById('obStep' + obPanelIdForWizardStep(n)).classList.add('active');
             currentStep = n;
             updateStepper(n);
             updateFooter(n);
-
-            if (n === 5) showReadySummary();
+            if (n === 2) updateObModelPreview();
+            if (n === 3) {
+                var fsh = document.getElementById('obDefaultFs');
+                var obh = document.getElementById('obFsCustomHint');
+                if (fsh && obh) obh.classList.toggle('is-visible', fsh.value === 'custom');
+            }
+            if (n === 4) showReadySummary();
         }
 
         function updateStepper(n) {
             const stepper = document.getElementById('obStepper');
-            const skip = obSkipProjectStep();
-            stepper.style.display = 'flex';
-
-            const line3 = document.getElementById('obStepLine3');
-            const ind4 = document.getElementById('obStepInd4');
-            const dot5 = document.querySelector('#obStepInd5 .ob-stepper-dot');
-            if (skip) {
-                if (line3) line3.style.display = 'none';
-                if (ind4) ind4.style.display = 'none';
-                if (dot5) dot5.textContent = '4';
-            } else {
-                if (line3) line3.style.display = '';
-                if (ind4) ind4.style.display = '';
-                if (dot5) dot5.textContent = '5';
-            }
-
-            for (let i = 1; i <= 5; i++) {
-                const el = document.getElementById('obStepInd' + i);
-                if (!el) continue;
-                if (skip && i === 4) continue;
-
-                el.classList.remove('active', 'done');
-                if (n === i) {
-                    el.classList.add('active');
-                } else if (skip) {
-                    if (i < 4 && n > i) el.classList.add('done');
-                } else if (n > i) {
-                    el.classList.add('done');
-                }
-            }
+            if (stepper) stepper.style.display = 'flex';
 
             for (let i = 1; i <= 4; i++) {
+                const el = document.getElementById('obStepInd' + i);
+                if (!el) continue;
+                el.classList.remove('active', 'done');
+                if (n === i) el.classList.add('active');
+                else if (n > i) el.classList.add('done');
+            }
+            for (let i = 1; i <= 3; i++) {
                 const line = document.getElementById('obStepLine' + i);
-                if (!line) continue;
-                if (skip && i === 3) {
-                    line.style.display = 'none';
-                    continue;
-                }
-                line.style.display = '';
-                let done;
-                if (skip && i === 4) {
-                    done = n >= 5;
-                } else {
-                    done = n > i;
-                }
-                line.classList.toggle('done', done);
+                if (line) line.classList.toggle('done', n > i);
             }
         }
 
@@ -2308,284 +2677,95 @@
             const backBtn = document.getElementById('obBackBtn');
             const skipBtn = document.getElementById('obSkipBtn');
             const nextBtn = document.getElementById('obNextBtn');
+            const headerDefaults = document.getElementById('obUseDefaultsHeader');
 
-            backBtn.style.display = (n > 1 && n < 5) ? 'flex' : 'none';
-            skipBtn.style.display = (n >= 1 && n <= 4) ? 'block' : 'none';
+            if (backBtn) backBtn.style.display = (n > 1 && n < 4) ? 'flex' : 'none';
+            if (skipBtn) skipBtn.style.display = (n >= 1 && n <= 3) ? 'block' : 'none';
+            if (headerDefaults) headerDefaults.style.display = (n >= 1 && n <= 3) ? 'inline-flex' : 'none';
 
-            if (n === 5) {
-                nextBtn.innerHTML = 'Go to Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
-            } else {
-                nextBtn.innerHTML = 'Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
+            if (nextBtn) {
+                if (n === 4) {
+                    nextBtn.innerHTML = 'Go to Dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
+                } else {
+                    nextBtn.innerHTML = 'Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
+                }
             }
         }
 
+        function finishOnboardingAndLeave() {
+            try {
+                localStorage.setItem('kaidenOnboardingComplete', '1');
+            } catch (e) { /* ignore */ }
+            if (typeof window.kaidenExitDemoPreserveOnboarding === 'function') {
+                window.kaidenExitDemoPreserveOnboarding();
+            }
+            var agentsFirst = typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
+            window.location.href = agentsFirst ? '../sessions/index.html' : '../projects/index.html';
+        }
+
+        function skipOnboardingWithDefaults() {
+            finishOnboardingAndLeave();
+        }
+
         function goNext() {
-            if (currentStep === 5) {
-                try {
-                    localStorage.setItem('kaidenOnboardingComplete', '1');
-                } catch (e) { /* ignore */ }
-                if (typeof window.kaidenExitDemoPreserveOnboarding === 'function') {
-                    window.kaidenExitDemoPreserveOnboarding();
-                }
-                var agentsFirst = typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
-                window.location.href = agentsFirst ? '../sessions/index.html' : '../projects/index.html';
+            if (currentStep === 4) {
+                finishOnboardingAndLeave();
                 return;
             }
-            let next = currentStep + 1;
-            if (obSkipProjectStep() && next === 4) {
-                next = 5;
-            }
-            goToStep(next);
+            goToStep(currentStep + 1);
         }
 
         function goBack() {
             if (currentStep <= 1) return;
-            let prev = currentStep - 1;
-            if (obSkipProjectStep() && prev === 4) {
-                prev = 3;
+            goToStep(currentStep - 1);
+        }
+
+        function obActiveModelLabel() {
+            const group = document.getElementById(obModelGroupIdForAgent(obGetSelectedAgentKey()));
+            if (!group) return '—';
+            const radio = group.querySelector('input[type="radio"]:checked');
+            if (!radio) return '—';
+            const tr = radio.closest('tr');
+            const main = tr && tr.querySelector('.models-table-name-main');
+            if (main) {
+                var t = (main.textContent || '').replace(/\s+/g, ' ').trim();
+                if (t) return t;
             }
-            goToStep(prev);
+            return radio.value || '—';
         }
-
-        function skipStep() {
-            goNext();
-        }
-
-        // ── Projects ──
-
-        function updateAddProjectBtn() {
-            const pathVal = document.getElementById('obProjectPath').value.trim();
-            const gitVal = document.getElementById('obProjectGit').value.trim();
-            document.getElementById('obAddPathBtn').disabled = !pathVal;
-            document.getElementById('obAddGitBtn').disabled = !gitVal;
-        }
-
-        function simulateProjectBrowse() {
-            const paths = Object.keys(sampleProjects);
-            const pick = paths[Math.floor(Math.random() * paths.length)];
-            document.getElementById('obProjectPath').value = pick;
-            updateAddProjectBtn();
-        }
-
-        function addProjectFromPath() {
-            const input = document.getElementById('obProjectPath');
-            const raw = input.value.trim();
-            if (!raw) return;
-
-            const known = sampleProjects[raw];
-            const name = known ? known.name : raw.split('/').filter(Boolean).pop();
-            const lang = known ? known.lang : 'JavaScript';
-            const framework = known ? known.framework : 'Node.js';
-
-            addProjectCard(name, raw, lang, framework, false, null);
-            input.value = '';
-            updateAddProjectBtn();
-        }
-
-        function addProjectFromGit() {
-            const input = document.getElementById('obProjectGit');
-            const raw = input.value.trim();
-            if (!raw) return;
-
-            const normalised = normaliseGitRepoInput(raw);
-            const known = sampleGitRepos[normalised];
-            const name = known ? known.name : normalised.split('/').pop();
-            const lang = known ? known.lang : 'Python';
-            const framework = known ? known.framework : 'Django';
-            const profile = known && known.profile ? known.profile : null;
-
-            addProjectCard(name, raw, lang, framework, true, profile);
-            input.value = '';
-            updateAddProjectBtn();
-        }
-
-        function addProjectCard(name, source, lang, framework, isGit, profile) {
-            const empty = document.getElementById('obProjectEmpty');
-            if (empty) empty.style.display = 'none';
-
-            const list = document.getElementById('obProjectList');
-            const id = 'proj-' + Date.now();
-
-            const card = document.createElement('div');
-            card.className = 'ob-project-card analyzing' + (profile ? ' ob-project-card-expanded' : '');
-            card.id = id;
-            card.innerHTML = `
-                <div class="ob-project-card-main">
-                    <div class="ob-project-card-icon analyzing">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    </div>
-                    <div class="ob-project-card-info">
-                        <div class="ob-project-card-name">${name}</div>
-                        <div class="ob-project-card-meta">Analyzing project...</div>
-                    </div>
-                    <div class="ob-mini-spinner"></div>
-                </div>
-            `;
-            list.appendChild(card);
-
-            setTimeout(() => {
-                card.classList.remove('analyzing');
-                card.classList.add('ready');
-                if (profile) card.classList.add('ob-project-card-expanded');
-                const extra = renderProjectCardExtra(id, profile);
-                card.innerHTML = `
-                    <div class="ob-project-card-main">
-                        <div class="ob-project-card-icon ready">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <div class="ob-project-card-info">
-                            <div class="ob-project-card-name">${name}</div>
-                            <div class="ob-project-card-meta">
-                                <span class="lang-tag">${lang}</span>
-                                ${framework} ${isGit ? '· cloned' : '· local'}
-                            </div>
-                        </div>
-                        <button class="ob-project-card-remove" onclick="removeProject('${id}')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        </button>
-                    </div>
-                    ${extra}
-                `;
-                projects.push({ name, lang, framework, profile: profile || null });
-            }, 1600);
-        }
-
-        function removeProject(id) {
-            const card = document.getElementById(id);
-            if (card) card.remove();
-
-            const list = document.getElementById('obProjectList');
-            const cards = list.querySelectorAll('.ob-project-card');
-            if (cards.length === 0) {
-                const empty = document.getElementById('obProjectEmpty');
-                if (empty) empty.style.display = 'flex';
-            }
-        }
-
-        // ── Providers ──
-
-        function toggleProvider(id, event) {
-            const card = document.getElementById(id);
-            if (card.classList.contains('connected')) {
-                card.classList.remove('connected');
-                card.classList.remove('selected');
-            } else if (card.classList.contains('selected')) {
-                card.classList.remove('selected');
-            } else {
-                card.classList.add('selected');
-            }
-        }
-
-        function testConnection(btn) {
-            const origText = btn.innerHTML;
-            btn.innerHTML = '<div class="ob-mini-spinner" style="width:14px;height:14px;border-width:2px;"></div> Testing...';
-            btn.style.pointerEvents = 'none';
-
-            setTimeout(() => {
-                btn.classList.add('success');
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Connected';
-                btn.style.pointerEvents = '';
-
-                const card = btn.closest('.ob-provider-card');
-                card.classList.remove('selected');
-                card.classList.add('connected');
-            }, 1400);
-        }
-
-        // ── Scan ──
-
-        let scanStarted = false;
-
-        function startScan() {
-            if (scanStarted) return;
-            scanStarted = true;
-
-            const intro = document.getElementById('obScanIntro');
-            const progressEl = document.getElementById('obScanProgress');
-            if (intro) intro.classList.add('ob-scan-panel-hidden');
-            if (progressEl) progressEl.classList.remove('ob-scan-panel-hidden');
-
-            const bar = document.getElementById('obScanBar');
-            const text = document.getElementById('obScanText');
-            const pathEl = document.getElementById('obScanPath');
-            const spinner = document.getElementById('obScanSpinner');
-            const results = document.getElementById('obScanResults');
-
-            bar.style.width = '0%';
-            bar.classList.remove('done');
-            text.textContent = 'Preparing scan...';
-            text.style.color = '';
-            pathEl.textContent = '';
-            if (spinner) spinner.style.display = '';
-            results.classList.remove('visible');
-
-            const scanPaths = [
-                'package.json', 'src/index.ts', '.mcp/filesystem.json',
-                'tsconfig.json', '.mcp/github.json', 'src/utils/',
-                '.mcp/postgres.json', 'skills/code-review/SKILL.md',
-                'skills/test-gen/', '.mcp/browser.json',
-                'skills/security-audit/', '.mcp/terminal.json', 'src/components/'
-            ];
-
-            let i = 0;
-            const interval = setInterval(() => {
-                const pct = Math.min(((i + 1) / scanPaths.length) * 100, 100);
-                bar.style.width = pct + '%';
-                text.textContent = 'Scanning files...';
-                pathEl.textContent = scanPaths[i];
-                i++;
-
-                if (i >= scanPaths.length) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        bar.style.width = '100%';
-                        bar.classList.add('done');
-                        spinner.style.display = 'none';
-                        text.textContent = 'Scan complete';
-                        text.style.color = '#34d399';
-                        pathEl.textContent = '';
-                        results.classList.add('visible');
-                    }, 300);
-                }
-            }, 180);
-        }
-
-        // ── Ready ──
 
         function showReadySummary() {
             const skipProj = obSkipProjectStep();
             const intro = document.getElementById('obReadyIntro');
             if (intro) {
                 if (skipProj) {
-                    intro.innerHTML = 'Your Kaiden environment is configured for an <strong>agent-first</strong> workflow (projects are optional). Open <strong>Workspaces</strong> to create a workspace, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.';
+                    intro.innerHTML = 'Your Kaiden environment is ready for an <strong>agent-first</strong> workflow. Open <strong>Workspaces</strong> to start a session, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal.';
                 } else {
-                    intro.innerHTML = 'Your Kaiden environment is configured. Open <strong>Projects</strong> to set filesystem, network, tokens, and worktree policies, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal &mdash; that is where you interact with the coding agent.';
+                    intro.innerHTML = 'Your defaults are saved. Add projects when you need code roots, then run <code style="font-size:12px;background:rgba(139,92,246,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal to work with the agent.';
                 }
             }
 
-            const projectCards = document.querySelectorAll('.ob-project-card.ready').length;
-            const providerCards = document.querySelectorAll('#obStep1 .ob-provider-card.selected, #obStep1 .ob-provider-card.connected').length;
-            const assetCards = document.querySelectorAll('#obScanResults .ob-asset-item').length;
-            const enabledAgents = document.querySelectorAll('#obStep2 .ob-coding-agent-enable.selected, #obStep2 .ob-coding-agent-enable.connected');
-            const agentNames = Array.from(enabledAgents).map(function (c) {
-                const n = c.querySelector('.ob-provider-name');
-                return n ? n.textContent.trim() : '';
-            }).filter(Boolean);
-            const agentsSummary = agentNames.length ? agentNames.join(', ') : 'None';
+            const agentKey = obGetSelectedAgentKey();
+            const agentName = obAgentLabels[agentKey] || agentKey;
+            const model = obActiveModelLabel();
+            const fsLabel = obActiveFsLabel();
+            const netSel = document.getElementById('obDefaultNet');
+            const netVal = netSel ? netSel.value : 'registries';
 
-            document.getElementById('readyProjects').textContent = projectCards;
-            document.getElementById('readyProviders').textContent = providerCards;
-            document.getElementById('readyAssets').textContent = assetCards;
-            document.getElementById('readyAgentLabel').textContent = agentsSummary;
+            const readyAgent = document.getElementById('readyAgentName');
+            const readyModel = document.getElementById('readyModelName');
+            const readyFs = document.getElementById('readyFsLabel');
+            const readyNet = document.getElementById('readyNetLabel');
+            const line = document.getElementById('readySummaryLine');
 
-            const vertexCard = document.getElementById('provClaudeVertex');
-            const vertexOn = vertexCard && (vertexCard.classList.contains('selected') || vertexCard.classList.contains('connected'));
+            if (readyAgent) readyAgent.textContent = agentName;
+            if (readyModel) readyModel.textContent = model;
+            var fsForStat = fsLabel && fsLabel !== '—' ? fsLabel : (obFsOptionLabels.home || 'Home Directory');
+            if (readyFs) readyFs.textContent = obTruncateForReadyStat(fsForStat, 44);
+            if (readyNet) readyNet.textContent = obNetOptionLabels[netVal] || netVal;
 
-            const pickLine = document.getElementById('readyAgentPick');
-            if (pickLine) {
-                let t = agentNames.length ? 'Enabled coding agents: ' + agentNames.join(', ') + '.' : 'No coding agents enabled.';
-                if (vertexOn) t += (agentNames.length ? ' ' : '') + 'Claude Code + Vertex AI (OTHER) is on.';
-                pickLine.textContent = t;
+            if (line) {
+                line.textContent = agentName + ' · ' + model + ' · ' + fsForStat + ' · ' + (obNetOptionLabels[netVal] || netVal);
             }
 
             launchConfetti();
@@ -2593,6 +2773,7 @@
 
         function launchConfetti() {
             const container = document.getElementById('obConfetti');
+            if (!container) return;
             const colors = ['#8b5cf6', '#7c3aed', '#34d399', '#67e8f9', '#fb923c', '#c4b5fd', '#a78bfa'];
 
             for (let i = 0; i < 60; i++) {
@@ -2608,12 +2789,12 @@
                 container.appendChild(el);
             }
 
-            setTimeout(() => {
+            setTimeout(function () {
                 container.innerHTML = '';
             }, 5000);
         }
 
-        // Init
+        selectCodingAgent('opencode');
         updateStepper(1);
         updateFooter(1);
     </script>

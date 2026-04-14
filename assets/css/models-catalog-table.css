@@ -1,0 +1,247 @@
+/**
+ * Shared catalog table chrome: Models page + onboarding default-model step.
+ * Keep in sync with models/index.html row markup (Name column structure).
+ */
+:root {
+    --models-catalog-accent: #8b5cf6;
+}
+
+.models-table-wrap {
+    border: 1px solid rgba(61, 62, 79, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.models-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.models-data-table thead {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.models-data-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(61, 62, 79, 0.6);
+}
+
+.models-data-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(61, 62, 79, 0.35);
+    color: #d1d5db;
+    vertical-align: middle;
+}
+
+.models-data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.models-data-table tbody tr:hover td {
+    background: rgba(251, 146, 60, 0.04);
+}
+
+.models-table-status {
+    width: 36px;
+    text-align: center;
+}
+
+.models-table-status svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.models-table-name-main {
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+.models-table-name-sub {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.models-table-ram {
+    font-size: 11px;
+    color: #9ca3af;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.models-table-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.models-table-icon-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.04);
+    color: #9ca3af;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.models-table-icon-btn:hover {
+    background: rgba(251, 146, 60, 0.12);
+    color: #fdba74;
+}
+
+.models-table-icon-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.models-table-name-with-icon {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.models-table-name-with-icon .models-table-name-stack {
+    flex: 1;
+    min-width: 0;
+}
+
+.models-table-name-brain {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: #71717a;
+    margin-top: 2px;
+}
+
+.model-config-panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin: 0 0 10px;
+}
+
+/* Enable toggles (Models page cloud table) */
+.models-table-toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 26px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.models-table-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.models-table-toggle-track {
+    position: absolute;
+    inset: 0;
+    background: #3f3f46;
+    border-radius: 999px;
+    transition: background 0.2s ease;
+}
+
+.models-table-toggle-knob {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 3px;
+    left: 3px;
+    background: #fafafa;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
+}
+
+.models-table-toggle-input:checked + .models-table-toggle-track {
+    background: #4ade80;
+}
+
+.models-table-toggle-input:checked + .models-table-toggle-track .models-table-toggle-knob {
+    transform: translateX(18px);
+}
+
+.models-table-toggle-input:focus-visible + .models-table-toggle-track {
+    outline: 2px solid var(--models-catalog-accent);
+    outline-offset: 2px;
+}
+
+/* Onboarding: pick default model (same rows as Models, Use column) */
+.ob-catalog-model-row {
+    cursor: pointer;
+    outline: none;
+}
+
+.ob-catalog-model-row:focus-visible td {
+    box-shadow: inset 0 0 0 2px rgba(139, 92, 246, 0.45);
+}
+
+.ob-catalog-model-row.ob-catalog-model-row--selected td {
+    background: rgba(139, 92, 246, 0.1) !important;
+}
+
+.models-data-table tbody tr.ob-catalog-model-row:hover td {
+    background: rgba(139, 92, 246, 0.06);
+}
+
+.ob-models-pick-cell {
+    width: 52px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ob-models-pick-cell input[type="radio"] {
+    accent-color: var(--models-catalog-accent);
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.provider-config-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fdba74;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.provider-config-link:hover {
+    color: #fb923c;
+    text-decoration: underline;
+}
+
+.model-catalog-block {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(61, 62, 79, 0.55);
+}
+
+.model-catalog-lead {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0 0 12px;
+    line-height: 1.45;
+    max-width: 640px;
+}
