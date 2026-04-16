@@ -387,177 +387,144 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Step 2: left rail + sub-panels (onboarding-style agent config) */
-        .ca-agent-model-shell {
-            display: flex;
-            align-items: flex-start;
-            gap: 28px;
-            margin-top: 8px;
-            min-height: 0;
+        /* Step 2: onboarding-aligned — agent tiles + catalog panel */
+        #caWizardPanel2 .ca-ws-model-catalog-panel {
+            margin-top: 20px;
         }
 
-        .ca-agent-config-sidebar {
-            flex: 0 0 220px;
-            padding: 14px 12px;
-            border-radius: 12px;
-            border: 1px solid #3d3e4f;
-            background: linear-gradient(145deg, rgba(37, 38, 49, 0.85) 0%, rgba(30, 31, 43, 0.9) 100%);
+        #caWizardPanel2 .ob-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin: 0 0 6px;
+            letter-spacing: -0.02em;
         }
 
-        .ca-agent-config-sidebar-title {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #6b7280;
-            margin: 0 8px 10px;
+        #caWizardPanel2 .ob-section-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin: 0 0 16px;
+            max-width: 52rem;
         }
 
-        .ca-agent-config-nav {
+        #caWizardPanel2 .ob-provider-section-hint {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.55;
+            margin: 0 0 14px;
+            max-width: 52rem;
+        }
+
+        #caWizardPanel2 .ob-provider-section-hint a {
+            color: #a78bfa;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        #caWizardPanel2 .ob-provider-section-hint a:hover {
+            text-decoration: underline;
+        }
+
+        #caWizardPanel2 .ob-agent-tile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        @media (min-width: 900px) {
+            #caWizardPanel2 .ob-agent-tile-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            #caWizardPanel2 .ob-agent-tile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #caWizardPanel2 .ob-agent-tile {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 16px;
+            border: 1px solid #3d3e4f;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            transition: border-color 0.2s, background 0.2s;
         }
 
-        .ca-agent-config-nav-btn {
+        #caWizardPanel2 .ob-agent-tile:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+        }
+
+        #caWizardPanel2 .ob-agent-tile.selected {
+            border-color: rgba(139, 92, 246, 0.55);
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        #caWizardPanel2 .ob-agent-tile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            width: 100%;
-            padding: 10px 12px;
-            border: none;
-            border-radius: 10px;
-            background: transparent;
-            color: #9ca3af;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: inherit;
-            text-align: left;
-            cursor: pointer;
-            transition: background 0.15s ease, color 0.15s ease;
-        }
-
-        .ca-agent-config-nav-btn:hover {
-            background: rgba(139, 92, 246, 0.08);
-            color: #e5e7eb;
-        }
-
-        .ca-agent-config-nav-btn.is-active {
-            background: rgba(139, 92, 246, 0.14);
-            color: #e5e7eb;
-            box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.35);
-        }
-
-        .ca-agent-config-nav-btn .ca-agent-config-nav-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4b5563;
+            justify-content: center;
             flex-shrink: 0;
-            transition: background 0.15s ease;
         }
 
-        .ca-agent-config-nav-btn.is-active .ca-agent-config-nav-dot {
-            background: #a78bfa;
-            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
-        }
-
-        .ca-agent-config-main {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .ca-agent-subpanel {
-            display: none;
-            animation: caWizardFade 0.22s ease;
-        }
-
-        .ca-agent-subpanel.is-active {
+        #caWizardPanel2 .ob-agent-tile-icon img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
             display: block;
         }
 
-        /* Onboarding-like vertical agent cards (step 2 only) */
-        #coding-agent-section .agent-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        #coding-agent-section .agent-card {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 18px;
-            border-width: 1px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        #coding-agent-section .agent-card:hover {
-            transform: none;
-            border-color: #6b7280;
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        #coding-agent-section .agent-card.selected {
-            border-color: rgba(139, 92, 246, 0.55);
-            background: rgba(139, 92, 246, 0.08);
-        }
-
-        #coding-agent-section .agent-card::before {
-            display: none;
-        }
-
-        #coding-agent-section .agent-card-check {
-            position: static;
-            flex-shrink: 0;
-            width: 18px;
-            height: 18px;
-            border-width: 2px;
-            border-radius: 50%;
-            background: transparent;
-        }
-
-        #coding-agent-section .agent-card.selected .agent-card-check {
-            background: radial-gradient(circle, #a78bfa 45%, transparent 48%);
-            border-color: #a78bfa;
-        }
-
-        #coding-agent-section .agent-card-check svg {
-            display: none;
-        }
-
-        #coding-agent-section .agent-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 0;
+        #caWizardPanel2 .ob-agent-tile-title {
             font-size: 15px;
-            font-weight: 700;
-            border-radius: 10px;
-            flex-shrink: 0;
-        }
-
-        #coding-agent-section .agent-icon.opencode {
-            font-size: 10px;
-            letter-spacing: -0.06em;
-        }
-
-        #coding-agent-section .agent-card-body {
-            flex: 1;
-            min-width: 0;
-        }
-
-        #coding-agent-section .agent-name {
-            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 3px;
+            color: #e5e7eb;
         }
 
-        #coding-agent-section .agent-description {
+        #caWizardPanel2 .ob-agent-tile-desc {
             font-size: 12px;
             color: #6b7280;
             line-height: 1.45;
+        }
+
+        #caWizardPanel2 .ob-agent-tile-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.12);
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        #caWizardPanel2 .ob-provider-icon--brand-img {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        #caWizardPanel2 .ob-step-panel {
+            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            border: 1px solid #3d3e4f;
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+
+        #caWizardPanel2 .ob-onboarding-model-catalog {
+            max-width: 900px;
         }
 
         .ca-wizard-step-title {
@@ -1485,138 +1452,137 @@
             color: #a78bfa;
         }
 
-        /* Compact model catalog (create flow) */
-        #model-provider-section.ca-catalog-compact-section {
-            padding: 18px 20px;
-            margin-bottom: 32px;
+        /* Compact model catalog (create flow) — panel chrome from .ob-step-panel */
+        #caWizardPanel2 .ca-ws-model-catalog-panel {
+            margin-bottom: 24px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .config-section-header {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-header {
             margin-bottom: 14px;
             gap: 12px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .config-section-icon {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-icon {
             width: 36px;
             height: 36px;
             border-radius: 9px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .config-section-icon svg {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-icon svg {
             width: 18px;
             height: 18px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .config-section-info h3 {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-info h3 {
             font-size: 15px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .config-section-info p {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-info p {
             font-size: 11px;
             line-height: 1.45;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-intro {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-intro {
             font-size: 11px;
             margin: 0 0 10px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-toolbar {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-toolbar {
             margin-bottom: 10px;
             gap: 8px 12px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-search {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-search {
             padding: 6px 10px;
             max-width: 300px;
             border-radius: 8px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-search svg {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-search svg {
             width: 14px;
             height: 14px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-search input {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-search input {
             font-size: 12px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-label-with-action .ca-inline-link {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-label-with-action .ca-inline-link {
             font-size: 11px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-source-block {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-source-block {
             margin-bottom: 12px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-source-title {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-source-title {
             font-size: 9px;
             margin: 0 0 5px;
             letter-spacing: 0.05em;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-table-wrap {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-table-wrap {
             border-radius: 8px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table {
             font-size: 11px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table th {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table th {
             padding: 5px 8px;
             font-size: 8px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table td {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table td {
             padding: 5px 8px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table .ca-table-status {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table .ca-table-status {
             width: 28px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table .ca-table-status svg {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table .ca-table-status svg {
             width: 13px;
             height: 13px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-table-name-main {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-table-name-main {
             font-size: 12px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-table-name-sub {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-table-name-sub {
             font-size: 9px;
             margin-top: 1px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-table-name-with-icon {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-table-name-with-icon {
             gap: 6px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-table-name-brain {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-table-name-brain {
             width: 11px;
             height: 11px;
             margin-top: 1px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-models-data-table .ca-table-ram {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-models-data-table .ca-table-ram {
             font-size: 9px;
             padding: 2px 5px;
             margin-top: 2px;
             border-radius: 4px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-radio-cell {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-radio-cell {
             width: 36px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .ca-catalog-radio-cell input[type="radio"] {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .ca-catalog-radio-cell input[type="radio"] {
             width: 14px;
             height: 14px;
         }
 
-        #model-provider-section.ca-catalog-compact-section .catalog-model-empty {
+        #caWizardPanel2 .ca-ws-model-catalog-panel .catalog-model-empty {
             padding: 12px 14px;
             font-size: 11px;
             margin-top: 8px;
@@ -2928,24 +2894,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .ca-agent-model-shell {
-                flex-direction: column;
-            }
-
-            .ca-agent-config-sidebar {
-                flex: none;
-                width: 100%;
-            }
-
-            .ca-agent-config-nav {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-
-            .ca-agent-config-nav-btn {
-                flex: 1 1 auto;
-                min-width: 140px;
-            }
         }
     </style>
 </head>
@@ -2985,7 +2933,7 @@
                         </div>
                         <h1 class="create-session-title">Create coding agent workspace</h1>
                         <p class="create-session-subtitle" id="caCreateSessionSubtitle">
-                            Add your code location first, then tune agent, tools, and access in the following steps.
+                            Add your code location first, then tune agent, tools, and sandbox access in the following steps.
                         </p>
 
                         <nav class="ca-wizard-stepper" aria-label="Create workspace steps">
@@ -3063,7 +3011,7 @@
                                     <div class="ca-project-section-head">
                                         <div>
                                             <h3>Load defaults from a project</h3>
-                                            <p>Path, skills, MCP, vault, and access presets — same cards as on Projects.</p>
+                                            <p>Path, skills, MCP, vault, knowledges, and access presets — same cards as on Projects.</p>
                                         </div>
                                         <a href="../projects/index.html" class="ca-project-browse">All projects</a>
                                     </div>
@@ -3120,103 +3068,41 @@
 
                         <div class="ca-wizard-step" data-wizard-step="2" id="caWizardPanel2" role="tabpanel" aria-labelledby="caWizardHeading2" aria-hidden="true">
                             <h2 class="ca-wizard-step-title" id="caWizardHeading2">Agent &amp; model</h2>
+                            <p class="ca-wizard-step-lead" id="caAgentModelStepLead">Pick a coding agent, then choose its default model — same rhythm as onboarding.</p>
 
-                        <div class="ca-agent-model-shell">
-                            <aside class="ca-agent-config-sidebar" aria-label="Coding agent configuration">
-                                <div class="ca-agent-config-sidebar-title">Configure</div>
-                                <nav class="ca-agent-config-nav" role="tablist" aria-label="Agent and model sections">
-                                    <button type="button" class="ca-agent-config-nav-btn is-active" role="tab" id="caAgentTabRuntime" aria-selected="true" aria-controls="caAgentSubpanelRuntime" data-ca-subpanel="runtime">
-                                        <span class="ca-agent-config-nav-dot" aria-hidden="true"></span>
-                                        Coding agent
-                                    </button>
-                                    <button type="button" class="ca-agent-config-nav-btn" role="tab" id="caAgentTabModel" aria-selected="false" aria-controls="caAgentSubpanelModel" data-ca-subpanel="model">
-                                        <span class="ca-agent-config-nav-dot" aria-hidden="true"></span>
-                                        Model
-                                    </button>
-                                </nav>
-                            </aside>
+                            <h3 class="ob-section-title">Choose your coding agent</h3>
+                            <p class="ob-section-desc">Pick one runtime for <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn</code> in this workspace. API keys and providers are configured in Settings; the list below shows models that match the selected agent.</p>
 
-                            <div class="ca-agent-config-main">
-                        <div class="ca-agent-subpanel is-active" id="caAgentSubpanelRuntime" role="tabpanel" aria-labelledby="caAgentTabRuntime" data-ca-subpanel="runtime" aria-hidden="false">
-                        <!-- Coding agent (separate from session metadata) -->
-                        <div class="config-section" id="coding-agent-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon coding-agent">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="4 17 10 11 4 5"/>
-                                        <line x1="12" y1="19" x2="20" y2="19"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>Coding Agent</h3>
-                                    <p>Pick the agent runtime for <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn</code> terminal work — same idea as onboarding. Override per workspace later if needed.</p>
-                                </div>
+                            <div class="ob-agent-tile-grid" id="coding-agent-section" role="listbox" aria-label="Coding agent">
+                                <button type="button" class="ob-agent-tile" data-agent="opencode" role="option" aria-selected="false" onclick="selectAgent(this, 'opencode')">
+                                    <div class="ob-agent-tile-icon ob-provider-icon--brand-img" title="OpenCode">
+                                        <img src="../assets/brands/opencode-logo-square.svg" alt="" width="26" height="26">
+                                    </div>
+                                    <div class="ob-agent-tile-title">OpenCode</div>
+                                    <div class="ob-agent-tile-desc">Open-source agent — local models via Ollama or Ramalama, or cloud APIs OpenCode supports.</div>
+                                    <span class="ob-agent-tile-badge">Recommended</span>
+                                </button>
+                                <button type="button" class="ob-agent-tile" data-agent="claude" role="option" aria-selected="false" onclick="selectAgent(this, 'claude')">
+                                    <div class="ob-agent-tile-icon anthropic" style="background:rgba(204,120,92,0.18);">
+                                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20"><path fill="#fff" d="M17.304 3.541h-3.672l6.696 16.918h3.672L17.304 3.541zm-10.608 0H3.024l6.696 16.918h3.672L6.696 3.541z"/></svg>
+                                    </div>
+                                    <div class="ob-agent-tile-title">Claude Code</div>
+                                    <div class="ob-agent-tile-desc">Anthropic Claude in the terminal — uses the Anthropic API or your org bridge.</div>
+                                </button>
+                                <button type="button" class="ob-agent-tile" data-agent="codex" role="option" aria-selected="false" onclick="selectAgent(this, 'codex')">
+                                    <div class="ob-agent-tile-icon openai" style="background:rgba(16,163,127,0.18);">
+                                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20"><path fill="#fff" d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9 6.065 6.065 0 0 0-5.777 4.206 5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .511 4.91 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.989 5.989 0 0 0 3.998-2.9 6.056 6.056 0 0 0-.747-7.073zm-9.022 12.608a4.476 4.476 0 0 1-2.876-1.04l.142-.08 4.778-2.759a.795.795 0 0 0 .393-.681v-6.737l2.02 1.169a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.495 4.494z"/></svg>
+                                    </div>
+                                    <div class="ob-agent-tile-title">Codex</div>
+                                    <div class="ob-agent-tile-desc">OpenAI Codex — agentic edits in the terminal or supported editors.</div>
+                                </button>
                             </div>
 
-                            <div class="form-group">
-                                <label>Select coding agent</label>
-                                <div class="agent-grid" role="list">
-                                    <div class="agent-card" data-agent="claude" role="listitem" onclick="selectAgent(this, 'claude')">
-                                        <div class="agent-card-check" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon claude">C</div>
-                                        <div class="agent-card-body">
-                                            <div class="agent-name">Claude Code</div>
-                                            <div class="agent-description">Anthropic Claude in the terminal — strong reasoning and multi-file edits</div>
-                                        </div>
-                                    </div>
-                                    <div class="agent-card" data-agent="codex" role="listitem" onclick="selectAgent(this, 'codex')">
-                                        <div class="agent-card-check" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon codex">X</div>
-                                        <div class="agent-card-body">
-                                            <div class="agent-name">Codex</div>
-                                            <div class="agent-description">OpenAI Codex — IDE and CLI flow with fast edit loops</div>
-                                        </div>
-                                    </div>
-                                    <div class="agent-card" data-agent="opencode" role="listitem" onclick="selectAgent(this, 'opencode')">
-                                        <div class="agent-card-check" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                                <polyline points="20 6 9 17 4 12"/>
-                                            </svg>
-                                        </div>
-                                        <div class="agent-icon opencode">OC</div>
-                                        <div class="agent-card-body">
-                                            <div class="agent-name">OpenCode</div>
-                                            <div class="agent-description">Local open-source agent — pairs with Ramalama / Ollama on your machine</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
+                            <div class="ob-step-panel ob-onboarding-model-catalog ca-ws-model-catalog-panel" id="caWsModelCatalogPanel">
+                                <h3 class="model-config-panel-title">Model for this workspace</h3>
+                                <p class="ob-provider-section-hint" id="caModelSectionLead">Choose the default model <strong id="caModelStepAgentLabel">OpenCode</strong> will use here. Names match the <a href="../models/index.html">Models</a> catalog. Disabled rows cannot be selected; the table is filtered to models that fit the agent you picked above (OpenCode: all sources; Claude Code: Anthropic cloud; Codex: OpenAI &amp; Composer).</p>
 
-                        <div class="ca-agent-subpanel" id="caAgentSubpanelModel" role="tabpanel" aria-labelledby="caAgentTabModel" data-ca-subpanel="model" aria-hidden="true">
-                        <!-- Model — same catalog slices as models/index.html (pick one row) -->
-                        <div class="config-section ca-catalog-compact-section" id="model-provider-section">
-                            <div class="config-section-header">
-                                <div class="config-section-icon model-provider">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                        <path d="M2 17l10 5 10-5"/>
-                                        <path d="M2 12l10 5 10-5"/>
-                                    </svg>
-                                </div>
-                                <div class="config-section-info">
-                                    <h3>Model</h3>
-                                    <p>Choose the default model for this workspace from your catalog. Enable providers and models under <strong>Models</strong>; only enabled entries appear here.</p>
-                                </div>
-                            </div>
-
-                            <p class="ca-catalog-intro">Cloud, in-house (OpenShift AI), and local runtimes mirror the Models page. Disabled catalog rows cannot be selected.</p>
-
-                            <div class="ca-catalog-toolbar">
+                                <div class="ca-catalog-toolbar">
                                 <div class="ca-catalog-search" role="search">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                     <input type="search" id="caModelCatalogSearch" placeholder="Filter models…" autocomplete="off" aria-label="Filter catalog models">
@@ -3459,17 +3345,13 @@
                             <div class="catalog-model-empty" id="catalog-model-empty">
                                 No model sources match your settings. <a href="../models/index.html">Enable a provider in Models</a>, then return here.
                             </div>
-                        </div>
-
-                        </div>
-                        </div>
-                        </div>
+                            </div>
 
                         </div>
 
                         <div class="ca-wizard-step" data-wizard-step="3" id="caWizardPanel3" role="tabpanel" aria-labelledby="caWizardHeading3" aria-hidden="true">
                             <h2 class="ca-wizard-step-title" id="caWizardHeading3">Tools &amp; secrets</h2>
-                            <p class="ca-wizard-step-lead" id="caToolsStepLead">Every skill, MCP server, and attachable vault credential is included by default so you can go faster. Expand <strong>Customize</strong> when you want a smaller toolset.</p>
+                            <p class="ca-wizard-step-lead" id="caToolsStepLead">Every skill, MCP server, vault credential, and listed knowledge base is included by default so you can go faster. Expand <strong>Customize</strong> when you want a smaller toolset.</p>
 
                             <div class="ca-tools-quick-card" role="region" aria-label="Tools and secrets summary">
                                 <p class="ca-tools-quick-summary" id="caToolsQuickSummaryLine"></p>
@@ -3479,7 +3361,7 @@
                             </div>
 
                             <details class="ca-tools-customize-details" id="caToolsCustomizeDetails">
-                                <summary class="ca-tools-customize-summary">Customize skills, MCP servers, and vault</summary>
+                                <summary class="ca-tools-customize-summary">Customize skills, MCP servers, vault, and knowledges</summary>
                                 <div class="ca-tools-customize-inner">
 
                         <!-- Skills (project details–style list) -->
@@ -3774,6 +3656,76 @@
                             </div>
                         </div>
 
+                        <!-- Knowledges (retrieval), same step as tools -->
+                        <div class="ca-pd-asset-section" id="knowledges-config-section">
+                            <div class="pd-asset-block">
+                                <div class="pd-block-header">
+                                    <div class="pd-block-title-row">
+                                        <div class="pd-block-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+                                        </div>
+                                        <h3 class="pd-block-title">Knowledges</h3>
+                                        <span class="pd-block-count">4 knowledge bases</span>
+                                    </div>
+                                    <a href="../knowledges/index.html" class="pd-block-add-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        Manage knowledges
+                                    </a>
+                                </div>
+                                <p class="ca-tools-step-inline-hint" style="margin:0 0 12px;font-size:13px;line-height:1.45;color:#9ca3af;">Optional retrieval context for the agent. Manage environments in <a href="../knowledges/index.html" style="color:#a78bfa;text-decoration:none;font-weight:500;">Knowledges</a>.</p>
+                                <div class="pd-block-items">
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">podman-knowledges</div>
+                                            <div class="pd-block-item-meta">Milvus · Docling · 23 sources</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill" style="background: linear-gradient(135deg, #f97316, #c2410c);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">openshift-knowledges</div>
+                                            <div class="pd-block-item-meta">ChromaDB · HF Sentence Transformers · 15 sources</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="pd-block-item ca-pd-selectable" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">docker-knowledges</div>
+                                            <div class="pd-block-item-meta">Milvus · HF Sentence Transformers · 8 sources</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="pd-block-item ca-pd-selectable selected" onclick="toggleItem(this)">
+                                        <div class="pd-block-item-icon skill" style="background: linear-gradient(135deg, #10b981, #047857);">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                                        </div>
+                                        <div class="pd-block-item-info">
+                                            <div class="pd-block-item-name">kubernetes-knowledges</div>
+                                            <div class="pd-block-item-meta">ChromaDB · Docling · 31 sources</div>
+                                        </div>
+                                        <div class="ca-pd-select-check" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                                 </div>
                             </details>
 
@@ -3974,7 +3926,7 @@
                     <div class="footer-actions">
                         <button type="button" class="btn-wizard-back" id="caWizardBackBtn" onclick="caWizardGoPrev()" style="display: none;">Back</button>
                         <button class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
-                        <button type="button" class="btn-defaults-create" id="caWizardDefaultsCreateBtn" onclick="caUseAllDefaultsAndCreateWorkspace()" title="Apply saved defaults, include all available skills, MCP, and vault attachments, then create the workspace" aria-label="Use all defaults and create workspace">
+                        <button type="button" class="btn-defaults-create" id="caWizardDefaultsCreateBtn" onclick="caUseAllDefaultsAndCreateWorkspace()" title="Apply saved defaults, include all available skills, MCP, vault, and knowledges, then create the workspace" aria-label="Use all defaults and create workspace">
                             Use all defaults and create workspace
                         </button>
                         <button type="button" class="btn-next" id="caWizardNextBtn" onclick="caWizardGoNext()">
@@ -4006,13 +3958,18 @@
         let createWizardStep = 1;
         const CA_WIZARD_TOTAL_STEPS = 5;
 
-        /** Agent and model use Settings defaults; step 2 is hidden. Add ?showAgentStep=1 to the URL to show agent and model. */
+        /**
+         * Full “Configure step by step” (plain create.html) includes Agent & model like onboarding.
+         * “From my saved defaults” (applyDefaults=1) uses saved agent/model presets — step 2 is hidden.
+         * Optional: ?showAgentStep=1 forces the agent & model step on even with applyDefaults.
+         */
         function caShouldSkipAgentModelWizardStep() {
             try {
                 var p = new URLSearchParams(window.location.search);
                 if ((p.get('showAgentStep') || '').match(/^1|true|yes$/i)) return false;
+                if ((p.get('applyDefaults') || '').match(/^(1|true|defaults)$/i)) return true;
             } catch (e) { /* ignore */ }
-            return true;
+            return false;
         }
 
         function caWizardDisplayStepCount() {
@@ -4062,6 +4019,7 @@
                 skills: ['code-review', 'Kubernetes', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'OpenShift MCP'],
                 vaultSecrets: ['github', 'github-project', 'jira', 'slack'],
+                knowledges: ['openshift-knowledges', 'kubernetes-knowledges'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             },
@@ -4073,6 +4031,7 @@
                 skills: ['api-docs-generator', 'code-review'],
                 mcpServers: ['GitHub MCP'],
                 vaultSecrets: ['github', 'github-project', 'slack'],
+                knowledges: ['podman-knowledges'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             },
@@ -4084,6 +4043,7 @@
                 skills: ['Kubernetes', 'OpenShift', 'Podman', 'RHEL'],
                 mcpServers: ['Kubernetes MCP', 'OpenShift MCP', 'Ansible MCP'],
                 vaultSecrets: ['jira', 'slack', 'openshift-cluster'],
+                knowledges: ['openshift-knowledges', 'kubernetes-knowledges', 'docker-knowledges', 'podman-knowledges'],
                 fileAccess: 'home',
                 deployment: 'local',
                 networkPolicy: {
@@ -4100,6 +4060,7 @@
                 skills: ['code-review', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'Kubernetes MCP'],
                 vaultSecrets: ['github', 'github-project', 'jira', 'slack'],
+                knowledges: ['kubernetes-knowledges'],
                 fileAccess: 'workspace',
                 deployment: 'local'
             }
@@ -4359,31 +4320,6 @@
             }
         }
 
-        function setCaAgentConfigSubpanel(subId) {
-            var shell = document.querySelector('#caWizardPanel2 .ca-agent-model-shell');
-            if (!shell) return;
-            shell.querySelectorAll('.ca-agent-config-nav-btn[data-ca-subpanel]').forEach(function(btn) {
-                var on = btn.getAttribute('data-ca-subpanel') === subId;
-                btn.classList.toggle('is-active', on);
-                btn.setAttribute('aria-selected', on ? 'true' : 'false');
-            });
-            shell.querySelectorAll('.ca-agent-subpanel[data-ca-subpanel]').forEach(function(panel) {
-                var on = panel.getAttribute('data-ca-subpanel') === subId;
-                panel.classList.toggle('is-active', on);
-                panel.setAttribute('aria-hidden', on ? 'false' : 'true');
-            });
-        }
-
-        function initAgentConfigSidebar() {
-            var shell = document.querySelector('#caWizardPanel2 .ca-agent-model-shell');
-            if (!shell) return;
-            shell.querySelectorAll('.ca-agent-config-nav-btn[data-ca-subpanel]').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setCaAgentConfigSubpanel(this.getAttribute('data-ca-subpanel'));
-                });
-            });
-        }
-
         function setCreateWizardStep(n) {
             createWizardStep = Math.max(1, Math.min(CA_WIZARD_TOTAL_STEPS, n));
             document.querySelectorAll('.ca-wizard-step').forEach(function(panel) {
@@ -4416,9 +4352,6 @@
             if (startBtn) startBtn.style.display = createWizardStep === CA_WIZARD_TOTAL_STEPS ? 'inline-flex' : 'none';
             if (defaultsCreateBtn) defaultsCreateBtn.style.display = createWizardStep === 1 ? 'inline-flex' : 'none';
             updateWizardFooterCopy();
-            if (createWizardStep === 2) {
-                setCaAgentConfigSubpanel('runtime');
-            }
             if (createWizardStep === 3) {
                 caUpdateToolsStepSummary();
             }
@@ -4483,7 +4416,8 @@
                 applyWorkspaceCatalogVisibility();
                 var pickable = document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row:not(.ca-catalog-row-hidden):not(.ca-catalog-filtered-out):not(.ca-catalog-row-disabled)');
                 if (pickable.length > 0 && !selectedCatalogModelId) {
-                    setCaAgentConfigSubpanel('model');
+                    var mPanel = document.getElementById('caWsModelCatalogPanel');
+                    if (mPanel) mPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     alert('Please select a model from the catalog');
                     return false;
                 }
@@ -4569,6 +4503,8 @@
             }
             if (selectedProjectSlug && CREATE_AGENT_PROJECTS[selectedProjectSlug]) {
                 applyProjectPreset(selectedProjectSlug);
+            } else if (!selectedProjectSlug && !caShouldSkipAgentModelWizardStep()) {
+                caApplyDefaultAgentAndModelFromPreset(buildUserDefaultWorkspacePreset());
             }
         }
 
@@ -4627,6 +4563,7 @@
                 setPdSelectableRows('mcp-config-section', []);
             }
             caSelectAllSelectableVaultSecrets();
+            caSelectAllSelectableKnowledges();
             caUpdateToolsStepSummary();
         }
 
@@ -4639,6 +4576,8 @@
             let mcpTot = 0;
             let vaultSel = 0;
             let vaultTot = 0;
+            let kbSel = 0;
+            let kbTot = 0;
             if (skillsOn) {
                 const sec = document.getElementById('skills-config-section');
                 if (sec) {
@@ -4663,7 +4602,12 @@
                     if (row.classList.contains('selected')) vaultSel++;
                 });
             }
-            return { skillsOn: skillsOn, mcpOn: mcpOn, skillsSel: skillsSel, skillsTot: skillsTot, mcpSel: mcpSel, mcpTot: mcpTot, vaultSel: vaultSel, vaultTot: vaultTot };
+            const kbSec = document.getElementById('knowledges-config-section');
+            if (kbSec) {
+                kbTot = kbSec.querySelectorAll('.pd-block-item.ca-pd-selectable').length;
+                kbSel = kbSec.querySelectorAll('.pd-block-item.ca-pd-selectable.selected').length;
+            }
+            return { skillsOn: skillsOn, mcpOn: mcpOn, skillsSel: skillsSel, skillsTot: skillsTot, mcpSel: mcpSel, mcpTot: mcpTot, vaultSel: vaultSel, vaultTot: vaultTot, kbSel: kbSel, kbTot: kbTot };
         }
 
         function caIsFullToolsSelection(c) {
@@ -4671,6 +4615,7 @@
             if (c.skillsOn && c.skillsSel !== c.skillsTot) return false;
             if (c.mcpOn && c.mcpSel !== c.mcpTot) return false;
             if (c.vaultTot > 0 && c.vaultSel !== c.vaultTot) return false;
+            if (c.kbTot > 0 && c.kbSel !== c.kbTot) return false;
             return true;
         }
 
@@ -4692,6 +4637,9 @@
             } else {
                 parts.push('0 attachable vault credentials (enable GitHub/Jira in Settings to attach more)');
             }
+            if (c.kbTot > 0) {
+                parts.push(c.kbSel + '/' + c.kbTot + ' knowledge bases');
+            }
             if (full) {
                 el.textContent = 'Everything available is included (' + parts.join(' · ') + '). Expand Customize below only if you want to limit what is attached.';
             } else {
@@ -4700,6 +4648,14 @@
             if (btn) {
                 btn.style.display = full ? 'none' : 'inline-flex';
             }
+        }
+
+        function caSelectAllSelectableKnowledges() {
+            const section = document.getElementById('knowledges-config-section');
+            if (!section) return;
+            section.querySelectorAll('.pd-block-item.ca-pd-selectable').forEach(function (row) {
+                row.classList.add('selected');
+            });
         }
 
         function caInitWorkspaceToolsDefaults() {
@@ -4767,6 +4723,12 @@
                 caSelectAllSelectableVaultSecrets();
             }
 
+            if (preset.knowledges && preset.knowledges.length > 0) {
+                setPdSelectableRows('knowledges-config-section', preset.knowledges);
+            } else {
+                caSelectAllSelectableKnowledges();
+            }
+
             const fileAccess = preset.fileAccess || 'workspace';
             caApplyFileAccessToSandboxTable(fileAccess, preset.customFsPath || '');
 
@@ -4775,15 +4737,18 @@
             const catalogSearch = document.getElementById('caModelCatalogSearch');
             if (catalogSearch) catalogSearch.value = '';
             filterCatalogModels('');
-            applyWorkspaceCatalogVisibility();
-            if (preset.catalogModel) {
-                selectCatalogModelById(preset.catalogModel);
-            }
 
             const agentKey = preset.agent || 'opencode';
-            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + agentKey + '"]');
-            if (agentCard) {
-                selectAgent(agentCard, agentKey);
+            const agentTile = document.querySelector('#coding-agent-section .ob-agent-tile[data-agent="' + agentKey + '"]');
+            if (agentTile) {
+                selectAgent(agentTile, agentKey);
+            } else {
+                selectedAgent = agentKey;
+                applyWorkspaceCatalogVisibility();
+                caUpdateModelStepAgentLabel();
+            }
+            if (preset.catalogModel) {
+                selectCatalogModelById(preset.catalogModel);
             }
 
             if (preset.deployment === 'devspaces' && isDevSpacesEnabled()) {
@@ -4881,6 +4846,7 @@
                     skills: ws.skills || [],
                     mcpServers: ws.mcpServers || [],
                     vaultSecrets: ws.vaultSecrets || [],
+                    knowledges: ws.knowledges,
                     fileAccess: ws.fileAccess || 'workspace',
                     customFsPath: ws.customFsPath || '',
                     networkPolicy: ws.networkPolicy,
@@ -4925,7 +4891,15 @@
             const catalogSearch = document.getElementById('caModelCatalogSearch');
             if (catalogSearch) catalogSearch.value = '';
             filterCatalogModels('');
-            applyWorkspaceCatalogVisibility();
+            const agentKey = preset.agent || 'opencode';
+            const agentTile = document.querySelector('#coding-agent-section .ob-agent-tile[data-agent="' + agentKey + '"]');
+            if (agentTile) {
+                selectAgent(agentTile, agentKey);
+            } else {
+                selectedAgent = agentKey;
+                applyWorkspaceCatalogVisibility();
+                caUpdateModelStepAgentLabel();
+            }
             if (preset.catalogModel) {
                 selectCatalogModelById(preset.catalogModel);
             }
@@ -4935,11 +4909,6 @@
                     const id = firstPickable.getAttribute('data-catalog-id');
                     if (id) selectCatalogModelRow(firstPickable, id);
                 }
-            }
-            const agentKey = preset.agent || 'opencode';
-            const agentCard = document.querySelector('#coding-agent-section .agent-card[data-agent="' + agentKey + '"]');
-            if (agentCard) {
-                selectAgent(agentCard, agentKey);
             }
         }
 
@@ -5198,12 +5167,27 @@
             }
         }
 
+        /** Which catalog providers are valid for the workspace agent (mirrors onboarding model slices). */
+        function caModelProviderAllowedForAgent(provider, agent) {
+            if (!agent) return true;
+            if (agent === 'claude') return provider === 'anthropic';
+            if (agent === 'codex') return provider === 'openai' || provider === 'composer';
+            return true;
+        }
+
+        function caUpdateModelStepAgentLabel() {
+            const labels = { opencode: 'OpenCode', claude: 'Claude Code', codex: 'Codex' };
+            const el = document.getElementById('caModelStepAgentLabel');
+            if (el) el.textContent = labels[selectedAgent] || selectedAgent || 'OpenCode';
+        }
+
         function applyWorkspaceCatalogVisibility() {
             const prefs = getModelProviderPrefs();
             document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row[data-requires-provider]').forEach(function(tr) {
                 const req = tr.getAttribute('data-requires-provider');
-                const ok = prefs[req] !== false;
-                tr.classList.toggle('ca-catalog-row-hidden', !ok);
+                const prefOk = prefs[req] !== false;
+                const agentOk = caModelProviderAllowedForAgent(req, selectedAgent);
+                tr.classList.toggle('ca-catalog-row-hidden', !prefOk || !agentOk);
             });
             if (selectedCatalogModelId) {
                 const cur = document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]');
@@ -5309,17 +5293,31 @@
                     caSelectAllWorkspaceAssets();
                 });
             }
-            initAgentConfigSidebar();
             initCreateAgentWizardStepper();
-            if (caShouldSkipAgentModelWizardStep() && !selectedAgent) {
-                caApplyDefaultAgentAndModelFromPreset(buildUserDefaultWorkspacePreset());
+            if (!selectedAgent) {
+                var presetForAgent = (selectedProjectSlug && CREATE_AGENT_PROJECTS[selectedProjectSlug])
+                    ? CREATE_AGENT_PROJECTS[selectedProjectSlug]
+                    : buildUserDefaultWorkspacePreset();
+                caApplyDefaultAgentAndModelFromPreset(presetForAgent);
             }
         });
 
         function selectAgent(card, agent) {
-            document.querySelectorAll('#coding-agent-section .agent-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
             selectedAgent = agent;
+            var tiles = document.querySelectorAll('#coding-agent-section .ob-agent-tile');
+            var target = card && card.classList && card.classList.contains('ob-agent-tile') ? card : null;
+            if (!target && agent) {
+                target = document.querySelector('#coding-agent-section .ob-agent-tile[data-agent="' + agent + '"]');
+            }
+            tiles.forEach(function(t) {
+                var on = target && t === target;
+                t.classList.toggle('selected', !!on);
+                t.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            caUpdateModelStepAgentLabel();
+            applyWorkspaceCatalogVisibility();
+            var searchEl = document.getElementById('caModelCatalogSearch');
+            filterCatalogModels(searchEl ? searchEl.value : '');
         }
 
         function toggleItem(item) {
@@ -5534,6 +5532,12 @@
 
             const vaultSecretIds = Object.keys(selectedVaultSecrets).filter(key => selectedVaultSecrets[key]);
 
+            const knowSection = document.getElementById('knowledges-config-section');
+            const selectedKnowledges = knowSection
+                ? Array.from(knowSection.querySelectorAll('.pd-block-item.ca-pd-selectable.selected .pd-block-item-name'))
+                    .map(el => el.textContent.trim())
+                : [];
+
             const selRow = selectedCatalogModelId
                 ? document.querySelector('#workspace-model-catalog tr[data-catalog-id="' + selectedCatalogModelId + '"]')
                 : null;
@@ -5559,6 +5563,7 @@
                 skills: selectedSkills,
                 mcpServers: selectedMcpServers,
                 vaultSecrets: vaultSecretIds,
+                knowledges: selectedKnowledges,
                 project: selectedProjectSlug
             };
 
