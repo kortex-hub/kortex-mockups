@@ -1,45 +1,7 @@
-# kortex-mockups
+# Kaiden Mockups
 
-This repository is dedicated for live prototyping and UX explorations for Kortex.
+This repository is dedicated for live prototyping and UX explorations for Kaiden.
 
-
-## 📁 Directory Structure
-
-```
-kortex-mockups/
-├── index.html                  # Landing page with welcome screen
-├── README.md                   # Project documentation
-│
-├── assets/                     # Shared resources
-│   ├── css/
-│   │   └── styles.css         # Global stylesheet (all UI styles)
-│   ├── js/
-│   │   └── scripts.js         # Shared JavaScript functions
-│   └── images/                # Shared images and icons
-│
-├── shared/                     # Shared components
-│   └── components/
-│       └── sidebar.html       # Reusable navigation sidebar (reference)
-│
-├── chat/                       # Chat section
-│   └── index.html             # Chat interface with AI conversations
-│
-├── knowledges/                 # Knowledge bases section (RAG)
-│   ├── index.html             # Knowledge bases list view
-│   └── details.html           # Knowledge base details view
-│
-├── mcp/                        # MCP servers section
-│   └── index.html             # MCP servers interface (placeholder)
-│
-├── flows/                      # Flows section
-│   └── index.html             # Workflow orchestration (placeholder)
-│
-├── extensions/                 # Extensions section
-│   └── index.html             # Extensions marketplace (placeholder)
-│
-└── settings/                   # Settings section
-    └── index.html             # Application settings (placeholder)
-```
 
 ## 🚀 Getting Started
 
