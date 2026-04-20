@@ -1,42 +1,56 @@
-# kortex-mockups
+# Kaiden mockups
 
-Static HTML mockups for **Kaiden**: desktop control plane (install, extensions, projects, sandbox) plus **`kdn`** CLI as the primary coding-agent surface.
+Static HTML mockups for the **Kaiden** desktop control plane: install wiring, workspaces, models and providers, projects, Secret Vault, extensions, and related surfaces. Pages are plain HTML/CSS/JS (no build step) so designers and PMs can open them directly in a browser.
 
-Scenario and scope are defined in **[Sprint-290.md](Sprint-290.md)** (CLI workflow, Podman-style onboarding, project policies, sandbox proofs, semantic routing).
 
-## Directory structure
+## What is in the repo
+
+| Area | Mockup paths | Notes |
+|------|----------------|------|
+| Welcome & first-run | `welcome/index.html`, `onboarding/index.html` |  |
+| Workspaces | `sessions/index.html`, `sessions/create.html` | Primary nav label: **Workspaces** |
+| Coding agents & sessions | `coding-agent/index.html`, `agent-feed/index.html`, `chat/index.html`, `tasks/index.html` | Agent-oriented flows |
+| Models | `models/index.html`, `models/provider-config.html` | Local, in-house (OpenShift AI), LLM providers; see [spec/feature-models-catalog.md](spec/feature-models-catalog.md) |
+| Projects | `projects/index.html` | Optional in some demo modes |
+| Secret Vault | `services/index.html` | Product label in the UI: **Secret Vault** |
+| Catalogs | `knowledges/index.html`, `mcp/index.html`, `skills/index.html`, `extensions/index.html` | |
+| Sandbox & CLI | `sandbox/index.html`, `cli/index.html` | Supporting mocks for policies and terminal workflow |
+| Settings | `settings/index.html` | |
+
+Shared UI: `assets/css/styles.css`, `assets/js/sidebar-loader.js` (navigation + status chrome), `assets/js/demo-scenario.js` (progressive demo). A reference copy of the nav lives at `shared/components/sidebar.html` (sync with `sidebar-loader.js` when the sidebar changes).
+
+## Directory layout (high level)
 
 ```
 kortex-mockups/
-├── Sprint-290.md
-├── index.html              # Redirects to welcome/index.html (preserves ?demo=…)
-├── welcome/index.html      # Fresh-install landing → guided onboarding
-├── assets/
-│   ├── css/styles.css
-│   └── js/
-│       ├── demo-scenario.js    # Top demo bar (always visible); load before sidebar-loader
-│       ├── demo-bar.css        # Styles injected by demo-scenario.js
-│       ├── sidebar-loader.js   # Nav + status bar; loads openshift-ai + kaiden-empty-mock
-│       ├── kaiden-empty-mock.js
-│       ├── openshift-ai.js
-│       └── agent-feed.js
-├── onboarding/, projects/, extensions/, sandbox/, cli/, …
-└── shared/components/sidebar.html   # Reference copy of nav (manual sync)
+├── index.html                 # Redirects to welcome/ (query string preserved)
+├── welcome/
+├── onboarding/
+├── sessions/
+├── coding-agent/, agent-feed/, chat/, tasks/
+├── projects/, models/, services/
+├── knowledges/, mcp/, skills/, extensions/
+├── sandbox/, cli/, settings/
+├── assets/                    # css/, js/, data/ (e.g. demo scenarios)
+├── shared/components/
+├── functional-spec/           # Epics/features mapped to mockups
+├── summary/, issues/, website/
+└── Sprint-290.md
 ```
 
 ## Getting started
 
-Open `index.html` in a browser to land on **Welcome**, then choose **Start guided setup** to open onboarding.
+Open `index.html` in a browser to land on **Welcome**, then use **Start guided setup** (or open `onboarding/index.html`) for the onboarding mock.
 
-Subpages load `demo-scenario.js` then `assets/js/sidebar-loader.js` with `data-nav-root=".."` on `<body>` where needed.
+Subpages that use the shell typically load `assets/js/demo-scenario.js` first, then `assets/js/sidebar-loader.js`, with `data-nav-root=".."` on `<body>` where paths are one level deep.
 
-## Progressive demo (three steps)
+## Progressive demo (`demo-scenario.js`)
 
-- **Demo bar** — On every screen that loads `demo-scenario.js`, a **fixed top bar** shows three steps. **Start** (or a step dot) begins the scenario; while active: **Play** / **Prev** / **Next** / **Restart** (back to step 1) / **Exit**.
+- **Demo bar** — On screens that load `demo-scenario.js`, a fixed top bar runs a short scenario: **Start** (or a step dot) begins; while active: **Play**, **Prev**, **Next**, **Restart**, **Exit**.
 - **`?demo=onboarding`** or **`?demo=empty`** (legacy) — `{ active: true, step: 0 }`.
-- **Step 1 — Onboarding:** Clicking the first step dot (or **Start**) opens **`onboarding/index.html`** (Setup). Elsewhere, **Extensions** + **Settings** only, lists cleared; **Extensions** catalog shows **Available** only.
-- **Step 2 — Post-onboarding:** Jumps to **Workspaces** (`sessions/index.html`); list is **empty** (no workspaces yet). Other `postOnboarding` JSON still applies on Projects, Vault, Knowledges.
-- **Step 3 — Full workspace:** Rich mocks (`full` key in the same JSON files).
+- **Step 1 — Onboarding:** Opens `onboarding/index.html`; elsewhere, **Extensions** + **Settings** only, lists cleared; Extensions catalog shows **Available** only.
+- **Step 2 — Post-onboarding:** Jumps to **Workspaces** (`sessions/index.html`) with an empty list.
+- **Step 3 — Full workspace:** Rich data from the demo JSON (`full` key under `assets/data/demo-scenario/`).
 - **`?demo=full`** or **`?demo=reset`** — Exits demo mode and reloads.
 
-Screen content is driven by `assets/data/demo-scenario/` (see `manifest.json`). Example: `extensions/index.html?demo=onboarding`.
+Content is driven by `assets/data/demo-scenario/` (see `manifest.json`). Example: `extensions/index.html?demo=onboarding`.
