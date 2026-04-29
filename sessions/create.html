@@ -2898,6 +2898,667 @@
             }
 
         }
+
+        /* ── Light theme: create workspace (scoped to wizard layout; dark rules above unchanged) ── */
+        html:not(.dark) body.sessions-page .create-session-layout {
+            background: var(--kd-bg);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-header {
+            background: color-mix(in srgb, var(--kd-bg-card) 94%, var(--kd-bg-subtle));
+            border-bottom-color: var(--kd-border);
+            box-shadow: 0 1px 0 color-mix(in srgb, var(--kd-border) 50%, transparent);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-breadcrumb a {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-breadcrumb a:hover {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-breadcrumb svg {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-breadcrumb span {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-close-btn {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-close-btn:hover {
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, transparent);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-content::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--kd-accent) 28%, transparent);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-content::-webkit-scrollbar-thumb:hover {
+            background: color-mix(in srgb, var(--kd-accent) 42%, transparent);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-title {
+            background: none;
+            -webkit-text-fill-color: unset;
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-subtitle {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-hero-badge {
+            color: var(--kd-accent-dim);
+            background: color-mix(in srgb, var(--kd-accent) 14%, var(--kd-bg-card));
+            border-color: color-mix(in srgb, var(--kd-accent) 32%, var(--kd-border));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-item {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-item.active {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-item.done {
+            color: #059669;
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-dot {
+            border-color: var(--kd-border);
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-item.active .ca-wizard-stepper-dot {
+            border-color: var(--kd-accent);
+            background: color-mix(in srgb, var(--kd-accent) 14%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-line {
+            background: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-stepper-hit:hover:not(:disabled) {
+            background: color-mix(in srgb, var(--kd-accent) 8%, transparent);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-step-title {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-wizard-step-lead {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-step-panel,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-step-panel {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-fs-custom-hint {
+            background: var(--kd-bg-subtle);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-fs-custom-hint .ob-fs-custom-hint-lead,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-config-label,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-config-hint {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-sandbox-ob .ob-config-input {
+            background: var(--kd-surface-input);
+            border-color: var(--kd-surface-input-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-section-title,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-section-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-section-desc,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-section-desc {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-provider-section-hint,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-provider-section-hint {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-provider-section-hint a,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-provider-section-hint a {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-agent-tile,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-agent-tile {
+            border-color: var(--kd-border);
+            background: var(--kd-bg-card);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-agent-tile:hover,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-agent-tile:hover {
+            border-color: color-mix(in srgb, var(--kd-accent) 40%, var(--kd-border));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-agent-tile.selected,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-agent-tile.selected {
+            border-color: var(--kd-accent);
+            background: color-mix(in srgb, var(--kd-accent) 10%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-agent-tile-title,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-agent-tile-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-agent-tile-desc,
+        html:not(.dark) body.sessions-page .create-session-layout .ob-agent-tile-desc {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout #caWizardPanel2 .ob-provider-icon--brand-img {
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-subtle));
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .model-config-panel-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-step1-details {
+            border-color: var(--kd-border);
+            background: color-mix(in srgb, var(--kd-bg-subtle) 55%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-step1-details > summary {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-step1-details-hint {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-step1-details-body {
+            border-top-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-section-head h3 {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-section-head p {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-browse {
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-browse:hover {
+            background: color-mix(in srgb, var(--kd-accent) 10%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-none {
+            color: var(--kd-text-muted);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-none:hover {
+            border-color: var(--kd-text-muted);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-none.selected {
+            border-color: var(--kd-accent);
+            background: color-mix(in srgb, var(--kd-accent) 10%, var(--kd-bg-card));
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 6px 18px rgba(13, 27, 46, 0.06);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card:hover {
+            box-shadow: 0 4px 16px rgba(13, 27, 46, 0.08);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card.selected {
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card-name {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card-path,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-project-card-meta {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-intro,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-hint {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-intro a {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-option {
+            border-color: var(--kd-border);
+            background: var(--kd-bg-card);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.04);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-option:hover {
+            background: color-mix(in srgb, var(--kd-accent) 6%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-workspace-source-option.is-selected {
+            background: color-mix(in srgb, var(--kd-accent) 10%, var(--kd-bg-card));
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--kd-accent) 25%, transparent), 0 6px 20px rgba(13, 27, 46, 0.08);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-ws-opt-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-ws-opt-desc {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-path-input,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-git-input {
+            background: var(--kd-surface-input);
+            border-color: var(--kd-surface-input-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-path-input::placeholder,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-git-input::placeholder {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-or-divider {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-or-divider::before,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-or-divider::after {
+            background: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-label-with-action > span,
+        html:not(.dark) body.sessions-page .create-session-layout .ca-label-with-action .ca-inline-link {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-git-sandbox-card {
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-card));
+            border-color: color-mix(in srgb, var(--kd-accent) 28%, var(--kd-border));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-git-sandbox-copy strong {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-git-sandbox-copy .ca-git-sandbox-sub {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-git-preview-box {
+            background: var(--kd-bg-subtle);
+            border-color: var(--kd-border);
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-git-preview-box code {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-toggle-track {
+            background: var(--kd-surface-muted);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-toggle-track::after {
+            background: var(--kd-bg-card);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-catalog-intro {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-catalog-source-title {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-catalog-search {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-catalog-search svg {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-catalog-search input {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-models-table-wrap {
+            border-color: var(--kd-border);
+            background: var(--kd-bg-card);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-models-data-table thead {
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-models-data-table th {
+            color: var(--kd-text-muted);
+            border-bottom-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-models-data-table td {
+            color: var(--kd-text-secondary);
+            border-bottom-color: color-mix(in srgb, var(--kd-border) 80%, transparent);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-table-name-main {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-table-name-sub {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-table-name-brain {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .catalog-model-empty {
+            border-color: var(--kd-border);
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .catalog-model-empty a {
+            color: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-subcard {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-subcard-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-np-subcard-desc {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .policy-mode-option {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .policy-mode-info h4 {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .policy-mode-info p {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .policy-mode-radio {
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .rule-item {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .rule-value {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .rule-desc {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .rule-action-btn {
+            background: var(--kd-bg-subtle);
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .config-section {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.06);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .config-section-info h3 {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .config-section-info p {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .form-group label {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .form-group input,
+        html:not(.dark) body.sessions-page .create-session-layout .form-group textarea {
+            background: var(--kd-surface-input);
+            border-color: var(--kd-surface-input-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .form-group input:focus,
+        html:not(.dark) body.sessions-page .create-session-layout .form-group textarea:focus {
+            background: var(--kd-surface-input);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .agent-card {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .agent-card-check {
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .agent-name {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .agent-description {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .selectable-item {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .selectable-item:hover {
+            background: var(--kd-bg-subtle);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .selectable-checkbox {
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .selectable-name {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .selectable-desc {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-tools-quick-card {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-tools-quick-summary {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-tools-include-all-btn {
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-tools-customize-summary {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .ca-tools-customize-summary::before {
+            border-left-color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-asset-block {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-header {
+            border-bottom-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-title {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-count {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-add-btn {
+            color: var(--kd-text-muted);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-item:hover {
+            background: color-mix(in srgb, var(--kd-text-primary) 4%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-item + .pd-block-item {
+            border-top-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-item-name {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .pd-block-item-meta {
+            color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .file-access-card {
+            background: var(--kd-bg-card);
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .file-access-content h4 {
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .file-access-content p {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .file-access-radio {
+            border-color: var(--kd-border);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .custom-paths-container {
+            background: var(--kd-bg-subtle);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .path-input {
+            background: var(--kd-surface-input);
+            border-color: var(--kd-surface-input-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .create-session-footer {
+            background: color-mix(in srgb, var(--kd-bg-card) 96%, var(--kd-bg-subtle));
+            border-top-color: var(--kd-border);
+            box-shadow: 0 -4px 20px rgba(13, 27, 46, 0.06);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .footer-info {
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-cancel {
+            background: var(--kd-bg-subtle);
+            border-color: var(--kd-border);
+            color: var(--kd-text-primary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-cancel:hover {
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-subtle));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-wizard-back {
+            border-color: var(--kd-border);
+            color: var(--kd-text-secondary);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-wizard-back:hover {
+            background: var(--kd-bg-subtle);
+            border-color: var(--kd-text-muted);
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-defaults-create {
+            color: var(--kd-text-primary);
+            border-color: color-mix(in srgb, var(--kd-accent) 40%, var(--kd-border));
+            background: color-mix(in srgb, var(--kd-accent) 12%, var(--kd-bg-card));
+            box-shadow: none;
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout .btn-defaults-create:hover {
+            background: color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));
+        }
+
+        html:not(.dark) body.sessions-page .create-session-layout code {
+            background: color-mix(in srgb, var(--kd-accent) 12%, var(--kd-bg-subtle)) !important;
+            color: var(--kd-text-primary) !important;
+        }
     </style>
 </head>
 <body class="sessions-page">
