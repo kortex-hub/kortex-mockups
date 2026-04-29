@@ -149,6 +149,7 @@ Two `.model-runtime-card` siblings in `.model-runtime-row` (wrap, `min-width: 22
 
 | Row (name) | Subtitle / RAM | Size | Runtime | Status icon (meaning in mock) | Actions |
 |------------|------------------|------|---------|--------------------------------|---------|
+| `qwen3-code` | `GGUF · loaded in memory · OpenCode default`, RAM `5.8 GiB` | `5.4 GB` | Ollama | Cyan “active” style (sunburst) | Playground, Reveal path |
 | `llama3.2:3b` | `GGUF · loaded in memory`, RAM `3.93 GiB` | `2.0 GB` | Ollama | Cyan “active” style (sunburst) | Playground, Reveal path |
 | `mistral:latest` | `GGUF · loaded in memory`, RAM `4.4 GiB` | `4.1 GB` | Ollama | Same active style | Playground, **Stop model** |
 | `qwen2.5:7b` | `Not loaded — Ramalama stopped`, RAM `N/A` | `4.7 GB` | Ramalama | Gray hollow circle (idle) | **Disabled** play-style button, `title="Start runtime first"`, `aria-label="Unavailable"` |
@@ -226,7 +227,7 @@ Tiles for **vendor connection status**, links to **per-provider configuration**,
 | Provider | `data-search` | `data-connection` | Family line | Badges | Hint (abridged) | Configure href |
 |-----------|----------------|-------------------|-------------|--------|-----------------|----------------|
 | OpenAI | `openai gpt` | `connected` | GPT-4o, GPT-4o-mini, o-series | Connected, Verified 2h ago | Credentials accepted | `provider-config.html?provider=openai` |
-| Anthropic | `anthropic claude` | `connected` | Claude 3.5 / 4 | Connected, Verified 1d ago | API responding | `?provider=anthropic` |
+| Anthropic | `anthropic claude` | `connected` | Claude 4.x · Sonnet & Opus | Connected, Verified 1d ago | API responding | `?provider=anthropic` |
 | Google AI | `google gemini vertex` | `none` | Gemini (AI Studio / Vertex) | Not configured | No API key stored | `?provider=google` |
 | Azure OpenAI | `azure openai microsoft` | `error` | Enterprise deployments | Error, Check failed | Could not reach endpoint | `?provider=azure` |
 

@@ -3306,6 +3306,17 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="qwen3-code" data-requires-provider="local" data-legacy-provider="local" data-search="qwen3 code qwen ollama" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
+                                                    <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
+                                                    <td>
+                                                        <div class="ca-table-name-main">qwen3-code</div>
+                                                        <div class="ca-table-name-sub">GGUF · loaded in memory · OpenCode default</div>
+                                                        <span class="ca-table-ram">RAM usage: 5.8 GiB</span>
+                                                    </td>
+                                                    <td>5.4 GB</td>
+                                                    <td>Ollama</td>
+                                                    <td class="ca-catalog-radio-cell"><input type="radio" name="workspaceCatalogModel" value="qwen3-code" aria-label="Use qwen3-code"></td>
+                                                </tr>
                                                 <tr class="ca-catalog-model-row" role="button" tabindex="0" data-catalog-id="llama3.2-3b" data-requires-provider="local" data-legacy-provider="local" data-search="llama ollama llama3.2" onclick="onCatalogRowClick(event)" onkeydown="onCatalogRowKey(event)">
                                                     <td class="ca-table-status"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></td>
                                                     <td>
@@ -4058,7 +4069,7 @@
                 gitRepository: 'https://github.com/acme/api-gateway',
                 gitCloneInSandbox: true,
                 description: 'Edge API gateway: routing, authentication, and rate limits for microservices.',
-                catalogModel: 'gpt-5.3-codex',
+                catalogModel: 'qwen3-code',
                 agent: 'opencode',
                 skills: ['code-review', 'api-docs-generator'],
                 mcpServers: ['GitHub MCP', 'Kubernetes MCP'],
@@ -4811,7 +4822,8 @@
             const map = {
                 'granite-3.1': 'ibm-granite-3.3-8b-instruct',
                 'granite-3.1-dense': 'ibm-granite-3.3-8b-instruct',
-                'llama-3.2': 'llama3.2-3b',
+                'llama-3.2': 'qwen3-code',
+                'qwen3-code': 'qwen3-code',
                 'mistral': 'mistral-small-internal'
             };
             return map[dm] || 'ibm-granite-3.3-8b-instruct';

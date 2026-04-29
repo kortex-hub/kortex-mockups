@@ -2121,7 +2121,7 @@
                                 </div>
                                 <div class="ob-config-field">
                                     <label class="ob-config-label" for="obOpencodeCloudAzureDeployment">Deployment name</label>
-                                    <input type="text" class="ob-config-input" id="obOpencodeCloudAzureDeployment" placeholder="gpt-4o-deployment" autocomplete="off" oninput="obOnOpencodeCloudFieldInput()">
+                                    <input type="text" class="ob-config-input" id="obOpencodeCloudAzureDeployment" placeholder="gpt-5-deployment" autocomplete="off" oninput="obOnOpencodeCloudFieldInput()">
                                 </div>
                                 <div class="ob-config-field">
                                     <label class="ob-config-label" for="obOpencodeCloudAzureKey">API key</label>
@@ -2215,7 +2215,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-search="llama ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-search="qwen3 code qwen ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
+                                        <td class="models-table-status">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                                        </td>
+                                        <td>
+                                            <div class="models-table-name-main">qwen3-code</div>
+                                            <div class="models-table-name-sub">GGUF · loaded in memory · OpenCode default</div>
+                                            <span class="models-table-ram">RAM usage: 5.8 GiB</span>
+                                        </td>
+                                        <td>5.4 GB</td>
+                                        <td>Ollama</td>
+                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
+                                            <input type="radio" name="obCatalogModelOpencode" value="qwen3-code" checked aria-label="Use qwen3-code as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                        </td>
+                                    </tr>
+                                    <tr class="ob-catalog-model-row" data-search="llama ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
                                         <td class="models-table-status">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                         </td>
@@ -2227,7 +2242,7 @@
                                         <td>2.0 GB</td>
                                         <td>Ollama</td>
                                         <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                            <input type="radio" name="obCatalogModelOpencode" value="llama3.2:3b" checked aria-label="Use llama3.2:3b as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                            <input type="radio" name="obCatalogModelOpencode" value="llama3.2:3b" aria-label="Use llama3.2:3b as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
                                         </td>
                                     </tr>
                                     <tr class="ob-catalog-model-row" data-search="mistral ollama" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
@@ -2345,13 +2360,13 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                         </td>
                                         <td>
-                                            <div class="models-table-name-main">gpt-4.1-mini</div>
-                                            <div class="models-table-name-sub">OpenAI · chat</div>
+                                            <div class="models-table-name-main">gpt-5.4-medium</div>
+                                            <div class="models-table-name-sub">OpenAI · general reasoning</div>
                                         </td>
                                         <td>—</td>
                                         <td>OpenAI</td>
                                         <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                            <input type="radio" name="obCatalogModelOpencode" value="gpt-4.1-mini" aria-label="Use gpt-4.1-mini as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                            <input type="radio" name="obCatalogModelOpencode" value="gpt-5.4-medium" aria-label="Use gpt-5.4-medium as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
                                         </td>
                                     </tr>
                                     <tr class="ob-catalog-model-row" data-opencode-provider="gemini" data-search="gemini google" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
@@ -2359,13 +2374,13 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                         </td>
                                         <td>
-                                            <div class="models-table-name-main">gemini-2.0-flash</div>
+                                            <div class="models-table-name-main">gemini-2.5-flash</div>
                                             <div class="models-table-name-sub">Google · low latency</div>
                                         </td>
                                         <td>—</td>
                                         <td>Gemini</td>
                                         <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                            <input type="radio" name="obCatalogModelOpencode" value="gemini-2.0-flash" aria-label="Use gemini-2.0-flash as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                            <input type="radio" name="obCatalogModelOpencode" value="gemini-2.5-flash" aria-label="Use gemini-2.5-flash as default" onchange="obSelectCatalogModelRow(this.closest('tr'))">
                                         </td>
                                     </tr>
                                     <tr class="ob-catalog-model-row" data-opencode-provider="anthropic" data-search="claude anthropic" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
@@ -2387,13 +2402,13 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                         </td>
                                         <td>
-                                            <div class="models-table-name-main">gpt-4o</div>
+                                            <div class="models-table-name-main">gpt-5.2</div>
                                             <div class="models-table-name-sub">Azure OpenAI · map to your deployment name in OpenCode</div>
                                         </td>
                                         <td>—</td>
                                         <td>Azure</td>
                                         <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                            <input type="radio" name="obCatalogModelOpencode" value="azure-openai-gpt-4o" aria-label="Use Azure OpenAI default model" onchange="obSelectCatalogModelRow(this.closest('tr'))">
+                                            <input type="radio" name="obCatalogModelOpencode" value="azure-openai-gpt-5" aria-label="Use Azure OpenAI default model" onchange="obSelectCatalogModelRow(this.closest('tr'))">
                                         </td>
                                     </tr>
                                     <tr class="ob-catalog-model-row" data-opencode-provider="custom" data-search="custom openai compatible" role="button" tabindex="0" onclick="obSelectCatalogModelRow(this)" onkeydown="obCatalogModelRowKey(event)">
@@ -2930,13 +2945,13 @@
             obOnOpencodeCloudFieldInput();
             if (obGetSelectedAgentKey() === 'opencode' && obGetOpencodeBackend() === 'cloud') {
                 var map = {
-                    openai: 'gpt-4.1-mini',
-                    gemini: 'gemini-2.0-flash',
+                    openai: 'gpt-5.4-medium',
+                    gemini: 'gemini-2.5-flash',
                     anthropic: 'claude-sonnet-4-5',
-                    azure: 'azure-openai-gpt-4o',
+                    azure: 'azure-openai-gpt-5',
                     custom: 'openai-compatible-default'
                 };
-                obEnsureOpencodeModelInBranch('#obOpencodeModelsCloud', map[p] || 'gpt-4.1-mini');
+                obEnsureOpencodeModelInBranch('#obOpencodeModelsCloud', map[p] || 'gpt-5.4-medium');
                 if (currentStep === 2) updateObModelPreview();
             }
         }
@@ -3028,7 +3043,7 @@
                 if (localB) localB.classList.remove('ob-opencode-models-branch-hidden');
                 if (leadLocal) leadLocal.style.display = 'block';
                 if (apiLocal) apiLocal.classList.add('is-active');
-                obEnsureOpencodeModelInBranch('#obOpencodeModelsLocal', 'llama3.2:3b');
+                obEnsureOpencodeModelInBranch('#obOpencodeModelsLocal', 'qwen3-code');
                 obScheduleOpencodeLocalDetect();
             } else {
                 var locGate = document.getElementById('obOpencodeLocalNeedConfigured');
@@ -3169,10 +3184,17 @@
             }
         }
 
+        function obDefaultCatalogModelForAgent(agentKey) {
+            if (agentKey === 'claude' || agentKey === 'claude-vertex') return 'claude-4.6-sonnet-medium';
+            if (agentKey === 'codex') return 'composer-2-fast';
+            return 'qwen3-code';
+        }
+
         function obGetActiveCatalogModelId() {
             const agentKey = obGetSelectedAgentKey();
+            const fallback = obDefaultCatalogModelForAgent(agentKey);
             const group = document.getElementById(obModelGroupIdForAgent(agentKey));
-            if (!group) return 'llama3.2:3b';
+            if (!group) return fallback;
             var radio = null;
             if (agentKey === 'opencode') {
                 const branch = obGetOpencodeActiveModelBranchEl();
@@ -3180,7 +3202,7 @@
             } else {
                 radio = group.querySelector('input[type="radio"]:checked');
             }
-            return (radio && radio.value) ? radio.value : 'llama3.2:3b';
+            return (radio && radio.value) ? radio.value : fallback;
         }
 
         function obMapObNetToNetworkPolicy(netKey) {

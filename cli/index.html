@@ -1520,21 +1520,21 @@
             'claude-code': {
                 name: 'Claude Code',
                 provider: 'Anthropic',
-                defaultModel: 'Claude 3.5 Sonnet',
+                defaultModel: 'Claude Sonnet 4.6',
                 icon: 'C',
                 color: '#f59e0b'
             },
             'codex': {
                 name: 'Codex CLI',
                 provider: 'OpenAI',
-                defaultModel: 'o3-mini',
+                defaultModel: 'gpt-5.3-codex',
                 icon: 'X',
                 color: '#10b981'
             },
             'opencode': {
                 name: 'OpenCode',
                 provider: 'OpenCode',
-                defaultModel: 'Claude 3.5 Sonnet',
+                defaultModel: 'qwen3-code',
                 icon: 'OC',
                 color: '#10b981'
             }
@@ -1759,8 +1759,8 @@
             if (!agentType) {
                 addOutput('Select a coding agent:', 'info');
                 addOutput('');
-                addOutput('  [1] Claude Code     - Anthropic\'s coding agent (Claude 3.5 Sonnet)');
-                addOutput('  [2] Codex CLI       - OpenAI\'s coding assistant (o3-mini)');
+                addOutput('  [1] Claude Code     - Anthropic\'s coding agent (Claude Sonnet 4.6)');
+                addOutput('  [2] Codex CLI       - OpenAI\'s coding assistant (gpt-5.3-codex)');
                 addOutput('  [3] OpenCode        - Open, extensible coding agent runtime');
                 addOutput('');
                 addOutput('Use --agent flag to specify: kdn init --agent claude-code', 'muted');
@@ -1853,7 +1853,7 @@
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #7090b8;">OpenAI's Coding Assistant</span>                                                  <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">├──────────────────────────────────────────────────────────────────────────────┤</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>     o3-mini                                                        <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>     gpt-5.3-codex                                                <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Sandbox:</span>   Enabled                                                        <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Project:</span>   ~/slemeur/${projectName.padEnd(40)}<span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
@@ -1880,7 +1880,7 @@
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">OpenCode</span> <span style="color: #6b7280;">v1.0</span> <span style="color: #7090b8;">— Open coding agent runtime</span>                          <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">╠═══════════════════════════════════════════════════════════════════════════╣</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Session:</span>  ${projectName.padEnd(58)}<span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>    Claude 3.5 Sonnet (via provider plugin)                    <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>    qwen3-code (Ollama · local)                               <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Sandbox:</span>  Enabled                                                       <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">╚═══════════════════════════════════════════════════════════════════════════╝</span>`);
             addOutput('');
@@ -1901,10 +1901,10 @@
             addOutput('┌──────────────────┬────────────────────┬──────────────┬──────────────────┬──────────────┬──────────┐');
             addOutput('│ ID               │ NAME               │ AGENT        │ MODEL            │ CONTEXT      │ STATUS   │');
             addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
-            addOutput('│ agt_7x8k2m9n4p1q │ frontend-refactor  │ Claude Code  │ Claude 3.5       │ 124K/200K    │ Running  │', 'success');
-            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
-            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
-            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Codex        │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
+            addOutput('│ agt_7x8k2m9n4p1q │ frontend-refactor  │ Claude Code  │ Sonnet 4.6       │ 124K/200K    │ Running  │', 'success');
+            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ gpt-5.3-codex    │ 45K/128K     │ Running  │', 'success');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ qwen3-code       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Codex        │ gpt-5.3-codex    │ 156K/200K    │ Running  │', 'warning');
             addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
             addOutput('');
             addOutput('Total: 4 agents (3 running, 1 paused) | Total context: 414K tokens', 'muted');
@@ -1924,7 +1924,7 @@
                 'agt_7x8k2m9n4p1q': {
                     name: 'frontend-refactor',
                     agent: 'Claude Code',
-                    model: 'Claude 3.5 Sonnet',
+                    model: 'Claude Sonnet 4.6',
                     status: 'Running',
                     path: '~/slemeur/frontend-refactor',
                     started: '2h 14m ago',
@@ -1937,7 +1937,7 @@
                 'agt_3a2b1c4d5e6f': {
                     name: 'api-development',
                     agent: 'Codex CLI',
-                    model: 'o3-mini',
+                    model: 'gpt-5.3-codex',
                     status: 'Running',
                     path: '~/slemeur/api-development',
                     started: '45m ago',
@@ -1950,7 +1950,7 @@
                 'agt_9m8n7o6p5q4r': {
                     name: 'bug-investigation',
                     agent: 'OpenCode',
-                    model: 'Claude 3.5 Sonnet',
+                    model: 'qwen3-code',
                     status: 'Paused',
                     path: '~/slemeur/bug-investigation',
                     started: '1h 30m ago',
@@ -1963,7 +1963,7 @@
                 'agt_2k4m6n8p0q2s': {
                     name: 'ui-components',
                     agent: 'Codex',
-                    model: 'Claude 3.5 Sonnet',
+                    model: 'gpt-5.3-codex',
                     status: 'Running',
                     path: '~/slemeur/ui-components',
                     started: '3h 45m ago',
@@ -2978,7 +2978,7 @@
             addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
             addOutputHTML(`│                                    <span style="color: #7090b8;">• Refactored UserService component</span>             │`);
-            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4 · Claude Max</span>           <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4.6 · Claude Max</span>         <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
             addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #7090b8;">• Added unit tests for API endpoints</span>           │`);
             addOutput('│                                                                                │');
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
@@ -3071,10 +3071,10 @@
             addOutput('┌──────────────────┬────────────────────┬──────────────┬──────────────────┬──────────────┬──────────┐');
             addOutput('│ ID               │ NAME               │ AGENT        │ MODEL            │ CONTEXT      │ STATUS   │');
             addOutput('├──────────────────┼────────────────────┼──────────────┼──────────────────┼──────────────┼──────────┤');
-            addOutput('│ agt_7x8k2m9n4p1q │ my-project         │ Claude Code  │ Claude 3.5       │ 12K/200K     │ Running  │', 'success');
-            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ o3-mini          │ 45K/128K     │ Running  │', 'success');
-            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ Claude 3.5       │ 89K/200K     │ Paused   │', 'warning');
-            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Codex        │ Claude 3.5       │ 156K/200K    │ Running  │', 'warning');
+            addOutput('│ agt_7x8k2m9n4p1q │ my-project         │ Claude Code  │ Sonnet 4.6       │ 12K/200K     │ Running  │', 'success');
+            addOutput('│ agt_3a2b1c4d5e6f │ api-development    │ Codex CLI    │ gpt-5.3-codex    │ 45K/128K     │ Running  │', 'success');
+            addOutput('│ agt_9m8n7o6p5q4r │ bug-investigation  │ OpenCode     │ qwen3-code       │ 89K/200K     │ Paused   │', 'warning');
+            addOutput('│ agt_2k4m6n8p0q2s │ ui-components      │ Codex        │ gpt-5.3-codex    │ 156K/200K    │ Running  │', 'warning');
             addOutput('└──────────────────┴────────────────────┴──────────────┴──────────────────┴──────────────┴──────────┘');
             addOutput('');
             addOutput('Total: 4 workspaces (3 running, 1 paused) | Total context: 302K tokens', 'muted');
@@ -3358,9 +3358,9 @@
             terminalBody.lastChild.innerHTML = '✓ Claude Code agent initialized';
             terminalBody.lastChild.className = 'cli-output-line success';
 
-            addOutputHTML('<span class="spinner"></span>Connecting to Sonnet 4...', 'info');
+            addOutputHTML('<span class="spinner"></span>Connecting to Claude Sonnet 4.6...', 'info');
             await sleep(800);
-            terminalBody.lastChild.innerHTML = '✓ Connected to Sonnet 4';
+            terminalBody.lastChild.innerHTML = '✓ Connected to Claude Sonnet 4.6';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutput('');
@@ -3397,7 +3397,7 @@
             addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
             addOutputHTML(`│                                    <span style="color: #7090b8;">• Refactored UserService component</span>             │`);
-            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4 · Claude Max</span>           <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4.6 · Claude Max</span>         <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
             addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #7090b8;">• Added unit tests for API endpoints</span>           │`);
             addOutput('│                                                                                │');
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
@@ -3533,7 +3533,7 @@
             const terminalBody = getTerminalBody();
 
             // Phase 1: kdn init with DevSpaces sandbox
-            addOutput('$ kdn init --name inventory-api --agent opencode --model qwen2.5-coder --sandbox AgenticDevSpaces', 'command');
+            addOutput('$ kdn init --name inventory-api --agent opencode --model qwen3-code --sandbox AgenticDevSpaces', 'command');
             addOutput('');
 
             addOutputHTML('<span class="spinner"></span>Checking directory...', 'info');
@@ -3601,9 +3601,9 @@
             terminalBody.lastChild.innerHTML = '✓ Authenticated: slemeur@redhat.com (Red Hat Engineering)';
             terminalBody.lastChild.className = 'cli-output-line success';
 
-            addOutputHTML('<span class="spinner"></span>Loading model: qwen2.5-coder...', 'info');
+            addOutputHTML('<span class="spinner"></span>Loading model: qwen3-code...', 'info');
             await sleep(800);
-            terminalBody.lastChild.innerHTML = '✓ Model ready: Qwen 2.5 Coder 32B (served on OpenShift AI)';
+            terminalBody.lastChild.innerHTML = '✓ Model ready: qwen3-code (served on OpenShift AI)';
             terminalBody.lastChild.className = 'cli-output-line success';
 
             addOutputHTML('<span class="spinner"></span>Discovering enterprise resources...', 'info');
@@ -3759,7 +3759,7 @@
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
             addOutputHTML(`│   <span style="color: #e8eef7;">Workspace:</span> rhel-ops                <span style="color: #22c55e;">● RHEL MCP Connected</span>                    │`);
             addOutputHTML(`│   <span style="color: #e8eef7;">Target:</span>    rhel-prod-01.example.com  <span style="color: #7090b8;">RHEL 9.3</span>                               │`);
-            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     Sonnet 4                                                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     Claude Sonnet 4.6                                                 │`);
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
             
@@ -3969,12 +3969,12 @@
             addOutput('');
             addOutputHTML(`<span style="color: #67e8f9;">REPOSITORY                              TAG              SIZE</span>`);
             addOutputHTML(`<span style="color: #6b7280;">────────────────────────────────────────────────────────────────</span>`);
-            addOutput('ollama://qwen2.5-coder:7b               latest           4.7 GB');
-            addOutput('ollama://granite-3.1-dense:8b           latest           4.9 GB');
+            addOutput('ollama://qwen3-code                     latest           5.4 GB');
+            addOutput('ollama://granite-3.3-dense:8b           latest           4.9 GB');
             addOutput('ollama://llama3.2:3b                    latest           2.0 GB');
             addOutput('ollama://codellama:13b                  latest           7.4 GB');
             addOutput('ollama://deepseek-coder:6.7b            latest           3.8 GB');
-            addOutput('huggingface://Qwen/Qwen2.5-Coder-7B     q4_k_m           4.7 GB');
+            addOutput('huggingface://Qwen/Qwen3-Coder         q4_k_m           5.4 GB');
             addOutput('');
             addOutput('6 models available locally', 'muted');
             addOutput('');
@@ -4012,9 +4012,9 @@
             terminalBody.lastChild.innerHTML = '✓ RamaLama provider connected';
             terminalBody.lastChild.className = 'cli-output-line success';
             
-            addOutputHTML('<span class="spinner"></span>Loading model: qwen2.5-coder:7b...', 'info');
+            addOutputHTML('<span class="spinner"></span>Loading model: qwen3-code...', 'info');
             await sleep(800);
-            terminalBody.lastChild.innerHTML = '✓ Model loaded: qwen2.5-coder:7b (4.7 GB)';
+            terminalBody.lastChild.innerHTML = '✓ Model loaded: qwen3-code (5.4 GB)';
             terminalBody.lastChild.className = 'cli-output-line success';
             
             addOutputHTML('<span class="spinner"></span>Detecting GPU acceleration...', 'info');
@@ -4033,7 +4033,7 @@
             addOutput('WORKSPACE CONFIGURATION:', 'highlight');
             addOutput('  Agent:          opencode');
             addOutput('  Model Provider: ramalama');
-            addOutput('  Model:          qwen2.5-coder:7b');
+            addOutput('  Model:          qwen3-code');
             addOutput('  Mode:           Local (no external API calls)');
             addOutput('  GPU:            NVIDIA RTX 4090');
             addOutput('');
@@ -4071,7 +4071,7 @@
             
             addOutputHTML(`<span style="color: #22c55e;">╭─ OpenCode v1.0.0 ─────────────────────────────────────────────────────────────╮</span>`);
             addOutputHTML(`│   <span style="color: #e8eef7;">Workspace:</span> local-coding              <span style="color: #22c55e;">● Local Model Active</span>                    │`);
-            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     qwen2.5-coder:7b          <span style="color: #7090b8;">via RamaLama</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     qwen3-code                <span style="color: #7090b8;">via RamaLama</span>                          │`);
             addOutputHTML(`│   <span style="color: #e8eef7;">Provider:</span>  ramalama (local)          <span style="color: #7090b8;">~120ms/token</span>                          │`);
             addOutputHTML(`│   <span style="color: #e8eef7;">Privacy:</span>   100% offline              <span style="color: #22c55e;">✓ No data leaves your machine</span>         │`);
             addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
