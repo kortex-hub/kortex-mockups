@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Projects</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/demo-page-hydrate.js"></script>
@@ -33,7 +34,7 @@
         }
 
         .projects-main::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.15);
+            background: rgba(79, 195, 247, 0.15);
             border-radius: 3px;
         }
 
@@ -54,7 +55,7 @@
         .projects-title {
             font-size: 28px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .projects-count {
@@ -63,7 +64,7 @@
             padding: 4px 12px;
             background: rgba(255, 255, 255, 0.04);
             border-radius: 20px;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
         }
 
         .projects-header-actions {
@@ -78,14 +79,14 @@
             gap: 8px;
             padding: 8px 14px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
             min-width: 260px;
             transition: border-color 0.2s ease;
         }
 
         .projects-search:focus-within {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .projects-search svg {
@@ -99,7 +100,7 @@
             background: none;
             border: none;
             outline: none;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             width: 100%;
         }
@@ -113,7 +114,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -125,7 +126,7 @@
 
         .new-project-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .new-project-btn svg {
@@ -139,11 +140,11 @@
             margin-bottom: 24px;
             font-size: 14px;
             line-height: 1.7;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .projects-intro strong {
-            color: #c4b5fd;
+            color: #a8e6fc;
             font-weight: 500;
         }
 
@@ -155,8 +156,8 @@
         }
 
         .project-card {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             padding: 22px;
             cursor: pointer;
@@ -166,7 +167,7 @@
         }
 
         .project-card:hover {
-            border-color: rgba(139, 92, 246, 0.35);
+            border-color: rgba(79, 195, 247, 0.35);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
@@ -200,7 +201,7 @@
         .project-card-name {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
@@ -236,7 +237,7 @@
             gap: 10px;
             margin-bottom: 14px;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .project-card-git svg {
@@ -257,12 +258,12 @@
             align-items: center;
             gap: 4px;
             padding: 2px 8px;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.2);
             border-radius: 4px;
             font-size: 11px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            color: #c4b5fd;
+            color: #a8e6fc;
             flex-shrink: 0;
         }
 
@@ -312,7 +313,7 @@
             align-items: center;
             justify-content: space-between;
             padding-top: 12px;
-            border-top: 1px solid rgba(61, 62, 79, 0.4);
+            border-top: 1px solid rgba(30, 51, 88, 0.4);
         }
 
         .project-card-meta {
@@ -350,7 +351,7 @@
         .project-card-agents-badge.idle {
             background: rgba(255, 255, 255, 0.04);
             color: #6b7280;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
         }
 
         /* ── New Project Modal ── */
@@ -370,8 +371,8 @@
         }
 
         .new-project-modal {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 16px;
             width: 680px;
             max-width: 92vw;
@@ -387,13 +388,13 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 24px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .new-project-modal-title {
             font-size: 18px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .new-project-modal-close {
@@ -434,7 +435,7 @@
         }
 
         .new-project-modal-body::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.15);
+            background: rgba(79, 195, 247, 0.15);
             border-radius: 3px;
         }
 
@@ -444,7 +445,7 @@
         /* Step 1: single prominent input */
         .np-step1-prompt {
             font-size: 14px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.6;
             margin-bottom: 4px;
         }
@@ -459,9 +460,9 @@
             flex: 1;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
             outline: none;
@@ -469,7 +470,7 @@
         }
 
         .np-path-input:focus {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .np-path-input::placeholder {
@@ -480,9 +481,9 @@
         .np-browse-btn {
             padding: 10px 14px;
             background: rgba(255, 255, 255, 0.06);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
-            color: #9ca3af;
+            color: #7090b8;
             font-size: 13px;
             cursor: pointer;
             transition: all 0.15s;
@@ -493,9 +494,9 @@
         }
 
         .np-browse-btn:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            color: #c4b5fd;
-            background: rgba(139, 92, 246, 0.06);
+            border-color: rgba(79, 195, 247, 0.4);
+            color: #a8e6fc;
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .np-browse-btn svg {
@@ -519,7 +520,7 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #3d3e4f;
+            background: #1e3358;
         }
 
         .np-git-input-wrapper {
@@ -531,9 +532,9 @@
             flex: 1;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
             outline: none;
@@ -541,7 +542,7 @@
         }
 
         .np-git-input:focus {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .np-git-input::placeholder {
@@ -561,8 +562,8 @@
         .np-analyzing-spinner {
             width: 32px;
             height: 32px;
-            border: 3px solid rgba(139, 92, 246, 0.2);
-            border-top-color: #8b5cf6;
+            border: 3px solid rgba(79, 195, 247, 0.2);
+            border-top-color: #4fc3f7;
             border-radius: 50%;
             animation: npSpin 0.8s linear infinite;
         }
@@ -573,7 +574,7 @@
 
         .np-analyzing-text {
             font-size: 14px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         /* Step 3: review detected info */
@@ -621,7 +622,7 @@
         .np-field-label {
             font-size: 12px;
             font-weight: 600;
-            color: #9ca3af;
+            color: #7090b8;
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
@@ -629,16 +630,16 @@
         .np-field-input {
             padding: 10px 14px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 9px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
         .np-field-input:focus {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .np-field-input::placeholder {
@@ -668,8 +669,8 @@
             align-items: center;
             gap: 8px;
             padding: 8px 12px;
-            background: rgba(139, 92, 246, 0.06);
-            border: 1px solid rgba(139, 92, 246, 0.15);
+            background: rgba(79, 195, 247, 0.06);
+            border: 1px solid rgba(79, 195, 247, 0.15);
             border-radius: 8px;
         }
 
@@ -683,16 +684,16 @@
         .np-detected-git-info span {
             font-size: 12px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .np-detected-git-info .np-branch-tag {
             margin-left: auto;
             padding: 2px 8px;
-            background: rgba(139, 92, 246, 0.12);
+            background: rgba(79, 195, 247, 0.12);
             border-radius: 4px;
             font-size: 11px;
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .new-project-modal-footer {
@@ -701,15 +702,15 @@
             justify-content: flex-end;
             gap: 10px;
             padding: 16px 24px;
-            border-top: 1px solid rgba(61, 62, 79, 0.5);
+            border-top: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .np-cancel-btn {
             padding: 8px 18px;
             background: none;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 8px;
-            color: #9ca3af;
+            color: #7090b8;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -718,15 +719,15 @@
 
         .np-cancel-btn:hover {
             border-color: #6b7280;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .np-back-btn {
             padding: 8px 18px;
             background: none;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 8px;
-            color: #9ca3af;
+            color: #7090b8;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -738,7 +739,7 @@
 
         .np-back-btn:hover {
             border-color: #6b7280;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .np-back-btn svg {
@@ -748,7 +749,7 @@
 
         .np-next-btn {
             padding: 8px 20px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             border: none;
             border-radius: 8px;
             color: #fff;
@@ -763,7 +764,7 @@
 
         .np-next-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .np-next-btn svg {
@@ -780,7 +781,7 @@
 
         .np-create-btn {
             padding: 8px 20px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             border: none;
             border-radius: 8px;
             color: #fff;
@@ -795,7 +796,7 @@
 
         .np-create-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .np-create-btn svg {
@@ -824,7 +825,7 @@
         }
 
         .np-stepper-item.active {
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .np-stepper-item.done {
@@ -835,7 +836,7 @@
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            border: 2px solid #3d3e4f;
+            border: 2px solid #1e3358;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -847,9 +848,9 @@
         }
 
         .np-stepper-item.active .np-stepper-dot {
-            border-color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.15);
-            color: #c4b5fd;
+            border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.15);
+            color: #a8e6fc;
         }
 
         .np-stepper-item.done .np-stepper-dot {
@@ -861,7 +862,7 @@
         .np-stepper-line {
             flex: 1;
             height: 1px;
-            background: #3d3e4f;
+            background: #1e3358;
             margin: 0 8px;
             min-width: 12px;
             transition: background 0.2s;
@@ -886,7 +887,7 @@
         /* ── Asset Picker (Steps 4 & 5) ── */
         .np-picker-intro {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.6;
         }
 
@@ -902,27 +903,27 @@
             gap: 12px;
             padding: 14px 16px;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 11px;
             cursor: pointer;
             transition: all 0.15s;
         }
 
         .np-picker-card:hover {
-            border-color: rgba(139, 92, 246, 0.3);
-            background: rgba(139, 92, 246, 0.04);
+            border-color: rgba(79, 195, 247, 0.3);
+            background: rgba(79, 195, 247, 0.04);
         }
 
         .np-picker-card.selected {
-            border-color: rgba(139, 92, 246, 0.5);
-            background: rgba(139, 92, 246, 0.06);
+            border-color: rgba(79, 195, 247, 0.5);
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .np-picker-check {
             width: 20px;
             height: 20px;
             border-radius: 6px;
-            border: 2px solid #3d3e4f;
+            border: 2px solid #1e3358;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -932,8 +933,8 @@
         }
 
         .np-picker-card.selected .np-picker-check {
-            border-color: #8b5cf6;
-            background: #8b5cf6;
+            border-color: #4fc3f7;
+            background: #4fc3f7;
         }
 
         .np-picker-check svg {
@@ -972,7 +973,7 @@
         .np-picker-name {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 2px;
         }
 
@@ -1002,7 +1003,7 @@
         .np-picker-badge.optional {
             background: rgba(255, 255, 255, 0.04);
             color: #6b7280;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
         }
 
         .np-picker-section-label {
@@ -1044,7 +1045,7 @@
                     </div>
 
                     <p class="projects-intro">
-                        A <strong>project</strong> is the unit of policy in Kaiden: <strong>filesystem</strong> scope, <strong>network</strong> (deny-by-default with allowed hosts, or open), <strong>project-scoped tokens</strong> (e.g. GitHub), and <strong>git worktree</strong> rules. After configuration, you start the coding agent from the terminal with <code style="font-size:12px;background:rgba(139,92,246,0.12);padding:2px 6px;border-radius:4px;">kdn workspace start</code>.
+                        A <strong>project</strong> is the unit of policy in Kaiden: <strong>filesystem</strong> scope, <strong>network</strong> (deny-by-default with allowed hosts, or open), <strong>project-scoped tokens</strong> (e.g. GitHub), and <strong>git worktree</strong> rules. After configuration, you start the coding agent from the terminal with <code style="font-size:12px;background:rgba(79, 195, 247,0.12);padding:2px 6px;border-radius:4px;">kdn workspace start</code>.
                     </p>
 
                     <div class="projects-grid" id="projectsGrid"></div>
@@ -1173,7 +1174,7 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                             </div>
                             <div class="np-picker-icon" style="background: linear-gradient(135deg, #24292e, #40464e);">
-                                <svg viewBox="0 0 24 24" fill="#e5e7eb"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="#e8eef7"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                             </div>
                             <div class="np-picker-info">
                                 <div class="np-picker-name">GitHub</div>
@@ -1200,7 +1201,7 @@
                             <div class="np-picker-check">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                             </div>
-                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <div class="np-picker-icon" style="background: var(--kd-accent);">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                             </div>
                             <div class="np-picker-info">
@@ -1260,7 +1261,7 @@
                 <!-- Step 5: Skills Selection -->
                 <div class="np-step" id="npStep5">
                     <p class="np-picker-intro">
-                        We detected the following technologies in <strong style="color:#e5e7eb">Kaiden</strong>. Pick the skills that agents should use when working in this project.
+                        We detected the following technologies in <strong style="color:#e8eef7">Kaiden</strong>. Pick the skills that agents should use when working in this project.
                     </p>
 
                     <div class="np-picker-section-label">Recommended for this project</div>
@@ -1328,7 +1329,7 @@
                             <div class="np-picker-check">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                             </div>
-                            <div class="np-picker-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <div class="np-picker-icon" style="background: var(--kd-accent);">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                             </div>
                             <div class="np-picker-info">

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Coding agents</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -12,6 +13,38 @@
         /* Layout — same pattern as models/index.html */
         body.coding-agent-page .main-content {
             min-height: 0;
+        }
+
+        /**
+         * Light: left rail + main read as one product surface; agent block = card + border + shadow.
+         * Dark: preserve original charcoal rail + inset panel look.
+         */
+        body.coding-agent-page {
+            --cag-rail-bg: var(--kd-bg-card);
+            --cag-rail-border: var(--kd-border);
+            --cag-rail-title: var(--kd-text-primary);
+            --cag-rail-text: var(--kd-text-primary);
+            --cag-rail-muted: var(--kd-text-muted);
+            --cag-rail-icon: var(--kd-text-secondary);
+            --cag-rail-hover: color-mix(in srgb, var(--kd-text-primary) 5%, transparent);
+            --cag-rail-active-bg: color-mix(in srgb, var(--kd-accent) 14%, transparent);
+            --cag-box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 10px 28px rgba(13, 27, 46, 0.08);
+            --cag-toggle-track: #cbd5e1;
+            --cag-toggle-knob: #ffffff;
+        }
+
+        html.dark body.coding-agent-page {
+            --cag-rail-bg: #0f0f12;
+            --cag-rail-border: #27272a;
+            --cag-rail-title: #fafafa;
+            --cag-rail-text: #fafafa;
+            --cag-rail-muted: #71717a;
+            --cag-rail-icon: #e4e4e7;
+            --cag-rail-hover: rgba(255, 255, 255, 0.06);
+            --cag-rail-active-bg: rgba(255, 255, 255, 0.09);
+            --cag-box-shadow: none;
+            --cag-toggle-track: #3f3f48;
+            --cag-toggle-knob: #f4f4f5;
         }
 
         /* Layout + left rail — match models/index.html */
@@ -31,18 +64,15 @@
         .services-main::-webkit-scrollbar { width: 6px; }
         .services-main::-webkit-scrollbar-track { background: transparent; }
         .services-main::-webkit-scrollbar-thumb {
-            background: rgba(251, 146, 60, 0.15);
+            background: color-mix(in srgb, var(--kd-accent) 22%, transparent);
             border-radius: 3px;
         }
 
         .services-sidebar {
-            --models-nav-accent: #a855f7;
-            --models-nav-surface: #0f0f12;
-            --models-nav-border: #27272a;
             width: 288px;
             min-width: 288px;
-            background: var(--models-nav-surface);
-            border-right: 1px solid var(--models-nav-border);
+            background: var(--cag-rail-bg);
+            border-right: 1px solid var(--cag-rail-border);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -52,7 +82,7 @@
         .services-sidebar-title {
             font-size: 22px;
             font-weight: 700;
-            color: #fafafa;
+            color: var(--cag-rail-title);
             letter-spacing: -0.02em;
             padding: 24px 20px 20px;
             margin: 0;
@@ -81,11 +111,11 @@
         }
 
         .services-cat-item:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--cag-rail-hover);
         }
 
         .services-cat-item.active {
-            background: rgba(255, 255, 255, 0.09);
+            background: var(--cag-rail-active-bg);
         }
 
         .services-cat-item.active::before {
@@ -95,7 +125,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: var(--models-nav-accent);
+            background: var(--kd-accent);
             border-radius: 0 2px 2px 0;
         }
 
@@ -112,12 +142,12 @@
         .services-cat-icon svg {
             width: 20px;
             height: 20px;
-            color: #e4e4e7;
+            color: var(--cag-rail-icon);
             stroke: currentColor;
         }
 
         .services-cat-item.active .services-cat-icon svg {
-            color: #fafafa;
+            color: var(--cag-rail-text);
         }
 
         .services-cat-name {
@@ -125,20 +155,20 @@
             min-width: 0;
             font-size: 13px;
             font-weight: 500;
-            color: #fafafa;
+            color: var(--cag-rail-text);
             letter-spacing: -0.01em;
             line-height: 1.35;
             white-space: normal;
         }
 
         .services-cat-item.active .services-cat-name {
-            color: #fff;
+            color: var(--cag-rail-text);
             font-weight: 600;
         }
 
         .services-sidebar-divider {
             height: 1px;
-            background: var(--models-nav-border);
+            background: var(--cag-rail-border);
             margin: 16px 20px;
         }
 
@@ -147,7 +177,7 @@
         .services-sidebar-section-title {
             font-size: 11px;
             font-weight: 600;
-            color: #71717a;
+            color: var(--cag-rail-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 8px;
@@ -155,7 +185,7 @@
 
         .services-sidebar-note {
             font-size: 12px;
-            color: #71717a;
+            color: var(--cag-rail-muted);
             line-height: 1.5;
             margin: 0;
         }
@@ -181,13 +211,13 @@
         body.coding-agent-page .services-sidebar .services-cat-meta {
             display: block;
             font-size: 11px;
-            color: #71717a;
+            color: var(--cag-rail-muted);
             margin-top: 2px;
             line-height: 1.3;
         }
 
         body.coding-agent-page .services-sidebar .services-cat-item.active .services-cat-meta {
-            color: #a1a1aa;
+            color: var(--kd-text-secondary);
         }
 
         .cag-title-row {
@@ -201,7 +231,7 @@
         .cag-main-title {
             font-size: 26px;
             font-weight: 700;
-            color: #f4f4f5;
+            color: var(--kd-text-primary);
             letter-spacing: -0.02em;
             margin: 0;
             line-height: 1.15;
@@ -209,13 +239,13 @@
 
         .cag-main-subtitle {
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-accent-dim);
             margin: 0 0 20px;
         }
 
         .cag-intro {
             font-size: 13px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             line-height: 1.5;
             margin: 0 0 22px;
             max-width: 560px;
@@ -223,22 +253,27 @@
 
         .cag-intro code {
             font-size: 12px;
-            background: rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--kd-text-primary) 7%, var(--kd-bg-subtle));
             padding: 1px 5px;
             border-radius: 4px;
-            color: #d1d5db;
+            color: var(--kd-text-primary);
+        }
+
+        html.dark .cag-intro code {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--kd-text-secondary);
         }
 
         .cag-inline-link {
-            color: #d4d4d8;
+            color: var(--kd-accent-dim);
             text-decoration: underline;
-            text-decoration-color: rgba(255, 255, 255, 0.25);
+            text-decoration-color: color-mix(in srgb, var(--kd-accent-dim) 40%, transparent);
             font-weight: 500;
         }
 
         .cag-inline-link:hover {
-            color: #fafafa;
-            text-decoration-color: rgba(255, 255, 255, 0.45);
+            color: var(--kd-accent);
+            text-decoration-color: color-mix(in srgb, var(--kd-accent) 50%, transparent);
         }
 
         .cag-detail[hidden] {
@@ -248,10 +283,10 @@
         .cag-input {
             width: 100%;
             padding: 9px 11px;
-            background: #121218;
-            border: 1px solid #2e2e38;
+            background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-input-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             font-family: ui-monospace, 'SF Mono', Menlo, monospace;
         }
@@ -271,7 +306,7 @@
             font-family: ui-monospace, 'SF Mono', Menlo, monospace;
             font-size: 11px;
             font-weight: 600;
-            color: #a1a1aa;
+            color: var(--kd-text-muted);
             letter-spacing: 0.02em;
         }
 
@@ -280,7 +315,7 @@
             align-items: flex-start;
             gap: 10px;
             font-size: 12px;
-            color: #a1a1aa;
+            color: var(--kd-text-muted);
             line-height: 1.45;
             margin-top: 10px;
             cursor: pointer;
@@ -298,10 +333,15 @@
 
         .cag-check-row code {
             font-size: 10px;
-            background: rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--kd-text-primary) 7%, var(--kd-bg-subtle));
             padding: 1px 5px;
             border-radius: 3px;
-            color: #d4d4d8;
+            color: var(--kd-text-primary);
+        }
+
+        html.dark .cag-check-row code {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--kd-text-secondary);
         }
 
         .cag-doc-link {
@@ -311,14 +351,14 @@
             margin-top: 14px;
             font-size: 12px;
             font-weight: 500;
-            color: #d4d4d8;
+            color: var(--kd-accent-dim);
             text-decoration: underline;
-            text-decoration-color: rgba(255, 255, 255, 0.25);
+            text-decoration-color: color-mix(in srgb, var(--kd-accent-dim) 40%, transparent);
         }
 
         .cag-doc-link:hover {
-            color: #fafafa;
-            text-decoration-color: rgba(255, 255, 255, 0.45);
+            color: var(--kd-accent);
+            text-decoration-color: color-mix(in srgb, var(--kd-accent) 45%, transparent);
         }
 
         .cag-doc-link svg {
@@ -328,20 +368,29 @@
 
         .cag-agent-block {
             --cag-accent: #71717a;
-            --cag-accent-soft: rgba(255, 255, 255, 0.04);
-            --cag-accent-border: rgba(255, 255, 255, 0.14);
-            background: #18181f;
-            border: 1px solid #2a2a32;
+            --cag-accent-soft: color-mix(in srgb, var(--cag-accent) 12%, var(--kd-bg-card));
+            --cag-accent-border: color-mix(in srgb, var(--cag-accent) 38%, var(--kd-border));
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 10px;
             padding: 0;
             max-width: 640px;
             overflow: hidden;
+            box-shadow: var(--cag-box-shadow);
+        }
+
+        html.dark .cag-agent-block {
+            --cag-accent-soft: rgba(255, 255, 255, 0.04);
+            --cag-accent-border: rgba(255, 255, 255, 0.14);
+            background: #18181f;
+            border-color: #2a2a32;
+            box-shadow: none;
         }
 
         .cag-agent-block-head {
             padding: 16px 18px 14px 22px;
             background: var(--cag-accent-soft);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--kd-border);
         }
 
         .cag-card-pill {
@@ -352,15 +401,19 @@
             text-transform: uppercase;
             color: var(--cag-accent);
             border: 1px solid var(--cag-accent-border);
-            background: rgba(0, 0, 0, 0.2);
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-subtle));
             padding: 3px 8px;
             border-radius: 999px;
             margin-bottom: 8px;
         }
 
+        html.dark .cag-card-pill {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
         .cag-agent-tagline {
             font-size: 12px;
-            color: #9ca3af;
+            color: var(--kd-accent-dim);
             margin: 0;
             line-height: 1.45;
         }
@@ -381,22 +434,22 @@
             display: block;
             font-size: 12px;
             font-weight: 500;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             margin-bottom: 6px;
         }
 
         .cag-optional {
             font-weight: 400;
-            color: #6b7280;
+            color: var(--kd-text-muted);
         }
 
         .cag-select {
             width: 100%;
             padding: 9px 32px 9px 11px;
-            background: #121218;
-            border: 1px solid #2e2e38;
+            background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-input-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             cursor: pointer;
             appearance: none;
@@ -413,7 +466,7 @@
 
         .cag-hint {
             font-size: 11px;
-            color: #52525b;
+            color: var(--kd-text-muted);
             margin: 6px 0 0;
             line-height: 1.4;
         }
@@ -422,10 +475,10 @@
             width: 100%;
             min-height: 72px;
             padding: 10px 11px;
-            background: #121218;
-            border: 1px solid #2e2e38;
+            background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-input-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             font-family: inherit;
             line-height: 1.45;
@@ -445,15 +498,21 @@
             margin-bottom: 16px;
         }
 
+        .cag-options--divider-top {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
+        }
+
         .cag-opt {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
             padding: 10px 0;
-            border-top: 1px solid #25252d;
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
             font-size: 13px;
-            color: #d1d5db;
+            color: var(--kd-text-primary);
         }
 
         .cag-opt:first-child {
@@ -465,7 +524,7 @@
             position: relative;
             width: 40px;
             height: 22px;
-            background: #3f3f48;
+            background: var(--cag-toggle-track);
             border-radius: 11px;
             cursor: pointer;
             transition: background-color 0.15s ease;
@@ -483,7 +542,7 @@
             left: 2px;
             width: 18px;
             height: 18px;
-            background: #f4f4f5;
+            background: var(--cag-toggle-knob);
             border-radius: 50%;
             transition: transform 0.15s ease;
         }
@@ -498,25 +557,41 @@
             gap: 10px;
             margin-top: 24px;
             padding-top: 20px;
-            border-top: 1px solid #2a2a32;
+            border-top: 1px solid var(--kd-border);
             max-width: 640px;
         }
 
         .cag-save-btn {
             padding: 9px 18px;
-            background: #3f3f46;
-            border: 1px solid #52525b;
+            background: var(--kd-accent);
+            border: 1px solid transparent;
             border-radius: 8px;
-            color: #fafafa;
+            color: var(--kd-on-accent);
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.15s ease, border-color 0.15s ease;
+            transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 14px rgba(79, 195, 247, 0.22);
+        }
+
+        html.dark .cag-save-btn {
+            background: #3f3f46;
+            border-color: #52525b;
+            color: #fafafa;
+            font-weight: 500;
+            box-shadow: none;
         }
 
         .cag-save-btn:hover:not(:disabled) {
+            background: var(--kd-accent-dim);
+            box-shadow: 0 6px 18px rgba(79, 195, 247, 0.3);
+        }
+
+        html.dark .cag-save-btn:hover:not(:disabled) {
+            opacity: 1;
             background: #52525b;
             border-color: #71717a;
+            box-shadow: none;
         }
 
         .cag-save-btn:disabled {
@@ -529,14 +604,37 @@
             background: transparent;
             border: none;
             border-radius: 8px;
-            color: #71717a;
+            color: var(--kd-text-muted);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
         }
 
         .cag-reset-btn:hover {
-            color: #a1a1aa;
+            color: var(--kd-text-secondary);
+        }
+
+        /* Inline <code> chips in taglines / hints */
+        .cag-code-chip {
+            font-size: 10px;
+            background: color-mix(in srgb, var(--kd-text-primary) 8%, var(--kd-bg-subtle));
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: var(--kd-text-primary);
+        }
+
+        .cag-agent-tagline .cag-code-chip {
+            font-size: 11px;
+            padding: 2px 6px;
+        }
+
+        html.dark .cag-code-chip {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--kd-text-secondary);
+        }
+
+        html.dark .cag-agent-tagline .cag-code-chip {
+            background: rgba(0, 0, 0, 0.25);
         }
 
         /* Right-click: set default runtime */
@@ -547,9 +645,15 @@
             padding: 4px;
             margin: 0;
             list-style: none;
-            background: #18181b;
-            border: 1px solid #3f3f46;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 8px;
+            box-shadow: 0 12px 40px rgba(13, 27, 46, 0.12), 0 4px 12px rgba(13, 27, 46, 0.08);
+        }
+
+        html.dark .cag-ctx-menu {
+            background: #18181b;
+            border-color: #3f3f46;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
         }
 
@@ -565,7 +669,7 @@
             border: none;
             border-radius: 6px;
             background: transparent;
-            color: #e4e4e7;
+            color: var(--kd-text-primary);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -574,9 +678,15 @@
 
         .cag-ctx-item:hover,
         .cag-ctx-item:focus {
-            background: rgba(168, 85, 247, 0.18);
-            color: #fafafa;
+            background: color-mix(in srgb, var(--kd-accent) 14%, transparent);
+            color: var(--kd-text-primary);
             outline: none;
+        }
+
+        html.dark .cag-ctx-item:hover,
+        html.dark .cag-ctx-item:focus {
+            background: rgba(79, 195, 247, 0.15);
+            color: #fafafa;
         }
 
         .cag-ctx-item:disabled {
@@ -595,17 +705,29 @@
             letter-spacing: 0.05em;
             padding: 3px 8px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            color: #a1a1aa;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-subtle));
+            color: var(--kd-text-muted);
+            border: 1px solid var(--kd-border);
             line-height: 1.2;
             white-space: nowrap;
         }
 
         body.coding-agent-page .services-sidebar .services-cat-item.active .cag-default-label {
-            background: rgba(168, 85, 247, 0.15);
-            color: #d8b4fe;
-            border-color: rgba(168, 85, 247, 0.25);
+            background: color-mix(in srgb, var(--kd-accent) 16%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
+        }
+
+        html.dark body.coding-agent-page .services-sidebar .cag-default-label {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a1a1aa;
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        html.dark body.coding-agent-page .services-sidebar .services-cat-item.active .cag-default-label {
+            background: rgba(79, 195, 247, 0.12);
+            color: var(--kd-accent-bright);
+            border-color: rgba(79, 195, 247, 0.28);
         }
     </style>
 </head>
@@ -731,7 +853,7 @@
                         <div class="cag-agent-block">
                             <header class="cag-agent-block-head">
                                 <div class="cag-card-pill">Same as onboarding · OTHER</div>
-                                <p class="cag-agent-tagline">Claude Code in the terminal, with inference routed through Vertex AI instead of the Anthropic API. Uses <code style="font-size:11px;background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;">agents.json</code> env entries and optional gcloud mounts.</p>
+                                <p class="cag-agent-tagline">Claude Code in the terminal, with inference routed through Vertex AI instead of the Anthropic API. Uses <code class="cag-code-chip">agents.json</code> env entries and optional gcloud mounts.</p>
                             </header>
                             <div class="cag-agent-body">
                                 <div class="cag-field">
@@ -755,8 +877,8 @@
                                     <label class="cag-field-label-mono" for="cag-vertex-region">CLOUD_ML_REGION</label>
                                     <input id="cag-vertex-region" class="cag-input" type="text" placeholder="us-east5" autocomplete="off">
                                 </div>
-                                <p class="cag-hint">Written to environment for the Claude agent in <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">~/.kdn/config/agents.json</code>. Run <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">gcloud auth application-default login</code> on the host before starting the workspace.</p>
-                                <p class="cag-hint" style="margin-top:10px;">Mounts (<code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">claude.mounts</code> in the same file):</p>
+                                <p class="cag-hint">Written to environment for the Claude agent in <code class="cag-code-chip">~/.kdn/config/agents.json</code>. Run <code class="cag-code-chip">gcloud auth application-default login</code> on the host before starting the workspace.</p>
+                                <p class="cag-hint" style="margin-top:10px;">Mounts (<code class="cag-code-chip">claude.mounts</code> in the same file):</p>
                                 <label class="cag-check-row">
                                     <input type="checkbox" id="cag-vertex-mount-gcloud" checked>
                                     <span>Mount <code>$HOME/.config/gcloud</code> read-only for application default credentials</span>
@@ -765,12 +887,12 @@
                                     <input type="checkbox" id="cag-vertex-mount-claude">
                                     <span>Also mount <code>~/.claude</code> and <code>~/.claude.json</code> (optional)</span>
                                 </label>
-                                <p class="cag-hint" style="margin-top:12px;">No <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;">ANTHROPIC_API_KEY</code> when using Vertex; credentials come from the mounted gcloud config.</p>
+                                <p class="cag-hint" style="margin-top:12px;">No <code class="cag-code-chip">ANTHROPIC_API_KEY</code> when using Vertex; credentials come from the mounted gcloud config.</p>
                                 <a class="cag-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer">
                                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                     kdn README: Claude Code with Vertex AI
                                 </a>
-                                <div class="cag-options" aria-label="Options" style="margin-top:20px;padding-top:16px;border-top:1px solid #25252d;">
+                                <div class="cag-options cag-options--divider-top" aria-label="Options">
                                     <div class="cag-opt">
                                         <span>Auto-apply safe edits</span>
                                         <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>

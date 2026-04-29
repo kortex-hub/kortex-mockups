@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Workspace Details</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -20,7 +21,7 @@
             flex-direction: column;
             flex: 1;
             min-height: 0;
-            background: #0f0f14;
+            background: var(--kd-bg);
             overflow: hidden;
         }
 
@@ -30,8 +31,13 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 24px;
-            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
-            border-bottom: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border-bottom: 1px solid var(--kd-border);
+        }
+
+        html.dark .session-header-bar {
+            background: linear-gradient(135deg, #080f1a 0%, #111e33 100%);
+            border-bottom-color: #1e3358;
         }
 
         .session-header-left {
@@ -47,16 +53,16 @@
             width: 36px;
             height: 36px;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
             border: none;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .session-back-btn:hover {
-            background: rgba(139, 92, 246, 0.15);
-            color: #e5e7eb;
+            background: color-mix(in srgb, var(--kd-accent) 12%, var(--kd-bg-card));
+            color: var(--kd-text-primary);
         }
 
         .session-header-info {
@@ -77,25 +83,25 @@
         }
 
         .session-header-icon.claude {
-            background: linear-gradient(135deg, #d97706, #f59e0b);
+            background: #f59e0b;
             color: #ffffff;
         }
 
         .session-header-icon.codex {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: #10b981;
             color: #ffffff;
         }
 
         .session-header-text h1 {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 2px 0;
         }
 
         .session-header-text span {
             font-size: 12px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
         }
 
         .session-status-badge {
@@ -144,14 +150,26 @@
         }
 
         .session-control-btn.terminal {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
+            box-shadow: none;
+        }
+
+        html:not(.dark) .session-control-btn.terminal {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.08), 0 4px 12px rgba(13, 27, 46, 0.08);
         }
 
         .session-control-btn.terminal:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            background: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) .session-control-btn.terminal:hover {
+            box-shadow: 0 2px 8px rgba(13, 27, 46, 0.1), 0 6px 16px rgba(79, 195, 247, 0.18);
+        }
+
+        html.dark .session-control-btn.terminal:hover {
+            box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
         }
 
         .session-control-btn.stop {
@@ -180,7 +198,7 @@
         }
 
         .session-main::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.2);
+            background: color-mix(in srgb, var(--kd-accent) 22%, transparent);
             border-radius: 4px;
         }
 
@@ -195,10 +213,20 @@
 
         /* Summary Card */
         .summary-card {
-            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             padding: 18px 20px;
+        }
+
+        html:not(.dark) .summary-card {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
+        html.dark .summary-card {
+            background: linear-gradient(145deg, #080f1a 0%, #151620 100%);
+            border-color: #1e3358;
+            box-shadow: none;
         }
 
         .summary-card-header {
@@ -211,7 +239,7 @@
         .summary-card-title {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -220,7 +248,7 @@
         .summary-card-title svg {
             width: 16px;
             height: 16px;
-            color: #a78bfa;
+            color: var(--kd-accent);
         }
 
         .summary-card-badge {
@@ -228,8 +256,13 @@
             font-weight: 600;
             padding: 3px 8px;
             border-radius: 10px;
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
+            background: color-mix(in srgb, var(--kd-accent) 16%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+        }
+
+        html.dark .summary-card-badge {
+            background: rgba(79, 195, 247, 0.15);
+            color: #6dd6ff;
         }
 
         /* Agent Info — compact horizontal */
@@ -256,7 +289,7 @@
         }
 
         .agent-avatar-large.claude {
-            background: linear-gradient(135deg, #d97706, #f59e0b);
+            background: #f59e0b;
             color: #ffffff;
         }
 
@@ -268,19 +301,23 @@
         .agent-name {
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 2px 0;
         }
 
         .agent-model {
             font-size: 12px;
-            color: #a78bfa;
+            color: var(--kd-accent-dim);
             margin-bottom: 0;
+        }
+
+        html.dark .agent-model {
+            color: #6dd6ff;
         }
 
         .agent-description {
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-text-secondary);
             line-height: 1.5;
             margin-bottom: 0;
         }
@@ -309,7 +346,7 @@
 
         .info-label {
             font-size: 10px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -317,7 +354,7 @@
         .info-value {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .info-value.running {
@@ -350,18 +387,18 @@
         .context-stat-value {
             font-size: 18px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .context-stat-label {
             font-size: 10px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
         }
 
         .context-bar-compact {
             height: 6px;
-            background: rgba(107, 114, 128, 0.2);
+            background: color-mix(in srgb, var(--kd-text-muted) 18%, var(--kd-bg-card));
             border-radius: 3px;
             overflow: hidden;
             margin-bottom: 12px;
@@ -370,7 +407,8 @@
         .context-bar-compact-fill {
             height: 100%;
             border-radius: 3px;
-            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            background: #f59e0b;
+            box-shadow: none;
         }
 
         .context-breakdown {
@@ -392,13 +430,13 @@
 
         .context-breakdown-label {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
         }
 
         .context-breakdown-value {
             font-size: 12px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         /* Resources strip */
@@ -423,15 +461,24 @@
             align-items: center;
             gap: 10px;
             padding: 8px 10px;
-            background: rgba(37, 38, 49, 0.5);
+            background: color-mix(in srgb, var(--kd-text-primary) 4%, var(--kd-bg-card));
             border: 1px solid transparent;
             border-radius: 8px;
             transition: all 0.15s ease;
         }
 
+        html.dark .resource-item {
+            background: rgba(37, 38, 49, 0.5);
+        }
+
         .resource-item:hover {
-            border-color: rgba(139, 92, 246, 0.2);
-            background: rgba(139, 92, 246, 0.05);
+            border-color: color-mix(in srgb, var(--kd-accent) 28%, var(--kd-border));
+            background: color-mix(in srgb, var(--kd-accent) 6%, var(--kd-bg-card));
+        }
+
+        html.dark .resource-item:hover {
+            border-color: rgba(79, 195, 247, 0.2);
+            background: rgba(79, 195, 247, 0.05);
         }
 
         .resource-icon {
@@ -479,7 +526,7 @@
         .resource-name {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .resource-status {
@@ -506,30 +553,43 @@
         .stat-box-value {
             font-size: 16px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .stat-box-value.highlight {
-            color: #a78bfa;
+            color: var(--kd-accent-dim);
+        }
+
+        html.dark .stat-box-value.highlight {
+            color: #6dd6ff;
         }
 
         .stat-box-label {
             font-size: 11px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
         }
 
         .terminal-window {
             background: #0a0a0f;
-            border: 1px solid #3d3e4f;
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             overflow: hidden;
+        }
+
+        html.dark .terminal-window {
+            border-color: #1e3358;
         }
 
         .terminal-header {
             display: flex;
             flex-direction: column;
-            background: #1a1b23;
-            border-bottom: 1px solid #3d3e4f;
+            background: var(--kd-bg-subtle);
+            border-bottom: 1px solid var(--kd-border);
+        }
+
+        html.dark .terminal-header {
+            background: #080f1a;
+            border-bottom-color: #1e3358;
         }
 
         .terminal-titlebar {
@@ -567,26 +627,41 @@
             align-items: center;
             gap: 8px;
             padding: 6px 14px;
-            background: rgba(45, 46, 63, 0.5);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
             border: 1px solid transparent;
             border-radius: 6px 6px 0 0;
             font-size: 12px;
             font-weight: 500;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
+        html.dark .terminal-tab {
+            background: rgba(45, 46, 63, 0.5);
+            color: #7090b8;
+        }
+
         .terminal-tab:hover {
-            background: rgba(61, 62, 79, 0.7);
-            color: #e5e7eb;
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-card));
+            color: var(--kd-text-primary);
+        }
+
+        html.dark .terminal-tab:hover {
+            background: rgba(30, 51, 88, 0.7);
+            color: #e8eef7;
         }
 
         .terminal-tab.active {
             background: #0a0a0f;
-            border-color: #3d3e4f;
+            border-color: var(--kd-border);
             border-bottom-color: #0a0a0f;
-            color: #e5e7eb;
+            color: #e8eef7;
+        }
+
+        html.dark .terminal-tab.active {
+            border-color: #1e3358;
+            border-bottom-color: #0a0a0f;
         }
 
         .terminal-tab svg {
@@ -598,7 +673,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #6b7280;
+            background: var(--kd-text-muted);
         }
 
         .terminal-tab.active .tab-dot {
@@ -630,16 +705,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px dashed #4b5563;
+            border: 1px dashed var(--kd-surface-input-border);
             border-radius: 6px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .terminal-tab-add:hover {
-            border-color: #9ca3af;
-            color: #9ca3af;
+            border-color: var(--kd-accent);
+            color: var(--kd-accent-dim);
         }
 
         .terminal-title {
@@ -648,7 +723,7 @@
             gap: 10px;
             font-size: 13px;
             font-weight: 500;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
         }
 
         .terminal-title svg {
@@ -675,12 +750,13 @@
         }
 
         .terminal-action-btn.expand {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            color: #ffffff;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
         }
 
         .terminal-action-btn.expand:hover {
             transform: scale(1.02);
+            background: var(--kd-accent-dim);
         }
 
         .terminal-body {
@@ -688,7 +764,7 @@
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 13px;
             line-height: 1.6;
-            color: #e5e7eb;
+            color: #e8eef7;
             min-height: 150px;
         }
 
@@ -697,21 +773,21 @@
         }
 
         .terminal-command {
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .terminal-output {
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .terminal-agent-output {
-            color: #9ca3af;
+            color: #7090b8;
             white-space: pre-wrap;
             margin: 0 0 10px 12px;
             padding: 8px 10px;
             background: rgba(0, 0, 0, 0.25);
             border-radius: 6px;
-            border-left: 2px solid #3d3e4f;
+            border-left: 2px solid #1e3358;
             font-size: 12px;
             line-height: 1.5;
         }
@@ -749,8 +825,8 @@
         .terminal-agent-tool {
             margin: 8px 0 0;
             padding: 2px 0 2px 12px;
-            border-left: 2px solid rgba(167, 139, 250, 0.45);
-            color: #c4b5fd;
+            border-left: 2px solid rgba(109, 212, 252, 0.45);
+            color: #a8e6fc;
             font-size: 12px;
             font-weight: 500;
         }
@@ -805,8 +881,13 @@
         .session-tabs {
             display: flex;
             padding: 0 24px;
-            background: #1a1b23;
-            border-bottom: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border-bottom: 1px solid var(--kd-border);
+        }
+
+        html.dark .session-tabs {
+            background: #080f1a;
+            border-bottom-color: #1e3358;
         }
 
         .session-tab {
@@ -814,7 +895,7 @@
             align-items: center;
             gap: 8px;
             padding: 14px 20px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -828,13 +909,13 @@
         }
 
         .session-tab:hover {
-            color: #e5e7eb;
-            background: rgba(139, 92, 246, 0.05);
+            color: var(--kd-text-primary);
+            background: color-mix(in srgb, var(--kd-accent) 6%, var(--kd-bg-card));
         }
 
         .session-tab.active {
-            color: #ffffff;
-            border-bottom-color: #8b5cf6;
+            color: var(--kd-text-primary);
+            border-bottom-color: var(--kd-accent);
         }
 
         .session-tab svg {
@@ -847,8 +928,13 @@
             border-radius: 10px;
             font-size: 11px;
             font-weight: 600;
-            background: rgba(139, 92, 246, 0.2);
-            color: #a78bfa;
+            background: color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+        }
+
+        html.dark .session-tab .tab-badge {
+            background: rgba(79, 195, 247, 0.2);
+            color: #6dd6ff;
         }
 
         /* Context Prefix Badge (sandbox/kortex) */
@@ -868,9 +954,9 @@
         }
 
         .context-prefix.kortex {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15));
-            color: #a78bfa;
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.2), rgba(42, 139, 191, 0.15));
+            color: #6dd6ff;
+            border: 1px solid rgba(79, 195, 247, 0.3);
         }
 
         .terminal-context-indicator {
@@ -893,9 +979,9 @@
         }
 
         .terminal-context-indicator.kortex {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15));
-            color: #a78bfa;
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.2), rgba(42, 139, 191, 0.15));
+            color: #6dd6ff;
+            border: 1px solid rgba(79, 195, 247, 0.3);
         }
 
         .terminal-context-indicator svg {
@@ -922,7 +1008,7 @@
             width: 100%;
             min-height: 0;
             border: none;
-            background: #0f0f14;
+            background: var(--kd-bg);
         }
 
         /* Syntax highlighting */
@@ -932,6 +1018,31 @@
         .syntax-comment { color: #676e95; }
         .syntax-number { color: #f78c6c; }
         .syntax-operator { color: #89ddff; }
+
+        /* File preview (Files tab) */
+        .file-content-preview {
+            background: var(--kd-bg-subtle);
+            border: 1px solid var(--kd-border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            overflow: auto;
+            max-height: 500px;
+        }
+
+        html.dark .file-content-preview {
+            background: #080f1a;
+            border-color: #1e3358;
+        }
+
+        #fileContentPre {
+            margin: 0;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--kd-text-primary);
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body class="sessions-page">
@@ -1268,8 +1379,8 @@ dist/assets/index-CdK8d2Ko.js    156.78 kB │ gzip: 51.23 kB
                                     </div>
                                     <span class="summary-card-badge" id="previewFileStatus">New file</span>
                                 </div>
-                                <div class="file-content-preview" style="background: #1a1b23; border-radius: 8px; padding: 16px; margin-top: 12px; overflow: auto; max-height: 500px;">
-                                    <pre id="fileContentPre" style="margin: 0; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; white-space: pre-wrap;"><code id="fileContentCode">Click on a file to view its content</code></pre>
+                                <div class="file-content-preview">
+                                    <pre id="fileContentPre"><code id="fileContentCode">Click on a file to view its content</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -1991,8 +2102,8 @@ spec:
             const fileItems = document.querySelectorAll('#filesList .resource-item');
             fileItems.forEach((item, i) => {
                 if (i === index) {
-                    item.style.background = 'rgba(139, 92, 246, 0.1)';
-                    item.style.borderLeft = '3px solid #8b5cf6';
+                    item.style.background = 'rgba(79, 195, 247, 0.1)';
+                    item.style.borderLeft = '3px solid #4fc3f7';
                 } else {
                     item.style.background = 'transparent';
                     item.style.borderLeft = '3px solid transparent';

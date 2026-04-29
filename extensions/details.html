@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Semantic Agent Routing</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -18,20 +19,23 @@
 
         .extd-layout::-webkit-scrollbar { width: 6px; }
         .extd-layout::-webkit-scrollbar-track { background: transparent; }
-        .extd-layout::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.15); border-radius: 3px; }
+        .extd-layout::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--kd-accent) 22%, transparent);
+            border-radius: 3px;
+        }
 
         .extd-breadcrumb {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 13px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin-bottom: 28px;
         }
-        .extd-breadcrumb a { color: #6b7280; text-decoration: none; transition: color 0.15s; }
-        .extd-breadcrumb a:hover { color: #c4b5fd; }
+        .extd-breadcrumb a { color: var(--kd-text-muted); text-decoration: none; transition: color 0.15s; }
+        .extd-breadcrumb a:hover { color: var(--kd-accent); }
         .extd-breadcrumb svg { width: 14px; height: 14px; }
-        .extd-breadcrumb span { color: #e5e7eb; }
+        .extd-breadcrumb span { color: var(--kd-text-primary); }
 
         .extd-hero {
             display: flex;
@@ -44,7 +48,7 @@
             width: 64px;
             height: 64px;
             border-radius: 16px;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: var(--kd-accent);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,7 +57,7 @@
         .extd-hero-icon svg { width: 32px; height: 32px; color: #fff; }
 
         .extd-hero-info { flex: 1; }
-        .extd-hero-title { font-size: 28px; font-weight: 700; color: #e5e7eb; margin-bottom: 6px; }
+        .extd-hero-title { font-size: 28px; font-weight: 700; color: var(--kd-text-primary); margin-bottom: 6px; }
 
         .extd-hero-meta {
             display: flex;
@@ -71,11 +75,15 @@
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
-        .extd-badge.tool { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+        .extd-badge.tool { background: rgba(79, 195, 247, 0.15); color: var(--kd-accent-dim); }
+        html.dark .extd-badge.tool { color: #a8e6fc; }
         .extd-badge.redhat { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
-        .extd-badge.version { background: rgba(255, 255, 255, 0.06); color: #9ca3af; }
+        .extd-badge.version {
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
+            color: var(--kd-text-muted);
+        }
 
-        .extd-hero-desc { font-size: 14px; color: #9ca3af; line-height: 1.6; max-width: 640px; }
+        .extd-hero-desc { font-size: 14px; color: var(--kd-text-secondary); line-height: 1.6; max-width: 640px; }
 
         .extd-hero-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
 
@@ -84,8 +92,8 @@
             align-items: center;
             gap: 8px;
             padding: 10px 24px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: #fff;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
             border: none;
             border-radius: 10px;
             font-size: 14px;
@@ -95,33 +103,43 @@
             min-width: 160px;
             justify-content: center;
         }
-        .extd-install-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4); }
+        .extd-install-btn:hover { transform: translateY(-1px); }
+        .extd-install-btn:hover:not(.installed):not(.installing) {
+            background: var(--kd-accent-dim);
+        }
+        html:not(.dark) .extd-install-btn:hover:not(.installed):not(.installing) {
+            box-shadow: 0 4px 14px rgba(79, 195, 247, 0.22);
+        }
+        html.dark .extd-install-btn:hover:not(.installed):not(.installing) {
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
+        }
+        .extd-install-btn.installed:hover { background: #047857; }
         .extd-install-btn svg { width: 18px; height: 18px; }
 
         .extd-install-btn.installing {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
+            background: #6b7280;
             cursor: wait;
         }
         .extd-install-btn.installed {
-            background: linear-gradient(135deg, #059669, #047857);
+            background: #059669;
         }
 
         .extd-divider {
             height: 1px;
-            background: #3d3e4f;
+            background: var(--kd-border);
             margin: 28px 0;
         }
 
         .extd-section-title {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .extd-section-title svg { width: 18px; height: 18px; color: #8b5cf6; }
+        .extd-section-title svg { width: 18px; height: 18px; color: var(--kd-accent); }
 
         .extd-feature-grid {
             display: grid;
@@ -131,10 +149,19 @@
         }
 
         .extd-feature-card {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             padding: 18px;
+        }
+
+        html.dark .extd-feature-card {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .extd-feature-card {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
         }
 
         .extd-feature-card-header {
@@ -155,18 +182,27 @@
         }
         .extd-feature-icon svg { width: 16px; height: 16px; color: #fff; }
 
-        .extd-feature-card-title { font-size: 14px; font-weight: 600; color: #e5e7eb; }
-        .extd-feature-card-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+        .extd-feature-card-title { font-size: 14px; font-weight: 600; color: var(--kd-text-primary); }
+        .extd-feature-card-desc { font-size: 13px; color: var(--kd-text-secondary); line-height: 1.5; }
 
         .extd-routing-diagram {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 14px;
             padding: 24px;
             margin-bottom: 28px;
         }
 
-        .extd-diagram-title { font-size: 13px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+        html.dark .extd-routing-diagram {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .extd-routing-diagram {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
+        .extd-diagram-title { font-size: 13px; font-weight: 600; color: var(--kd-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
 
         .extd-flow {
             display: flex;
@@ -184,16 +220,16 @@
             border-radius: 10px;
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
         .extd-flow-node.client { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); }
-        .extd-flow-node.router { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .extd-flow-node.router { background: rgba(79, 195, 247, 0.15); border: 1px solid rgba(79, 195, 247, 0.3); }
         .extd-flow-node.local { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
         .extd-flow-node.cloud { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); }
 
         .extd-flow-node svg { width: 16px; height: 16px; }
 
-        .extd-flow-arrow { color: #4b5563; font-size: 18px; }
+        .extd-flow-arrow { color: var(--kd-text-muted); font-size: 18px; }
 
         .extd-stats-row {
             display: grid;
@@ -203,21 +239,41 @@
         }
 
         .extd-stat {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             padding: 18px;
             text-align: center;
         }
-        .extd-stat-value { font-size: 28px; font-weight: 700; color: #c4b5fd; margin-bottom: 4px; }
-        .extd-stat-label { font-size: 12px; color: #6b7280; }
+
+        html.dark .extd-stat {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .extd-stat {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
+        .extd-stat-value { font-size: 28px; font-weight: 700; color: var(--kd-accent-dim); margin-bottom: 4px; }
+        html.dark .extd-stat-value { color: #a8e6fc; }
+        .extd-stat-label { font-size: 12px; color: var(--kd-text-muted); }
 
         .extd-config-section {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 14px;
             padding: 24px;
             margin-bottom: 20px;
+        }
+
+        html.dark .extd-config-section {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .extd-config-section {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
         }
 
         .extd-config-row {
@@ -225,12 +281,12 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 85%, transparent);
         }
         .extd-config-row:last-child { border-bottom: none; }
 
-        .extd-config-label { font-size: 13px; color: #9ca3af; }
-        .extd-config-value { font-size: 13px; color: #e5e7eb; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+        .extd-config-label { font-size: 13px; color: var(--kd-text-muted); }
+        .extd-config-value { font-size: 13px; color: var(--kd-text-primary); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
 
         .extd-progress-overlay {
             display: none;
@@ -244,18 +300,23 @@
         .extd-progress-overlay.visible { display: flex; }
 
         .extd-progress-modal {
-            background: #1e1f2b;
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 16px;
             padding: 32px;
             width: 480px;
             max-width: 90vw;
         }
 
+        html.dark .extd-progress-modal {
+            background: #080f1a;
+            border-color: #1e3358;
+        }
+
         .extd-progress-title {
             font-size: 18px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -268,42 +329,43 @@
             gap: 12px;
             padding: 10px 0;
             font-size: 13px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             transition: color 0.3s;
         }
-        .extd-progress-step.active { color: #c4b5fd; }
+        .extd-progress-step.active { color: var(--kd-accent-dim); }
+        html.dark .extd-progress-step.active { color: #a8e6fc; }
         .extd-progress-step.done { color: #34d399; }
 
         .extd-progress-dot {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            border: 2px solid #3d3e4f;
+            border: 2px solid var(--kd-border);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             transition: all 0.3s;
         }
-        .extd-progress-step.active .extd-progress-dot { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.2); }
+        .extd-progress-step.active .extd-progress-dot { border-color: #4fc3f7; background: rgba(79, 195, 247, 0.2); }
         .extd-progress-step.done .extd-progress-dot { border-color: #34d399; background: rgba(52, 211, 153, 0.2); }
         .extd-progress-dot svg { width: 12px; height: 12px; opacity: 0; }
         .extd-progress-step.done .extd-progress-dot svg { opacity: 1; color: #34d399; }
 
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .extd-spinner { width: 14px; height: 14px; border: 2px solid #3d3e4f; border-top-color: #8b5cf6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .extd-spinner { width: 14px; height: 14px; border: 2px solid var(--kd-border); border-top-color: var(--kd-accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .extd-progress-step.active .extd-progress-dot .extd-spinner { display: block; }
 
         .extd-progress-bar-track {
             height: 4px;
-            background: #3d3e4f;
+            background: var(--kd-border);
             border-radius: 2px;
             margin-top: 20px;
             overflow: hidden;
         }
         .extd-progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(90deg, var(--kd-accent), var(--kd-accent-dim));
             border-radius: 2px;
             width: 0%;
             transition: width 0.5s ease;
@@ -416,7 +478,7 @@
                 <div class="extd-feature-grid">
                     <div class="extd-feature-card">
                         <div class="extd-feature-card-header">
-                            <div class="extd-feature-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <div class="extd-feature-icon" style="background: var(--kd-accent);">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                             </div>
                             <div class="extd-feature-card-title">Neural Classification</div>
@@ -465,9 +527,9 @@
                         <div style="display:flex;flex-wrap:wrap;gap:8px;">
                             <span style="padding:6px 12px;border-radius:8px;background:rgba(16,185,129,0.2);color:#6ee7b7;font-size:12px;font-weight:600;">Granite 3.1 8B</span>
                             <span style="padding:6px 12px;border-radius:8px;background:rgba(16,185,129,0.2);color:#6ee7b7;font-size:12px;font-weight:600;">Qwen 2.5 Coder 7B</span>
-                            <span style="padding:6px 12px;border-radius:8px;background:rgba(107,114,128,0.25);color:#9ca3af;font-size:12px;">Llama 3.2 8B (off)</span>
+                            <span style="padding:6px 12px;border-radius:8px;background:rgba(107,114,128,0.25);color:var(--kd-text-muted);font-size:12px;">Llama 3.2 8B (off)</span>
                         </div>
-                        <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.5;">Only checked models are advertised to the router when you run <code style="background:rgba(139,92,246,0.2);padding:2px 6px;border-radius:4px;">kdn workspace start</code>; Semantic Router classifies each request and picks among this pool.</p>
+                        <p style="margin:0;font-size:12px;color:var(--kd-text-secondary);line-height:1.5;">Only checked models are advertised to the router when you run <code style="background:color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));padding:2px 6px;border-radius:4px;">kdn workspace start</code>; Semantic Router classifies each request and picks among this pool.</p>
                     </div>
                     <div class="extd-config-row">
                         <div class="extd-config-label">Router endpoint</div>
@@ -502,7 +564,7 @@
     <div class="extd-progress-overlay" id="installOverlay">
         <div class="extd-progress-modal">
             <div class="extd-progress-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" style="width:22px;height:22px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#4fc3f7" stroke-width="2" style="width:22px;height:22px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Installing Semantic Agent Routing
             </div>
 

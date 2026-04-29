@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden — Welcome</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <style>
         body.welcome-page {
-            background: #1a1b23;
+            background: var(--kd-bg);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -31,7 +32,7 @@
             gap: 10px;
             font-size: 20px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             letter-spacing: -0.01em;
         }
 
@@ -39,7 +40,7 @@
             width: 32px;
             height: 32px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -48,13 +49,13 @@
         .welcome-logo-icon svg {
             width: 18px;
             height: 18px;
-            color: #fff;
+            color: var(--kd-on-accent);
         }
 
         .welcome-card {
             width: 100%;
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, var(--kd-bg-card) 0%, var(--kd-bg) 100%);
+            border: 1px solid var(--kd-border);
             border-radius: 16px;
             padding: 40px 36px;
             display: flex;
@@ -67,8 +68,8 @@
             width: 72px;
             height: 72px;
             border-radius: 20px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.08) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.15) 0%, rgba(42, 139, 191, 0.08) 100%);
+            border: 1px solid rgba(79, 195, 247, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -77,20 +78,20 @@
         .welcome-icon-wrap svg {
             width: 36px;
             height: 36px;
-            color: #8b5cf6;
+            color: var(--kd-accent);
         }
 
         .welcome-card h1 {
             font-size: 24px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0;
             letter-spacing: -0.02em;
         }
 
         .welcome-card p {
             font-size: 15px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             line-height: 1.65;
             margin: 0;
             max-width: 420px;
@@ -127,24 +128,24 @@
         }
 
         .welcome-btn-primary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: #fff;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
         }
 
         .welcome-btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .welcome-btn-secondary {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
-            color: #9ca3af;
+            border: 1px solid var(--kd-border);
+            color: var(--kd-text-muted);
         }
 
         .welcome-btn-secondary:hover {
-            border-color: #6b7280;
-            color: #e5e7eb;
+            border-color: var(--kd-text-muted);
+            color: var(--kd-text-primary);
         }
 
     </style>

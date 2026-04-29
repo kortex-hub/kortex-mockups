@@ -12,24 +12,25 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-deep: #0c0d14;
-            --bg-base: #12131c;
-            --bg-surface: #1a1b26;
-            --bg-elevated: #21222f;
-            --border: #2a2b3d;
-            --border-subtle: #1f2033;
-            --text-primary: #f0f1f5;
-            --text-secondary: #9ca3af;
-            --text-muted: #6b7280;
-            --purple-400: #a78bfa;
-            --purple-500: #8b5cf6;
-            --purple-600: #7c3aed;
-            --purple-700: #6d28d9;
+            /* Surfaces + type — match kaiden-website-test dark theme */
+            --bg-deep: #080f1a;
+            --bg-base: #0d1b2e;
+            --bg-surface: #111e33;
+            --bg-elevated: #111e33;
+            --border: #1e3358;
+            --border-subtle: #1e3358;
+            --text-primary: #e8eef7;
+            --text-secondary: #94afd4;
+            --text-muted: #7090b8;
+            --purple-400: #6dd6ff;
+            --purple-500: #4fc3f7;
+            --purple-600: #2a8bbf;
+            --purple-700: #2488b8;
             --green-400: #34d399;
             --blue-400: #60a5fa;
             --amber-400: #fbbf24;
             --red-400: #f87171;
-            --glow-purple: rgba(139, 92, 246, 0.15);
+            --glow-purple: rgba(79, 195, 247, 0.15);
         }
 
         html {
@@ -39,7 +40,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
             background: var(--bg-deep);
             color: var(--text-secondary);
             line-height: 1.6;
@@ -58,7 +59,7 @@
         }
 
         .nav.scrolled {
-            background: rgba(12, 13, 20, 0.85);
+            background: rgba(8, 15, 26, 0.88);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
         }
@@ -123,7 +124,7 @@
 
         .nav-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 6px 24px rgba(79, 195, 247, 0.4);
         }
 
         /* ─── Hero ─── */
@@ -142,7 +143,7 @@
             transform: translateX(-50%);
             width: 900px;
             height: 900px;
-            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(79, 195, 247, 0.12) 0%, rgba(79, 195, 247, 0.04) 40%, transparent 70%);
             pointer-events: none;
         }
 
@@ -151,8 +152,8 @@
             align-items: center;
             gap: 8px;
             padding: 6px 16px;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.2);
             border-radius: 100px;
             font-size: 13px;
             font-weight: 500;
@@ -184,7 +185,7 @@
         }
 
         .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--purple-400), #c084fc, var(--purple-500));
+            background: linear-gradient(135deg, var(--purple-400), #7dd3fc, var(--purple-500));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -224,7 +225,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 8px 30px rgba(79, 195, 247, 0.4);
         }
 
         .btn-primary svg { width: 18px; height: 18px; }
@@ -246,9 +247,9 @@
         }
 
         .btn-secondary:hover {
-            border-color: rgba(139, 92, 246, 0.4);
+            border-color: rgba(79, 195, 247, 0.4);
             color: var(--purple-400);
-            background: rgba(139, 92, 246, 0.06);
+            background: rgba(79, 195, 247, 0.06);
             transform: translateY(-2px);
         }
 
@@ -266,7 +267,7 @@
             position: absolute;
             inset: -2px;
             border-radius: 18px;
-            background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(139,92,246,0.05), rgba(139,92,246,0.2));
+            background: linear-gradient(135deg, rgba(79, 195, 247,0.3), rgba(79, 195, 247,0.05), rgba(79, 195, 247,0.2));
             z-index: -1;
         }
 
@@ -278,7 +279,7 @@
             transform: translateX(-50%);
             width: 80%;
             height: 200px;
-            background: radial-gradient(ellipse, rgba(139,92,246,0.2) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(79, 195, 247,0.2) 0%, transparent 70%);
             pointer-events: none;
             z-index: -1;
         }
@@ -288,7 +289,7 @@
             border-radius: 16px;
             border: 1px solid var(--border);
             display: block;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(79, 195, 247, 0.1);
         }
 
         /* ─── Trusted / Logo Bar ─── */
@@ -394,8 +395,8 @@
         }
 
         .ps-card.solution {
-            background: linear-gradient(145deg, rgba(139, 92, 246, 0.06), var(--bg-surface));
-            border-color: rgba(139, 92, 246, 0.2);
+            background: linear-gradient(145deg, rgba(79, 195, 247, 0.06), var(--bg-surface));
+            border-color: rgba(79, 195, 247, 0.2);
         }
 
         .ps-card h3 {
@@ -452,7 +453,7 @@
         }
 
         .feature-card:hover {
-            border-color: rgba(139, 92, 246, 0.25);
+            border-color: rgba(79, 195, 247, 0.25);
             transform: translateY(-4px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
         }
@@ -560,7 +561,7 @@
             position: absolute;
             inset: -1px;
             border-radius: 14px;
-            background: linear-gradient(135deg, rgba(139,92,246,0.2), transparent, rgba(139,92,246,0.1));
+            background: linear-gradient(135deg, rgba(79, 195, 247,0.2), transparent, rgba(79, 195, 247,0.1));
             z-index: -1;
         }
 
@@ -668,9 +669,9 @@
         }
 
         .arch-node.highlight {
-            border-color: rgba(139, 92, 246, 0.4);
-            background: linear-gradient(145deg, rgba(139,92,246,0.08), var(--bg-elevated));
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.1);
+            border-color: rgba(79, 195, 247, 0.4);
+            background: linear-gradient(145deg, rgba(79, 195, 247,0.08), var(--bg-elevated));
+            box-shadow: 0 0 30px rgba(79, 195, 247, 0.1);
         }
 
         .arch-node-icon {
@@ -721,7 +722,7 @@
             transform: translateX(-50%);
             width: 600px;
             height: 400px;
-            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(79, 195, 247, 0.1) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -1447,7 +1448,7 @@
 
     <!-- CTA -->
     <section class="cta-section" id="get-started">
-        <h2>Ready to ship with<br><span style="background: linear-gradient(135deg, var(--purple-400), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AI agents you trust?</span></h2>
+        <h2>Ready to ship with<br><span style="background: linear-gradient(135deg, var(--purple-400), #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AI agents you trust?</span></h2>
         <p>
             Kaiden is open-source and free to run. Set up your AI development environment in minutes and start delegating to agents today.
         </p>

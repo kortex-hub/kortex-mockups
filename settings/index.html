@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Settings</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -16,8 +17,8 @@
         }
 
         .settings-section {
-            background: linear-gradient(145deg, #2d2e3f 0%, #252631 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, var(--kd-bg-card) 0%, var(--kd-bg-subtle) 100%);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             margin-bottom: 24px;
             overflow: hidden;
@@ -25,7 +26,7 @@
 
         .settings-section-header {
             padding: 20px 24px;
-            border-bottom: 1px solid #3d3e4f;
+            border-bottom: 1px solid var(--kd-border);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -42,7 +43,7 @@
         }
 
         .settings-section-icon.general {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
         }
 
         .settings-section-icon.devspaces {
@@ -54,7 +55,7 @@
         }
 
         .settings-section-icon.advanced {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            background: linear-gradient(135deg, var(--kd-text-muted) 0%, var(--kd-surface-muted) 100%);
         }
 
         .settings-section-icon svg {
@@ -66,13 +67,13 @@
         .settings-section-title {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0;
         }
 
         .settings-section-description {
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             margin: 4px 0 0 0;
         }
 
@@ -85,7 +86,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 24px;
-            border-bottom: 1px solid #3d3e4f;
+            border-bottom: 1px solid var(--kd-border);
             gap: 24px;
         }
 
@@ -101,7 +102,7 @@
         .settings-item-label {
             font-size: 14px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 4px 0;
             display: flex;
             align-items: center;
@@ -110,7 +111,7 @@
 
         .settings-item-description {
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             margin: 0;
             line-height: 1.5;
         }
@@ -124,14 +125,14 @@
             position: relative;
             width: 48px;
             height: 26px;
-            background-color: #4b5563;
+            background-color: var(--kd-surface-muted);
             border-radius: 13px;
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
 
         .settings-toggle.active {
-            background-color: #8b5cf6;
+            background-color: var(--kd-accent);
         }
 
         .settings-toggle::after {
@@ -154,10 +155,10 @@
         /* Select Dropdown */
         .settings-select {
             padding: 10px 36px 10px 14px;
-            background: #1a1b23;
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg);
+            border: 1px solid var(--kd-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 14px;
             cursor: pointer;
             appearance: none;
@@ -169,27 +170,27 @@
 
         .settings-select:focus {
             outline: none;
-            border-color: #8b5cf6;
+            border-color: var(--kd-accent);
         }
 
         /* Input Field */
         .settings-input {
             padding: 10px 14px;
-            background: #1a1b23;
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg);
+            border: 1px solid var(--kd-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 14px;
             min-width: 250px;
         }
 
         .settings-input:focus {
             outline: none;
-            border-color: #8b5cf6;
+            border-color: var(--kd-accent);
         }
 
         .settings-input::placeholder {
-            color: #6b7280;
+            color: var(--kd-text-muted);
         }
 
         /* Badge */
@@ -235,7 +236,7 @@
         .settings-save-bar {
             position: sticky;
             bottom: 28px;
-            background: linear-gradient(180deg, transparent 0%, #1a1b23 20%);
+            background: linear-gradient(180deg, transparent 0%, var(--kd-bg) 20%);
             padding: 24px 0;
             display: flex;
             justify-content: flex-end;
@@ -247,7 +248,7 @@
             align-items: center;
             gap: 8px;
             padding: 12px 28px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             border: none;
             border-radius: 10px;
             color: #ffffff;
@@ -255,21 +256,21 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
         }
 
         .settings-save-btn:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            background: var(--kd-accent-dim);
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 6px 16px rgba(79, 195, 247, 0.4);
         }
 
         .settings-reset-btn {
             padding: 12px 20px;
-            background: #374151;
-            border: 1px solid #4b5563;
+            background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-muted);
             border-radius: 10px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -277,7 +278,7 @@
         }
 
         .settings-reset-btn:hover {
-            background: #4b5563;
+            background: var(--kd-surface-muted);
         }
     </style>
 </head>
@@ -545,7 +546,7 @@
                             <div class="settings-item" style="background: linear-gradient(135deg, rgba(36, 41, 46, 0.15) 0%, transparent 100%); border-left: 3px solid #6e7681; margin-left: -1px;">
                                 <div class="settings-item-info">
                                     <h4 class="settings-item-label">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#e5e7eb">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--kd-text-primary)">
                                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                                         </svg>
                                         GitHub
@@ -952,6 +953,10 @@
             // Save to localStorage (mock)
             localStorage.setItem('kaidenSettings', JSON.stringify(settings));
 
+            if (typeof window.kaidenTheme !== 'undefined' && window.kaidenTheme.syncFromStorage) {
+                window.kaidenTheme.syncFromStorage();
+            }
+
             if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
                 window.kaidenRefreshOptionalProjectsClass();
             }
@@ -1015,6 +1020,10 @@
                 document.getElementById('jiraProject').value = '';
 
                 localStorage.removeItem('kaidenSettings');
+
+                if (typeof window.kaidenTheme !== 'undefined' && window.kaidenTheme.syncFromStorage) {
+                    window.kaidenTheme.syncFromStorage();
+                }
 
                 if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
                     window.kaidenRefreshOptionalProjectsClass();
@@ -1102,10 +1111,51 @@
                         }
                     }
 
-                    // Apply other settings similarly...
+                    if (settings.general) {
+                        if (settings.general.defaultModel) {
+                            document.getElementById('defaultModel').value = settings.general.defaultModel;
+                        }
+                        if (settings.general.autoSave === false) {
+                            document.getElementById('autoSave').classList.remove('active');
+                        }
+                        if (settings.general.showThinking === false) {
+                            document.getElementById('showThinking').classList.remove('active');
+                        }
+                    }
+
+                    if (settings.appearance) {
+                        if (settings.appearance.theme) {
+                            document.getElementById('theme').value = settings.appearance.theme;
+                        }
+                        if (settings.appearance.compactMode) {
+                            document.getElementById('compactMode').classList.add('active');
+                        }
+                    }
+
+                    if (settings.advanced) {
+                        if (settings.advanced.debugMode) {
+                            document.getElementById('debugMode').classList.add('active');
+                        }
+                        if (settings.advanced.experimentalFeatures) {
+                            document.getElementById('experimentalFeatures').classList.add('active');
+                        }
+                        if (settings.advanced.apiEndpoint) {
+                            document.getElementById('apiEndpoint').value = settings.advanced.apiEndpoint;
+                        }
+                    }
                 } catch (e) {
                     console.error('Failed to load settings:', e);
                 }
+            }
+
+            if (typeof window.kaidenTheme !== 'undefined' && window.kaidenTheme.syncFromStorage) {
+                window.kaidenTheme.syncFromStorage();
+            }
+            var themeSelect = document.getElementById('theme');
+            if (themeSelect && window.kaidenTheme && window.kaidenTheme.applyPreference) {
+                themeSelect.addEventListener('change', function () {
+                    window.kaidenTheme.applyPreference(this.value);
+                });
             }
         });
     </script>

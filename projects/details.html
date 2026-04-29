@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Project Details</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -19,8 +20,8 @@
         .pd-sidebar {
             width: 240px;
             min-width: 240px;
-            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-right: 1px solid #3d3e4f;
+            background: linear-gradient(180deg, #080f1a 0%, #080f1a 100%);
+            border-right: 1px solid #1e3358;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -40,7 +41,7 @@
         }
 
         .pd-sidebar-back:hover {
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .pd-sidebar-back svg {
@@ -50,7 +51,7 @@
 
         .pd-sidebar-project-info {
             padding: 0 20px 20px;
-            border-bottom: 1px solid #3d3e4f;
+            border-bottom: 1px solid #1e3358;
             margin-bottom: 16px;
         }
 
@@ -58,7 +59,7 @@
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: var(--kd-accent);
             font-size: 15px;
             font-weight: 700;
             color: #fff;
@@ -73,7 +74,7 @@
         .pd-sidebar-project-name {
             font-size: 16px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
@@ -112,12 +113,12 @@
         }
 
         .pd-nav-item:hover {
-            background: rgba(139, 92, 246, 0.06);
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .pd-nav-item.active {
-            background: rgba(139, 92, 246, 0.12);
-            border-color: rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.12);
+            border-color: rgba(79, 195, 247, 0.2);
         }
 
         .pd-nav-icon {
@@ -136,11 +137,11 @@
         }
 
         .pd-nav-item:hover .pd-nav-icon svg {
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .pd-nav-item.active .pd-nav-icon svg {
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .pd-nav-info {
@@ -151,11 +152,11 @@
         .pd-nav-name {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-nav-item.active .pd-nav-name {
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .pd-nav-desc {
@@ -175,8 +176,8 @@
         }
 
         .pd-nav-item.active .pd-nav-count {
-            background: rgba(139, 92, 246, 0.2);
-            color: #c4b5fd;
+            background: rgba(79, 195, 247, 0.2);
+            color: #a8e6fc;
         }
 
         /* ── Main Content ── */
@@ -196,7 +197,7 @@
         }
 
         .pd-main::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.15);
+            background: rgba(79, 195, 247, 0.15);
             border-radius: 3px;
         }
 
@@ -211,7 +212,7 @@
         .pd-section-title {
             font-size: 22px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 24px;
         }
 
@@ -224,8 +225,8 @@
         }
 
         .pd-summary-stat {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             padding: 20px;
             display: flex;
@@ -312,7 +313,7 @@
             align-items: center;
             gap: 8px;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .pd-summary-agent-dot {
@@ -337,7 +338,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-summary-agent-time {
@@ -348,8 +349,8 @@
 
         /* ── Overview Section ── */
         .pd-overview-card {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             padding: 24px;
             margin-bottom: 20px;
@@ -379,22 +380,22 @@
         .pd-field-label {
             font-size: 12px;
             font-weight: 600;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .pd-field-input {
             padding: 10px 14px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 9px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
         .pd-field-input:focus {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .pd-field-input.mono {
@@ -439,7 +440,7 @@
 
         .pd-git-row span {
             font-size: 13px;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-branch-badge {
@@ -447,12 +448,12 @@
             align-items: center;
             gap: 4px;
             padding: 3px 10px;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.2);
             border-radius: 5px;
             font-size: 12px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            color: #c4b5fd;
+            color: #a8e6fc;
         }
 
         .pd-save-row {
@@ -463,7 +464,7 @@
 
         .pd-save-btn {
             padding: 8px 20px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: var(--kd-accent);
             border: none;
             border-radius: 8px;
             color: #fff;
@@ -475,13 +476,13 @@
 
         .pd-save-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         /* ── Asset Blocks (Skills, MCP, KB) ── */
         .pd-asset-block {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             overflow: hidden;
             margin-bottom: 20px;
@@ -492,7 +493,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 16px 20px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .pd-block-title-row {
@@ -519,7 +520,7 @@
         .pd-block-title {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0;
         }
 
@@ -543,9 +544,9 @@
         }
 
         .pd-block-add-btn:hover {
-            border-color: #8b5cf6;
-            color: #c4b5fd;
-            background: rgba(139, 92, 246, 0.06);
+            border-color: #4fc3f7;
+            color: #a8e6fc;
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .pd-block-add-btn svg {
@@ -571,7 +572,7 @@
         }
 
         .pd-block-item + .pd-block-item {
-            border-top: 1px solid rgba(61, 62, 79, 0.3);
+            border-top: 1px solid rgba(30, 51, 88, 0.3);
         }
 
         .pd-block-item:hover + .pd-block-item {
@@ -606,7 +607,7 @@
         .pd-block-item-name {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-block-item-meta {
@@ -654,8 +655,8 @@
 
         /* ── Secrets & Integrations Section ── */
         .pd-integration-card {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             overflow: hidden;
             margin-bottom: 16px;
@@ -666,7 +667,7 @@
             align-items: center;
             gap: 14px;
             padding: 18px 20px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .pd-integration-logo {
@@ -692,7 +693,7 @@
         .pd-integration-name {
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-integration-desc {
@@ -721,7 +722,7 @@
         .pd-integration-status.disconnected {
             background: rgba(255, 255, 255, 0.04);
             color: #6b7280;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
         }
 
         .pd-integration-status-dot {
@@ -762,7 +763,7 @@
         }
 
         .pd-secret-row + .pd-secret-row {
-            border-top: 1px solid rgba(61, 62, 79, 0.3);
+            border-top: 1px solid rgba(30, 51, 88, 0.3);
         }
 
         .pd-secret-row:hover + .pd-secret-row {
@@ -774,7 +775,7 @@
             height: 32px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -795,7 +796,7 @@
         .pd-secret-label {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-secret-value {
@@ -839,8 +840,8 @@
         }
 
         .pd-secret-action-btn:hover {
-            background: rgba(139, 92, 246, 0.1);
-            color: #c4b5fd;
+            background: rgba(79, 195, 247, 0.1);
+            color: #a8e6fc;
         }
 
         .pd-secret-action-btn.danger:hover {
@@ -877,14 +878,14 @@
             gap: 4px;
             margin-top: 6px;
             font-size: 11px;
-            color: #8b5cf6;
+            color: #4fc3f7;
             cursor: pointer;
             user-select: none;
             transition: color 0.15s;
         }
 
         .pd-secret-permissions-toggle:hover {
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .pd-secret-permissions-toggle svg {
@@ -903,8 +904,8 @@
             gap: 5px;
             margin-top: 8px;
             padding: 10px 12px;
-            background: rgba(139, 92, 246, 0.04);
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            background: rgba(79, 195, 247, 0.04);
+            border: 1px solid rgba(79, 195, 247, 0.1);
             border-radius: 8px;
         }
 
@@ -943,9 +944,9 @@
         }
 
         .pd-perm-tag.scope {
-            background: rgba(139, 92, 246, 0.08);
-            color: #c4b5fd;
-            border: 1px solid rgba(139, 92, 246, 0.15);
+            background: rgba(79, 195, 247, 0.08);
+            color: #a8e6fc;
+            border: 1px solid rgba(79, 195, 247, 0.15);
         }
 
         .pd-perm-tag svg {
@@ -983,9 +984,9 @@
         }
 
         .pd-integration-add-btn:hover {
-            border-color: #8b5cf6;
-            color: #c4b5fd;
-            background: rgba(139, 92, 246, 0.06);
+            border-color: #4fc3f7;
+            color: #a8e6fc;
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .pd-integration-add-btn svg {
@@ -1014,12 +1015,12 @@
 
         .pd-secrets-note-text {
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.5;
         }
 
         .pd-secrets-note-text strong {
-            color: #e5e7eb;
+            color: #e8eef7;
             font-weight: 600;
         }
 
@@ -1049,8 +1050,8 @@
         }
 
         .pd-fs-mode-card.selected {
-            background: rgba(139, 92, 246, 0.06);
-            border-color: rgba(139, 92, 246, 0.25);
+            background: rgba(79, 195, 247, 0.06);
+            border-color: rgba(79, 195, 247, 0.25);
         }
 
         .pd-fs-mode-radio {
@@ -1066,14 +1067,14 @@
         }
 
         .pd-fs-mode-card.selected .pd-fs-mode-radio {
-            border-color: #8b5cf6;
+            border-color: #4fc3f7;
         }
 
         .pd-fs-mode-radio-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #8b5cf6;
+            background: #4fc3f7;
         }
 
         .pd-fs-mode-icon {
@@ -1106,7 +1107,7 @@
         .pd-fs-mode-name {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
@@ -1176,7 +1177,7 @@
         .pd-fs-path-name {
             font-size: 13px;
             font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-fs-path-note {
@@ -1255,7 +1256,7 @@
             align-items: flex-start;
             gap: 7px;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.4;
         }
 
@@ -1272,7 +1273,7 @@
         /* ── Network Policy Section ── */
         .pd-np-desc {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.6;
             margin-bottom: 16px;
         }
@@ -1285,7 +1286,7 @@
 
         .pd-np-mode-card {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
             padding: 16px;
             cursor: pointer;
@@ -1297,8 +1298,8 @@
             border-color: #4b5563;
         }
         .pd-np-mode-card.selected {
-            background: rgba(139, 92, 246, 0.06);
-            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(79, 195, 247, 0.06);
+            border-color: rgba(79, 195, 247, 0.3);
         }
 
         .pd-np-mode-radio {
@@ -1314,13 +1315,13 @@
             justify-content: center;
         }
         .pd-np-mode-card.selected .pd-np-mode-radio {
-            border-color: #8b5cf6;
+            border-color: #4fc3f7;
         }
         .pd-np-mode-radio-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: #8b5cf6;
+            background: #4fc3f7;
         }
 
         .pd-np-mode-content {
@@ -1354,7 +1355,7 @@
         .pd-np-mode-name {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
         .pd-np-mode-desc {
@@ -1382,7 +1383,7 @@
             opacity: 1;
         }
         .pd-np-host-item + .pd-np-host-item {
-            border-top: 1px solid rgba(61, 62, 79, 0.3);
+            border-top: 1px solid rgba(30, 51, 88, 0.3);
         }
 
         .pd-np-host-dot {
@@ -1401,7 +1402,7 @@
         .pd-np-host-name {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
         }
         .pd-np-host-note {
@@ -1423,8 +1424,8 @@
             color: #6b7280;
         }
         .pd-np-host-badge.custom {
-            background: rgba(139, 92, 246, 0.1);
-            color: #a78bfa;
+            background: rgba(79, 195, 247, 0.1);
+            color: #6dd6ff;
         }
 
         /* Add host row */
@@ -1433,7 +1434,7 @@
             align-items: center;
             gap: 8px;
             padding: 10px 14px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.4);
             background: rgba(0, 0, 0, 0.1);
         }
         .pd-np-add-row.show {
@@ -1446,12 +1447,12 @@
             border-radius: 7px;
             padding: 8px 12px;
             font-size: 13px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
             outline: none;
         }
         .pd-np-add-input:focus {
-            border-color: rgba(139, 92, 246, 0.4);
+            border-color: rgba(79, 195, 247, 0.4);
         }
         .pd-np-add-input::placeholder {
             color: #4b5563;
@@ -1487,7 +1488,7 @@
             cursor: pointer;
         }
         .pd-np-cancel-btn:hover {
-            color: #9ca3af;
+            color: #7090b8;
             border-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -1879,7 +1880,7 @@
                         <div class="pd-integration-card">
                             <div class="pd-integration-header">
                                 <div class="pd-integration-logo" style="background: linear-gradient(135deg, #24292e, #40464e);">
-                                    <svg viewBox="0 0 24 24" fill="#e5e7eb">
+                                    <svg viewBox="0 0 24 24" fill="#e8eef7">
                                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                                     </svg>
                                 </div>
@@ -2381,8 +2382,8 @@
                     <div class="pd-section" id="section-network" data-pd-tab="network">
                         <h1 class="pd-section-title">Network Policy</h1>
 
-                        <div class="pd-secrets-note" style="border-color: rgba(139, 92, 246, 0.15); background: rgba(139, 92, 246, 0.04);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <div class="pd-secrets-note" style="border-color: rgba(79, 195, 247, 0.15); background: rgba(79, 195, 247, 0.04);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             <div class="pd-secrets-note-text">
                                 <strong>Project-scoped network policy.</strong> Controls what external hosts agents can reach when running tasks in this project. Agents operating inside sandboxed workspaces will have their HTTP/HTTPS traffic filtered according to these rules.
                             </div>

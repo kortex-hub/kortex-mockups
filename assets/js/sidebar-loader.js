@@ -121,11 +121,11 @@ function buildSidebarHTML() {
             </svg>
             <span>Ready</span>
         </div>
-        <div class="status-bar-item agents-status" onclick="window.location.href='${R}/sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(139, 92, 246, 0.1); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.2);" title="Sandbox active — host and network isolated">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+        <div class="status-bar-item agents-status" onclick="window.location.href='${R}/sandbox/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(79, 195, 247, 0.1); border-radius: 4px; border: 1px solid rgba(79, 195, 247, 0.2);" title="Sandbox active — host and network isolated">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
-            <span style="color: #a78bfa;">Sandbox active</span>
+            <span style="color: #6dd6ff;">Sandbox active</span>
         </div>
         <div class="status-bar-item status-bar-cli" onclick="window.location.href='${R}/cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">

@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Secret Vault</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         :root {
-            --vault-pd-accent: #8b5cf6;
-            --vault-pd-accent-dim: #7c3aed;
-            --vault-pd-border: #3d3e4f;
-            --vault-pd-muted: #9ca3af;
+            --vault-pd-accent: var(--kd-accent);
+            --vault-pd-accent-dim: var(--kd-accent-dim);
+            --vault-pd-border: var(--kd-border);
+            --vault-pd-muted: var(--kd-text-muted);
         }
 
         .vault-detail-layout {
@@ -32,7 +33,7 @@
 
         .vault-detail-main::-webkit-scrollbar { width: 6px; }
         .vault-detail-main::-webkit-scrollbar-track { background: transparent; }
-        .vault-detail-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
+        .vault-detail-main::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.2); border-radius: 3px; }
 
         .vault-detail-inner {
             max-width: 720px;
@@ -52,7 +53,7 @@
             transition: color 0.15s ease;
         }
 
-        .vault-detail-breadcrumb a:hover { color: #c4b5fd; }
+        .vault-detail-breadcrumb a:hover { color: #a8e6fc; }
 
         .vault-detail-breadcrumb svg {
             width: 14px;
@@ -61,7 +62,7 @@
             flex-shrink: 0;
         }
 
-        .vault-detail-breadcrumb span { color: #e5e7eb; font-weight: 500; }
+        .vault-detail-breadcrumb span { color: #e8eef7; font-weight: 500; }
 
         .vault-detail-hero {
             display: flex;
@@ -174,7 +175,7 @@
         }
 
         .vault-detail-panel {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
             border: 1px solid var(--vault-pd-border);
             border-radius: 12px;
             padding: 20px 22px;
@@ -205,7 +206,7 @@
 
         .vault-detail-dl dd {
             margin: 0;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .vault-detail-alert {
@@ -244,7 +245,7 @@
             color: #a1a1aa;
             padding: 14px 16px;
             background: #14141a;
-            border: 1px solid rgba(61, 62, 79, 0.8);
+            border: 1px solid rgba(30, 51, 88, 0.8);
             border-radius: 10px;
             word-break: break-all;
             margin-bottom: 10px;
@@ -269,14 +270,14 @@
             justify-content: space-between;
             gap: 12px;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
             font-size: 14px;
         }
 
         .vault-detail-used-item:last-child { border-bottom: none; padding-bottom: 0; }
         .vault-detail-used-item:first-child { padding-top: 0; }
 
-        .vault-detail-used-name { color: #e5e7eb; font-weight: 500; }
+        .vault-detail-used-name { color: #e8eef7; font-weight: 500; }
         .vault-detail-used-kind { font-size: 12px; color: #6b7280; }
 
         .vault-detail-actions {
@@ -286,7 +287,7 @@
             gap: 12px;
             margin-top: 28px;
             padding-top: 24px;
-            border-top: 1px solid rgba(61, 62, 79, 0.6);
+            border-top: 1px solid rgba(30, 51, 88, 0.6);
         }
 
         .vault-detail-btn {

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden CLI</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <style>
         .cli-page-layout {
@@ -34,8 +35,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px 24px;
-            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
-            border-bottom: 1px solid #3d3e4f;
+            background: linear-gradient(135deg, #080f1a 0%, #111e33 100%);
+            border-bottom: 1px solid #1e3358;
         }
 
         .cli-header-left {
@@ -63,13 +64,13 @@
         .cli-header-text h1 {
             font-size: 20px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 4px 0;
         }
 
         .cli-header-text span {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .cli-main-content {
@@ -90,7 +91,7 @@
         .cli-terminal-window {
             flex: 1;
             background: #0a0a0f;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 12px;
             overflow: hidden;
             display: flex;
@@ -102,8 +103,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 16px;
-            background: #1a1b23;
-            border-bottom: 1px solid #3d3e4f;
+            background: #080f1a;
+            border-bottom: 1px solid #1e3358;
         }
 
         .cli-terminal-title {
@@ -112,7 +113,7 @@
             gap: 10px;
             font-size: 13px;
             font-weight: 500;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .cli-terminal-title svg {
@@ -142,8 +143,8 @@
             align-items: center;
             gap: 2px;
             padding: 8px 12px 0 12px;
-            background: #1a1b23;
-            border-bottom: 1px solid #3d3e4f;
+            background: #080f1a;
+            border-bottom: 1px solid #1e3358;
             overflow-x: auto;
             scrollbar-width: none;
         }
@@ -164,7 +165,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             white-space: nowrap;
             position: relative;
             min-width: 120px;
@@ -173,13 +174,13 @@
 
         .cli-tab:hover {
             background: rgba(37, 38, 49, 0.8);
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .cli-tab.active {
             background: #0a0a0f;
-            border-color: #3d3e4f;
-            color: #e5e7eb;
+            border-color: #1e3358;
+            color: #e8eef7;
             margin-bottom: -1px;
             padding-bottom: 9px;
         }
@@ -254,7 +255,7 @@
             height: 28px;
             border-radius: 6px;
             background: transparent;
-            border: 1px dashed #3d3e4f;
+            border: 1px dashed #1e3358;
             cursor: pointer;
             transition: all 0.2s ease;
             color: #6b7280;
@@ -291,7 +292,7 @@
             font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
-            color: #e5e7eb;
+            color: #e8eef7;
             overflow-y: auto;
         }
 
@@ -321,7 +322,7 @@
             font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
-            color: #e5e7eb;
+            color: #e8eef7;
             overflow-y: auto;
         }
 
@@ -349,7 +350,7 @@
         .cli-output-line.warning { color: #f59e0b; }
         .cli-output-line.info { color: #67e8f9; }
         .cli-output-line.muted { color: #6b7280; }
-        .cli-output-line.highlight { color: #a78bfa; }
+        .cli-output-line.highlight { color: #6dd6ff; }
 
         .cli-input-line {
             display: flex;
@@ -370,7 +371,7 @@
             outline: none;
             font-family: inherit;
             font-size: inherit;
-            color: #e5e7eb;
+            color: #e8eef7;
             caret-color: #67e8f9;
         }
 
@@ -418,8 +419,8 @@
         }
 
         .cli-demos-card {
-            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #080f1a 0%, #151620 100%);
+            border: 1px solid #1e3358;
             border-radius: 16px;
             padding: 20px;
         }
@@ -440,13 +441,13 @@
         .cli-demos-header svg.section-icon {
             width: 18px;
             height: 18px;
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .cli-demos-header h3 {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0;
             flex: 1;
         }
@@ -454,7 +455,7 @@
         .cli-demos-header .toggle-icon {
             width: 16px;
             height: 16px;
-            color: #9ca3af;
+            color: #7090b8;
             transition: transform 0.2s ease;
         }
 
@@ -483,7 +484,7 @@
             width: 100%;
             padding: 14px;
             background: rgba(37, 38, 49, 0.5);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -496,8 +497,8 @@
         }
 
         .cli-demo-btn:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(79, 195, 247, 0.5);
+            background: rgba(79, 195, 247, 0.1);
             transform: translateX(4px);
         }
 
@@ -509,8 +510,8 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
+            background: rgba(79, 195, 247, 0.15);
+            color: #6dd6ff;
         }
 
         .cli-demo-btn-icon svg {
@@ -540,13 +541,13 @@
         .cli-demo-btn-title {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
         .cli-demo-btn-desc {
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.4;
         }
 
@@ -579,19 +580,19 @@
         .cli-help-commands {
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 11px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.8;
         }
 
         .cli-help-commands code {
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .spinner {
             display: inline-block;
             width: 12px;
             height: 12px;
-            border: 2px solid #3d3e4f;
+            border: 2px solid #1e3358;
             border-top: 2px solid #67e8f9;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -638,8 +639,8 @@
         }
 
         .command-ref-modal {
-            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #080f1a 0%, #151620 100%);
+            border: 1px solid #1e3358;
             border-radius: 16px;
             width: 90%;
             max-width: 800px;
@@ -654,7 +655,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 24px;
-            border-bottom: 1px solid #3d3e4f;
+            border-bottom: 1px solid #1e3358;
         }
 
         .command-ref-title {
@@ -663,7 +664,7 @@
             gap: 12px;
             font-size: 18px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .command-ref-close {
@@ -672,7 +673,7 @@
             border-radius: 8px;
             padding: 8px;
             cursor: pointer;
-            color: #9ca3af;
+            color: #7090b8;
             transition: all 0.2s ease;
         }
 
@@ -750,7 +751,7 @@
             padding: 12px 16px;
             background: rgba(37, 38, 49, 0.5);
             border-radius: 8px;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
         }
 
         .command-ref-item:last-child {
@@ -760,8 +761,8 @@
         .command-ref-item > code {
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 13px;
-            color: #a78bfa;
-            background: rgba(139, 92, 246, 0.1);
+            color: #6dd6ff;
+            background: rgba(79, 195, 247, 0.1);
             padding: 4px 8px;
             border-radius: 4px;
         }
@@ -769,13 +770,13 @@
         .command-ref-item > p {
             margin: 8px 0 0 0;
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .command-ref-params {
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid rgba(61, 62, 79, 0.5);
+            border-top: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .command-ref-params .param {
@@ -1174,14 +1175,14 @@
         <!-- CLI Status Bar -->
         <div class="global-status-bar" id="globalStatusBar">
             <div class="status-bar-left">
-                <div class="status-bar-item status-bar-ui-mode" id="cliProjectsStatusChip" onclick="window.location.href='../projects/index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); border-radius: 4px; border: 1px solid rgba(139, 92, 246, 0.4);">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                <div class="status-bar-item status-bar-ui-mode" id="cliProjectsStatusChip" onclick="window.location.href='../projects/index.html'" style="cursor: pointer; padding: 4px 12px; background: linear-gradient(135deg, rgba(79, 195, 247, 0.2), rgba(42, 139, 191, 0.2)); border-radius: 4px; border: 1px solid rgba(79, 195, 247, 0.4);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"/>
                         <rect x="14" y="3" width="7" height="7"/>
                         <rect x="14" y="14" width="7" height="7"/>
                         <rect x="3" y="14" width="7" height="7"/>
                     </svg>
-                    <span style="color: #a78bfa; font-weight: 500;">Projects</span>
+                    <span style="color: #6dd6ff; font-weight: 500;">Projects</span>
                 </div>
                 <div class="status-bar-item" style="padding-left: 12px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
@@ -1849,12 +1850,12 @@
 
             addOutputHTML(`<span style="color: #10b981;">┌──────────────────────────────────────────────────────────────────────────────┐</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">Codex CLI</span> <span style="color: #6b7280;">v1.2.0</span>                                                          <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #9ca3af;">OpenAI's Coding Assistant</span>                                                  <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #7090b8;">OpenAI's Coding Assistant</span>                                                  <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">├──────────────────────────────────────────────────────────────────────────────┤</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Model:</span>     o3-mini                                                        <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Sandbox:</span>   Enabled                                                        <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Project:</span>   ~/slemeur/${projectName.padEnd(40)}<span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>     o3-mini                                                        <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Sandbox:</span>   Enabled                                                        <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Project:</span>   ~/slemeur/${projectName.padEnd(40)}<span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">│</span>                                                                              <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">└──────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
@@ -1876,11 +1877,11 @@
             getCurrentTab().promptColor = '#10b981';
 
             addOutputHTML(`<span style="color: #10b981;">╔═══════════════════════════════════════════════════════════════════════════╗</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">OpenCode</span> <span style="color: #6b7280;">v1.0</span> <span style="color: #9ca3af;">— Open coding agent runtime</span>                          <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #10b981; font-weight: bold;">OpenCode</span> <span style="color: #6b7280;">v1.0</span> <span style="color: #7090b8;">— Open coding agent runtime</span>                          <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">╠═══════════════════════════════════════════════════════════════════════════╣</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Session:</span>  ${projectName.padEnd(58)}<span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Model:</span>    Claude 3.5 Sonnet (via provider plugin)                    <span style="color: #10b981;">│</span>`);
-            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e5e7eb;">Sandbox:</span>  Enabled                                                       <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Session:</span>  ${projectName.padEnd(58)}<span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Model:</span>    Claude 3.5 Sonnet (via provider plugin)                    <span style="color: #10b981;">│</span>`);
+            addOutputHTML(`<span style="color: #10b981;">│</span>  <span style="color: #e8eef7;">Sandbox:</span>  Enabled                                                       <span style="color: #10b981;">│</span>`);
             addOutputHTML(`<span style="color: #10b981;">╚═══════════════════════════════════════════════════════════════════════════╝</span>`);
             addOutput('');
             addOutput('  Ready. Describe a task or run /help for commands.', 'muted');
@@ -2115,7 +2116,7 @@
             
             // Network section
             addOutput('NETWORK', 'highlight');
-            addOutputHTML(`  Policy:         <span style="color: #a78bfa;">${ws.network.policy}</span> <span style="color: #6b7280;">(${ws.network.policyDesc})</span>`);
+            addOutputHTML(`  Policy:         <span style="color: #6dd6ff;">${ws.network.policy}</span> <span style="color: #6b7280;">(${ws.network.policyDesc})</span>`);
             addOutput(`  Proxy:          ${ws.network.proxy}`, 'muted');
             if (ws.network.blockedCidrs.length > 0) {
                 addOutput(`  Blocked CIDRs:  ${ws.network.blockedCidrs.join(', ')}`, 'muted');
@@ -2969,16 +2970,16 @@
             // Claude Code ASCII art and welcome screen
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
             addOutput('│                                                                                │');
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
-            addOutputHTML(`│                                    <span style="color: #9ca3af;">Run /init to create a CLAUDE.md file with</span>    │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #9ca3af;">instructions for Claude</span>                        │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #9ca3af;">Run /install-github-app to tag @claude right</span>  │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #9ca3af;">from your Github issues and PRs</span>                │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
+            addOutputHTML(`│                                    <span style="color: #7090b8;">Run /init to create a CLAUDE.md file with</span>    │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #7090b8;">instructions for Claude</span>                        │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #7090b8;">Run /install-github-app to tag @claude right</span>  │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #7090b8;">from your Github issues and PRs</span>                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
-            addOutputHTML(`│                                    <span style="color: #9ca3af;">• Refactored UserService component</span>             │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Sonnet 4 · Claude Max</span>           <span style="color: #9ca3af;">• Fixed authentication bug in login.ts</span>         │`);
-            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #9ca3af;">• Added unit tests for API endpoints</span>           │`);
+            addOutputHTML(`│                                    <span style="color: #7090b8;">• Refactored UserService component</span>             │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4 · Claude Max</span>           <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #7090b8;">• Added unit tests for API endpoints</span>           │`);
             addOutput('│                                                                                │');
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
@@ -3115,7 +3116,7 @@
             addOutputHTML('  <span style="color: #22c55e;">✓</span> mcp-servers    <span style="color: #6b7280;">filesystem, postgres, github</span>');
             addOutput('');
             addOutput('NETWORK', 'highlight');
-            addOutputHTML('  Policy:         <span style="color: #a78bfa;">allow</span> <span style="color: #6b7280;">(default permit, selective block)</span>');
+            addOutputHTML('  Policy:         <span style="color: #6dd6ff;">allow</span> <span style="color: #6b7280;">(default permit, selective block)</span>');
             addOutput('  Proxy:          http://proxy.kaiden.local:8080', 'muted');
             addOutput('  Blocked CIDRs:  10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16', 'muted');
             addOutput('  Allowed Hosts:  *.anthropic.com, *.npmjs.org, github.com', 'muted');
@@ -3388,16 +3389,16 @@
 
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
             addOutput('│                                                                                │');
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
-            addOutputHTML(`│                                    <span style="color: #9ca3af;">Run /init to create a CLAUDE.md file with</span>    │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #9ca3af;">instructions for Claude</span>                        │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #9ca3af;">Run /install-github-app to tag @claude right</span>  │`);
-            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #9ca3af;">from your Github issues and PRs</span>                │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Welcome back slemeur!</span>            <span style="color: #f59e0b; font-weight: bold;">Tips for getting started</span>                       │`);
+            addOutputHTML(`│                                    <span style="color: #7090b8;">Run /init to create a CLAUDE.md file with</span>    │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">    ╭───╮</span>                   <span style="color: #7090b8;">instructions for Claude</span>                        │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">   ╱ ◠ ◠ ╲</span>                  <span style="color: #7090b8;">Run /install-github-app to tag @claude right</span>  │`);
+            addOutputHTML(`│        <span style="color: #f59e0b;">  ╱  ───  ╲</span>                 <span style="color: #7090b8;">from your Github issues and PRs</span>                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">  ╲  ╲ ╱  ╱</span>                                                                │`);
             addOutputHTML(`│        <span style="color: #f59e0b;">   ╲_____╱</span>                  <span style="color: #f59e0b; font-weight: bold;">Recent activity</span>                                │`);
-            addOutputHTML(`│                                    <span style="color: #9ca3af;">• Refactored UserService component</span>             │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Sonnet 4 · Claude Max</span>           <span style="color: #9ca3af;">• Fixed authentication bug in login.ts</span>         │`);
-            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #9ca3af;">• Added unit tests for API endpoints</span>           │`);
+            addOutputHTML(`│                                    <span style="color: #7090b8;">• Refactored UserService component</span>             │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Sonnet 4 · Claude Max</span>           <span style="color: #7090b8;">• Fixed authentication bug in login.ts</span>         │`);
+            addOutputHTML(`│   <span style="color: #6b7280;">~/slemeur/my-project</span>            <span style="color: #7090b8;">• Added unit tests for API endpoints</span>           │`);
             addOutput('│                                                                                │');
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
@@ -3414,11 +3415,11 @@
             cliInput.disabled = true;
             cliInput.value = '';
 
-            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">❯</span> <span style="color: #e5e7eb;">${userPrompt}</span>`);
+            addOutputHTML(`<span style="color: #f59e0b; font-weight: bold;">❯</span> <span style="color: #e8eef7;">${userPrompt}</span>`);
             addOutput('');
 
             // ── Step 4: Claude Code responds — reading the spec first ──
-            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">I\'ll build the inventory management API for OpenShift. Let me start by reading the spec.</span>');
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e8eef7;">I\'ll build the inventory management API for OpenShift. Let me start by reading the spec.</span>');
             addOutput('');
             await sleep(800);
 
@@ -3436,7 +3437,7 @@
             await sleep(500);
 
             // Claude decides to spawn sub-agents
-            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">This is a substantial project with independent concerns. I\'ll spin up sub-agents to work on these in parallel so we can move faster.</span>');
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e8eef7;">This is a substantial project with independent concerns. I\'ll spin up sub-agents to work on these in parallel so we can move faster.</span>');
             addOutput('');
             await sleep(600);
 
@@ -3445,25 +3446,25 @@
             terminalBody.lastChild.remove();
 
             // Spawning sub-agents — Claude Code's own decision
-            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #c4b5fd; font-weight: 500;">Task</span> <span style="color: #9ca3af;">Starting 3 sub-agents on OpenShift...</span>');
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #a8e6fc; font-weight: 500;">Task</span> <span style="color: #7090b8;">Starting 3 sub-agents on OpenShift...</span>');
             addOutput('');
             await sleep(500);
 
-            addOutputHTML('  <span style="color: #67e8f9;">┌─ Sub-agent 1 · </span><span style="color: #e5e7eb; font-weight: 500;">Spec & Data Models</span> <span style="color: #6b7280;">pod/kdn-sub-a3f8 (Running)</span>');
-            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;">"Analyze docs/spec.md and create database schemas, data models,</span>');
-            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #9ca3af;"> and OpenAPI specification for all endpoints"</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">┌─ Sub-agent 1 · </span><span style="color: #e8eef7; font-weight: 500;">Spec & Data Models</span> <span style="color: #6b7280;">pod/kdn-sub-a3f8 (Running)</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #7090b8;">"Analyze docs/spec.md and create database schemas, data models,</span>');
+            addOutputHTML('  <span style="color: #67e8f9;">│</span>  <span style="color: #7090b8;"> and OpenAPI specification for all endpoints"</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
             addOutputHTML('  <span style="color: #67e8f9;">│</span>');
             await sleep(500);
-            addOutputHTML('  <span style="color: #a78bfa;">┌─ Sub-agent 2 · </span><span style="color: #e5e7eb; font-weight: 500;">Authentication</span> <span style="color: #6b7280;">pod/kdn-sub-b7e1 (Running)</span>');
-            addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;">"Implement OAuth2 auth layer with OpenShift service account</span>');
-            addOutputHTML('  <span style="color: #a78bfa;">│</span>  <span style="color: #9ca3af;"> integration, JWT validation middleware, and RBAC policies"</span>');
-            addOutputHTML('  <span style="color: #a78bfa;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
-            addOutputHTML('  <span style="color: #a78bfa;">│</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">┌─ Sub-agent 2 · </span><span style="color: #e8eef7; font-weight: 500;">Authentication</span> <span style="color: #6b7280;">pod/kdn-sub-b7e1 (Running)</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">│</span>  <span style="color: #7090b8;">"Implement OAuth2 auth layer with OpenShift service account</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">│</span>  <span style="color: #7090b8;"> integration, JWT validation middleware, and RBAC policies"</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">│</span>');
             await sleep(500);
-            addOutputHTML('  <span style="color: #6ee7b7;">┌─ Sub-agent 3 · </span><span style="color: #e5e7eb; font-weight: 500;">Application & Deployment</span> <span style="color: #6b7280;">pod/kdn-sub-c9d2 (Running)</span>');
-            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;">"Build the Express.js API with route handlers, service layer,</span>');
-            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #9ca3af;"> Postgres/Redis clients, and Helm chart for OpenShift"</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">┌─ Sub-agent 3 · </span><span style="color: #e8eef7; font-weight: 500;">Application & Deployment</span> <span style="color: #6b7280;">pod/kdn-sub-c9d2 (Running)</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #7090b8;">"Build the Express.js API with route handlers, service layer,</span>');
+            addOutputHTML('  <span style="color: #6ee7b7;">│</span>  <span style="color: #7090b8;"> Postgres/Redis clients, and Helm chart for OpenShift"</span>');
             addOutputHTML('  <span style="color: #6ee7b7;">│</span>  Model: sonnet-4 · Status: <span style="color: #22c55e;">working</span>');
             addOutput('');
             await sleep(1000);
@@ -3479,7 +3480,7 @@
             await sleep(600);
 
             // Sub-agent 2 completes
-            addOutputHTML('  <span style="color: #a78bfa;">└─ Sub-agent 2 · Authentication</span> <span style="color: #22c55e;">✓ Completed</span> <span style="color: #6b7280;">(9.7s)</span>');
+            addOutputHTML('  <span style="color: #6dd6ff;">└─ Sub-agent 2 · Authentication</span> <span style="color: #22c55e;">✓ Completed</span> <span style="color: #6b7280;">(9.7s)</span>');
             addOutputHTML('    <span style="color: #6b7280;">Created: src/auth/oauth2.ts, src/middleware/jwt.ts, src/auth/rbac.ts</span>');
             addOutputHTML('    <span style="color: #6b7280;">Created: src/auth/__tests__/oauth2.test.ts, config/service-account.yaml</span>');
             await sleep(600);
@@ -3492,7 +3493,7 @@
             await sleep(500);
 
             // Claude integrates the results
-            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e5e7eb;">All three sub-agents finished. Let me integrate their work and wire everything together.</span>');
+            addOutputHTML('<span style="color: #f59e0b; opacity: 0.7;">⏺ </span><span style="color: #e8eef7;">All three sub-agents finished. Let me integrate their work and wire everything together.</span>');
             addOutput('');
             await sleep(500);
 
@@ -3510,12 +3511,12 @@
             // Final summary from Claude
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Inventory Management API built and ready for OpenShift</span>                       │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">3 sub-agents ran in parallel on OpenShift pods (11.4s wall time)</span>             │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">42 tests passing, 94.2% coverage</span>                                            │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Inventory Management API built and ready for OpenShift</span>                       │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">3 sub-agents ran in parallel on OpenShift pods (11.4s wall time)</span>             │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">42 tests passing, 94.2% coverage</span>                                            │`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Project structure: 28 files across src/, db/, helm/, docs/</span>                    │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Deploy with:</span> <span style="color: #67e8f9;">helm install inventory-api ./helm -n my-project</span>                   │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Project structure: 28 files across src/, db/, helm/, docs/</span>                    │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Deploy with:</span> <span style="color: #67e8f9;">helm install inventory-api ./helm -n my-project</span>                   │`);
             addOutputHTML(`│                                                                                │`);
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
@@ -3665,10 +3666,10 @@
             getCurrentTab().promptColor = '#22c55e';
 
             addOutputHTML(`<span style="color: #22c55e;">╭─ OpenCode v1.0.0 ─────────────────────────────────────────────────────────────╮</span>`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span>  inventory-api              <span style="color: #ee4433;">● OpenShift DevSpaces</span>                   │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>      Qwen 2.5 Coder 32B         <span style="color: #9ca3af;">via OpenShift AI</span>                       │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Pod:</span>        agentic-inventory-api-7f3a9 <span style="color: #9ca3af;">on worker-03</span>                          │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">MCP Tools:</span>  59 tools from 4 servers     <span style="color: #22c55e;">✓ Enterprise resources connected</span>       │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Workspace:</span>  inventory-api              <span style="color: #ee4433;">● OpenShift DevSpaces</span>                   │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>      Qwen 2.5 Coder 32B         <span style="color: #7090b8;">via OpenShift AI</span>                       │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Pod:</span>        agentic-inventory-api-7f3a9 <span style="color: #7090b8;">on worker-03</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">MCP Tools:</span>  59 tools from 4 servers     <span style="color: #22c55e;">✓ Enterprise resources connected</span>       │`);
             addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
             addOutput('  What would you like me to work on?', 'muted');
@@ -3756,16 +3757,16 @@
             getCurrentTab().promptColor = '#f59e0b';
             
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Claude Code v2.0.42 ─────────────────────────────────────────────────────────╮</span>`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span> rhel-ops                <span style="color: #22c55e;">● RHEL MCP Connected</span>                    │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Target:</span>    rhel-prod-01.example.com  <span style="color: #9ca3af;">RHEL 9.3</span>                               │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>     Sonnet 4                                                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Workspace:</span> rhel-ops                <span style="color: #22c55e;">● RHEL MCP Connected</span>                    │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Target:</span>    rhel-prod-01.example.com  <span style="color: #7090b8;">RHEL 9.3</span>                               │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     Sonnet 4                                                          │`);
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
             
             await sleep(1200);
             
             // Phase 4: User asks to check system status
-            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Check the status of our application containers running on this system. Something seems to be running slow.</span>`);
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e8eef7;">Check the status of our application containers running on this system. Something seems to be running slow.</span>`);
             addOutput('');
             addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
             
@@ -3784,32 +3785,32 @@
             addOutput('');
             
             // Tool call 1: System Status
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_system_status</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_system_status</span>`);
             await sleep(800);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ System Status ──────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Hostname:</span>   rhel-prod-01.example.com                        <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">OS:</span>         Red Hat Enterprise Linux 9.3                     <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Uptime:</span>     47 days, 3 hours                                 <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">CPU:</span>        78% <span style="color: #f59e0b;">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░</span>                       <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Memory:</span>     12.4 GB / 16 GB (78%)                            <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Disk:</span>       234 GB / 500 GB (47%)                            <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Load Avg:</span>   3.24, 2.89, 2.45                                 <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Hostname:</span>   rhel-prod-01.example.com                        <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">OS:</span>         Red Hat Enterprise Linux 9.3                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Uptime:</span>     47 days, 3 hours                                 <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">CPU:</span>        78% <span style="color: #f59e0b;">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░</span>                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Memory:</span>     12.4 GB / 16 GB (78%)                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Disk:</span>       234 GB / 500 GB (47%)                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Load Avg:</span>   3.24, 2.89, 2.45                                 <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
             
             await sleep(500);
             
             // Tool call 2: Podman List
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_list</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_list</span>`);
             await sleep(700);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ Podman Containers ────────────────────────────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">CONTAINER ID</span>   <span style="color: #9ca3af;">IMAGE</span>                                    <span style="color: #9ca3af;">STATUS</span>         <span style="color: #9ca3af;">CPU</span>    <span style="color: #9ca3af;">MEM</span>   <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">CONTAINER ID</span>   <span style="color: #7090b8;">IMAGE</span>                                    <span style="color: #7090b8;">STATUS</span>         <span style="color: #7090b8;">CPU</span>    <span style="color: #7090b8;">MEM</span>   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #ef4444;">c3d4e5f6g7h8</span>   <span style="color: #ef4444;">quay.io/myorg/api-server:v1.2.3</span>          <span style="color: #f59e0b;">Up 12 days</span>     <span style="color: #ef4444;">62%</span>  <span style="color: #ef4444;">4.2G</span>  <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
             
@@ -3820,33 +3821,33 @@
             addOutput('');
             
             // Tool call 3: Container Logs
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_logs</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8" tail=25</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_logs</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8" tail=25</span>`);
             await sleep(900);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ Container Logs: api-server ──────────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:23:01</span> <span style="color: #22c55e;">INFO</span>  Server started on port 8080                     <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:23:45</span> <span style="color: #f59e0b;">WARN</span>  High memory usage detected: 3.8GB               <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:24:12</span> <span style="color: #ef4444;">ERROR</span> Memory leak suspected in /api/v1/reports       <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:24:33</span> <span style="color: #ef4444;">ERROR</span> GC overhead limit exceeded                      <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:01</span> <span style="color: #f59e0b;">WARN</span>  Response time degraded: avg 2340ms              <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:18</span> <span style="color: #ef4444;">ERROR</span> Connection pool exhausted                       <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">2024-03-06 14:25:44</span> <span style="color: #22c55e;">INFO</span>  Known issue CVE-2024-1234 affects this version  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:23:01</span> <span style="color: #22c55e;">INFO</span>  Server started on port 8080                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:23:45</span> <span style="color: #f59e0b;">WARN</span>  High memory usage detected: 3.8GB               <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:24:12</span> <span style="color: #ef4444;">ERROR</span> Memory leak suspected in /api/v1/reports       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:24:33</span> <span style="color: #ef4444;">ERROR</span> GC overhead limit exceeded                      <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:25:01</span> <span style="color: #f59e0b;">WARN</span>  Response time degraded: avg 2340ms              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:25:18</span> <span style="color: #ef4444;">ERROR</span> Connection pool exhausted                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">2024-03-06 14:25:44</span> <span style="color: #22c55e;">INFO</span>  Known issue CVE-2024-1234 affects this version  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
             
             await sleep(500);
             
             // Tool call 4: Inspect container
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_inspect</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_inspect</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
             await sleep(600);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ Container Details ────────────────────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Name:</span>           api-server-prod                                            <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Image:</span>          quay.io/myorg/api-server:<span style="color: #ef4444;">v1.2.3</span>                              <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Created:</span>        12 days ago                                                <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Ports:</span>          8080->8080/tcp                                             <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Restart Policy:</span> always                                                     <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">Image Digest:</span>   sha256:8a7b2c... (outdated)                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Name:</span>           api-server-prod                                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Image:</span>          quay.io/myorg/api-server:<span style="color: #ef4444;">v1.2.3</span>                              <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Created:</span>        12 days ago                                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Ports:</span>          8080->8080/tcp                                             <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Restart Policy:</span> always                                                     <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">Image Digest:</span>   sha256:8a7b2c... (outdated)                                <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #f59e0b;">⚠ Latest:</span>       v1.2.5 available (fixes CVE-2024-1234, memory leak)        <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
@@ -3858,12 +3859,12 @@
             addOutput('');
             addOutput("I've identified the problem:", 'muted');
             addOutput('');
-            addOutputHTML(`<span style="color: #ef4444;">■</span> <span style="color: #e5e7eb;">Root Cause:</span> The api-server container is running version <span style="color: #ef4444;">v1.2.3</span> which has:`);
+            addOutputHTML(`<span style="color: #ef4444;">■</span> <span style="color: #e8eef7;">Root Cause:</span> The api-server container is running version <span style="color: #ef4444;">v1.2.3</span> which has:`);
             addOutput('  • A known memory leak in the /api/v1/reports endpoint');
             addOutput('  • CVE-2024-1234 security vulnerability');
             addOutput('  • GC overhead issues causing high CPU usage');
             addOutput('');
-            addOutputHTML(`<span style="color: #22c55e;">■</span> <span style="color: #e5e7eb;">Solution:</span> Update to version <span style="color: #22c55e;">v1.2.5</span> which fixes these issues.`);
+            addOutputHTML(`<span style="color: #22c55e;">■</span> <span style="color: #e8eef7;">Solution:</span> Update to version <span style="color: #22c55e;">v1.2.5</span> which fixes these issues.`);
             addOutput('');
             addOutput("Would you like me to update the container image and restart the service?", 'muted');
             addOutput('');
@@ -3879,7 +3880,7 @@
             }
             
             // User confirms
-            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Yes, please update the image and restart the container</span>`);
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e8eef7;">Yes, please update the image and restart the container</span>`);
             addOutput('');
             
             await sleep(500);
@@ -3890,7 +3891,7 @@
             addOutput('');
             
             // Pull new image
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_pull</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_pull</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5"</span>`);
             await sleep(1200);
             
             addOutputHTML(`<span style="color: #6b7280;">  Pulling quay.io/myorg/api-server:v1.2.5...</span>`);
@@ -3905,13 +3906,13 @@
             await sleep(600);
             
             // Stop old container
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_stop</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_stop</span> <span style="color: #6b7280;">container_id="c3d4e5f6g7h8"</span>`);
             await sleep(400);
             addOutputHTML(`<span style="color: #22c55e;">  ✓ Container stopped</span>`);
             addOutput('');
             
             // Start new container
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_run</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5" name="api-server-prod" ...</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_run</span> <span style="color: #6b7280;">image="quay.io/myorg/api-server:v1.2.5" name="api-server-prod" ...</span>`);
             await sleep(800);
             addOutputHTML(`<span style="color: #22c55e;">  ✓ Container started: e5f6g7h8i9j0</span>`);
             addOutput('');
@@ -3919,15 +3920,15 @@
             await sleep(500);
             
             // Verify new container status
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ rhel_podman_list</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ rhel_podman_list</span>`);
             await sleep(600);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ Podman Containers ────────────────────────────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">CONTAINER ID</span>   <span style="color: #9ca3af;">IMAGE</span>                                    <span style="color: #9ca3af;">STATUS</span>         <span style="color: #9ca3af;">CPU</span>    <span style="color: #9ca3af;">MEM</span>   <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">CONTAINER ID</span>   <span style="color: #7090b8;">IMAGE</span>                                    <span style="color: #7090b8;">STATUS</span>         <span style="color: #7090b8;">CPU</span>    <span style="color: #7090b8;">MEM</span>   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">a1b2c3d4e5f6</span>   registry.access.redhat.com/ubi9/nginx    <span style="color: #22c55e;">Up 12 days</span>      2%   128M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">b2c3d4e5f6g7</span>   registry.redhat.io/rhel9/postgresql-15   <span style="color: #22c55e;">Up 12 days</span>      8%   512M  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #22c55e;">e5f6g7h8i9j0</span>   <span style="color: #22c55e;">quay.io/myorg/api-server:v1.2.5</span>          <span style="color: #22c55e;">Up 5 secs</span>       <span style="color: #22c55e;">4%</span>   <span style="color: #22c55e;">380M</span>  <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e5e7eb;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #e8eef7;">d4e5f6g7h8i9</span>   registry.redhat.io/rhel9/redis-6         <span style="color: #22c55e;">Up 12 days</span>      3%   256M  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
             
@@ -3936,14 +3937,14 @@
             // Final summary
             addOutputHTML(`<span style="color: #f59e0b;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Updated api-server from v1.2.3 → v1.2.5</span>                                     │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Fixed memory leak in /api/v1/reports endpoint</span>                              │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Patched CVE-2024-1234 security vulnerability</span>                               │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">CPU usage reduced: 62% → 4%</span>                                                 │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Memory usage reduced: 4.2GB → 380MB</span>                                         │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Updated api-server from v1.2.3 → v1.2.5</span>                                     │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Fixed memory leak in /api/v1/reports endpoint</span>                              │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Patched CVE-2024-1234 security vulnerability</span>                               │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">CPU usage reduced: 62% → 4%</span>                                                 │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Memory usage reduced: 4.2GB → 380MB</span>                                         │`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">The container is now running the latest stable version.</span>                       │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Response times should normalize within the next few minutes.</span>                  │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">The container is now running the latest stable version.</span>                       │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Response times should normalize within the next few minutes.</span>                  │`);
             addOutputHTML(`│                                                                                │`);
             addOutputHTML(`<span style="color: #f59e0b;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
@@ -4069,17 +4070,17 @@
             getCurrentTab().promptColor = '#22c55e';
             
             addOutputHTML(`<span style="color: #22c55e;">╭─ OpenCode v1.0.0 ─────────────────────────────────────────────────────────────╮</span>`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Workspace:</span> local-coding              <span style="color: #22c55e;">● Local Model Active</span>                    │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Model:</span>     qwen2.5-coder:7b          <span style="color: #9ca3af;">via RamaLama</span>                          │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Provider:</span>  ramalama (local)          <span style="color: #9ca3af;">~120ms/token</span>                          │`);
-            addOutputHTML(`│   <span style="color: #e5e7eb;">Privacy:</span>   100% offline              <span style="color: #22c55e;">✓ No data leaves your machine</span>         │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Workspace:</span> local-coding              <span style="color: #22c55e;">● Local Model Active</span>                    │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Model:</span>     qwen2.5-coder:7b          <span style="color: #7090b8;">via RamaLama</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Provider:</span>  ramalama (local)          <span style="color: #7090b8;">~120ms/token</span>                          │`);
+            addOutputHTML(`│   <span style="color: #e8eef7;">Privacy:</span>   100% offline              <span style="color: #22c55e;">✓ No data leaves your machine</span>         │`);
             addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');
             
             await sleep(1000);
             
             // Phase 4: User asks a coding question
-            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e5e7eb;">Add unit tests for the authentication module in src/auth/</span>`);
+            addOutputHTML(`<span style="color: #67e8f9; font-weight: bold;">&gt;</span> <span style="color: #e8eef7;">Add unit tests for the authentication module in src/auth/</span>`);
             addOutput('');
             addOutputHTML(`<span style="color: #6b7280; font-style: italic;">  Press Enter to continue...</span>`);
             
@@ -4096,23 +4097,23 @@
             addOutput('');
             
             // Tool call 1: Read files
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ file_read</span> <span style="color: #6b7280;">path="src/auth/auth.ts"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ file_read</span> <span style="color: #6b7280;">path="src/auth/auth.ts"</span>`);
             await sleep(600);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ File: src/auth/auth.ts ──────────────────────────────────────────────────────┐</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">export class AuthService {</span>                                                   <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async login(email: string, password: string): Promise&lt;User&gt;</span>                <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async logout(userId: string): Promise&lt;void&gt;</span>                                <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async validateToken(token: string): Promise&lt;boolean&gt;</span>                       <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">  async refreshToken(refreshToken: string): Promise&lt;TokenPair&gt;</span>               <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #9ca3af;">}</span>                                                                           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">export class AuthService {</span>                                                   <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">  async login(email: string, password: string): Promise&lt;User&gt;</span>                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">  async logout(userId: string): Promise&lt;void&gt;</span>                                <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">  async validateToken(token: string): Promise&lt;boolean&gt;</span>                       <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">  async refreshToken(refreshToken: string): Promise&lt;TokenPair&gt;</span>               <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span> <span style="color: #7090b8;">}</span>                                                                           <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutput('');
             
             await sleep(500);
             
             // Tool call 2: Create test file
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ file_write</span> <span style="color: #6b7280;">path="src/auth/auth.test.ts"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ file_write</span> <span style="color: #6b7280;">path="src/auth/auth.test.ts"</span>`);
             await sleep(800);
             
             addOutputHTML(`<span style="color: #6b7280;">  ┌─ Creating: src/auth/auth.test.ts ─────────────────────────────────────────────┐</span>`);
@@ -4122,12 +4123,12 @@
             addOutputHTML(`<span style="color: #6b7280;">  │</span> describe(<span style="color: #22c55e;">'AuthService'</span>, () => {                                              <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>   describe(<span style="color: #22c55e;">'login'</span>, () => {                                                  <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should return user on valid credentials'</span>, async () => {             <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span>       <span style="color: #9ca3af;">// ... test implementation</span>                                            <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>       <span style="color: #7090b8;">// ... test implementation</span>                                            <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>     });                                                                      <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should throw on invalid password'</span>, ...);                            <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>     it(<span style="color: #22c55e;">'should throw on non-existent user'</span>, ...);                           <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span>   });                                                                        <span style="color: #6b7280;">│</span>`);
-            addOutputHTML(`<span style="color: #6b7280;">  │</span>   <span style="color: #9ca3af;">// ... more test suites for logout, validateToken, refreshToken</span>           <span style="color: #6b7280;">│</span>`);
+            addOutputHTML(`<span style="color: #6b7280;">  │</span>   <span style="color: #7090b8;">// ... more test suites for logout, validateToken, refreshToken</span>           <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  │</span> });                                                                          <span style="color: #6b7280;">│</span>`);
             addOutputHTML(`<span style="color: #6b7280;">  └───────────────────────────────────────────────────────────────────────────────────┘</span>`);
             addOutputHTML(`<span style="color: #22c55e;">  ✓ File created: src/auth/auth.test.ts (142 lines)</span>`);
@@ -4136,7 +4137,7 @@
             await sleep(500);
             
             // Tool call 3: Run tests
-            addOutputHTML(`<span style="color: #a78bfa;">⚡ shell_execute</span> <span style="color: #6b7280;">command="npm test src/auth/"</span>`);
+            addOutputHTML(`<span style="color: #6dd6ff;">⚡ shell_execute</span> <span style="color: #6b7280;">command="npm test src/auth/"</span>`);
             await sleep(1000);
             
             addOutputHTML(`<span style="color: #6b7280;">  Running tests...</span>`);
@@ -4160,13 +4161,13 @@
             // Final summary
             addOutputHTML(`<span style="color: #22c55e;">╭─ Summary ──────────────────────────────────────────────────────────────────────╮</span>`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">Created comprehensive test suite for AuthService</span>                            │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">8 test cases covering all public methods</span>                                    │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">All tests passing</span>                                                            │`);
-            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e5e7eb;">File: src/auth/auth.test.ts (142 lines)</span>                                     │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">Created comprehensive test suite for AuthService</span>                            │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">8 test cases covering all public methods</span>                                    │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">All tests passing</span>                                                            │`);
+            addOutputHTML(`│   <span style="color: #22c55e;">✓</span> <span style="color: #e8eef7;">File: src/auth/auth.test.ts (142 lines)</span>                                     │`);
             addOutputHTML(`│                                                                                │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Running entirely on local hardware - no data sent externally.</span>                 │`);
-            addOutputHTML(`│   <span style="color: #9ca3af;">Model latency: ~120ms/token | Total time: 4.2s</span>                               │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Running entirely on local hardware - no data sent externally.</span>                 │`);
+            addOutputHTML(`│   <span style="color: #7090b8;">Model latency: ~120ms/token | Total time: 4.2s</span>                               │`);
             addOutputHTML(`│                                                                                │`);
             addOutputHTML(`<span style="color: #22c55e;">╰────────────────────────────────────────────────────────────────────────────────╯</span>`);
             addOutput('');

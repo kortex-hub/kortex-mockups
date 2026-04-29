@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - CLI Commands</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -21,7 +22,7 @@
         .cli-header h2 {
             font-size: 28px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 12px 0;
             display: flex;
             align-items: center;
@@ -30,14 +31,14 @@
 
         .cli-header p {
             font-size: 15px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.6;
             margin: 0;
         }
 
         .cli-section {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 16px;
             margin-bottom: 24px;
             overflow: hidden;
@@ -45,7 +46,7 @@
 
         .cli-section-header {
             padding: 20px 24px;
-            border-bottom: 1px solid #3d3e4f;
+            border-bottom: 1px solid #1e3358;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -61,7 +62,7 @@
         }
 
         .cli-section-icon.basic {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: var(--kd-accent);
             color: #fff;
         }
 
@@ -88,7 +89,7 @@
         .cli-section-title {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0;
         }
 
@@ -98,7 +99,7 @@
 
         .cli-command {
             padding: 20px 24px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .cli-command:last-child {
@@ -119,13 +120,13 @@
         .cli-command-name {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 4px 0;
         }
 
         .cli-command-desc {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             margin: 0;
         }
 
@@ -136,7 +137,7 @@
             padding: 16px 20px;
             font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
             font-size: 13px;
-            color: #e5e7eb;
+            color: #e8eef7;
             overflow-x: auto;
             position: relative;
         }
@@ -159,7 +160,7 @@
         }
 
         .cli-code-block .value {
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .cli-code-block .comment {
@@ -171,10 +172,10 @@
             top: 12px;
             right: 12px;
             padding: 6px 10px;
-            background: rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(79, 195, 247, 0.15);
+            border: 1px solid rgba(79, 195, 247, 0.3);
             border-radius: 6px;
-            color: #a78bfa;
+            color: #6dd6ff;
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
@@ -185,7 +186,7 @@
         }
 
         .copy-btn:hover {
-            background: rgba(139, 92, 246, 0.25);
+            background: rgba(79, 195, 247, 0.25);
         }
 
         .copy-btn svg {
@@ -203,13 +204,13 @@
         .cli-options-table td {
             padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .cli-options-table th {
             font-size: 11px;
             font-weight: 600;
-            color: #9ca3af;
+            color: #7090b8;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             background: rgba(0, 0, 0, 0.2);
@@ -217,7 +218,7 @@
 
         .cli-options-table td {
             font-size: 13px;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .cli-options-table tr:last-child td {
@@ -231,14 +232,14 @@
         }
 
         .cli-option-desc {
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .cli-option-default {
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 12px;
-            color: #a78bfa;
-            background: rgba(139, 92, 246, 0.1);
+            color: #6dd6ff;
+            background: rgba(79, 195, 247, 0.1);
             padding: 2px 8px;
             border-radius: 4px;
         }
@@ -247,7 +248,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: #9ca3af;
+            color: #7090b8;
             text-decoration: none;
             font-size: 14px;
             margin-bottom: 24px;
@@ -255,7 +256,7 @@
         }
 
         .back-link:hover {
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .back-link svg {
@@ -281,13 +282,13 @@
 
         .cli-badge.optional {
             background: rgba(107, 114, 128, 0.15);
-            color: #9ca3af;
+            color: #7090b8;
             border: 1px solid rgba(107, 114, 128, 0.3);
         }
 
         .quick-start-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.1) 0%, rgba(42, 139, 191, 0.05) 100%);
+            border: 1px solid rgba(79, 195, 247, 0.3);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 24px;
@@ -296,7 +297,7 @@
         .quick-start-card h3 {
             font-size: 16px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 16px 0;
             display: flex;
             align-items: center;
@@ -304,7 +305,7 @@
         }
 
         .quick-start-card h3 svg {
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         /* Interactive Terminal Styles */
@@ -372,7 +373,7 @@
         }
 
         .terminal-header {
-            background: linear-gradient(180deg, #1e1f2b 0%, #181922 100%);
+            background: linear-gradient(180deg, #080f1a 0%, #181922 100%);
             padding: 12px 16px;
             display: flex;
             align-items: center;
@@ -417,7 +418,7 @@
 
         .terminal-restart-btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .terminal-body {
@@ -447,7 +448,7 @@
         }
 
         .terminal-output {
-            color: #e5e7eb;
+            color: #e8eef7;
             display: block;
             width: 100%;
             white-space: pre-wrap;
@@ -475,7 +476,7 @@
 
         .terminal-spinner {
             display: inline-block;
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .terminal-input-area {
@@ -554,7 +555,7 @@
             display: inline-block;
             width: 8px;
             height: 16px;
-            background: #e5e7eb;
+            background: #e8eef7;
             margin-left: 2px;
             animation: blink 1s infinite;
         }
@@ -574,7 +575,7 @@
 
         .typing-text {
             overflow: hidden;
-            border-right: 2px solid #e5e7eb;
+            border-right: 2px solid #e8eef7;
             white-space: nowrap;
             animation: typing 0.5s steps(40, end), blink-caret 0.75s step-end infinite;
         }

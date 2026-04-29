@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kortex - Agent Skills</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -41,12 +42,12 @@
             font-size: 11px;
             font-weight: 500;
             background-color: #374151;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .skill-description {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             max-width: 300px;
             white-space: nowrap;
             overflow: hidden;
@@ -76,7 +77,7 @@
 
         .skill-status-text {
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .toggle-switch {
@@ -90,7 +91,7 @@
         }
 
         .toggle-switch.active {
-            background-color: #8b5cf6;
+            background-color: #4fc3f7;
         }
 
         .toggle-switch::after {
@@ -131,7 +132,7 @@
         }
 
         .skill-icon.podman {
-            background: linear-gradient(135deg, #892ca0, #a855f7);
+            background: var(--kd-accent);
             color: #ffffff;
         }
 
@@ -146,7 +147,7 @@
         }
 
         .skill-icon.custom {
-            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            background: var(--kd-accent);
             color: #ffffff;
         }
 
@@ -167,7 +168,7 @@
 
         /* Upload area styles */
         .upload-skill-area {
-            border: 2px dashed #3d3e4f;
+            border: 2px dashed #1e3358;
             border-radius: 8px;
             padding: 32px 24px;
             text-align: center;
@@ -177,20 +178,20 @@
         }
 
         .upload-skill-area:hover {
-            border-color: #8b5cf6;
-            background-color: rgba(139, 92, 246, 0.05);
+            border-color: #4fc3f7;
+            background-color: rgba(79, 195, 247, 0.05);
         }
 
         .upload-skill-icon {
             width: 48px;
             height: 48px;
             margin: 0 auto 12px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .upload-skill-text {
             font-size: 14px;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
@@ -202,12 +203,12 @@
         /* Skill structure preview */
         .skill-structure-preview {
             background-color: #1e1f29;
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 8px;
             padding: 16px;
             font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             margin-top: 16px;
         }
 
@@ -897,7 +898,7 @@
 
                 <!-- Skill Structure Preview -->
                 <div class="skill-structure-preview">
-                    <div style="margin-bottom: 8px; color: #e5e7eb; font-weight: 500;">Required Skill Structure:</div>
+                    <div style="margin-bottom: 8px; color: #e8eef7; font-weight: 500;">Required Skill Structure:</div>
                     <div><span class="folder">my-skill/</span></div>
                     <div style="padding-left: 16px;"><span class="file required">├── SKILL.md</span> <span style="color: #6b7280;">(required)</span></div>
                     <div style="padding-left: 16px;"><span class="file">├── scripts/</span></div>

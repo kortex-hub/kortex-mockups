@@ -52,14 +52,14 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     right: 0;
     height: 48px;
     z-index: 2100;
-    background: linear-gradient(180deg, #2a2b38 0%, #1e1f2b 100%);
-    border-bottom: 1px solid #3d3e4f;
+    background: linear-gradient(180deg, var(--kd-bg-card) 0%, var(--kd-bg) 100%);
+    border-bottom: 1px solid var(--kd-border);
     display: flex;
     align-items: center;
     padding: 0 12px 0 16px;
     font-size: 12px;
-    color: #e5e7eb;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    color: var(--kd-text-primary);
+    box-shadow: none;
 }
 
 .kaiden-demo-bar--idle .kaiden-demo-bar__progress-fill {
@@ -80,7 +80,7 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #a78bfa;
+    color: var(--kd-accent-bright);
 }
 
 .kaiden-demo-bar__progress {
@@ -94,7 +94,7 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
 
 .kaiden-demo-bar__progress-track {
     height: 4px;
-    background: #3d3e4f;
+    background: var(--kd-border);
     border-radius: 2px;
     overflow: hidden;
 }
@@ -102,7 +102,7 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
 .kaiden-demo-bar__progress-fill {
     height: 100%;
     border-radius: 2px;
-    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+    background: linear-gradient(90deg, var(--kd-accent-dim), var(--kd-accent-bright));
     transition: width 0.35s ease;
 }
 
@@ -134,23 +134,23 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #4b5563;
-    border: 1px solid #6b7280;
+    background: var(--kd-surface-muted);
+    border: 1px solid var(--kd-text-muted);
     transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .kaiden-demo-bar__segment:hover:not(:disabled) .kaiden-demo-bar__segment-dot {
-    background: #6b7280;
+    background: var(--kd-text-muted);
 }
 
 .kaiden-demo-bar__segment--pending .kaiden-demo-bar__segment-dot {
-    background: #374151;
-    border-color: #4b5563;
+    background: var(--kd-surface-input);
+    border-color: var(--kd-surface-muted);
 }
 
 .kaiden-demo-bar__segment--pending:hover:not(:disabled) .kaiden-demo-bar__segment-dot {
-    background: #4b5563;
-    border-color: #6b7280;
+    background: var(--kd-surface-muted);
+    border-color: var(--kd-text-muted);
 }
 
 .kaiden-demo-bar__segment--done .kaiden-demo-bar__segment-dot {
@@ -159,9 +159,9 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
 }
 
 .kaiden-demo-bar__segment--current .kaiden-demo-bar__segment-dot {
-    background: #a78bfa;
-    border-color: #c4b5fd;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+    background: var(--kd-accent-bright);
+    border-color: #a8e6fc;
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.25);
     transform: scale(1.15);
 }
 
@@ -177,12 +177,12 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
 .kaiden-demo-bar__title {
     font-weight: 600;
     font-size: 13px;
-    color: #f3f4f6;
+    color: var(--kd-text-primary);
 }
 
 .kaiden-demo-bar__subtitle {
     font-size: 11px;
-    color: #9ca3af;
+    color: var(--kd-text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -203,16 +203,16 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     height: 34px;
     padding: 0;
     border-radius: 8px;
-    border: 1px solid #3d3e4f;
+    border: 1px solid var(--kd-border);
     background: rgba(255, 255, 255, 0.04);
-    color: #d1d5db;
+    color: var(--kd-text-secondary);
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .kaiden-demo-bar__btn:hover:not(:disabled) {
-    background: rgba(139, 92, 246, 0.12);
-    border-color: #6d28d9;
+    background: rgba(79, 195, 247, 0.12);
+    border-color: var(--kd-accent-dim);
     color: #fff;
 }
 
@@ -222,9 +222,9 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
 }
 
 .kaiden-demo-bar__play.kaiden-demo-bar__play--active {
-    background: rgba(139, 92, 246, 0.2);
-    border-color: #8b5cf6;
-    color: #e9d5ff;
+    background: rgba(79, 195, 247, 0.2);
+    border-color: var(--kd-accent);
+    color: #d4f1fc;
 }
 
 .kaiden-demo-bar__btn--restart {
@@ -248,7 +248,7 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     padding: 0 12px;
     font-size: 11px;
     font-weight: 600;
-    color: #9ca3af;
+    color: var(--kd-text-muted);
 }
 
 .kaiden-demo-bar__btn--exit:hover:not(:disabled) {
@@ -262,14 +262,14 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     padding: 0 14px;
     font-size: 11px;
     font-weight: 600;
-    color: #f5f3ff;
-    border-color: #7c3aed;
-    background: rgba(139, 92, 246, 0.22);
+    color: #eaf8fd;
+    border-color: var(--kd-accent-dim);
+    background: rgba(79, 195, 247, 0.22);
 }
 
 .kaiden-demo-bar__btn--start:hover:not(:disabled) {
-    background: rgba(139, 92, 246, 0.35);
-    border-color: #a78bfa;
+    background: rgba(79, 195, 247, 0.35);
+    border-color: var(--kd-accent-bright);
     color: #fff;
 }
 
@@ -288,8 +288,8 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     margin: 16px 24px 0;
     padding: 14px 18px;
     border-radius: 12px;
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(79, 195, 247, 0.35);
+    background: rgba(79, 195, 247, 0.08);
 }
 
 .kaiden-empty-shell-notice__inner {
@@ -300,7 +300,7 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    color: #e9d5ff;
+    color: #d4f1fc;
     margin-bottom: 6px;
 }
 
@@ -308,11 +308,11 @@ body.kaiden-demo-bar-open.cli-page .cli-page-layout {
     margin: 0;
     font-size: 13px;
     line-height: 1.55;
-    color: #c4b5fd;
+    color: #a8e6fc;
 }
 
 .kaiden-empty-shell-notice__text strong {
-    color: #f5f3ff;
+    color: #eaf8fd;
 }
 
 /* Page layouts use 100vh; subtract demo bar (48px) so content fits */

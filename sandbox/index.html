@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Sandbox</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -24,7 +25,7 @@
 
         .sb-main::-webkit-scrollbar { width: 6px; }
         .sb-main::-webkit-scrollbar-track { background: transparent; }
-        .sb-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.15); border-radius: 3px; }
+        .sb-main::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.15); border-radius: 3px; }
 
         /* Header */
         .sb-header {
@@ -48,8 +49,8 @@
             width: 44px;
             height: 44px;
             border-radius: 12px;
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.25);
+            background: rgba(79, 195, 247, 0.12);
+            border: 1px solid rgba(79, 195, 247, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -59,7 +60,7 @@
         .sb-header-icon svg {
             width: 22px;
             height: 22px;
-            color: #a78bfa;
+            color: #6dd6ff;
         }
 
         .sb-header-title {
@@ -95,7 +96,7 @@
         .sb-stat-value {
             font-size: 18px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .sb-stat-label {
@@ -111,7 +112,7 @@
             border-radius: 50%;
         }
 
-        .sb-stat-dot.dot-total { background: #a78bfa; box-shadow: 0 0 6px rgba(167,139,250,0.4); }
+        .sb-stat-dot.dot-total { background: #6dd6ff; box-shadow: 0 0 6px rgba(109, 212, 252,0.4); }
         .sb-stat-dot.dot-blocked { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.4); }
         .sb-stat-dot.dot-allowed { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
         .sb-stat-dot.dot-filtered { background: #60a5fa; box-shadow: 0 0 6px rgba(96,165,250,0.4); }
@@ -185,7 +186,7 @@
         .sb-layer-name {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .sb-layer-badge {
@@ -194,9 +195,9 @@
             font-weight: 600;
             padding: 2px 8px;
             border-radius: 8px;
-            background: rgba(139,92,246,0.1);
-            color: #a78bfa;
-            border: 1px solid rgba(139,92,246,0.15);
+            background: rgba(79, 195, 247,0.1);
+            color: #6dd6ff;
+            border: 1px solid rgba(79, 195, 247,0.15);
         }
 
         .sb-layer-desc {
@@ -234,7 +235,7 @@
             align-items: flex-start;
             gap: 6px;
             font-size: 11px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.4;
         }
 
@@ -264,7 +265,7 @@
         .sb-activities-title {
             font-size: 16px;
             font-weight: 700;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .sb-filter-bar {
@@ -287,13 +288,13 @@
 
         .sb-filter-btn:hover {
             background: rgba(255,255,255,0.05);
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .sb-filter-btn.active {
-            background: rgba(139,92,246,0.15);
-            border-color: rgba(139,92,246,0.3);
-            color: #c4b5fd;
+            background: rgba(79, 195, 247,0.15);
+            border-color: rgba(79, 195, 247,0.3);
+            color: #a8e6fc;
         }
 
         .sb-activity-list {
@@ -357,7 +358,7 @@
             top: 4px;
             bottom: 4px;
             width: 2px;
-            background: rgba(139,92,246,0.4);
+            background: rgba(79, 195, 247,0.4);
             border-radius: 1px;
         }
 
@@ -368,7 +369,7 @@
             left: -3px;
             width: 8px;
             height: 8px;
-            border: 1.5px solid rgba(139,92,246,0.3);
+            border: 1.5px solid rgba(79, 195, 247,0.3);
             border-radius: 50%;
             background: transparent;
         }
@@ -401,10 +402,10 @@
             100% { left: 8px; opacity: 1; }
         }
         @keyframes sa-boundary-flash-red {
-            0%   { background: rgba(139,92,246,0.4); }
+            0%   { background: rgba(79, 195, 247,0.4); }
             35%  { background: rgba(239,68,68,0.8); box-shadow: 0 0 8px rgba(239,68,68,0.3); }
-            50%  { background: rgba(139,92,246,0.4); box-shadow: none; }
-            100% { background: rgba(139,92,246,0.4); }
+            50%  { background: rgba(79, 195, 247,0.4); box-shadow: none; }
+            100% { background: rgba(79, 195, 247,0.4); }
         }
 
         /* Network allowed */
@@ -425,10 +426,10 @@
             100% { left: 8px; opacity: 1; }
         }
         @keyframes sa-boundary-flash-green {
-            0%   { background: rgba(139,92,246,0.4); }
+            0%   { background: rgba(79, 195, 247,0.4); }
             35%  { background: rgba(34,197,94,0.6); box-shadow: 0 0 8px rgba(34,197,94,0.2); }
-            55%  { background: rgba(139,92,246,0.4); box-shadow: none; }
-            100% { background: rgba(139,92,246,0.4); }
+            55%  { background: rgba(79, 195, 247,0.4); box-shadow: none; }
+            100% { background: rgba(79, 195, 247,0.4); }
         }
 
         /* File write */
@@ -720,7 +721,7 @@
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
             font-size: 10px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .sa-agent-dot {
@@ -850,7 +851,7 @@
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
                             <div>
                                 <div style="font-size:13px;font-weight:600;color:#fbbf24;margin-bottom:6px;">Policy decision required</div>
-                                <p style="margin:0;font-size:13px;color:#e5e7eb;line-height:1.55;max-width:640px;">The workspace attempted a connection to <strong>telemetry.example.com</strong>, which is outside the allowed set for project <em>doc-updater</em> (deny-by-default network). Separately, <strong>host filesystem</strong> access from the sandbox was blocked.</p>
+                                <p style="margin:0;font-size:13px;color:#e8eef7;line-height:1.55;max-width:640px;">The workspace attempted a connection to <strong>telemetry.example.com</strong>, which is outside the allowed set for project <em>doc-updater</em> (deny-by-default network). Separately, <strong>host filesystem</strong> access from the sandbox was blocked.</p>
                             </div>
                             <div style="display:flex;gap:10px;flex-shrink:0;">
                                 <button type="button" style="padding:8px 16px;border-radius:8px;border:none;background:#22c55e;color:#052e16;font-weight:600;cursor:pointer;font-size:13px;">Allow once</button>
@@ -1083,7 +1084,7 @@
                                     <div class="sa-info-time">2s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-net">Network</span>
@@ -1102,7 +1103,7 @@
                                     <div class="sa-info-time">5s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-net">Network</span>
@@ -1144,7 +1145,7 @@
                                     <div class="sa-info-time">12s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-fs">Filesystem</span>
@@ -1227,7 +1228,7 @@
                                     <div class="sa-info-time">25s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-proc">Process</span>
@@ -1330,7 +1331,7 @@
                                     <div class="sa-info-time">42s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-proc">Process</span>
@@ -1350,7 +1351,7 @@
                                     <div class="sa-info-time">45s ago</div>
                                 </div>
                                 <div class="sa-agent">
-                                    <div class="sa-agent-dot" style="background: #8b5cf6;"></div>
+                                    <div class="sa-agent-dot" style="background: #4fc3f7;"></div>
                                     Agent #1 &middot; Doc updater
                                 </div>
                                 <span class="sa-layer-tag tag-priv">Privacy</span>

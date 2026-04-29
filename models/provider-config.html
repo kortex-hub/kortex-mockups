@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden · Configure provider</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         :root {
-            --vault-pd-accent: #8b5cf6;
-            --vault-pd-accent-dim: #7c3aed;
-            --vault-pd-border: #3d3e4f;
-            --vault-pd-muted: #9ca3af;
+            --vault-pd-accent: var(--kd-accent);
+            --vault-pd-accent-dim: var(--kd-accent-dim);
+            --vault-pd-border: var(--kd-border);
+            --vault-pd-muted: var(--kd-text-muted);
         }
 
         .provider-config-layout {
@@ -32,7 +33,7 @@
 
         .provider-config-main::-webkit-scrollbar { width: 6px; }
         .provider-config-main::-webkit-scrollbar-track { background: transparent; }
-        .provider-config-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
+        .provider-config-main::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.2); border-radius: 3px; }
 
         .provider-config-inner { max-width: 560px; }
 
@@ -50,7 +51,7 @@
             transition: color 0.15s ease;
         }
 
-        .vault-create-breadcrumb a:hover { color: #c4b5fd; }
+        .vault-create-breadcrumb a:hover { color: #a8e6fc; }
 
         .vault-create-breadcrumb svg {
             width: 14px;
@@ -59,7 +60,7 @@
             flex-shrink: 0;
         }
 
-        .vault-create-breadcrumb span { color: #e5e7eb; font-weight: 500; }
+        .vault-create-breadcrumb span { color: #e8eef7; font-weight: 500; }
 
         .vault-create-title {
             font-size: 26px;
@@ -83,8 +84,8 @@
             padding: 14px 16px;
             margin-bottom: 28px;
             border-radius: 10px;
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(79, 195, 247, 0.25);
+            background: rgba(79, 195, 247, 0.06);
             font-size: 13px;
             color: #a1a1aa;
             line-height: 1.5;
@@ -93,7 +94,7 @@
         .vault-create-callout svg {
             width: 20px;
             height: 20px;
-            color: #a78bfa;
+            color: #6dd6ff;
             flex-shrink: 0;
             margin-top: 1px;
         }
@@ -104,7 +105,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 8px;
         }
 
@@ -118,10 +119,10 @@
             width: 100%;
             box-sizing: border-box;
             padding: 11px 14px;
-            background: #1a1b23;
+            background: #080f1a;
             border: 1px solid var(--vault-pd-border);
             border-radius: 10px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             font-family: inherit;
             transition: border-color 0.15s ease;
@@ -141,7 +142,7 @@
             gap: 12px;
             margin-top: 12px;
             padding-top: 28px;
-            border-top: 1px solid rgba(61, 62, 79, 0.6);
+            border-top: 1px solid rgba(30, 51, 88, 0.6);
         }
 
         .vault-btn-secondary {
@@ -173,7 +174,7 @@
             font-size: 14px;
             font-weight: 600;
             color: #fff;
-            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
+            background: var(--vault-pd-accent);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -182,7 +183,7 @@
 
         .vault-btn-primary:hover {
             filter: brightness(1.08);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+            box-shadow: 0 4px 20px rgba(79, 195, 247, 0.35);
         }
 
         .provider-unknown {
@@ -191,7 +192,7 @@
             line-height: 1.6;
         }
 
-        .provider-unknown a { color: #c4b5fd; }
+        .provider-unknown a { color: #a8e6fc; }
     </style>
 </head>
 <body class="models-page">

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Extensions</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -25,14 +26,17 @@
 
         .ext-main::-webkit-scrollbar { width: 6px; }
         .ext-main::-webkit-scrollbar-track { background: transparent; }
-        .ext-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.15); border-radius: 3px; }
+        .ext-main::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--kd-accent) 22%, transparent);
+            border-radius: 3px;
+        }
 
         /* ── Left Sidebar ── */
         .ext-sidebar {
             width: 240px;
             min-width: 240px;
-            background: linear-gradient(180deg, #1e1f2b 0%, #1a1b23 100%);
-            border-right: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border-right: 1px solid var(--kd-border);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -42,7 +46,7 @@
         .ext-sidebar-title {
             font-size: 10px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             padding: 0 20px 12px;
@@ -66,11 +70,13 @@
             border: 1px solid transparent;
         }
 
-        .ext-cat-item:hover { background: rgba(139, 92, 246, 0.06); }
+        .ext-cat-item:hover {
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-card));
+        }
 
         .ext-cat-item.active {
-            background: rgba(139, 92, 246, 0.12);
-            border-color: rgba(139, 92, 246, 0.2);
+            background: color-mix(in srgb, var(--kd-accent) 14%, var(--kd-bg-card));
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
         }
 
         .ext-cat-icon {
@@ -89,31 +95,33 @@
         .ext-cat-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
         .ext-cat-icon.models { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .ext-cat-icon.agents { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .ext-cat-icon.tools { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .ext-cat-icon.tools { background: var(--kd-accent); }
 
         .ext-cat-info { flex: 1; min-width: 0; }
-        .ext-cat-name { font-size: 13px; font-weight: 500; color: #e5e7eb; }
-        .ext-cat-item.active .ext-cat-name { color: #c4b5fd; }
-        .ext-cat-count { font-size: 11px; color: #6b7280; margin-top: 1px; }
+        .ext-cat-name { font-size: 13px; font-weight: 500; color: var(--kd-text-primary); }
+        .ext-cat-item.active .ext-cat-name { color: var(--kd-accent-dim); }
+        .ext-cat-count { font-size: 11px; color: var(--kd-text-muted); margin-top: 1px; }
 
         .ext-cat-badge {
             font-size: 11px;
             font-weight: 600;
             padding: 2px 8px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            color: #6b7280;
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
+            color: var(--kd-text-muted);
             flex-shrink: 0;
+            border: 1px solid var(--kd-border);
         }
 
         .ext-cat-item.active .ext-cat-badge {
-            background: rgba(139, 92, 246, 0.2);
-            color: #c4b5fd;
+            background: color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 30%, var(--kd-border));
         }
 
         .ext-sidebar-divider {
             height: 1px;
-            background: #3d3e4f;
+            background: var(--kd-border);
             margin: 16px 20px;
         }
 
@@ -122,7 +130,7 @@
         .ext-sidebar-section-title {
             font-size: 10px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             margin-bottom: 10px;
@@ -143,17 +151,20 @@
             cursor: pointer;
             transition: all 0.15s;
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
         }
 
-        .ext-filter-item:hover { background: rgba(255, 255, 255, 0.04); color: #e5e7eb; }
-        .ext-filter-item.active { color: #e5e7eb; }
+        .ext-filter-item:hover {
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
+            color: var(--kd-text-primary);
+        }
+        .ext-filter-item.active { color: var(--kd-text-primary); }
 
         .ext-filter-check {
             width: 16px;
             height: 16px;
             border-radius: 4px;
-            border: 1.5px solid #4b5563;
+            border: 1.5px solid var(--kd-surface-input-border);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -162,11 +173,11 @@
         }
 
         .ext-filter-item.active .ext-filter-check {
-            background: #8b5cf6;
-            border-color: #8b5cf6;
+            background: var(--kd-accent);
+            border-color: var(--kd-accent);
         }
 
-        .ext-filter-check svg { width: 10px; height: 10px; color: #fff; opacity: 0; }
+        .ext-filter-check svg { width: 10px; height: 10px; color: var(--kd-on-accent); opacity: 0; }
         .ext-filter-item.active .ext-filter-check svg { opacity: 1; }
 
         .ext-filter-dot {
@@ -194,15 +205,15 @@
             gap: 16px;
         }
 
-        .ext-title { font-size: 28px; font-weight: 700; color: #e5e7eb; }
+        .ext-title { font-size: 28px; font-weight: 700; color: var(--kd-text-primary); }
 
         .ext-count {
             font-size: 13px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             padding: 4px 12px;
-            background: rgba(255, 255, 255, 0.04);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
             border-radius: 20px;
-            border: 1px solid #3d3e4f;
+            border: 1px solid var(--kd-border);
         }
 
         .ext-header-actions {
@@ -216,34 +227,38 @@
             align-items: center;
             gap: 8px;
             padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 10px;
             min-width: 260px;
             transition: border-color 0.2s ease;
         }
 
-        .ext-search:focus-within { border-color: rgba(139, 92, 246, 0.5); }
-        .ext-search svg { width: 16px; height: 16px; color: #6b7280; flex-shrink: 0; }
+        html:not(.dark) .ext-search {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.05), 0 4px 12px rgba(13, 27, 46, 0.05);
+        }
+
+        .ext-search:focus-within { border-color: var(--kd-accent); }
+        .ext-search svg { width: 16px; height: 16px; color: var(--kd-text-muted); flex-shrink: 0; }
 
         .ext-search input {
             background: none;
             border: none;
             outline: none;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 14px;
             width: 100%;
         }
 
-        .ext-search input::placeholder { color: #4b5563; }
+        .ext-search input::placeholder { color: var(--kd-text-muted); }
 
         .ext-import-btn {
             display: flex;
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: #fff;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
             border: none;
             border-radius: 8px;
             font-size: 13px;
@@ -254,7 +269,15 @@
 
         .ext-import-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+            background: var(--kd-accent-dim);
+        }
+
+        html:not(.dark) .ext-import-btn:hover {
+            box-shadow: 0 4px 14px rgba(79, 195, 247, 0.22);
+        }
+
+        html.dark .ext-import-btn:hover {
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .ext-import-btn svg { width: 16px; height: 16px; }
@@ -277,8 +300,8 @@
         }
 
         .ext-active-label-icon svg { width: 15px; height: 15px; color: #fff; }
-        .ext-active-label-text { font-size: 16px; font-weight: 600; color: #e5e7eb; }
-        .ext-active-label-count { font-size: 13px; color: #6b7280; }
+        .ext-active-label-text { font-size: 16px; font-weight: 600; color: var(--kd-text-primary); }
+        .ext-active-label-count { font-size: 13px; color: var(--kd-text-muted); }
 
         /* ── Extension Cards Grid ── */
         .ext-grid {
@@ -288,19 +311,36 @@
         }
 
         .ext-card {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 14px;
             padding: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
             position: relative;
             overflow: hidden;
         }
 
+        html.dark .ext-card {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .ext-card {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
         .ext-card:hover {
-            border-color: rgba(139, 92, 246, 0.35);
+            border-color: color-mix(in srgb, var(--kd-accent) 45%, var(--kd-border));
             transform: translateY(-2px);
+        }
+
+        html:not(.dark) .ext-card:hover {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 12px 32px rgba(13, 27, 46, 0.1);
+        }
+
+        html.dark .ext-card:hover {
+            border-color: rgba(79, 195, 247, 0.35);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
@@ -327,11 +367,11 @@
         .ext-card-icon.mcp { background: linear-gradient(135deg, #06b6d4, #0891b2); }
         .ext-card-icon.models { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .ext-card-icon.agents { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .ext-card-icon.tools { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .ext-card-icon.tools { background: var(--kd-accent); }
 
         .ext-card-title-area { flex: 1; min-width: 0; }
 
-        .ext-card-title { font-size: 15px; font-weight: 600; color: #e5e7eb; margin-bottom: 4px; }
+        .ext-card-title { font-size: 15px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 4px; }
 
         .ext-card-badges {
             display: flex;
@@ -352,7 +392,7 @@
         .ext-type-badge.mcp { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
         .ext-type-badge.models { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
         .ext-type-badge.agents { background: rgba(236, 72, 153, 0.15); color: #f9a8d4; }
-        .ext-type-badge.tools { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+        .ext-type-badge.tools { background: rgba(79, 195, 247, 0.15); color: #a8e6fc; }
 
         .ext-source-badge {
             font-size: 10px;
@@ -362,12 +402,12 @@
         }
 
         .ext-source-badge.redhat { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
-        .ext-source-badge.community { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
+        .ext-source-badge.community { background: rgba(107, 114, 128, 0.2); color: var(--kd-text-secondary); }
         .ext-source-badge.enterprise { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
 
         .ext-card-desc {
             font-size: 13px;
-            color: #9ca3af;
+            color: var(--kd-text-secondary);
             line-height: 1.5;
             margin-bottom: 14px;
             display: -webkit-box;
@@ -387,7 +427,7 @@
             align-items: center;
             gap: 12px;
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
         }
 
         .ext-card-meta-item {
@@ -418,9 +458,9 @@
         }
 
         .ext-card-status.enabled {
-            background: rgba(139, 92, 246, 0.12);
-            color: #c4b5fd;
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.12);
+            color: #a8e6fc;
+            border: 1px solid rgba(79, 195, 247, 0.2);
         }
 
         /* Section headers in grid */
@@ -428,12 +468,12 @@
             grid-column: 1 / -1;
             font-size: 12px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 8px 0 0;
             margin-top: 8px;
-            border-top: 1px solid rgba(61, 62, 79, 0.4);
+            border-top: 1px solid var(--kd-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -870,7 +910,7 @@
 
                         <div class="ext-card" data-type="models" data-source="community">
                             <div class="ext-card-header">
-                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #2d2e3f, #1a1b23); border: 1px solid #3d3e4f;">
+                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #2d2e3f, #080f1a); border: 1px solid #1e3358;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                                 </div>
                                 <div class="ext-card-title-area">
@@ -962,7 +1002,7 @@
 
                         <div class="ext-card" data-type="models" data-source="community">
                             <div class="ext-card-header">
-                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
+                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #2a8bbf, #1565a0);">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
                                 </div>
                                 <div class="ext-card-title-area">
@@ -985,7 +1025,7 @@
 
                         <div class="ext-card" data-type="models" data-source="redhat">
                             <div class="ext-card-header">
-                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #2d2e3f, #1a1b23); border: 1px solid #3d3e4f;">
+                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #2d2e3f, #080f1a); border: 1px solid #1e3358;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                                 </div>
                                 <div class="ext-card-title-area">
@@ -1080,7 +1120,7 @@
 
                         <div class="ext-card" data-type="tools" data-source="redhat" onclick="window.location.href='details.html'">
                             <div class="ext-card-header">
-                                <div class="ext-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <div class="ext-card-icon" style="background: var(--kd-accent);">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/><path d="M16 21h5v-5"/><path d="M8 21H3v-5"/><path d="m12 2v8.3a4 4 0 0 0 1.172 2.872L21 21"/><path d="m9 15-6 6"/></svg>
                                 </div>
                                 <div class="ext-card-title-area">
@@ -1114,7 +1154,7 @@
             mcp:    { text: 'MCP Servers',     count: 5,  bg: 'linear-gradient(135deg, #06b6d4, #0891b2)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' },
             models: { text: 'Models',          count: 6,  bg: 'linear-gradient(135deg, #f59e0b, #d97706)', icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>' },
             agents: { text: 'Coding Agents',   count: 3,  bg: 'linear-gradient(135deg, #ec4899, #db2777)', icon: '<path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>' },
-            tools:  { text: 'Tools',           count: 1,  bg: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' }
+            tools:  { text: 'Tools',           count: 1,  bg: 'var(--kd-accent)', icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>' }
         };
 
         function filterCategory(cat, el) {

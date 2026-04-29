@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Secret Vault</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/vault-services-embedded.js"></script>
@@ -14,10 +15,10 @@
     <style>
         /* Podman Extensions–style: title + action, underline search, category text tabs */
         :root {
-            --vault-pd-accent: #8b5cf6;
-            --vault-pd-accent-dim: #7c3aed;
-            --vault-pd-border: #3d3e4f;
-            --vault-pd-muted: #9ca3af;
+            --vault-pd-accent: var(--kd-accent);
+            --vault-pd-accent-dim: var(--kd-accent-dim);
+            --vault-pd-border: var(--kd-border);
+            --vault-pd-muted: var(--kd-text-muted);
         }
 
         .visually-hidden {
@@ -48,7 +49,7 @@
 
         .services-main::-webkit-scrollbar { width: 6px; }
         .services-main::-webkit-scrollbar-track { background: transparent; }
-        .services-main::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 3px; }
+        .services-main::-webkit-scrollbar-thumb { background: rgba(79, 195, 247, 0.2); border-radius: 3px; }
 
         /* Title row — title left, primary action right */
         .vault-pd-title-row {
@@ -68,7 +69,7 @@
         .services-title {
             font-size: 26px;
             font-weight: 700;
-            color: #f4f4f5;
+            color: var(--kd-text-primary);
             letter-spacing: -0.02em;
             margin: 0;
             line-height: 1.15;
@@ -84,37 +85,45 @@
             align-items: center;
             gap: 8px;
             padding: 9px 18px;
-            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
-            color: #fff;
+            background: var(--vault-pd-accent);
+            color: var(--kd-on-accent);
             border: none;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: filter 0.15s ease, box-shadow 0.15s ease;
+            transition: background 0.15s ease, box-shadow 0.15s ease;
             flex-shrink: 0;
         }
 
         .vault-pd-primary-btn:hover {
-            filter: brightness(1.08);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+            background: var(--kd-accent-dim);
+            box-shadow: 0 4px 20px rgba(79, 195, 247, 0.35);
         }
 
         .vault-pd-primary-btn svg { width: 17px; height: 17px; }
 
         a.vault-pd-primary-btn {
             text-decoration: none;
-            color: #fff;
+            color: var(--kd-on-accent);
             box-sizing: border-box;
         }
 
         #vaultMockList { display: none; }
 
         .vault-pd-table-wrap {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--kd-bg-card);
             border: 1px solid var(--vault-pd-border);
             border-radius: 12px;
             overflow: hidden;
+        }
+
+        html:not(.dark) .vault-pd-table-wrap {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
+        }
+
+        html.dark .vault-pd-table-wrap {
+            box-shadow: none;
         }
 
         .vault-pd-table-wrap h2 {
@@ -122,7 +131,7 @@
             padding: 16px 20px 0;
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .vault-pd-table-wrap .vault-pd-table-lead {
@@ -131,7 +140,7 @@
             font-size: 13px;
             color: var(--vault-pd-muted);
             line-height: 1.45;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.6);
+            border-bottom: 1px solid var(--vault-pd-border);
         }
 
         .vault-pd-table {
@@ -144,11 +153,11 @@
             text-align: left;
             font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             padding: 12px 20px;
-            background: rgba(0, 0, 0, 0.2);
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
             border-bottom: 1px solid var(--vault-pd-border);
         }
 
@@ -156,15 +165,21 @@
 
         .vault-pd-table tbody tr.vault-catalog-row,
         .vault-pd-table tbody tr.vault-catalog-config-row {
-            border-bottom: 1px solid rgba(61, 62, 79, 0.45);
+            border-bottom: 1px solid color-mix(in srgb, var(--vault-pd-border) 80%, transparent);
             transition: background 0.12s ease;
         }
 
-        .vault-pd-table tbody tr.vault-catalog-row:hover { background: rgba(139, 92, 246, 0.05); }
+        .vault-pd-table tbody tr.vault-catalog-row:hover {
+            background: color-mix(in srgb, var(--vault-pd-accent) 6%, var(--kd-bg-card));
+        }
 
         .vault-catalog-config-row td {
             padding: 0;
             vertical-align: top;
+            background: var(--kd-bg-subtle);
+        }
+
+        html.dark .vault-catalog-config-row td {
             background: rgba(0, 0, 0, 0.18);
         }
 
@@ -175,7 +190,7 @@
         .vault-catalog-config-cell .vault-inline-form-title {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 14px;
         }
 
@@ -190,20 +205,20 @@
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: #d4d4d8;
+            color: var(--kd-text-secondary);
             margin-bottom: 6px;
         }
 
         .vault-inline-field-hint {
             margin: 6px 0 0;
             font-size: 11px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             line-height: 1.4;
         }
 
         .vault-inline-field .vault-inline-hint {
             font-weight: 400;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin-left: 4px;
         }
 
@@ -211,10 +226,10 @@
             width: 100%;
             box-sizing: border-box;
             padding: 9px 12px;
-            background: #1a1b23;
+            background: var(--kd-surface-input);
             border: 1px solid var(--vault-pd-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             font-family: inherit;
         }
@@ -236,9 +251,9 @@
             padding: 4px 8px;
             font-size: 11px;
             font-weight: 600;
-            color: #a78bfa;
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.25);
+            color: #6dd6ff;
+            background: rgba(79, 195, 247, 0.12);
+            border: 1px solid rgba(79, 195, 247, 0.25);
             border-radius: 6px;
             cursor: pointer;
         }
@@ -249,44 +264,46 @@
             gap: 10px;
             margin-top: 18px;
             padding-top: 16px;
-            border-top: 1px solid rgba(61, 62, 79, 0.5);
+            border-top: 1px solid var(--vault-pd-border);
         }
 
         .vault-inline-btn-cancel {
             padding: 8px 16px;
             font-size: 13px;
             font-weight: 600;
-            color: #d4d4d8;
+            color: var(--kd-text-primary);
             background: transparent;
             border: 1px solid var(--vault-pd-border);
             border-radius: 8px;
             cursor: pointer;
         }
 
-        .vault-inline-btn-cancel:hover { background: rgba(255, 255, 255, 0.04); }
+        .vault-inline-btn-cancel:hover {
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
+        }
 
         .vault-inline-btn-save {
             padding: 8px 18px;
             font-size: 13px;
             font-weight: 600;
-            color: #fff;
-            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
+            color: var(--kd-on-accent);
+            background: var(--vault-pd-accent);
             border: none;
             border-radius: 8px;
             cursor: pointer;
         }
 
-        .vault-inline-btn-save:hover { filter: brightness(1.06); }
+        .vault-inline-btn-save:hover { background: var(--kd-accent-dim); }
 
         button.vault-configure-btn { font: inherit; }
 
         .vault-pd-table td {
             padding: 14px 20px;
             vertical-align: middle;
-            color: #d4d4d8;
+            color: var(--kd-text-secondary);
         }
 
-        .vault-catalog-row--inactive td { color: #9ca3af; }
+        .vault-catalog-row--inactive td { color: var(--kd-text-muted); }
 
         .vault-int-cell {
             display: flex;
@@ -303,9 +320,9 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            color: #a78bfa;
+            background: rgba(79, 195, 247, 0.12);
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            color: #6dd6ff;
         }
 
         .vault-int-icon svg { width: 18px; height: 18px; }
@@ -318,36 +335,36 @@
             padding: 12px 20px 8px;
             font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            background: rgba(0, 0, 0, 0.18);
-            border-top: 1px solid rgba(61, 62, 79, 0.55);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
+            border-top: 1px solid var(--vault-pd-border);
         }
 
         .vault-int-text { min-width: 0; }
 
         .vault-int-name {
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
         }
 
         .vault-int-sub {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin-top: 2px;
         }
 
         .vault-connection-cell {
             max-width: 280px;
-            color: #a1a1aa;
+            color: var(--kd-text-muted);
             font-size: 13px;
         }
 
         .vault-secret-cell {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             font-size: 12px;
-            color: #9ca3af;
+            color: var(--kd-text-secondary);
         }
 
         .vault-secret-cell .vault-secret-dots { letter-spacing: 0.04em; }
@@ -369,14 +386,14 @@
             border: none;
             border-radius: 8px;
             background: transparent;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             cursor: pointer;
             transition: background 0.12s ease, color 0.12s ease;
         }
 
         .vault-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #e5e7eb;
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
+            color: var(--kd-text-primary);
         }
 
         .vault-icon-btn svg { width: 18px; height: 18px; }
@@ -386,20 +403,20 @@
             align-items: center;
             justify-content: center;
             padding: 8px 16px;
-            background: linear-gradient(135deg, var(--vault-pd-accent) 0%, var(--vault-pd-accent-dim) 100%);
-            color: #fff;
+            background: var(--vault-pd-accent);
+            color: var(--kd-on-accent);
             border: none;
             border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            transition: filter 0.15s ease, box-shadow 0.15s ease;
+            transition: background 0.15s ease, box-shadow 0.15s ease;
         }
 
         .vault-configure-btn:hover {
-            filter: brightness(1.08);
-            box-shadow: 0 2px 14px rgba(139, 92, 246, 0.35);
+            background: var(--kd-accent-dim);
+            box-shadow: 0 2px 14px rgba(79, 195, 247, 0.35);
         }
 
         .vault-row-expired .vault-secret-cell { color: #f87171; }
@@ -412,7 +429,7 @@
             text-align: center;
             padding: 48px 24px;
             margin-top: 8px;
-            background: rgba(255, 255, 255, 0.02);
+            background: color-mix(in srgb, var(--kd-text-primary) 3%, var(--kd-bg-card));
             border: 1px dashed var(--vault-pd-border);
             border-radius: 14px;
             color: var(--vault-pd-muted);
@@ -421,14 +438,14 @@
         .vault-empty-state svg {
             width: 40px;
             height: 40px;
-            color: #4b5563;
+            color: var(--kd-text-muted);
             margin-bottom: 14px;
         }
 
         .vault-empty-state h2 {
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 6px 0;
         }
 
@@ -451,7 +468,7 @@
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            border-bottom: 1px solid color-mix(in srgb, var(--vault-pd-border) 80%, transparent);
             cursor: pointer;
             transition: background 0.15s ease;
         }
@@ -461,7 +478,7 @@
         }
 
         .service-card:hover {
-            background: rgba(139, 92, 246, 0.06);
+            background: color-mix(in srgb, var(--vault-pd-accent) 6%, var(--kd-bg));
         }
 
         a.service-card {
@@ -486,8 +503,8 @@
         }
 
         .service-card-icon svg { width: 17px; height: 17px; }
-        .service-card-icon.llm { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.15); }
-        .service-card-icon.llm svg { color: #a78bfa; }
+        .service-card-icon.llm { background: rgba(79, 195, 247, 0.1); border: 1px solid rgba(79, 195, 247, 0.15); }
+        .service-card-icon.llm svg { color: #6dd6ff; }
         .service-card-icon.api { background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.15); }
         .service-card-icon.api svg { color: #22d3ee; }
         .service-card-icon.infra { background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.15); }
@@ -506,7 +523,7 @@
             gap: 8px;
         }
 
-        .service-card-title { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+        .service-card-title { font-size: 14px; font-weight: 600; color: var(--kd-text-primary); }
 
         .service-type-badge {
             font-size: 9px;
@@ -517,14 +534,14 @@
             letter-spacing: 0.04em;
         }
 
-        .service-type-badge.llm { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+        .service-type-badge.llm { background: rgba(79, 195, 247, 0.15); color: #a8e6fc; }
         .service-type-badge.api { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
         .service-type-badge.infra { background: rgba(249, 115, 22, 0.15); color: #fdba74; }
         .service-type-badge.generic { background: rgba(148, 163, 184, 0.18); color: #cbd5e1; }
 
         .service-card-desc {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin-top: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -541,7 +558,7 @@
             align-items: center;
             gap: 4px;
             font-size: 11px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             white-space: nowrap;
             width: 80px;
             justify-content: flex-end;
@@ -593,19 +610,19 @@
 
         .service-card-status.inactive {
             background: rgba(107, 114, 128, 0.12);
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             border: 1px solid rgba(107, 114, 128, 0.2);
         }
 
         .services-section-header {
             font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 14px 16px 6px;
             margin-top: 4px;
-            border-top: 1px solid rgba(61, 62, 79, 0.4);
+            border-top: 1px solid var(--vault-pd-border);
             display: flex;
             align-items: center;
             justify-content: space-between;

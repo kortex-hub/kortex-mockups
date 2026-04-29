@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaiden - Models</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
@@ -12,10 +13,10 @@
     <style>
         /* Align with Secret Vault (services/index.html) for search + title row */
         :root {
-            --vault-pd-accent: #8b5cf6;
-            --vault-pd-accent-dim: #7c3aed;
-            --vault-pd-border: #3d3e4f;
-            --vault-pd-muted: #9ca3af;
+            --vault-pd-accent: var(--kd-accent);
+            --vault-pd-accent-dim: var(--kd-accent-dim);
+            --vault-pd-border: var(--kd-border);
+            --vault-pd-muted: var(--kd-text-muted);
         }
 
         .vault-pd-title-row {
@@ -35,7 +36,7 @@
         .vault-pd-title-row .services-title {
             font-size: 26px;
             font-weight: 700;
-            color: #f4f4f5;
+            color: var(--kd-text-primary);
             letter-spacing: -0.02em;
             margin: 0;
             line-height: 1.15;
@@ -55,7 +56,7 @@
             max-width: 420px;
             padding: 10px 0 12px;
             margin-bottom: 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid var(--kd-border);
             transition: border-color 0.2s ease;
         }
 
@@ -76,11 +77,11 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 14px;
         }
 
-        .vault-pd-search input::placeholder { color: #6b7280; }
+        .vault-pd-search input::placeholder { color: var(--kd-text-muted); }
 
         #modelSourceSections {
             margin-top: 14px;
@@ -101,17 +102,18 @@
 
         .services-main::-webkit-scrollbar { width: 6px; }
         .services-main::-webkit-scrollbar-track { background: transparent; }
-        .services-main::-webkit-scrollbar-thumb { background: rgba(251, 146, 60, 0.15); border-radius: 3px; }
+        .services-main::-webkit-scrollbar-thumb {
+            background: color-mix(in srgb, var(--kd-accent) 22%, transparent);
+            border-radius: 3px;
+        }
 
         /* ── Left sidebar: model categories (Settings-style nav) ── */
         .services-sidebar {
-            --models-nav-accent: #a855f7;
-            --models-nav-surface: #0f0f12;
-            --models-nav-border: #27272a;
+            --models-nav-accent: var(--kd-accent);
             width: 288px;
             min-width: 288px;
-            background: var(--models-nav-surface);
-            border-right: 1px solid var(--models-nav-border);
+            background: var(--kd-bg-card);
+            border-right: 1px solid var(--kd-border);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -121,7 +123,7 @@
         .services-sidebar-title {
             font-size: 22px;
             font-weight: 700;
-            color: #fafafa;
+            color: var(--kd-text-primary);
             letter-spacing: -0.02em;
             padding: 24px 20px 20px;
             margin: 0;
@@ -150,11 +152,11 @@
         }
 
         .services-cat-item:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
         }
 
         .services-cat-item.active {
-            background: rgba(255, 255, 255, 0.09);
+            background: color-mix(in srgb, var(--kd-accent) 12%, var(--kd-bg-card));
         }
 
         .services-cat-item.active::before {
@@ -181,12 +183,12 @@
         .services-cat-icon svg {
             width: 20px;
             height: 20px;
-            color: #e4e4e7;
+            color: var(--kd-text-secondary);
             stroke: currentColor;
         }
 
         .services-cat-item.active .services-cat-icon svg {
-            color: #fafafa;
+            color: var(--kd-text-primary);
         }
 
         .services-cat-name {
@@ -194,13 +196,13 @@
             min-width: 0;
             font-size: 13px;
             font-weight: 500;
-            color: #fafafa;
+            color: var(--kd-text-primary);
             letter-spacing: -0.01em;
             line-height: 1.35;
             white-space: normal;
         }
         .services-cat-item.active .services-cat-name {
-            color: #fff;
+            color: var(--kd-text-primary);
             font-weight: 600;
         }
 
@@ -209,22 +211,22 @@
             font-weight: 600;
             padding: 3px 8px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            color: #a1a1aa;
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
+            color: var(--kd-text-muted);
             flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--kd-border);
             margin-top: 1px;
         }
 
         .services-cat-item.active .services-cat-badge {
-            background: rgba(168, 85, 247, 0.15);
-            color: #d8b4fe;
-            border-color: rgba(168, 85, 247, 0.25);
+            background: color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
         }
 
         .services-sidebar-divider {
             height: 1px;
-            background: var(--models-nav-border);
+            background: var(--kd-border);
             margin: 16px 20px;
         }
 
@@ -233,7 +235,7 @@
         .services-sidebar-section-title {
             font-size: 11px;
             font-weight: 600;
-            color: #71717a;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 8px;
@@ -241,7 +243,7 @@
 
         .services-sidebar-note {
             font-size: 12px;
-            color: #71717a;
+            color: var(--kd-text-muted);
             line-height: 1.5;
             margin: 0;
         }
@@ -252,7 +254,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            background: #f97316;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -264,6 +266,7 @@
 
         .services-add-btn:hover {
             transform: translateY(-1px);
+            background: #ea580c;
             box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
         }
 
@@ -280,7 +283,7 @@
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.4);
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
             cursor: pointer;
             transition: background 0.15s ease;
         }
@@ -290,7 +293,7 @@
         }
 
         .service-card:hover {
-            background: rgba(251, 146, 60, 0.04);
+            background: color-mix(in srgb, var(--kd-accent) 6%, var(--kd-bg));
         }
 
         .service-card-icon {
@@ -304,8 +307,8 @@
         }
 
         .service-card-icon svg { width: 17px; height: 17px; }
-        .service-card-icon.llm { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.15); }
-        .service-card-icon.llm svg { color: #a78bfa; }
+        .service-card-icon.llm { background: rgba(79, 195, 247, 0.1); border: 1px solid rgba(79, 195, 247, 0.15); }
+        .service-card-icon.llm svg { color: #6dd6ff; }
         .service-card-icon.api { background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.15); }
         .service-card-icon.api svg { color: #22d3ee; }
         .service-card-icon.infra { background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.15); }
@@ -322,7 +325,7 @@
             gap: 8px;
         }
 
-        .service-card-title { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+        .service-card-title { font-size: 14px; font-weight: 600; color: var(--kd-text-primary); }
 
         .service-type-badge {
             font-size: 9px;
@@ -333,13 +336,13 @@
             letter-spacing: 0.04em;
         }
 
-        .service-type-badge.llm { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; }
+        .service-type-badge.llm { background: rgba(79, 195, 247, 0.15); color: #a8e6fc; }
         .service-type-badge.api { background: rgba(6, 182, 212, 0.15); color: #67e8f9; }
         .service-type-badge.infra { background: rgba(249, 115, 22, 0.15); color: #fdba74; }
 
         .service-card-desc {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin-top: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -356,7 +359,7 @@
             align-items: center;
             gap: 4px;
             font-size: 11px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             white-space: nowrap;
             width: 80px;
             justify-content: flex-end;
@@ -408,19 +411,19 @@
 
         .service-card-status.inactive {
             background: rgba(107, 114, 128, 0.12);
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             border: 1px solid rgba(107, 114, 128, 0.2);
         }
 
         .services-section-header {
             font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 14px 16px 6px;
             margin-top: 4px;
-            border-top: 1px solid rgba(61, 62, 79, 0.4);
+            border-top: 1px solid var(--kd-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -454,30 +457,40 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             margin: 0 0 4px;
         }
 
         .model-source-desc {
             font-size: 13px;
-            color: #6b7280;
+            color: var(--kd-text-secondary);
             max-width: 640px;
             margin: 0;
             line-height: 1.45;
         }
 
         .model-config-panel {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             padding: 16px 18px;
             margin-bottom: 16px;
+            box-shadow: none;
+        }
+
+        html.dark .model-config-panel {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .model-config-panel {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
         }
 
         .model-config-panel-title {
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 12px;
         }
 
@@ -497,7 +510,7 @@
             display: block;
             font-size: 11px;
             font-weight: 600;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.04em;
             margin-bottom: 6px;
@@ -507,27 +520,27 @@
             width: 100%;
             box-sizing: border-box;
             padding: 10px 12px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-input-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             outline: none;
             transition: border-color 0.15s;
         }
 
         .model-config-field input:focus {
-            border-color: rgba(251, 146, 60, 0.55);
+            border-color: var(--kd-accent);
         }
 
-        .model-config-field input::placeholder { color: #4b5563; }
+        .model-config-field input::placeholder { color: var(--kd-text-muted); }
 
         .model-ghost-btn {
             padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-subtle);
+            border: 1px solid var(--kd-border);
             border-radius: 8px;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -535,8 +548,8 @@
         }
 
         .model-ghost-btn:hover {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: #4b5563;
+            background: color-mix(in srgb, var(--kd-accent) 8%, var(--kd-bg-subtle));
+            border-color: var(--kd-text-muted);
         }
 
         /* Runtime engine status (Ollama / Ramalama) */
@@ -551,16 +564,26 @@
         .model-runtime-card {
             flex: 1;
             min-width: 220px;
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
             border-radius: 12px;
             padding: 14px 16px;
+            box-shadow: none;
+        }
+
+        html.dark .model-runtime-card {
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border-color: #1e3358;
+        }
+
+        html:not(.dark) .model-runtime-card {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 8px 24px rgba(13, 27, 46, 0.07);
         }
 
         .model-runtime-card-name {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: var(--kd-text-primary);
             margin: 0 0 10px;
         }
 
@@ -592,7 +615,7 @@
 
         .model-runtime-badge.muted {
             background: rgba(107, 114, 128, 0.12);
-            color: #9ca3af;
+            color: var(--kd-text-muted);
             border-color: rgba(107, 114, 128, 0.2);
         }
 
@@ -604,7 +627,7 @@
 
         .model-runtime-hint {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin: 10px 0 0;
             line-height: 1.4;
         }
@@ -625,13 +648,21 @@
         }
 
         .llm-provider-tile.model-runtime-card:hover {
+            border-color: color-mix(in srgb, var(--kd-accent) 45%, var(--kd-border));
+        }
+
+        html:not(.dark) .llm-provider-tile.model-runtime-card:hover {
+            box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 10px 28px rgba(13, 27, 46, 0.09);
+        }
+
+        html.dark .llm-provider-tile.model-runtime-card:hover {
             border-color: rgba(251, 146, 60, 0.35);
             box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.08);
         }
 
         .llm-provider-tile .llm-provider-models {
             font-size: 12px;
-            color: #6b7280;
+            color: var(--kd-text-muted);
             margin: -4px 0 10px;
             line-height: 1.35;
         }
@@ -889,7 +920,7 @@
                                             </tr>
                                             <tr data-search="composer-2">
                                                 <td class="models-table-status">
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
                                                 <td>
                                                     <div class="models-table-name-with-icon">
@@ -913,7 +944,7 @@
                                             </tr>
                                             <tr data-search="composer-1.5">
                                                 <td class="models-table-status">
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
                                                 <td>
                                                     <div class="models-table-name-with-icon">
@@ -937,7 +968,7 @@
                                             </tr>
                                             <tr data-search="gpt-5.3-codex-low gpt codex low">
                                                 <td class="models-table-status">
-                                                    <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
                                                 <td>
                                                     <div class="models-table-name-with-icon">
@@ -976,9 +1007,9 @@
 
                             <div class="model-config-panel">
                                 <h3 class="model-config-panel-title">OpenShift AI connection</h3>
-                                <p style="font-size: 12px; color: #6b7280; margin: -4px 0 14px; line-height: 1.45;">No other in-house catalog types are configured here—only OpenShift AI.</p>
+                                <p style="font-size: 12px; color: var(--kd-text-muted); margin: -4px 0 14px; line-height: 1.45;">No other in-house catalog types are configured here—only OpenShift AI.</p>
                                 <div class="model-config-row" style="align-items: center; margin-bottom: 14px;">
-                                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #6b7280;">Source</span>
+                                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--kd-text-muted);">Source</span>
                                     <span class="service-type-badge infra" style="margin-left: 8px;">OpenShift AI</span>
                                 </div>
                                 <div class="model-config-row">
@@ -993,7 +1024,7 @@
                                     <button type="button" class="services-add-btn" style="height: 40px; align-self: flex-end;">Save &amp; sync models</button>
                                     <button type="button" class="model-ghost-btn" style="height: 40px; align-self: flex-end;">Test connection</button>
                                 </div>
-                                <p id="openshiftUrlHint" style="font-size: 11px; color: #6b7280; margin: 12px 0 0;">Use the same API endpoint you would pass to <code style="color:#9ca3af;">oc login</code>. Token needs access to model serving / OpenShift AI resources in your project.</p>
+                                <p id="openshiftUrlHint" style="font-size: 11px; color: var(--kd-text-muted); margin: 12px 0 0;">Use the same API endpoint you would pass to <code style="color:var(--kd-text-secondary);">oc login</code>. Token needs access to model serving / OpenShift AI resources in your project.</p>
                             </div>
 
                             <div class="models-table-wrap">
@@ -1044,7 +1075,7 @@
                                         </tr>
                                         <tr data-search="llama meta">
                                             <td class="models-table-status">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                             </td>
                                             <td>
                                                 <div class="models-table-name-main">llama-3.1-70b-instruct</div>
@@ -1082,7 +1113,7 @@
                                         <span class="model-runtime-badge ok">Running</span>
                                         <span class="model-runtime-badge muted">127.0.0.1:11434</span>
                                     </div>
-                                    <p class="model-runtime-hint">Detected via CLI and HTTP <code style="color:#9ca3af;">/api/version</code>. Loaded models reflect the inference server state.</p>
+                                    <p class="model-runtime-hint">Detected via CLI and HTTP <code style="color:var(--kd-text-secondary);">/api/version</code>. Loaded models reflect the inference server state.</p>
                                 </div>
                                 <div class="model-runtime-card">
                                     <div class="model-runtime-card-name">Ramalama</div>
@@ -1146,7 +1177,7 @@
                                         </tr>
                                         <tr data-search="qwen ramalama">
                                             <td class="models-table-status">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
                                             </td>
                                             <td>
                                                 <div class="models-table-name-main">qwen2.5:7b</div>

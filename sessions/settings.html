@@ -11,7 +11,8 @@
             }
         } catch (e) { /* ignore */ }
     </script>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+        <script src="../assets/js/kaiden-theme.js"></script>
+<link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/demo-scenario.js"></script>
     <script src="../assets/js/demo-screen-data.js"></script>
@@ -31,8 +32,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px 24px;
-            background: linear-gradient(135deg, #1a1b23 0%, #252631 100%);
-            border-bottom: 1px solid #3d3e4f;
+            background: linear-gradient(135deg, #080f1a 0%, #111e33 100%);
+            border-bottom: 1px solid #1e3358;
         }
 
         .settings-header-left {
@@ -50,26 +51,26 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
             border: none;
-            color: #9ca3af;
+            color: #7090b8;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .settings-back-btn:hover {
-            background: rgba(139, 92, 246, 0.15);
-            color: #e5e7eb;
+            background: rgba(79, 195, 247, 0.15);
+            color: #e8eef7;
         }
 
         .settings-title-area h1 {
             font-size: 18px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 4px 0;
         }
 
         .settings-title-area span {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .settings-header-actions {
@@ -82,7 +83,7 @@
             background: rgba(107, 114, 128, 0.2);
             border: 1px solid #4b5563;
             border-radius: 8px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -129,8 +130,8 @@
         /* Settings Navigation */
         .settings-nav {
             width: 240px;
-            background: linear-gradient(180deg, #1a1b23 0%, #151620 100%);
-            border-right: 1px solid #3d3e4f;
+            background: linear-gradient(180deg, #080f1a 0%, #151620 100%);
+            border-right: 1px solid #1e3358;
             padding: 20px 0;
         }
 
@@ -149,21 +150,21 @@
             align-items: center;
             gap: 12px;
             padding: 12px 20px;
-            color: #9ca3af;
+            color: #7090b8;
             cursor: pointer;
             transition: all 0.2s ease;
             border-left: 3px solid transparent;
         }
 
         .settings-nav-item:hover {
-            background: rgba(139, 92, 246, 0.05);
-            color: #e5e7eb;
+            background: rgba(79, 195, 247, 0.05);
+            color: #e8eef7;
         }
 
         .settings-nav-item.active {
-            background: rgba(139, 92, 246, 0.1);
-            color: #a78bfa;
-            border-left-color: #8b5cf6;
+            background: rgba(79, 195, 247, 0.1);
+            color: #6dd6ff;
+            border-left-color: #4fc3f7;
         }
 
         .settings-nav-item svg {
@@ -192,7 +193,7 @@
         }
 
         .settings-content::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.2);
+            background: rgba(79, 195, 247, 0.2);
             border-radius: 4px;
         }
 
@@ -208,21 +209,21 @@
         .settings-section-title {
             font-size: 20px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 8px 0;
         }
 
         .settings-section-desc {
             font-size: 14px;
-            color: #9ca3af;
+            color: #7090b8;
             margin: 0 0 28px 0;
             line-height: 1.6;
         }
 
         /* Settings Card */
         .settings-card {
-            background: linear-gradient(145deg, #1a1b23 0%, #151620 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #080f1a 0%, #151620 100%);
+            border: 1px solid #1e3358;
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 20px;
@@ -238,13 +239,13 @@
         .settings-card-title {
             font-size: 15px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0 0 4px 0;
         }
 
         .settings-card-desc {
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             margin: 0;
         }
 
@@ -261,7 +262,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 8px;
         }
 
@@ -269,18 +270,18 @@
             width: 100%;
             padding: 12px 16px;
             background: rgba(37, 38, 49, 0.8);
-            border: 1.5px solid #3d3e4f;
+            border: 1.5px solid #1e3358;
             border-radius: 8px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 14px;
             transition: all 0.2s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #8b5cf6;
+            border-color: #4fc3f7;
             background: rgba(37, 38, 49, 1);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
         }
 
         .form-input::placeholder {
@@ -310,7 +311,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px 0;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .toggle-row:last-child {
@@ -324,13 +325,13 @@
         .toggle-label {
             font-size: 14px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin-bottom: 4px;
         }
 
         .toggle-desc {
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
         }
 
         .toggle-switch {
@@ -345,7 +346,7 @@
         }
 
         .toggle-switch.active {
-            background: #8b5cf6;
+            background: #4fc3f7;
         }
 
         .toggle-switch::after {
@@ -374,7 +375,7 @@
             align-items: center;
             gap: 14px;
             padding: 16px 0;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .agent-readonly-model-row {
@@ -403,14 +404,14 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            color: #9ca3af;
+            color: #7090b8;
             margin-bottom: 4px;
         }
 
         .agent-readonly-value {
             font-size: 15px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         /* Project-details style lists — match sessions/create.html (Tools & secrets step) */
@@ -423,8 +424,8 @@
         }
 
         .pd-asset-block {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 14px;
             overflow: hidden;
         }
@@ -434,7 +435,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 16px 20px;
-            border-bottom: 1px solid rgba(61, 62, 79, 0.5);
+            border-bottom: 1px solid rgba(30, 51, 88, 0.5);
         }
 
         .pd-block-title-row {
@@ -461,7 +462,7 @@
         .pd-block-title {
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             margin: 0;
         }
 
@@ -490,9 +491,9 @@
         }
 
         .pd-block-add-btn:hover {
-            border-color: #8b5cf6;
-            color: #c4b5fd;
-            background: rgba(139, 92, 246, 0.06);
+            border-color: #4fc3f7;
+            color: #a8e6fc;
+            background: rgba(79, 195, 247, 0.06);
         }
 
         .pd-block-add-btn svg {
@@ -518,7 +519,7 @@
         }
 
         .pd-block-item + .pd-block-item {
-            border-top: 1px solid rgba(61, 62, 79, 0.3);
+            border-top: 1px solid rgba(30, 51, 88, 0.3);
         }
 
         .pd-block-item:hover + .pd-block-item {
@@ -550,7 +551,7 @@
         }
 
         .pd-block-item-icon.knowledge {
-            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            background: var(--kd-accent);
         }
 
         .pd-block-item-info {
@@ -561,7 +562,7 @@
         .pd-block-item-name {
             font-size: 13px;
             font-weight: 500;
-            color: #e5e7eb;
+            color: #e8eef7;
         }
 
         .pd-block-item-meta {
@@ -575,11 +576,11 @@
         }
 
         .pd-block-item.ca-pd-selectable.selected {
-            background: rgba(139, 92, 246, 0.08);
+            background: rgba(79, 195, 247, 0.08);
         }
 
         .pd-block-item.ca-pd-selectable.selected:hover {
-            background: rgba(139, 92, 246, 0.11);
+            background: rgba(79, 195, 247, 0.11);
         }
 
         .pd-block-item.ca-pd-selectable.selected:hover + .pd-block-item {
@@ -599,8 +600,8 @@
         }
 
         .pd-block-item.ca-pd-selectable.selected .ca-pd-select-check {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-            border-color: #8b5cf6;
+            background: var(--kd-accent);
+            border-color: #4fc3f7;
         }
 
         .ca-pd-select-check svg {
@@ -616,8 +617,8 @@
 
         /* Sandbox filesystem & network — sessions/create.html wizard */
         .settings-content .ws-settings-sandbox .ob-step-panel {
-            background: linear-gradient(145deg, #252631 0%, #1e1f2b 100%);
-            border: 1px solid #3d3e4f;
+            background: linear-gradient(145deg, #111e33 0%, #080f1a 100%);
+            border: 1px solid #1e3358;
             border-radius: 16px;
             padding: 28px 32px;
             display: flex;
@@ -650,13 +651,13 @@
         .settings-content .ws-settings-sandbox .ws-sandbox-lead {
             margin: 0 0 12px;
             font-size: 14px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.45;
             max-width: 640px;
         }
 
         .settings-content .ws-settings-sandbox .ws-sandbox-lead a {
-            color: #a78bfa;
+            color: #6dd6ff;
             text-decoration: none;
             font-weight: 500;
         }
@@ -670,7 +671,7 @@
             margin-top: 16px;
             padding: 14px 16px;
             background: rgba(0, 0, 0, 0.22);
-            border: 1px solid rgba(61, 62, 79, 0.65);
+            border: 1px solid rgba(30, 51, 88, 0.65);
             border-radius: 10px;
         }
 
@@ -681,7 +682,7 @@
         .settings-content .ws-settings-sandbox .ob-fs-custom-hint .ob-fs-custom-hint-lead {
             margin: 0 0 12px;
             font-size: 13px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.5;
         }
 
@@ -694,7 +695,7 @@
         .settings-content .ws-settings-sandbox .ob-config-label {
             font-size: 11px;
             font-weight: 600;
-            color: #9ca3af;
+            color: #7090b8;
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
@@ -702,23 +703,23 @@
         .settings-content .ws-settings-sandbox .ob-config-input {
             padding: 9px 13px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid #3d3e4f;
+            border: 1px solid #1e3358;
             border-radius: 8px;
-            color: #e5e7eb;
+            color: #e8eef7;
             font-size: 13px;
             outline: none;
             transition: border-color 0.2s;
         }
 
         .settings-content .ws-settings-sandbox .ob-config-input:focus {
-            border-color: rgba(139, 92, 246, 0.5);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .settings-content .ws-settings-sandbox .ob-config-hint {
             margin-top: 10px;
             margin-bottom: 0;
             font-size: 12px;
-            color: #9ca3af;
+            color: #7090b8;
             line-height: 1.45;
         }
 
@@ -726,7 +727,7 @@
             margin: 0 0 8px;
             font-size: 14px;
             font-weight: 600;
-            color: #e5e7eb;
+            color: #e8eef7;
             letter-spacing: -0.02em;
         }
 
@@ -764,17 +765,17 @@
             padding: 8px 14px;
             font-size: 13px;
             font-weight: 500;
-            color: #a78bfa;
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.35);
+            color: #6dd6ff;
+            background: rgba(79, 195, 247, 0.12);
+            border: 1px solid rgba(79, 195, 247, 0.35);
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.15s, border-color 0.15s;
         }
 
         .settings-content .ws-settings-sandbox .settings-fs-add-path-btn:hover {
-            background: rgba(139, 92, 246, 0.2);
-            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(79, 195, 247, 0.2);
+            border-color: rgba(79, 195, 247, 0.5);
         }
 
         .settings-content .ws-settings-sandbox .settings-fs-add-path-btn svg {
@@ -1217,7 +1218,7 @@
                                 <div class="pd-asset-block">
                                     <div class="pd-block-header">
                                         <div class="pd-block-title-row">
-                                            <div class="pd-block-icon" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">
+                                            <div class="pd-block-icon" style="background: var(--kd-accent);">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
                                             </div>
                                             <h3 class="pd-block-title">Knowledge bases</h3>
@@ -1320,7 +1321,7 @@
                                                     <tbody>
                                                         <tr class="ob-catalog-model-row" data-fs="workspace" role="button" tabindex="0" onclick="settingsSelectFsCatalogRow(this)" onkeydown="settingsFsCatalogRowKey(event)">
                                                             <td class="models-table-status">
-                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#7090b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
                                                             </td>
                                                             <td>
                                                                 <div class="models-table-name-main">No host filesystem access</div>
@@ -1495,7 +1496,7 @@
                                                         </tr>
                                                         <tr class="ob-catalog-model-row" data-net="agent_mode" role="button" tabindex="0" onclick="settingsSelectNetCatalogRow(this)" onkeydown="settingsNetCatalogRowKey(event)">
                                                             <td class="models-table-status">
-                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
+                                                                <svg viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
                                                             </td>
                                                             <td>
                                                                 <div class="models-table-name-main">Agent mode</div>

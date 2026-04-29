@@ -47,7 +47,7 @@ Users run models in **three different places**: on the **local machine** (Ollama
 
 - **App shell:** `#sidebar-container` via `sidebar-loader.js`, then `<main class="main-content">` with an empty `<div class="header"></div>` placeholder (same pattern as other Kaiden pages).
 - **Models layout:** `.services-page-layout` — `height: calc(100vh - 32px)`, `overflow: hidden`.
-- **Left rail:** `.services-sidebar` — fixed **288px** width, `--models-nav-accent: #a855f7`, vertical scroll if needed.
+- **Left rail:** `.services-sidebar` — fixed **288px** width, `--models-nav-accent: #4fc3f7`, vertical scroll if needed.
 - **Main column:** `.services-main` — `flex: 1`, vertical scroll, padding **32px 40px**, `min-width: 0`.
 - **Title row:** `.vault-pd-title-row` — aligns visually with Secret Vault (`services/index.html`): title block + (in this mockup) **no primary action** in the row.
 - **Search:** `.vault-pd-search`, `role="search"`, max-width **420px**, bottom border accent on `:focus-within` (`--vault-pd-accent`).
