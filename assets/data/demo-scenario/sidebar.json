@@ -1,6 +1,6 @@
 {
   "onboarding": {
-    "hiddenNavSections": ["sessions", "coding-agent", "projects", "models", "services", "knowledges", "mcp", "skills"],
+    "hiddenNavSections": ["sessions", "coding-agent", "models", "services", "knowledges", "mcp", "skills"],
     "hiddenStatusItems": ["sandbox", "cli", "openshift"]
   },
   "full": {

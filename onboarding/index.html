@@ -2775,10 +2775,6 @@
         var obLastOpencodeBackendMode = null;
         var obLocalDetectDebounce = null;
 
-        function obSkipProjectStep() {
-            return typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
-        }
-
         const obAgentLabels = {
             opencode: 'OpenCode',
             claude: 'Claude Code',
@@ -3277,8 +3273,7 @@
             if (typeof window.kaidenExitDemoPreserveOnboarding === 'function') {
                 window.kaidenExitDemoPreserveOnboarding();
             }
-            var agentsFirst = typeof window.kaidenIsOptionalProjectsMode === 'function' && window.kaidenIsOptionalProjectsMode();
-            window.location.href = agentsFirst ? '../sessions/index.html' : '../projects/index.html';
+            window.location.href = '../projects/index.html';
         }
 
         function skipOnboardingWithDefaults() {
@@ -3437,14 +3432,9 @@
         }
 
         function showReadySummary() {
-            const skipProj = obSkipProjectStep();
             const intro = document.getElementById('obReadyIntro');
             if (intro) {
-                if (skipProj) {
-                    intro.innerHTML = 'Your Kaiden environment is ready for an <strong>agent-first</strong> workflow. Open <strong>Workspaces</strong> to create a workspace (filesystem &amp; network there), then run <code style="font-size:12px;background:rgba(79, 195, 247,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal.';
-                } else {
-                    intro.innerHTML = 'Your defaults are saved. Add projects when you need code roots. Choose sandbox filesystem and network when you <a href="../sessions/create.html" style="color:var(--kd-accent-bright);font-weight:500;text-decoration:none;">create a workspace</a>, then run <code style="font-size:12px;background:rgba(79, 195, 247,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal.';
-                }
+                intro.innerHTML = 'Your defaults are saved. Add projects when you need code roots. Choose sandbox filesystem and network when you <a href="../sessions/create.html" style="color:var(--kd-accent-bright);font-weight:500;text-decoration:none;">create a workspace</a>, then run <code style="font-size:12px;background:rgba(79, 195, 247,0.15);padding:2px 6px;border-radius:4px;">kdn workspace start</code> in your terminal.';
             }
 
             const agentKey = obGetSelectedAgentKey();

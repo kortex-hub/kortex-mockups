@@ -5624,7 +5624,6 @@
         }
 
         function initProjectFromUrl() {
-            if (isOptionalProjectsMode()) return;
             const params = new URLSearchParams(window.location.search);
             const p = params.get('project');
             if (p && CREATE_AGENT_PROJECTS[p]) {
@@ -5634,41 +5633,6 @@
                 }
                 selectProjectFromList(p);
             }
-        }
-
-        // Settings → General → Optional projects (see demo-scenario.js → kaidenIsOptionalProjectsMode)
-        function isOptionalProjectsMode() {
-            if (typeof window.kaidenIsOptionalProjectsMode === 'function') {
-                return window.kaidenIsOptionalProjectsMode();
-            }
-            try {
-                const raw = localStorage.getItem('kaidenSettings');
-                if (!raw) return true;
-                const parsed = JSON.parse(raw);
-                if (parsed.modules && parsed.modules.optionalProjectsMode === false) {
-                    return false;
-                }
-                return true;
-            } catch (e) {
-                return true;
-            }
-        }
-
-        function initOptionalProjectsSection() {
-            const section = document.getElementById('project-picker-section');
-            if (section && isOptionalProjectsMode()) {
-                section.style.display = 'none';
-            }
-        }
-
-        function initOptionalProjectsWizardCopy() {
-            if (!isOptionalProjectsMode()) return;
-            const stepperLabel = document.querySelector('.ca-wizard-stepper-item[data-step-index="1"] .ca-wizard-stepper-text');
-            if (stepperLabel) stepperLabel.textContent = 'Workspace';
-            const h2 = document.getElementById('caWizardHeading1');
-            if (h2) h2.textContent = 'Workspace';
-            const lead = document.getElementById('caWizardStep1Lead');
-            if (lead) lead.textContent = 'Local folder or Git URL — we detect it and analyze the tree.';
         }
 
         // Check if DevSpaces is enabled in settings (must match settings/index.html → kaidenSettings)
@@ -5954,8 +5918,6 @@
             initDevSpacesOption();
             initWorkspaceModelCatalog();
             caConfigureWizardAgentModelStepVisibility();
-            initOptionalProjectsSection();
-            initOptionalProjectsWizardCopy();
             initSkillsSection();
             initMcpSection();
             initSecretVaultSection();

@@ -720,17 +720,6 @@
                                     <div class="settings-toggle active" id="showThinking" onclick="toggleSetting(this)"></div>
                                 </div>
                             </div>
-                            <div class="settings-item">
-                                <div class="settings-item-info">
-                                    <h4 class="settings-item-label">Optional projects</h4>
-                                    <p class="settings-item-description">
-                                        When enabled, the Projects area is hidden and new agent workspaces are created without linking to a project. Turn this on for a lighter workflow focused on agents only.
-                                    </p>
-                                </div>
-                                <div class="settings-item-control">
-                                    <div class="settings-toggle active" id="optionalProjectsModeToggle" onclick="toggleSetting(this); kaidenOnOptionalProjectsToggleChanged();"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -879,21 +868,6 @@
             }
         }
 
-        function kaidenOnOptionalProjectsToggleChanged() {
-            const el = document.getElementById('optionalProjectsModeToggle');
-            if (!el) return;
-            const o = readExistingKaidenSettings();
-            if (!o.modules) o.modules = {};
-            o.modules.optionalProjectsMode = el.classList.contains('active');
-            localStorage.setItem('kaidenSettings', JSON.stringify(o));
-            if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
-                window.kaidenRefreshOptionalProjectsClass();
-            }
-            if (typeof loadSidebar === 'function') {
-                loadSidebar('settings');
-            }
-        }
-
         function saveSettings() {
             const existing = readExistingKaidenSettings();
             const settings = {
@@ -901,7 +875,6 @@
                 modules: {
                     ...(existing.modules || {}),
                     openshiftAIEnabled: document.getElementById('openshiftAIModuleToggle').classList.contains('active'),
-                    optionalProjectsMode: document.getElementById('optionalProjectsModeToggle').classList.contains('active')
                 },
                 agentDefaults: {
                     defaultAgent: document.getElementById('defaultAgent').value,
@@ -958,9 +931,6 @@
                 window.kaidenTheme.syncFromStorage();
             }
 
-            if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
-                window.kaidenRefreshOptionalProjectsClass();
-            }
             if (typeof loadSidebar === 'function') {
                 loadSidebar('settings');
             }
@@ -992,7 +962,6 @@
                 document.getElementById('compactMode').classList.remove('active');
                 document.getElementById('debugMode').classList.remove('active');
                 document.getElementById('experimentalFeatures').classList.remove('active');
-                document.getElementById('optionalProjectsModeToggle').classList.add('active');
                 document.getElementById('confirmWrites').classList.add('active');
                 document.getElementById('autoExecute').classList.remove('active');
                 document.getElementById('bridgeEnabled').classList.add('active');
@@ -1026,9 +995,6 @@
                     window.kaidenTheme.syncFromStorage();
                 }
 
-                if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
-                    window.kaidenRefreshOptionalProjectsClass();
-                }
                 if (typeof loadSidebar === 'function') {
                     loadSidebar('settings');
                 }
@@ -1045,11 +1011,6 @@
                     if (settings.modules) {
                         if (settings.modules.openshiftAIEnabled === false) {
                             document.getElementById('openshiftAIModuleToggle').classList.remove('active');
-                        }
-                        if (settings.modules.optionalProjectsMode === false) {
-                            document.getElementById('optionalProjectsModeToggle').classList.remove('active');
-                        } else {
-                            document.getElementById('optionalProjectsModeToggle').classList.add('active');
                         }
                     }
 

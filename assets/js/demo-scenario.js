@@ -1,46 +1,4 @@
 /**
- * Optional projects (Settings → General): sync <html class="kaiden-optional-projects"> from localStorage
- * so CSS can hide project UI before/without waiting for sidebar-loader. Default is on (projects hidden)
- * unless modules.optionalProjectsMode === false. Call window.kaidenRefreshOptionalProjectsClass() after
- * changing kaidenSettings in the same tab.
- */
-(function () {
-    function readKaidenSettings() {
-        try {
-            var raw = localStorage.getItem('kaidenSettings');
-            if (!raw) return null;
-            return JSON.parse(raw);
-        } catch (e) {
-            return null;
-        }
-    }
-
-    function isOptionalProjectsMode() {
-        var p = readKaidenSettings();
-        if (!p || !p.modules) return true;
-        var v = p.modules.optionalProjectsMode;
-        if (v === false) return false;
-        return true;
-    }
-
-    function applyOptionalProjectsClass() {
-        if (!document.documentElement) return;
-        document.documentElement.classList.toggle('kaiden-optional-projects', isOptionalProjectsMode());
-    }
-
-    window.kaidenIsOptionalProjectsMode = isOptionalProjectsMode;
-    window.kaidenRefreshOptionalProjectsClass = applyOptionalProjectsClass;
-
-    applyOptionalProjectsClass();
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', applyOptionalProjectsClass);
-    }
-    window.addEventListener('storage', function (e) {
-        if (e.key === 'kaidenSettings') applyOptionalProjectsClass();
-    });
-})();
-
-/**
  * Kaiden sprint demo: fixed top bar always visible on pages that load this script.
  * Injects demo-bar.css. Idle = not running scenario; active = shell matches step.
  *

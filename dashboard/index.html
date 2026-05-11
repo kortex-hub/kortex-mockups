@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden — Overview</title>
+    <script src="../assets/js/kaiden-theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/demo-scenario.js"></script>
+    <script src="../assets/js/demo-screen-data.js"></script>
+    <script src="../assets/js/demo-page-hydrate.js"></script>
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .dash-layout {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .dash-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 44px 48px;
+            min-width: 0;
+        }
+
+        .dash-content::-webkit-scrollbar { width: 6px; }
+        .dash-content::-webkit-scrollbar-track { background: transparent; }
+        .dash-content::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--kd-accent) 20%, transparent); border-radius: 3px; }
+
+        /* ── Greeting ── */
+        .dash-greeting {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .dash-greeting-text h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            margin: 0 0 6px;
+        }
+
+        .dash-greeting-text h1 span {
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dash-greeting-text p {
+            font-size: 14px;
+            color: var(--kd-text-muted);
+            margin: 0;
+        }
+
+        .dash-greeting-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dash-setup-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--kd-bg-card);
+            color: var(--kd-text-muted);
+            border: 1px solid var(--kd-border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-setup-btn:hover {
+            border-color: color-mix(in srgb, var(--kd-accent) 40%, transparent);
+            color: var(--kd-accent-bright);
+            background: color-mix(in srgb, var(--kd-accent) 6%, transparent);
+            transform: translateY(-1px);
+        }
+
+        .dash-setup-btn svg { width: 16px; height: 16px; }
+
+        .dash-new-task-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent);
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-new-task-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--kd-accent) 40%, transparent);
+        }
+
+        .dash-new-task-btn svg { width: 16px; height: 16px; }
+
+        /* ── Stat Cards Row ── */
+        .dash-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .dash-stat-card {
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 0 0 80px;
+            opacity: 0.06;
+        }
+
+        .dash-stat-card.agents::after { background: #8b5cf6; }
+        .dash-stat-card.tasks::after { background: #10b981; }
+        .dash-stat-card.assets::after { background: #3b82f6; }
+        .dash-stat-card.health::after { background: #f59e0b; }
+
+        .dash-stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .dash-stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--kd-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .dash-stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-stat-icon svg { width: 16px; height: 16px; color: #fff; }
+        .dash-stat-icon.agents { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-stat-icon.tasks { background: linear-gradient(135deg, #10b981, #059669); }
+        .dash-stat-icon.assets { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-stat-icon.health { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .dash-stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .dash-stat-detail {
+            font-size: 12px;
+            color: var(--kd-text-muted);
+        }
+
+        .dash-stat-detail .up { color: #34d399; }
+        .dash-stat-detail .neutral { color: var(--kd-text-muted); }
+
+        /* ── Two-Column Layout ── */
+        .dash-columns {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        /* ── Active Agents ── */
+        .dash-section {
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .dash-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+        }
+
+        .dash-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dash-section-title .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(52,211,153,0); }
+        }
+
+        .dash-section-link {
+            font-size: 12px;
+            color: var(--kd-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .dash-section-link:hover { color: var(--kd-accent-bright); }
+
+        .dash-agent-list {
+            padding: 8px;
+        }
+
+        .dash-agent-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .dash-agent-item:hover { background: color-mix(in srgb, var(--kd-accent) 6%, transparent); }
+
+        .dash-agent-item + .dash-agent-item {
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent);
+        }
+
+        .dash-agent-status-ring {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .dash-agent-status-ring.running {
+            background: conic-gradient(#4fc3f7 0deg, #4fc3f7 var(--progress, 180deg), rgba(79,195,247,0.15) var(--progress, 180deg), rgba(79,195,247,0.15) 360deg);
+        }
+
+        .dash-agent-status-ring.paused {
+            background: conic-gradient(#f59e0b 0deg, #f59e0b var(--progress, 120deg), rgba(245,158,11,0.15) var(--progress, 120deg), rgba(245,158,11,0.15) 360deg);
+        }
+
+        .dash-agent-status-ring-inner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--kd-bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-agent-status-ring-inner svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .dash-agent-status-ring.running .dash-agent-status-ring-inner svg { color: var(--kd-accent); }
+        .dash-agent-status-ring.paused .dash-agent-status-ring-inner svg { color: #f59e0b; }
+
+        .dash-agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-agent-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dash-agent-task {
+            font-size: 12px;
+            color: var(--kd-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dash-agent-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .dash-agent-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .dash-agent-badge.running {
+            background: color-mix(in srgb, var(--kd-accent) 15%, transparent);
+            color: var(--kd-accent-bright);
+        }
+
+        .dash-agent-badge.paused {
+            background: rgba(245,158,11,0.15);
+            color: #fbbf24;
+        }
+
+        .dash-agent-badge.waiting {
+            background: rgba(59,130,246,0.12);
+            color: #93c5fd;
+        }
+
+        .dash-agent-time {
+            font-size: 11px;
+            color: var(--kd-text-muted);
+        }
+
+        /* ── Activity Feed ── */
+        .dash-activity-list {
+            padding: 8px 16px;
+        }
+
+        .dash-activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .dash-activity-item + .dash-activity-item {
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent);
+        }
+
+        .dash-activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dash-activity-icon svg { width: 14px; height: 14px; color: #fff; }
+        .dash-activity-icon.completed { background: linear-gradient(135deg, #10b981, #059669); }
+        .dash-activity-icon.pr { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-activity-icon.deploy { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .dash-activity-icon.alert { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .dash-activity-icon.asset { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-activity-icon.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .dash-activity-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-activity-text {
+            font-size: 13px;
+            color: var(--kd-text-primary);
+            line-height: 1.4;
+            margin-bottom: 2px;
+        }
+
+        .dash-activity-text strong { color: var(--kd-accent-bright); font-weight: 600; }
+
+        .dash-activity-time {
+            font-size: 11px;
+            color: var(--kd-text-muted);
+        }
+
+        /* ── Quick Actions Row ── */
+        .dash-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .dash-quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 24px 16px;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dash-quick-action:hover {
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, transparent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .dash-quick-action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-quick-action-icon svg { width: 20px; height: 20px; color: #fff; }
+
+        .dash-quick-action-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--kd-text-primary);
+            text-align: center;
+        }
+
+        .dash-quick-action-desc {
+            font-size: 11px;
+            color: var(--kd-text-muted);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* ── Resource Tiles ── */
+        .dash-resource-tiles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .dash-resource-tile {
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-resource-tile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 0 0 0 80px;
+            opacity: 0.06;
+        }
+
+        .dash-resource-tile.cpu::after { background: #8b5cf6; }
+        .dash-resource-tile.memory::after { background: #3b82f6; }
+        .dash-resource-tile.tokens::after { background: #10b981; }
+
+        .dash-resource-tile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .dash-resource-tile-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--kd-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .dash-resource-tile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dash-resource-tile-icon svg { width: 16px; height: 16px; color: #fff; }
+        .dash-resource-tile-icon.cpu { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .dash-resource-tile-icon.memory { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .dash-resource-tile-icon.tokens { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .dash-resource-tile-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            line-height: 1;
+            margin-bottom: 14px;
+        }
+
+        .dash-resource-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: color-mix(in srgb, var(--kd-border) 50%, transparent);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .dash-resource-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .dash-resource-bar.cpu { background: linear-gradient(90deg, #8b5cf6, #c084fc); }
+        .dash-resource-bar.memory { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .dash-resource-bar.tokens { background: linear-gradient(90deg, #10b981, #34d399); }
+
+        .dash-resource-tile-detail {
+            font-size: 12px;
+            color: var(--kd-text-muted);
+        }
+
+        /* ── Cost Overview ── */
+        .dash-cost-overview {
+            margin-bottom: 28px;
+        }
+
+        .dash-cost-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .dash-cost-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-cost-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+        }
+
+        .dash-cost-period-tabs {
+            display: flex;
+            background: color-mix(in srgb, var(--kd-border) 30%, transparent);
+            border: 1px solid var(--kd-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dash-cost-period-tab {
+            padding: 5px 14px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--kd-text-muted);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: all 0.15s;
+        }
+
+        .dash-cost-period-tab:hover { color: var(--kd-text-primary); }
+
+        .dash-cost-period-tab.active {
+            background: color-mix(in srgb, var(--kd-accent) 15%, transparent);
+            color: var(--kd-accent-bright);
+        }
+
+        .dash-cost-link {
+            font-size: 12px;
+            color: var(--kd-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .dash-cost-link:hover { color: var(--kd-accent-bright); }
+
+        .dash-cost-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr;
+            gap: 16px;
+        }
+
+        .dash-cost-total-card {
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dash-cost-total-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--kd-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .dash-cost-total-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .dash-cost-total-change {
+            font-size: 12px;
+            color: var(--kd-text-muted);
+        }
+
+        .dash-cost-total-change .up { color: #f87171; }
+        .dash-cost-total-change .down { color: #34d399; }
+
+        .dash-cost-breakdown {
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .dash-cost-breakdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+        }
+
+        .dash-cost-breakdown-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+        }
+
+        .dash-cost-breakdown-total {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--kd-text-muted);
+        }
+
+        .dash-cost-breakdown-list {
+            padding: 8px 12px;
+        }
+
+        .dash-cost-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 8px;
+        }
+
+        .dash-cost-row + .dash-cost-row {
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent);
+        }
+
+        .dash-cost-row-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dash-cost-row-icon svg { width: 16px; height: 16px; }
+
+        .dash-cost-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-cost-row-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--kd-text-primary);
+        }
+
+        .dash-cost-row-detail {
+            font-size: 11px;
+            color: var(--kd-text-muted);
+            margin-top: 1px;
+        }
+
+        .dash-cost-row-bar-wrap {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .dash-cost-row-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: color-mix(in srgb, var(--kd-border) 50%, transparent);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .dash-cost-row-bar {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .dash-cost-row-amount {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+            text-align: right;
+            min-width: 56px;
+            flex-shrink: 0;
+        }
+
+        /* ── Light mode card surface ── */
+        html:not(.dark) .dash-stat-card,
+        html:not(.dark) .dash-section,
+        html:not(.dark) .dash-resource-tile,
+        html:not(.dark) .dash-cost-total-card,
+        html:not(.dark) .dash-cost-breakdown,
+        html:not(.dark) .dash-quick-action {
+            box-shadow: 0 1px 3px rgba(13,27,46,0.06), 0 4px 12px rgba(13,27,46,0.05);
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="dash-layout">
+                <div class="dash-content">
+
+                    <!-- Greeting -->
+                    <div class="dash-greeting">
+                        <div class="dash-greeting-text">
+                            <h1>Good afternoon, <span>Sebastien</span></h1>
+                            <p>3 workspaces running &middot; 2 tasks awaiting review &middot; System healthy</p>
+                        </div>
+                        <div class="dash-greeting-actions">
+                            <a href="../onboarding/index.html" class="dash-setup-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                Run Setup
+                            </a>
+                            <a href="../sessions/create.html" class="dash-new-task-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Workspace
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="dash-stats">
+                        <div class="dash-stat-card agents">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">Active Workspaces</span>
+                                <div class="dash-stat-icon agents">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">3</div>
+                            <div class="dash-stat-detail"><span class="up">2 running</span> &middot; 1 paused</div>
+                        </div>
+
+                        <div class="dash-stat-card tasks">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">Tasks Today</span>
+                                <div class="dash-stat-icon tasks">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">12</div>
+                            <div class="dash-stat-detail"><span class="up">8 completed</span> &middot; 4 in progress</div>
+                        </div>
+
+                        <div class="dash-stat-card assets">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">Knowledges</span>
+                                <div class="dash-stat-icon assets">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value">11</div>
+                            <div class="dash-stat-detail">5 tools &middot; 4 skills &middot; 2 KBs</div>
+                        </div>
+
+                        <div class="dash-stat-card health">
+                            <div class="dash-stat-header">
+                                <span class="dash-stat-label">System Health</span>
+                                <div class="dash-stat-icon health">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-stat-value" style="color: #34d399;">Healthy</div>
+                            <div class="dash-stat-detail">All services operational</div>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column: Active Workspaces + Activity Feed -->
+                    <div class="dash-columns">
+                        <!-- Active Workspaces -->
+                        <div class="dash-section">
+                            <div class="dash-section-header">
+                                <div class="dash-section-title">
+                                    <span class="live-dot"></span>
+                                    Active Workspaces
+                                </div>
+                                <a href="../sessions/index.html" class="dash-section-link">View all &rarr;</a>
+                            </div>
+                            <div class="dash-agent-list">
+                                <div class="dash-agent-item" onclick="window.location.href='../sessions/index.html'">
+                                    <div class="dash-agent-status-ring running" style="--progress: 252deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Migrate auth service to OAuth2</div>
+                                        <div class="dash-agent-task">Refactoring token validation &middot; DevOps Engineer profile</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge running">Running</span>
+                                        <span class="dash-agent-time">12m ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="dash-agent-item" onclick="window.location.href='../sessions/index.html'">
+                                    <div class="dash-agent-status-ring running" style="--progress: 130deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Write integration tests for payment API</div>
+                                        <div class="dash-agent-task">Generating test fixtures &middot; Backend Developer profile</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge running">Running</span>
+                                        <span class="dash-agent-time">4m ago</span>
+                                    </div>
+                                </div>
+
+                                <div class="dash-agent-item" onclick="window.location.href='../sessions/index.html'">
+                                    <div class="dash-agent-status-ring paused" style="--progress: 200deg;">
+                                        <div class="dash-agent-status-ring-inner">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="dash-agent-info">
+                                        <div class="dash-agent-name">Optimize database queries</div>
+                                        <div class="dash-agent-task">Awaiting review of proposed index changes</div>
+                                    </div>
+                                    <div class="dash-agent-right">
+                                        <span class="dash-agent-badge waiting">Needs Review</span>
+                                        <span class="dash-agent-time">28m ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Feed -->
+                        <div class="dash-section">
+                            <div class="dash-section-header">
+                                <div class="dash-section-title">Recent Activity</div>
+                                <a href="../agent-feed/index.html" class="dash-section-link">View feed &rarr;</a>
+                            </div>
+                            <div class="dash-activity-list">
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon completed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Fix CORS headers</strong> completed successfully &mdash; 3 files modified</div>
+                                        <div class="dash-activity-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon pr">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text">PR <strong>#247</strong> opened for <strong>Add rate limiting middleware</strong></div>
+                                        <div class="dash-activity-time">18 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon deploy">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>staging</strong> deployment triggered via OpenShift MCP</div>
+                                        <div class="dash-activity-time">34 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon alert">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text">Workspace paused &mdash; <strong>Optimize database queries</strong> needs your review</div>
+                                        <div class="dash-activity-time">28 minutes ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon asset">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Ansible MCP</strong> installed and configured</div>
+                                        <div class="dash-activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon completed">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Update Dockerfile</strong> completed &mdash; Hummingbird base image applied</div>
+                                        <div class="dash-activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+
+                                <div class="dash-activity-item">
+                                    <div class="dash-activity-icon error">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                    </div>
+                                    <div class="dash-activity-info">
+                                        <div class="dash-activity-text"><strong>Tekton pipeline</strong> build failed &mdash; missing secret <code style="font-size:11px; background:rgba(239,68,68,0.1); padding:1px 5px; border-radius:3px; color:#f87171;">registry-creds</code></div>
+                                        <div class="dash-activity-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource Tiles -->
+                    <div class="dash-resource-tiles">
+                        <div class="dash-resource-tile cpu">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">CPU Usage</span>
+                                <div class="dash-resource-tile-icon cpu">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">42%</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar cpu" style="width: 42%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">3 workspaces consuming &middot; 8 cores available</div>
+                        </div>
+
+                        <div class="dash-resource-tile memory">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">Memory</span>
+                                <div class="dash-resource-tile-icon memory">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><path d="M8 11V9"/><path d="M16 11V9"/><path d="M12 11V9"/><path d="M2 15h20"/><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">67%</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar memory" style="width: 67%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">10.7 GB used &middot; 16 GB total</div>
+                        </div>
+
+                        <div class="dash-resource-tile tokens">
+                            <div class="dash-resource-tile-header">
+                                <span class="dash-resource-tile-label">Token Budget</span>
+                                <div class="dash-resource-tile-icon tokens">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                            </div>
+                            <div class="dash-resource-tile-value">23K</div>
+                            <div class="dash-resource-bar-bg">
+                                <div class="dash-resource-bar tokens" style="width: 23%;"></div>
+                            </div>
+                            <div class="dash-resource-tile-detail">23,400 of 100K used today</div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Overview -->
+                    <div class="dash-cost-overview">
+                        <div class="dash-cost-header">
+                            <div class="dash-cost-header-left">
+                                <span class="dash-cost-title">Cost Overview</span>
+                                <div class="dash-cost-period-tabs">
+                                    <button class="dash-cost-period-tab">Today</button>
+                                    <button class="dash-cost-period-tab active">This Week</button>
+                                    <button class="dash-cost-period-tab">This Month</button>
+                                </div>
+                            </div>
+                            <a href="../services/index.html" class="dash-cost-link">View services &rarr;</a>
+                        </div>
+
+                        <div class="dash-cost-grid">
+                            <!-- Total Spend -->
+                            <div class="dash-cost-total-card">
+                                <div class="dash-cost-total-label">Total Spend</div>
+                                <div class="dash-cost-total-value">$47.82</div>
+                                <div class="dash-cost-total-change"><span class="up">&uarr; 12%</span> vs last week</div>
+                            </div>
+
+                            <!-- By Provider -->
+                            <div class="dash-cost-breakdown">
+                                <div class="dash-cost-breakdown-header">
+                                    <span class="dash-cost-breakdown-title">By Provider</span>
+                                    <span class="dash-cost-breakdown-total">3 services</span>
+                                </div>
+                                <div class="dash-cost-breakdown-list">
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">OpenAI</div>
+                                            <div class="dash-cost-row-detail">GPT-4o &middot; 184K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:62%; background:#a78bfa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$29.40</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Anthropic</div>
+                                            <div class="dash-cost-row-detail">Claude Sonnet &middot; 97K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:34%; background:#a78bfa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$16.22</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">OpenShift AI (vLLM)</div>
+                                            <div class="dash-cost-row-detail">Granite &middot; 42K tokens</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:5%; background:#fb923c;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$2.20</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- By Workspace -->
+                            <div class="dash-cost-breakdown">
+                                <div class="dash-cost-breakdown-header">
+                                    <span class="dash-cost-breakdown-title">By Workspace</span>
+                                    <span class="dash-cost-breakdown-total">3 workspaces</span>
+                                </div>
+                                <div class="dash-cost-breakdown-list">
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.23 0A1.65 1.65 0 0 0 15 19.4V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a2 2 0 0 1 0-4"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">DevOps Engineer</div>
+                                            <div class="dash-cost-row-detail">5 tasks &middot; OpenAI + vLLM</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:52%; background:#c4b5fd;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$24.60</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Backend Developer</div>
+                                            <div class="dash-cost-row-detail">4 tasks &middot; OpenAI + Anthropic</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:38%; background:#60a5fa;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$18.14</div>
+                                    </div>
+                                    <div class="dash-cost-row">
+                                        <div class="dash-cost-row-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                        <div class="dash-cost-row-info">
+                                            <div class="dash-cost-row-name">Security Analyst</div>
+                                            <div class="dash-cost-row-detail">3 tasks &middot; Anthropic</div>
+                                        </div>
+                                        <div class="dash-cost-row-bar-wrap">
+                                            <div class="dash-cost-row-bar-bg">
+                                                <div class="dash-cost-row-bar" style="width:11%; background:#f87171;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dash-cost-row-amount">$5.08</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="dash-quick-actions">
+                        <a href="../sessions/create.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">New Workspace</div>
+                            <div class="dash-quick-action-desc">Start a new agentic workspace</div>
+                        </a>
+                        <a href="../knowledges/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Knowledges</div>
+                            <div class="dash-quick-action-desc">Browse knowledge bases</div>
+                        </a>
+                        <a href="../coding-agent/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Coding Agent</div>
+                            <div class="dash-quick-action-desc">Launch a coding agent session</div>
+                        </a>
+                        <a href="../settings/index.html" class="dash-quick-action">
+                            <div class="dash-quick-action-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15H3a2 2 0 0 1 0-4h.09"/></svg>
+                            </div>
+                            <div class="dash-quick-action-label">Settings</div>
+                            <div class="dash-quick-action-desc">Configure agents &amp; defaults</div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.dash-cost-period-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.dash-cost-period-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

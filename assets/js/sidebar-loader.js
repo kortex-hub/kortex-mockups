@@ -8,9 +8,6 @@
  * Sidebar visibility uses `assets/data/demo-scenario/sidebar.json` by view key.
  * `kaiden-empty-mock.js` applies onboarding-shell selectors when view is `onboarding`.
  *
- * Optional projects: Settings → General → "Optional projects" saves `modules.optionalProjectsMode`.
- * Default is on (hide sidebar Projects) unless explicitly set to false.
- * When true, the Projects nav item is hidden (create-agent project picker is hidden on sessions/create.html).
  */
 
 function getNavRoot() {
@@ -25,6 +22,37 @@ function buildSidebarHTML() {
     const R = getNavRoot();
     return `
 <nav class="sidebar">
+    <a href="${R}/dashboard/index.html" class="nav-item" data-section="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9" rx="1"/>
+            <rect x="14" y="3" width="7" height="5" rx="1"/>
+            <rect x="14" y="12" width="7" height="9" rx="1"/>
+            <rect x="3" y="16" width="7" height="5" rx="1"/>
+        </svg>
+        <span>Overview</span>
+    </a>
+
+    <a href="${R}/tasks/index.html" class="nav-item" data-section="tasks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
+            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+        </svg>
+        <span>Agents</span>
+    </a>
+
+    <a href="${R}/agent-feed/index.html" class="nav-item" data-section="agent-feed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 4a9 9 0 0 0 12 0"/>
+            <path d="M9 7a4.5 4.5 0 0 0 6 0"/>
+            <line x1="12" y1="10" x2="12" y2="8"/>
+            <rect x="3" y="10" width="18" height="12" rx="3"/>
+            <circle cx="8.5" cy="16" r="1.5" fill="currentColor"/>
+            <circle cx="15.5" cy="16" r="1.5" fill="currentColor"/>
+        </svg>
+        <span>Agent Feed</span>
+    </a>
+
     <a href="${R}/sessions/index.html" class="nav-item" data-section="sessions">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
@@ -245,23 +273,6 @@ function isOpenshiftAIModuleEnabled() {
     }
 }
 
-function isOptionalProjectsMode() {
-    if (typeof window.kaidenIsOptionalProjectsMode === 'function') {
-        return window.kaidenIsOptionalProjectsMode();
-    }
-    try {
-        const saved = localStorage.getItem('kaidenSettings');
-        if (!saved) return true;
-        const settings = JSON.parse(saved);
-        if (settings.modules && settings.modules.optionalProjectsMode === false) {
-            return false;
-        }
-        return true;
-    } catch (e) {
-        return true;
-    }
-}
-
 // Load sidebar component
 function loadSidebar(activeSection) {
     const sidebarContainer = document.getElementById('sidebar-container');
@@ -301,7 +312,7 @@ function loadSidebar(activeSection) {
 
     const hideSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
         ? sidebarCfg.hiddenNavSections
-        : (demoOnboarding ? ['sessions', 'coding-agent', 'projects', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
+        : (demoOnboarding ? ['dashboard', 'tasks', 'agent-feed', 'sessions', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
 
     document.querySelectorAll('.nav-item[data-section]').forEach((el) => {
         const sec = el.getAttribute('data-section');
@@ -309,11 +320,6 @@ function loadSidebar(activeSection) {
         const hide = hideSections.indexOf(sec) !== -1;
         el.style.display = hide ? 'none' : '';
     });
-
-    const projectsNavItem = document.querySelector('.nav-item[data-section="projects"]');
-    if (projectsNavItem && isOptionalProjectsMode()) {
-        projectsNavItem.style.display = 'none';
-    }
 
     const hiddenStatus = sidebarCfg && Array.isArray(sidebarCfg.hiddenStatusItems)
         ? sidebarCfg.hiddenStatusItems
@@ -352,10 +358,6 @@ function loadSidebar(activeSection) {
         });
     }
 
-    if (typeof window.kaidenRefreshOptionalProjectsClass === 'function') {
-        window.kaidenRefreshOptionalProjectsClass();
-    }
-
     document.dispatchEvent(new CustomEvent('sidebarLoaded'));
 }
 
@@ -376,14 +378,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const bodyClass = document.body.className;
     let activeSection = bodyClass.split(' ').find(c => c.endsWith('-page'))?.replace('-page', '');
-
-    const sectionMap = {
-        'tasks': 'projects'
-    };
-
-    if (activeSection && sectionMap[activeSection]) {
-        activeSection = sectionMap[activeSection];
-    }
 
     loadSidebar(activeSection);
 
