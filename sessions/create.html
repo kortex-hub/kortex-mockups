@@ -1458,6 +1458,302 @@
             margin-bottom: 24px;
         }
 
+        /* ── Semantic Router mode toggle ── */
+        .ca-model-mode-switcher {
+            display: flex;
+            gap: 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid #1e3358;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        .ca-model-mode-btn {
+            padding: 7px 18px;
+            border-radius: 7px;
+            border: none;
+            background: transparent;
+            color: #7090b8;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .ca-model-mode-btn svg { width: 14px; height: 14px; }
+
+        .ca-model-mode-btn.is-active {
+            background: rgba(79,195,247,0.15);
+            color: #4fc3f7;
+            font-weight: 600;
+            box-shadow: inset 0 0 0 1px rgba(79,195,247,0.35);
+        }
+
+        /* Router cards */
+        .ca-router-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
+        /* Router selection cards — visual style matches models/index.html sr-card */
+        .ca-router-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .ca-router-card {
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, #111e33 0%, #0a0f1e 100%);
+            border: 1.5px solid #1e3358;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            position: relative;
+        }
+
+        .ca-router-card:hover {
+            border-color: rgba(79, 195, 247, 0.35);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transform: translateY(-1px);
+        }
+
+        .ca-router-card.is-selected {
+            border-color: rgba(79, 195, 247, 0.55);
+            background: rgba(79, 195, 247, 0.05);
+            box-shadow: 0 0 0 1px rgba(79, 195, 247, 0.12);
+        }
+
+        /* Card header */
+        .ca-router-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 14px 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(135deg, rgba(79,195,247,0.1) 0%, rgba(79,195,247,0.03) 100%);
+        }
+
+        .ca-router-card-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(79,195,247,0.12);
+            border: 1px solid rgba(79,195,247,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #4fc3f7;
+        }
+
+        .ca-router-card-icon svg { width: 15px; height: 15px; }
+
+        .ca-router-card-title {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ca-router-card-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e8eef7;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ca-router-card-port {
+            font-size: 10px;
+            color: #4fc3f7;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* Abstract flow */
+        .ca-router-flow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 11px 14px 9px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .ca-router-flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+        .ca-router-flow-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ca-router-flow-icon svg { width: 12px; height: 12px; }
+
+        .ca-router-flow-icon.agents {
+            background: rgba(79,195,247,0.1);
+            border: 1px solid rgba(79,195,247,0.2);
+            color: #4fc3f7;
+        }
+
+        .ca-router-flow-icon.router {
+            background: rgba(139,92,246,0.18);
+            border: 1px solid rgba(139,92,246,0.35);
+            color: #c4b5fd;
+        }
+
+        .ca-router-flow-label {
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #374151;
+        }
+
+        .ca-router-flow-arrow {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(79,195,247,0.2), rgba(139,92,246,0.3));
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .ca-router-flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            border-left: 4px solid rgba(139,92,246,0.45);
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+        }
+
+        .ca-router-flow-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .ca-router-flow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .ca-router-flow-dot.local { background: #34d399; box-shadow: 0 0 4px rgba(52,211,153,0.4); }
+        .ca-router-flow-dot.cloud { background: #38bdf8; box-shadow: 0 0 4px rgba(56,189,248,0.4); }
+
+        /* Backend list */
+        .ca-router-backends {
+            padding: 9px 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .ca-router-backend-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .ca-router-backend-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ca-router-backend-dot.local { background: #34d399; }
+        .ca-router-backend-dot.cloud { background: #38bdf8; }
+
+        .ca-router-backend-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 11px;
+            font-weight: 500;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .ca-router-backend-tag {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 1px 6px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .ca-router-backend-tag.local {
+            background: rgba(52,211,153,0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(52,211,153,0.2);
+        }
+
+        .ca-router-backend-tag.cloud {
+            background: rgba(56,189,248,0.1);
+            color: #7dd3fc;
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        /* Feature chips */
+        .ca-router-feats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 9px 14px 11px;
+        }
+
+        .ca-router-feat {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .ca-router-feat.cache { background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
+        .ca-router-feat.pii { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.18); }
+        .ca-router-feat.domain { background: rgba(6,182,212,0.1); color: #67e8f9; border: 1px solid rgba(6,182,212,0.18); }
+        .ca-router-feat.complexity { background: rgba(79,195,247,0.1); color: #7dd3fc; border: 1px solid rgba(79,195,247,0.18); }
+        .ca-router-feat.jailbreak { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.18); }
+        .ca-router-feat.keyword { background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2); }
+
+        .ca-router-card-radio { display: none; }
+
+        .ca-router-panel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #a78bfa;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .ca-router-panel-link:hover { color: #c4b5fd; text-decoration: underline; }
+
         #caWizardPanel2 .ca-ws-model-catalog-panel .config-section-header {
             margin-bottom: 14px;
             gap: 12px;
@@ -3762,6 +4058,154 @@
                                 </button>
                             </div>
 
+                            <!-- Model mode switcher -->
+                            <div class="ca-model-mode-switcher" role="group" aria-label="Model source mode">
+                                <button type="button" class="ca-model-mode-btn is-active" id="caModeSingleBtn" onclick="caSetModelMode('single')" aria-pressed="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                    Single model
+                                </button>
+                                <button type="button" class="ca-model-mode-btn" id="caModRouterBtn" onclick="caSetModelMode('router')" aria-pressed="false">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                    Semantic Router
+                                </button>
+                            </div>
+
+                            <!-- Semantic Router selection panel (hidden by default) -->
+                            <div id="caRouterPanel" style="display:none;" aria-hidden="true">
+                                <p style="font-size:13px;color:#7090b8;margin:0 0 14px;line-height:1.5;">Select a Semantic Router. The agent will call <code style="color:#4fc3f7;">http://localhost:{port}/v1/chat/completions</code> using <code style="color:#4fc3f7;">model: &quot;auto&quot;</code> — the router picks the best backend for each request automatically.</p>
+
+                                <div class="ca-router-cards" role="radiogroup" aria-label="Available semantic routers">
+
+                                    <!-- Router 1 -->
+                                    <label class="ca-router-card is-selected" for="caRouterRadio1" onclick="caSelectRouter(this)">
+                                        <input type="radio" class="ca-router-card-radio" id="caRouterRadio1" name="caRouterSelect" value="coding-router" checked>
+
+                                        <div class="ca-router-card-header">
+                                            <div class="ca-router-card-icon">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                            </div>
+                                            <div class="ca-router-card-title">
+                                                <div class="ca-router-card-name">coding-router</div>
+                                                <div class="ca-router-card-port">localhost:8899</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-flow">
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-icon agents">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
+                                                </div>
+                                                <span class="ca-router-flow-label">Agents</span>
+                                            </div>
+                                            <div class="ca-router-flow-arrow"></div>
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-icon router">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                                </div>
+                                                <span class="ca-router-flow-label">Router</span>
+                                            </div>
+                                            <div class="ca-router-flow-arrow"></div>
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-dots">
+                                                    <span class="ca-router-flow-dot local"></span>
+                                                    <span class="ca-router-flow-dot cloud"></span>
+                                                </div>
+                                                <span class="ca-router-flow-label">Backends</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-backends">
+                                            <div class="ca-router-backend-row">
+                                                <span class="ca-router-backend-dot local"></span>
+                                                <span class="ca-router-backend-name">Qwen3-Coder-Next-4bit</span>
+                                                <span class="ca-router-backend-tag local">local</span>
+                                            </div>
+                                            <div class="ca-router-backend-row">
+                                                <span class="ca-router-backend-dot cloud"></span>
+                                                <span class="ca-router-backend-name">gemini-2.5-pro</span>
+                                                <span class="ca-router-backend-tag cloud">cloud</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-feats">
+                                            <span class="ca-router-feat keyword">Keyword signals</span>
+                                            <span class="ca-router-feat cache">Semantic cache</span>
+                                            <span class="ca-router-feat pii">PII detection</span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Router 2 -->
+                                    <label class="ca-router-card" for="caRouterRadio2" onclick="caSelectRouter(this)">
+                                        <input type="radio" class="ca-router-card-radio" id="caRouterRadio2" name="caRouterSelect" value="general-purpose-router">
+
+                                        <div class="ca-router-card-header">
+                                            <div class="ca-router-card-icon">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                            </div>
+                                            <div class="ca-router-card-title">
+                                                <div class="ca-router-card-name">general-purpose-router</div>
+                                                <div class="ca-router-card-port">localhost:8900</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-flow">
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-icon agents">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
+                                                </div>
+                                                <span class="ca-router-flow-label">Agents</span>
+                                            </div>
+                                            <div class="ca-router-flow-arrow"></div>
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-icon router">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                                </div>
+                                                <span class="ca-router-flow-label">Router</span>
+                                            </div>
+                                            <div class="ca-router-flow-arrow"></div>
+                                            <div class="ca-router-flow-node">
+                                                <div class="ca-router-flow-dots">
+                                                    <span class="ca-router-flow-dot local"></span>
+                                                    <span class="ca-router-flow-dot cloud"></span>
+                                                    <span class="ca-router-flow-dot cloud"></span>
+                                                </div>
+                                                <span class="ca-router-flow-label">Backends</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-backends">
+                                            <div class="ca-router-backend-row">
+                                                <span class="ca-router-backend-dot local"></span>
+                                                <span class="ca-router-backend-name">granite-3.3-8b</span>
+                                                <span class="ca-router-backend-tag local">local</span>
+                                            </div>
+                                            <div class="ca-router-backend-row">
+                                                <span class="ca-router-backend-dot cloud"></span>
+                                                <span class="ca-router-backend-name">claude-4.6-sonnet</span>
+                                                <span class="ca-router-backend-tag cloud">cloud</span>
+                                            </div>
+                                            <div class="ca-router-backend-row">
+                                                <span class="ca-router-backend-dot cloud"></span>
+                                                <span class="ca-router-backend-name">gpt-5.3-codex</span>
+                                                <span class="ca-router-backend-tag cloud">cloud</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ca-router-feats">
+                                            <span class="ca-router-feat domain">Domain classifier</span>
+                                            <span class="ca-router-feat complexity">Complexity scoring</span>
+                                            <span class="ca-router-feat jailbreak">Jailbreak detection</span>
+                                        </div>
+                                    </label>
+
+                                </div>
+
+                                <a href="../models/index.html?cat=router" target="_blank" class="ca-router-panel-link">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    Manage routers
+                                </a>
+                            </div>
+
                             <div class="ob-step-panel ob-onboarding-model-catalog ca-ws-model-catalog-panel" id="caWsModelCatalogPanel">
                                 <h3 class="model-config-panel-title">Model for this workspace</h3>
                                 <p class="ob-provider-section-hint" id="caModelSectionLead">Choose the default model <strong id="caModelStepAgentLabel">OpenCode</strong> will use here. Names match the <a href="../models/index.html">Models</a> catalog. Disabled rows cannot be selected; the table is filtered to models that fit the agent you picked above (OpenCode: all sources; Claude Code: Anthropic cloud; Codex: OpenAI &amp; Composer).</p>
@@ -4624,7 +5068,37 @@
     <script>
         let selectedAgent = null;
         let selectedCatalogModelId = null;
+        let selectedRouterName = 'coding-router';
+        let caModelMode = 'single'; // 'single' | 'router'
         let selectedFileAccess = 'workspace';
+
+        function caSetModelMode(mode) {
+            caModelMode = mode;
+            var singleBtn = document.getElementById('caModeSingleBtn');
+            var routerBtn = document.getElementById('caModRouterBtn');
+            var catalogPanel = document.getElementById('caWsModelCatalogPanel');
+            var routerPanel = document.getElementById('caRouterPanel');
+            if (!singleBtn || !routerBtn || !catalogPanel || !routerPanel) return;
+
+            singleBtn.classList.toggle('is-active', mode === 'single');
+            singleBtn.setAttribute('aria-pressed', mode === 'single');
+            routerBtn.classList.toggle('is-active', mode === 'router');
+            routerBtn.setAttribute('aria-pressed', mode === 'router');
+
+            catalogPanel.style.display = mode === 'single' ? '' : 'none';
+            routerPanel.style.display = mode === 'router' ? '' : 'none';
+            routerPanel.setAttribute('aria-hidden', mode !== 'router');
+        }
+
+        function caSelectRouter(card) {
+            var radio = card.querySelector('input[type=radio]');
+            if (!radio || radio.disabled) return;
+            selectedRouterName = radio.value;
+            document.querySelectorAll('.ca-router-card').forEach(function(c) {
+                c.classList.remove('is-selected');
+            });
+            card.classList.add('is-selected');
+        }
         /** Network policy wizard state (legacy; sandbox table drives egress via caSandboxNetPresetKey). */
         let caNetworkPolicyMode = 'allow';
         /** Preset key for sandbox network table: blocked | registries | agent_mode | open */
@@ -5087,6 +5561,13 @@
                 if (!selectedAgent) {
                     alert('Please select a coding agent');
                     return false;
+                }
+                if (caModelMode === 'router') {
+                    if (!selectedRouterName) {
+                        alert('Please select a semantic router');
+                        return false;
+                    }
+                    return true;
                 }
                 applyWorkspaceCatalogVisibility();
                 var pickable = document.querySelectorAll('#workspace-model-catalog tr.ca-catalog-model-row:not(.ca-catalog-row-hidden):not(.ca-catalog-filtered-out):not(.ca-catalog-row-disabled)');

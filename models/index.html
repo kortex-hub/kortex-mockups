@@ -140,7 +140,7 @@
         .services-cat-item {
             position: relative;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 12px;
             padding: 11px 16px 11px 18px;
             margin: 0;
@@ -177,7 +177,6 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 2px;
         }
 
         .services-cat-icon svg {
@@ -215,7 +214,6 @@
             color: var(--kd-text-muted);
             flex-shrink: 0;
             border: 1px solid var(--kd-border);
-            margin-top: 1px;
         }
 
         .services-cat-item.active .services-cat-badge {
@@ -254,8 +252,8 @@
             align-items: center;
             gap: 6px;
             padding: 8px 16px;
-            background: #f97316;
-            color: #fff;
+            background: var(--kd-accent);
+            color: var(--kd-on-accent, #0a1628);
             border: none;
             border-radius: 8px;
             font-size: 13px;
@@ -266,8 +264,8 @@
 
         .services-add-btn:hover {
             transform: translateY(-1px);
-            background: #ea580c;
-            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
+            background: var(--kd-accent-bright, #6dd6ff);
+            box-shadow: 0 4px 16px rgba(79, 195, 247, 0.4);
         }
 
         .services-add-btn svg { width: 16px; height: 16px; }
@@ -672,6 +670,328 @@
             padding-top: 12px;
         }
 
+        /* ── Semantic Router visual cards ── */
+        .sr-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .sr-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            background: linear-gradient(145deg, #111e33 0%, #0a0f1e 100%);
+            border: 1px solid #1e3358;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            cursor: pointer;
+        }
+
+        .sr-card:hover {
+            border-color: rgba(79,195,247,0.45);
+            box-shadow: 0 0 0 1px rgba(79,195,247,0.1), 0 8px 32px rgba(0,0,0,0.35);
+            transform: translateY(-2px);
+        }
+
+        .sr-card.is-stopped {
+            opacity: 0.7;
+        }
+
+        /* Card header: gradient strip */
+        .sr-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 18px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(135deg, rgba(79,195,247,0.1) 0%, rgba(79,195,247,0.03) 100%);
+        }
+
+        .sr-card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(79,195,247,0.12);
+            border: 1px solid rgba(79,195,247,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #4fc3f7;
+        }
+
+        .sr-card-icon svg { width: 18px; height: 18px; }
+
+        .sr-card-title-block { flex: 1; min-width: 0; }
+
+        .sr-card-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #e8eef7;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0 0 1px;
+        }
+
+        .sr-card-endpoint {
+            font-size: 11px;
+            color: #4fc3f7;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .sr-status-dot {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sr-status-dot::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .sr-status-dot.running {
+            color: #34d399;
+        }
+
+        .sr-status-dot.running::before {
+            background: #34d399;
+            box-shadow: 0 0 6px rgba(52,211,153,0.6);
+            animation: srPulse 2s ease infinite;
+        }
+
+        .sr-status-dot.stopped { color: #6b7280; }
+        .sr-status-dot.stopped::before { background: #4b5563; }
+
+        @keyframes srPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+        }
+
+        /* Flow diagram — abstract (no model names here) */
+        .sr-flow {
+            padding: 14px 18px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .sr-flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .sr-flow-node-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sr-flow-node-icon svg { width: 15px; height: 15px; }
+
+        .sr-flow-node-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #4b5563;
+            white-space: nowrap;
+        }
+
+        .sr-flow-node-icon.agents {
+            background: rgba(79,195,247,0.1);
+            border: 1px solid rgba(79,195,247,0.2);
+            color: #4fc3f7;
+        }
+
+        .sr-flow-node-icon.router {
+            background: rgba(139,92,246,0.18);
+            border: 1px solid rgba(139,92,246,0.35);
+            color: #c4b5fd;
+        }
+
+        .sr-flow-arrow {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(79,195,247,0.25), rgba(139,92,246,0.35));
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .sr-flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid rgba(139,92,246,0.5);
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        /* Abstract backend dots in the flow (no names) */
+        .sr-flow-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        .sr-flow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sr-flow-dot.local { background: #34d399; box-shadow: 0 0 5px rgba(52,211,153,0.4); }
+        .sr-flow-dot.cloud { background: #38bdf8; box-shadow: 0 0 5px rgba(56,189,248,0.4); }
+
+        /* Backend model list — full-width rows, handles any name length */
+        .sr-backends-list {
+            padding: 10px 18px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .sr-backend-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .sr-backend-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sr-backend-dot.local { background: #34d399; }
+        .sr-backend-dot.cloud { background: #38bdf8; }
+
+        .sr-backend-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--kd-text-secondary, #94a3b8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        .sr-backend-tag {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 7px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        .sr-backend-tag.local {
+            background: rgba(52,211,153,0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(52,211,153,0.2);
+        }
+
+        .sr-backend-tag.cloud {
+            background: rgba(56,189,248,0.1);
+            color: #7dd3fc;
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        /* Feature pills */
+        .sr-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 12px 18px 14px;
+        }
+
+        .sr-feat {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 3px 9px;
+            border-radius: 20px;
+        }
+
+        .sr-feat.cache {
+            background: rgba(16,185,129,0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .sr-feat.pii {
+            background: rgba(245,158,11,0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245,158,11,0.18);
+        }
+
+        .sr-feat.jailbreak {
+            background: rgba(239,68,68,0.1);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.18);
+        }
+
+        .sr-feat.domain {
+            background: rgba(6,182,212,0.1);
+            color: #67e8f9;
+            border: 1px solid rgba(6,182,212,0.18);
+        }
+
+        .sr-feat.complexity {
+            background: rgba(79,195,247,0.1);
+            color: #7dd3fc;
+            border: 1px solid rgba(79,195,247,0.18);
+        }
+
+        .sr-feat.keyword {
+            background: rgba(139,92,246,0.1);
+            color: #c4b5fd;
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        html:not(.dark) .sr-card {
+            background: linear-gradient(145deg, #f8f6ff 0%, #faf9ff 100%);
+            border-color: #e2d9f3;
+        }
+
+        html:not(.dark) .sr-card:hover {
+            border-color: var(--kd-accent);
+            box-shadow: 0 4px 24px rgba(79,195,247,0.15);
+        }
+
+        html:not(.dark) .sr-card-name { color: #1a1030; }
+        html:not(.dark) .sr-card-header { background: linear-gradient(135deg, rgba(109,40,217,0.07) 0%, rgba(139,92,246,0.02) 100%); }
+        html:not(.dark) .sr-stat-val { color: #7c3aed; }
+
     </style>
 </head>
 <body class="models-page">
@@ -707,13 +1027,20 @@
                             <span class="services-cat-name">Local</span>
                             <span class="services-cat-badge">2</span>
                         </div>
+                        <div class="services-cat-item" data-cat="router" onclick="filterCategory('router', this)">
+                            <div class="services-cat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/><path d="M5.64 5.64l4.24 4.24M14.12 14.12l4.24 4.24M18.36 5.64l-4.24 4.24M9.88 14.12l-4.24 4.24"/></svg>
+                            </div>
+                            <span class="services-cat-name">Semantic Routers</span>
+                            <span class="services-cat-badge">2</span>
+                        </div>
                     </div>
 
                     <div class="services-sidebar-divider"></div>
 
                     <div class="services-sidebar-section">
                         <div class="services-sidebar-section-title">About</div>
-                        <p class="services-sidebar-note">Cloud keys stay on this device. In-house is OpenShift AI only. Local lists runtimes detected on the host (mock in this prototype).</p>
+                        <p class="services-sidebar-note">Cloud keys stay on this device. In-house is OpenShift AI only. Local lists runtimes detected on the host. Semantic Routers classify and route requests across multiple backends.</p>
                     </div>
                 </div>
 
@@ -1215,6 +1542,152 @@
                             </div>
                         </section>
 
+                        <!-- 4. Semantic Routers -->
+                        <section class="model-source-block hidden" data-cat="router" data-search="semantic router vllm athena routing classification signal decision keyword embedding neural classifier">
+                            <div class="model-source-head">
+                                <div>
+                                    <h2 class="model-source-title">Semantic Routers</h2>
+                                    <p class="model-source-desc">A Semantic Router classifies each request and routes it to the best backend model. Exposes a standard <code style="color:var(--kd-text-secondary);">/v1/chat/completions</code> endpoint so any agent can use it without code changes.</p>
+                                </div>
+                                <a href="semantic-router-create.html" class="services-add-btn" style="text-decoration:none;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add Semantic Router
+                                </a>
+                            </div>
+
+                            <div class="sr-card-grid" role="list" aria-label="Semantic Routers">
+
+                                <!-- ── Router card 1 ── -->
+                                <a class="sr-card" href="semantic-router-details.html?router=coding-router" role="listitem" data-search="coding router qwen gemini keyword">
+
+                                    <div class="sr-card-header">
+                                        <div class="sr-card-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                        </div>
+                                        <div class="sr-card-title-block">
+                                            <div class="sr-card-name">coding-router</div>
+                                            <div class="sr-card-endpoint">localhost:8899</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Abstract routing flow -->
+                                    <div class="sr-flow">
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon agents">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon router">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Router</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-dots">
+                                                <span class="sr-flow-dot local"></span>
+                                                <span class="sr-flow-dot cloud"></span>
+                                            </div>
+                                            <span class="sr-flow-node-label">Backends</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Backend model list -->
+                                    <div class="sr-backends-list">
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot local"></span>
+                                            <span class="sr-backend-name">Qwen3-Coder-Next-4bit</span>
+                                            <span class="sr-backend-tag local">local</span>
+                                        </div>
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot cloud"></span>
+                                            <span class="sr-backend-name">gemini-2.5-pro</span>
+                                            <span class="sr-backend-tag cloud">cloud</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Capabilities -->
+                                    <div class="sr-features">
+                                        <span class="sr-feat keyword">Keyword signals</span>
+                                        <span class="sr-feat cache">Semantic cache</span>
+                                        <span class="sr-feat pii">PII detection</span>
+                                    </div>
+
+                                </a>
+
+                                <!-- ── Router card 2 ── -->
+                                <a class="sr-card" href="semantic-router-details.html?router=general-purpose-router" role="listitem" data-search="general router claude granite domain classifier">
+
+                                    <div class="sr-card-header">
+                                        <div class="sr-card-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                        </div>
+                                        <div class="sr-card-title-block">
+                                            <div class="sr-card-name">general-purpose-router</div>
+                                            <div class="sr-card-endpoint">localhost:8900</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Abstract routing flow -->
+                                    <div class="sr-flow">
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon agents">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon router">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Router</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-dots">
+                                                <span class="sr-flow-dot local"></span>
+                                                <span class="sr-flow-dot cloud"></span>
+                                                <span class="sr-flow-dot cloud"></span>
+                                            </div>
+                                            <span class="sr-flow-node-label">Backends</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Backend model list -->
+                                    <div class="sr-backends-list">
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot local"></span>
+                                            <span class="sr-backend-name">granite-3.3-8b</span>
+                                            <span class="sr-backend-tag local">local</span>
+                                        </div>
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot cloud"></span>
+                                            <span class="sr-backend-name">claude-4.6-sonnet</span>
+                                            <span class="sr-backend-tag cloud">cloud</span>
+                                        </div>
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot cloud"></span>
+                                            <span class="sr-backend-name">gpt-5.3-codex</span>
+                                            <span class="sr-backend-tag cloud">cloud</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Capabilities -->
+                                    <div class="sr-features">
+                                        <span class="sr-feat domain">Domain classifier</span>
+                                        <span class="sr-feat complexity">Complexity scoring</span>
+                                        <span class="sr-feat jailbreak">Jailbreak detection</span>
+                                    </div>
+
+                                </a>
+
+                            </div>
+                        </section>
+
                     </div>
                 </div>
 
@@ -1226,7 +1699,8 @@
         const categoryLabels = {
             cloud: { subtitle: 'API keys for hosted providers' },
             corporate: { subtitle: 'In-house · OpenShift AI & models' },
-            local: { subtitle: 'Host detection & loaded models' }
+            local: { subtitle: 'Host detection & loaded models' },
+            router: { subtitle: 'Intelligent request routers across multiple backends' }
         };
 
         let activeCategory = 'cloud';
