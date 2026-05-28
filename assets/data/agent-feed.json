@@ -1,0 +1,129 @@
+[
+  {
+    "id": "refactor-auth-blocked",
+    "goal": "Auth refactor blocked — network access denied",
+    "status": "waiting",
+    "statusLabel": "Allow / deny",
+    "time": "6m",
+    "avatar": "claude",
+    "avatarLabel": "DA",
+    "projectName": "Doc updater",
+    "project": "acme/doc-updater",
+    "branch": "feat/jwt-auth",
+    "progress": 60,
+    "progressSteps": "network",
+    "activity": null,
+    "question": {
+      "text": "Workspace hit an outbound host outside the allow list: <code>auth.example.com/.well-known/jwks.json</code>. Allow once to fetch JWKS public keys, or deny to block.",
+      "options": [
+        { "label": "Allow once", "type": "primary" },
+        { "label": "Add to project", "type": "secondary" },
+        { "label": "Deny", "type": "secondary" }
+      ],
+      "allowReply": false
+    }
+  },
+  {
+    "id": "fix-memory-leak-input",
+    "goal": "Fix memory leak in WebSocket handler",
+    "status": "waiting",
+    "statusLabel": "Sandbox",
+    "time": "14m",
+    "avatar": "codex",
+    "avatarLabel": "AG",
+    "projectName": "API Gateway",
+    "project": "acme/api-gateway",
+    "branch": "fix/ws-memory-leak",
+    "progress": 25,
+    "progressSteps": "analysis",
+    "activity": null,
+    "question": {
+      "text": "Agent identified a potential fix in <code>src/ws/handler.ts</code>. Two options: patch the connection pool size limit, or refactor to use weak references. Which approach do you prefer?",
+      "options": [
+        { "label": "Pool size limit", "type": "primary" },
+        { "label": "Weak references", "type": "secondary" }
+      ],
+      "allowReply": true
+    }
+  },
+  {
+    "id": "frontend-refactor-running",
+    "goal": "Frontend Refactor — dark mode implementation",
+    "status": "running",
+    "statusLabel": "In progress",
+    "time": "2h",
+    "avatar": "claude",
+    "avatarLabel": "FR",
+    "projectName": "Frontend App",
+    "project": "acme/docs-portal",
+    "branch": "feat/dark-mode",
+    "progress": 70,
+    "progressSteps": "4 / 6",
+    "activity": { "text": "Updating CSS variables and theme toggle component", "type": "writing" },
+    "question": null
+  },
+  {
+    "id": "api-integration-running",
+    "goal": "API Integration — payment gateway setup",
+    "status": "running",
+    "statusLabel": "In terminal",
+    "time": "45m",
+    "avatar": "codex",
+    "avatarLabel": "AI",
+    "projectName": "API Gateway",
+    "project": "acme/api-gateway",
+    "branch": "develop",
+    "progress": 45,
+    "progressSteps": "CLI",
+    "activity": { "text": "Generating TypeScript types from OpenAPI spec", "type": "writing" },
+    "question": null
+  },
+  {
+    "id": "rhel-mcp-ready",
+    "goal": "RHEL MCP configured — 12 tools available",
+    "status": "completed",
+    "statusLabel": "Ready",
+    "time": "1h ago",
+    "avatar": "claude",
+    "avatarLabel": "Mc",
+    "projectName": "Extensions",
+    "project": "openshift-mcp",
+    "branch": "—",
+    "progress": 100,
+    "progressSteps": "1 / 1",
+    "activity": null,
+    "question": null
+  },
+  {
+    "id": "update-deps-done",
+    "goal": "Update npm dependencies — 47 packages updated",
+    "status": "completed",
+    "statusLabel": "Done",
+    "time": "2h ago",
+    "avatar": "claude",
+    "avatarLabel": "FA",
+    "projectName": "Frontend App",
+    "project": "acme/docs-portal",
+    "branch": "chore/update-deps",
+    "progress": 100,
+    "progressSteps": "3 / 3",
+    "activity": null,
+    "question": null
+  },
+  {
+    "id": "dockerfile-done",
+    "goal": "Create multi-stage Dockerfile — production ready",
+    "status": "completed",
+    "statusLabel": "Done",
+    "time": "5h ago",
+    "avatar": "claude",
+    "avatarLabel": "DA",
+    "projectName": "Doc updater",
+    "project": "acme/doc-updater",
+    "branch": "infra/docker-prod",
+    "progress": 100,
+    "progressSteps": "2 / 2",
+    "activity": null,
+    "question": null
+  }
+]

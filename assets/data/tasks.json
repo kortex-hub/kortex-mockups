@@ -1,0 +1,98 @@
+{
+  "projects": [
+    { "name": "Doc updater", "count": 3 },
+    { "name": "Frontend App", "count": 2 },
+    { "name": "API Gateway", "count": 1 }
+  ],
+  "sections": [
+    {
+      "id": "needs-input",
+      "label": "Needs your input",
+      "type": "needs-input",
+      "tasks": [
+        {
+          "id": "refactor-auth",
+          "goal": "Refactor authentication module to use JWT tokens",
+          "project": "Doc updater",
+          "branch": "feat/jwt-auth",
+          "status": "blocked",
+          "statusLabel": "Blocked — network",
+          "statusColor": "#f87171",
+          "needsAction": true,
+          "active": true
+        },
+        {
+          "id": "fix-memory-leak",
+          "goal": "Fix memory leak in WebSocket connection handler",
+          "project": "API Gateway",
+          "branch": "fix/ws-memory-leak",
+          "status": "waiting",
+          "statusLabel": "Waiting for input",
+          "needsAction": true,
+          "active": false
+        }
+      ]
+    },
+    {
+      "id": "running",
+      "label": "Running",
+      "type": "running",
+      "tasks": [
+        {
+          "id": "add-dark-mode",
+          "goal": "Add dark mode toggle to settings page",
+          "project": "Frontend App",
+          "branch": "feat/dark-mode",
+          "status": "running",
+          "statusLabel": "Running",
+          "time": "34m",
+          "active": false
+        }
+      ]
+    },
+    {
+      "id": "paused",
+      "label": "Paused",
+      "type": "paused",
+      "tasks": [
+        {
+          "id": "api-docs",
+          "goal": "Generate OpenAPI docs for REST endpoints",
+          "project": "Doc updater",
+          "branch": "docs/openapi-spec",
+          "status": "paused",
+          "statusLabel": "Paused",
+          "time": "3h",
+          "active": false
+        }
+      ]
+    },
+    {
+      "id": "completed",
+      "label": "Completed today",
+      "type": "completed",
+      "tasks": [
+        {
+          "id": "update-deps",
+          "goal": "Update npm dependencies and fix breaking changes",
+          "project": "Frontend App",
+          "branch": "chore/update-deps",
+          "status": "completed",
+          "statusLabel": "Completed",
+          "time": "2h ago",
+          "active": false
+        },
+        {
+          "id": "dockerfile",
+          "goal": "Create multi-stage Dockerfile for production",
+          "project": "Doc updater",
+          "branch": "infra/docker-prod",
+          "status": "completed",
+          "statusLabel": "Completed",
+          "time": "5h ago",
+          "active": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 /**
  * Agent Feed
  * Data and rendering for the Agent Feed page.
+ * Loads agent data from assets/data/agent-feed.json; falls back to inline array.
  */
 
 (function () {
-    const feedAgents = [
+    const INLINE_FEED_AGENTS = [
         {
             id: 'telemetry-blocked',
             goal: 'Forbidden domain: telemetry.example.com',
@@ -133,6 +134,19 @@
             question: null
         }
     ];
+
+    /* feedAgents is the live array; populated from JSON on load or falls back to inline. */
+    var feedAgents = INLINE_FEED_AGENTS.slice();
+
+    function loadAgentFeedData() {
+        if (typeof fetch === 'undefined') return Promise.resolve();
+        var el = document.querySelector('script[src*="agent-feed.js"]');
+        var base = el && el.src ? new URL('../data/agent-feed.json', el.src).href : '../assets/data/agent-feed.json';
+        return fetch(base)
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+            .then(function (data) { if (Array.isArray(data) && data.length) { feedAgents = data; } })
+            .catch(function () { /* keep inline fallback */ });
+    }
 
     var RING_R = 18;
     var RING_C = 2 * Math.PI * RING_R; // ~113.1
@@ -346,4 +360,22 @@
             window.location.href = '../cli/index.html';
         }
     };
+
+    /* Load JSON data then trigger initial render if the page is already ready. */
+    function initRender() {
+        var interactEl = document.getElementById('afInteractStream');
+        var activityEl = document.getElementById('afActivityStream');
+        var badgeEl = document.getElementById('pageFeedBadge');
+        if (interactEl || activityEl) {
+            renderDualPanels(interactEl, activityEl, badgeEl);
+        }
+    }
+
+    loadAgentFeedData().then(function () {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initRender);
+        } else {
+            initRender();
+        }
+    });
 })();

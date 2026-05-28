@@ -1,0 +1,64 @@
+{
+  "stats": {
+    "activeSessions": 3,
+    "totalSessions": 5,
+    "configuredAgents": 3
+  },
+  "sessions": [
+    {
+      "id": "my-new-app",
+      "title": "My New App",
+      "agentType": "claude-code",
+      "agentLabel": "Claude Code",
+      "iconClass": "claude",
+      "iconLetter": "MN",
+      "status": "running",
+      "runtime": "podman",
+      "time": "25m"
+    },
+    {
+      "id": "frontend-refactor",
+      "title": "Frontend Refactor",
+      "agentType": "claude-code",
+      "agentLabel": "Claude Code",
+      "iconClass": "claude",
+      "iconLetter": "C",
+      "status": "running",
+      "runtime": "podman",
+      "time": "2h"
+    },
+    {
+      "id": "api-integration",
+      "title": "API Integration",
+      "agentType": "codex",
+      "agentLabel": "Codex",
+      "iconClass": "codex",
+      "iconLetter": "AI",
+      "status": "running",
+      "runtime": "podman",
+      "time": "45m"
+    },
+    {
+      "id": "test-suite",
+      "title": "Test Suite Setup",
+      "agentType": "opencode",
+      "agentLabel": "OpenCode",
+      "iconClass": "opencode",
+      "iconLetter": "TS",
+      "status": "stopped",
+      "runtime": "podman",
+      "time": "1d"
+    },
+    {
+      "id": "docs-generator",
+      "title": "Documentation Generator",
+      "agentType": "claude-code",
+      "agentLabel": "Claude Code",
+      "iconClass": "claude",
+      "iconLetter": "C",
+      "status": "stopped",
+      "runtime": "podman",
+      "time": "3d"
+    }
+  ]
+}

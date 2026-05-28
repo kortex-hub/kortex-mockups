@@ -6,9 +6,8 @@
     <title>Kaiden - Tasks</title>
         <script src="../assets/js/kaiden-theme.js"></script>
 <link rel="stylesheet" href="../assets/css/styles.css">
-    <script src="../assets/js/demo-scenario.js"></script>
-    <script src="../assets/js/demo-screen-data.js"></script>
     <script src="../assets/js/sidebar-loader.js"></script>
+    <script src="../assets/js/page-data.js"></script>
     <style>
         .tasks-layout {
             display: flex;
@@ -4611,6 +4610,7 @@
                 </div>
 
                 <div class="tasks-list" id="tasksList">
+                    <!-- Task sections and items injected by page-data.js from assets/data/tasks.json -->
                     <div class="tasks-section-label section-needs-input" id="sectionNeedsInput">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         Needs your input <span class="section-count" id="countNeedsInput">2</span>

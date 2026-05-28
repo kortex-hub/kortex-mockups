@@ -1,0 +1,72 @@
+{
+  "ready": [
+    {
+      "id": "corporate-accounting",
+      "name": "Corporate Accounting MCP",
+      "version": "v2.4.1",
+      "tools": 8,
+      "internal": true,
+      "description": "Internal MCP server for corporate accounting operations. Access financial reports, manage invoices, and handle expense tracking.",
+      "search": "corporate accounting mcp internal financial reports invoices expense v2.4.1"
+    },
+    {
+      "id": "internal-customer-database",
+      "name": "Internal Customer Database MCP",
+      "version": "v2.1.0",
+      "tools": 11,
+      "internal": true,
+      "description": "MCP server for querying and managing the internal customer database. Access customer profiles, account history, and support records.",
+      "search": "internal customer database mcp profiles support v2.1.0"
+    },
+    {
+      "id": "rhel",
+      "name": "RHEL MCP",
+      "version": "v1.2.0",
+      "tools": 12,
+      "internal": false,
+      "description": "Model Context Protocol server for Red Hat Enterprise Linux. Provides system management, package operations, and configuration tools.",
+      "search": "rhel red hat enterprise linux system management package v1.2.0"
+    },
+    {
+      "id": "openshift",
+      "name": "OpenShift MCP",
+      "version": "v2.1.3",
+      "tools": 18,
+      "internal": false,
+      "description": "Model Context Protocol server for Red Hat OpenShift. Manage clusters, deployments, routes, and Kubernetes resources with AI assistance.",
+      "search": "openshift kubernetes cluster deployments v2.1.3"
+    }
+  ],
+  "install": [
+    {
+      "id": "github",
+      "name": "com.github.mcp",
+      "version": null,
+      "tools": null,
+      "internal": false,
+      "source": "Catalog",
+      "description": "GitHub's official MCP Server",
+      "search": "com.github.mcp github official server"
+    },
+    {
+      "id": "sap-integration",
+      "name": "com.sap.integration",
+      "version": "v3.1.2",
+      "tools": 22,
+      "internal": true,
+      "source": null,
+      "description": "Connect to corporate SAP systems. Query business objects, manage purchase orders, and access ERP data through natural language.",
+      "search": "com.sap.integration erp business objects purchase orders v3.1.2"
+    },
+    {
+      "id": "ansible",
+      "name": "com.redhat.ansible",
+      "version": "v1.5.0",
+      "tools": 15,
+      "internal": false,
+      "source": null,
+      "description": "Model Context Protocol server for Ansible automation. Run playbooks, manage inventories, and orchestrate infrastructure.",
+      "search": "com.redhat.ansible ansible automation playbooks inventories v1.5.0"
+    }
+  ]
+}

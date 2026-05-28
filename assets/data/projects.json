@@ -1,0 +1,72 @@
+{
+  "countLabel": "4 projects",
+  "projects": [
+    {
+      "slug": "doc-updater",
+      "name": "Doc updater",
+      "path": "~/dev/doc-updater",
+      "icon": { "text": "KB", "gradient": "linear-gradient(135deg, #4fc3f7, #2a8bbf)" },
+      "statusDot": "active",
+      "gitRemote": "github.com/acme/doc-updater",
+      "branch": "main",
+      "assets": [
+        { "type": "skills", "label": "3 Skills" },
+        { "type": "mcp", "label": "2 MCP" },
+        { "type": "knowledge", "label": "1 KB" }
+      ],
+      "footerMeta": "Active 2 min ago",
+      "agentsBadge": "1 agent running",
+      "agentsBadgeVariant": "running"
+    },
+    {
+      "slug": "frontend-app",
+      "name": "Frontend App",
+      "path": "~/dev/docs-portal",
+      "icon": { "text": "FA", "gradient": "linear-gradient(135deg, #06b6d4, #0891b2)" },
+      "statusDot": "active",
+      "gitRemote": "github.com/acme/docs-portal",
+      "branch": "feat/dashboard",
+      "assets": [
+        { "type": "skills", "label": "2 Skills" },
+        { "type": "mcp", "label": "1 MCP" },
+        { "type": "knowledge", "label": "2 KB" }
+      ],
+      "footerMeta": "Active 15 min ago",
+      "agentsBadge": "2 agents running",
+      "agentsBadgeVariant": "running"
+    },
+    {
+      "slug": "infra-platform",
+      "name": "Infrastructure Platform",
+      "path": "~/dev/infra-platform",
+      "icon": { "text": "IP", "gradient": "linear-gradient(135deg, #f97316, #ea580c)" },
+      "statusDot": "idle",
+      "gitRemote": "gitlab.corp.example.com/platform/infra",
+      "branch": "main",
+      "assets": [
+        { "type": "skills", "label": "4 Skills" },
+        { "type": "mcp", "label": "3 MCP" },
+        { "type": "knowledge", "label": "1 KB" }
+      ],
+      "footerMeta": "Last active 3 days ago",
+      "agentsBadge": "No agents",
+      "agentsBadgeVariant": "idle"
+    },
+    {
+      "slug": "api-gateway",
+      "name": "API Gateway",
+      "path": "~/dev/api-gateway",
+      "icon": { "text": "AG", "gradient": "linear-gradient(135deg, #10b981, #059669)" },
+      "statusDot": "idle",
+      "gitRemote": "github.com/acme/api-gateway",
+      "branch": "develop",
+      "assets": [
+        { "type": "skills", "label": "2 Skills" },
+        { "type": "mcp", "label": "2 MCP" }
+      ],
+      "footerMeta": "Last active 1 week ago",
+      "agentsBadge": "No agents",
+      "agentsBadgeVariant": "idle"
+    }
+  ]
+}

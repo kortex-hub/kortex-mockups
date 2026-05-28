@@ -1,0 +1,171 @@
+{
+  "user": {
+    "name": "Sebastien",
+    "contextLine": "3 workspaces running · 2 tasks awaiting review · System healthy"
+  },
+  "stats": [
+    {
+      "type": "agents",
+      "label": "Active Workspaces",
+      "value": "3",
+      "detail": "<span class=\"up\">3 running</span> &middot; 2 stopped"
+    },
+    {
+      "type": "tasks",
+      "label": "Tasks Today",
+      "value": "6",
+      "detail": "<span class=\"up\">2 completed</span> &middot; 4 active"
+    },
+    {
+      "type": "assets",
+      "label": "Knowledges",
+      "value": "4",
+      "detail": "4 KBs &middot; 4 MCPs ready"
+    },
+    {
+      "type": "health",
+      "label": "System Health",
+      "value": "Healthy",
+      "valueStyle": "color:#34d399",
+      "detail": "All services operational"
+    }
+  ],
+  "activeWorkspaces": [
+    {
+      "id": "my-new-app",
+      "name": "My New App",
+      "task": "Building new application from scratch · Claude Code",
+      "status": "running",
+      "progress": 30,
+      "time": "25m ago"
+    },
+    {
+      "id": "frontend-refactor",
+      "name": "Frontend Refactor",
+      "task": "Implementing dark mode · feat/dark-mode",
+      "status": "running",
+      "progress": 70,
+      "time": "2h ago"
+    },
+    {
+      "id": "api-integration",
+      "name": "API Integration",
+      "task": "Generating types from OpenAPI spec · Codex",
+      "status": "running",
+      "progress": 45,
+      "time": "45m ago"
+    }
+  ],
+  "recentActivity": [
+    {
+      "type": "alert",
+      "html": "<strong>Auth refactor blocked</strong> &mdash; network access denied to <code style=\"font-size:11px;background:rgba(245,158,11,0.1);padding:1px 5px;border-radius:3px;color:#fbbf24\">auth.example.com</code>",
+      "time": "6 minutes ago"
+    },
+    {
+      "type": "pr",
+      "html": "PR <strong>#127</strong> opened &mdash; <strong>feat/jwt-auth</strong> JWT authentication refactor",
+      "time": "30 minutes ago"
+    },
+    {
+      "type": "deploy",
+      "html": "<strong>API Integration</strong> workspace started &mdash; Codex on <strong>api-gateway</strong>",
+      "time": "45 minutes ago"
+    },
+    {
+      "type": "completed",
+      "html": "<strong>Update npm dependencies</strong> completed &mdash; 47 packages updated",
+      "time": "2 hours ago"
+    },
+    {
+      "type": "completed",
+      "html": "<strong>Create multi-stage Dockerfile</strong> completed &mdash; Hummingbird base image applied",
+      "time": "5 hours ago"
+    },
+    {
+      "type": "asset",
+      "html": "<strong>RHEL MCP</strong> configured and ready &mdash; 12 tools available",
+      "time": "1 hour ago"
+    },
+    {
+      "type": "error",
+      "html": "<strong>Ansible AAP</strong> token expired &mdash; update credential in <a href=\"../services/index.html\" style=\"color:#f87171\">Secret Vault</a>",
+      "time": "3 hours ago"
+    }
+  ],
+  "resources": [
+    {
+      "type": "cpu",
+      "label": "CPU Usage",
+      "value": "42%",
+      "barPct": 42,
+      "detail": "3 workspaces consuming &middot; 8 cores available"
+    },
+    {
+      "type": "memory",
+      "label": "Memory",
+      "value": "67%",
+      "barPct": 67,
+      "detail": "10.7 GB used &middot; 16 GB total"
+    },
+    {
+      "type": "tokens",
+      "label": "Token Budget",
+      "value": "23K",
+      "barPct": 23,
+      "detail": "23,400 of 100K used today"
+    }
+  ],
+  "cost": {
+    "total": "$29.78",
+    "change": "&uarr; 8%",
+    "changeDirection": "up",
+    "period": "This Week",
+    "byProvider": [
+      {
+        "name": "Anthropic",
+        "detail": "Claude Sonnet &middot; 125K tokens",
+        "amount": "$18.50",
+        "barPct": 62,
+        "iconStroke": "#a78bfa",
+        "iconPath": "chat"
+      },
+      {
+        "name": "OpenAI",
+        "detail": "Codex-1 &middot; 52K tokens",
+        "amount": "$9.80",
+        "barPct": 33,
+        "iconStroke": "#a78bfa",
+        "iconPath": "bot"
+      },
+      {
+        "name": "OpenShift AI (vLLM)",
+        "detail": "Granite &middot; 18K tokens",
+        "amount": "$1.48",
+        "barPct": 5,
+        "iconStroke": "#fb923c",
+        "iconPath": "layers"
+      }
+    ],
+    "byWorkspace": [
+      {
+        "name": "Frontend App",
+        "detail": "2 tasks &middot; Claude Sonnet",
+        "amount": "$14.20",
+        "barPct": 48
+      },
+      {
+        "name": "Doc updater",
+        "detail": "3 tasks &middot; Claude Sonnet",
+        "amount": "$11.35",
+        "barPct": 38
+      },
+      {
+        "name": "API Gateway",
+        "detail": "1 task &middot; Codex",
+        "amount": "$4.23",
+        "barPct": 14
+      }
+    ]
+  }
+}
