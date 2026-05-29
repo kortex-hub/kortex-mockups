@@ -294,6 +294,18 @@
     var TERM_SVG   = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>';
     var TRASH_SVG  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
 
+    function formatSessionCost(s) {
+        if (s.costUSD === 0 || s.costUSD == null) {
+            return '<span style="color:var(--kd-text-muted);font-size:12px">Free</span>';
+        }
+        var prefix = s.status === 'running' ? '' : '';
+        return '<span style="font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">' +
+            prefix + '$' + s.costUSD.toFixed(2) + '</span>' +
+            (s.status === 'running'
+                ? '<div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px">accumulating</div>'
+                : '<div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px">total</div>');
+    }
+
     function renderSessionRow(s) {
         var running = s.status === 'running';
         var href = 'details.html?session=' + encodeURIComponent(s.id);
@@ -311,7 +323,7 @@
             '<div class="models-table-name-main">' + esc(s.title) + '</div>' +
             '</div></td>' +
             '<td><span class="sess-agent-badge ' + esc(s.agentType) + '">' + esc(s.agentLabel) + '</span></td>' +
-            '<td>' + esc(s.runtime) + '</td>' +
+            '<td style="text-align:right">' + formatSessionCost(s) + '</td>' +
             '<td style="text-align:right;font-variant-numeric:tabular-nums">' + esc(s.time) + '</td>' +
             '<td><div class="models-table-actions">' + actions + '</div></td>' +
             '</tr>';
@@ -581,11 +593,11 @@
         sessions: {
             stats: { activeSessions: 3, totalSessions: 5, configuredAgents: 3 },
             sessions: [
-                { id: 'my-new-app',        title: 'My New App',               agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'MN', status: 'running', runtime: 'podman', time: '25m' },
-                { id: 'frontend-refactor', title: 'Frontend Refactor',         agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'running', runtime: 'podman', time: '2h'  },
-                { id: 'api-integration',   title: 'API Integration',           agentType: 'codex',       agentLabel: 'Codex',       iconClass: 'codex',    iconLetter: 'AI', status: 'running', runtime: 'podman', time: '45m' },
-                { id: 'test-suite',        title: 'Test Suite Setup',          agentType: 'opencode',    agentLabel: 'OpenCode',    iconClass: 'opencode', iconLetter: 'TS', status: 'stopped', runtime: 'podman', time: '1d'  },
-                { id: 'docs-generator',    title: 'Documentation Generator',   agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'stopped', runtime: 'podman', time: '3d'  }
+                { id: 'my-new-app',        title: 'My New App',               agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'MN', status: 'running', runtime: 'podman', time: '25m', model: 'claude-4.6-sonnet-medium', inputTokens:   52000, outputTokens:  13000, costUSD:  0.35 },
+                { id: 'frontend-refactor', title: 'Frontend Refactor',         agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'running', runtime: 'podman', time: '2h',  model: 'claude-4.6-sonnet-medium', inputTokens:  485000, outputTokens: 118000, costUSD:  3.23 },
+                { id: 'api-integration',   title: 'API Integration',           agentType: 'codex',       agentLabel: 'Codex',       iconClass: 'codex',    iconLetter: 'AI', status: 'running', runtime: 'podman', time: '45m', model: 'gpt-5.3-codex',            inputTokens:  128000, outputTokens:  31000, costUSD:  1.00 },
+                { id: 'test-suite',        title: 'Test Suite Setup',          agentType: 'opencode',    agentLabel: 'OpenCode',    iconClass: 'opencode', iconLetter: 'TS', status: 'stopped', runtime: 'podman', time: '1d',  model: 'qwen3-code',               inputTokens:  312000, outputTokens:  74000, costUSD:  0    },
+                { id: 'docs-generator',    title: 'Documentation Generator',   agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'stopped', runtime: 'podman', time: '3d',  model: 'claude-4.6-sonnet-medium', inputTokens: 2100000, outputTokens: 510000, costUSD: 13.95 }
             ]
         },
         tasks:      { projects: [], sections: [] },

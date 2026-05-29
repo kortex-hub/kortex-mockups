@@ -14,7 +14,11 @@
       "iconLetter": "MN",
       "status": "running",
       "runtime": "podman",
-      "time": "25m"
+      "time": "25m",
+      "model": "claude-4.6-sonnet-medium",
+      "inputTokens": 52000,
+      "outputTokens": 13000,
+      "costUSD": 0.35
     },
     {
       "id": "frontend-refactor",
@@ -25,7 +29,11 @@
       "iconLetter": "C",
       "status": "running",
       "runtime": "podman",
-      "time": "2h"
+      "time": "2h",
+      "model": "claude-4.6-sonnet-medium",
+      "inputTokens": 485000,
+      "outputTokens": 118000,
+      "costUSD": 3.23
     },
     {
       "id": "api-integration",
@@ -36,7 +44,11 @@
       "iconLetter": "AI",
       "status": "running",
       "runtime": "podman",
-      "time": "45m"
+      "time": "45m",
+      "model": "gpt-5.3-codex",
+      "inputTokens": 128000,
+      "outputTokens": 31000,
+      "costUSD": 1.00
     },
     {
       "id": "test-suite",
@@ -47,7 +59,11 @@
       "iconLetter": "TS",
       "status": "stopped",
       "runtime": "podman",
-      "time": "1d"
+      "time": "1d",
+      "model": "qwen3-code",
+      "inputTokens": 312000,
+      "outputTokens": 74000,
+      "costUSD": 0
     },
     {
       "id": "docs-generator",
@@ -58,7 +74,11 @@
       "iconLetter": "C",
       "status": "stopped",
       "runtime": "podman",
-      "time": "3d"
+      "time": "3d",
+      "model": "claude-4.6-sonnet-medium",
+      "inputTokens": 2100000,
+      "outputTokens": 510000,
+      "costUSD": 13.95
     }
   ]
 }
