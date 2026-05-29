@@ -769,6 +769,17 @@
                                     <div class="settings-toggle" id="compactMode" onclick="toggleSetting(this)"></div>
                                 </div>
                             </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <h4 class="settings-item-label">Agent Feed</h4>
+                                    <p class="settings-item-description">
+                                        Show the Agent Feed tab in the sidebar. Displays live agent activity, alerts requiring input, and progress across all running workspaces.
+                                    </p>
+                                </div>
+                                <div class="settings-item-control">
+                                    <div class="settings-toggle" id="agentFeedToggle" onclick="toggleSetting(this); applyAgentFeedNow(this)"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -848,6 +859,16 @@
             element.classList.toggle('active');
         }
 
+        function applyAgentFeedNow(el) {
+            try {
+                const existing = JSON.parse(localStorage.getItem('kaidenSettings') || '{}');
+                if (!existing.modules) existing.modules = {};
+                existing.modules.agentFeedEnabled = el.classList.contains('active');
+                localStorage.setItem('kaidenSettings', JSON.stringify(existing));
+            } catch (e) { /* ignore */ }
+            if (typeof loadSidebar === 'function') loadSidebar('settings');
+        }
+
         function toggleIntegrationFields(integration) {
             const fields = document.querySelector('.' + integration + '-fields');
             const toggle = document.getElementById(integration + 'Enabled');
@@ -873,6 +894,7 @@
                 modules: {
                     ...(existing.modules || {}),
                     openshiftAIEnabled: document.getElementById('openshiftAIModuleToggle').classList.contains('active'),
+                    agentFeedEnabled: document.getElementById('agentFeedToggle').classList.contains('active'),
                 },
                 agentDefaults: {
                     defaultAgent: document.getElementById('defaultAgent').value,
@@ -953,6 +975,7 @@
         function resetSettings() {
             if (confirm('Reset all settings to their default values?')) {
                 document.getElementById('openshiftAIModuleToggle').classList.add('active');
+                document.getElementById('agentFeedToggle').classList.remove('active');
                 document.getElementById('devspacesToggle').classList.add('active');
                 document.getElementById('autoStartDevspaces').classList.remove('active');
                 document.getElementById('autoSave').classList.add('active');
@@ -1009,6 +1032,9 @@
                     if (settings.modules) {
                         if (settings.modules.openshiftAIEnabled === false) {
                             document.getElementById('openshiftAIModuleToggle').classList.remove('active');
+                        }
+                        if (settings.modules.agentFeedEnabled === true) {
+                            document.getElementById('agentFeedToggle').classList.add('active');
                         }
                     }
 

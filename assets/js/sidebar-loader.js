@@ -41,7 +41,7 @@ function buildSidebarHTML() {
         <span>Agents</span>
     </a>
 
-    <a href="${R}/agent-feed/index.html" class="nav-item" data-section="agent-feed">
+    <a href="${R}/agent-feed/index.html" class="nav-item" data-section="agent-feed" id="agent-feed-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 4a9 9 0 0 0 12 0"/>
             <path d="M9 7a4.5 4.5 0 0 0 6 0"/>
@@ -257,6 +257,21 @@ function isMcpModuleEnabled() {
     }
 }
 
+function isAgentFeedEnabled() {
+    try {
+        const saved = localStorage.getItem('kaidenSettings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            if (settings.modules && settings.modules.agentFeedEnabled === true) {
+                return true;
+            }
+        }
+        return false;
+    } catch (e) {
+        return false;
+    }
+}
+
 // Check if OpenShift AI module is enabled
 function isOpenshiftAIModuleEnabled() {
     try {
@@ -310,9 +325,11 @@ function loadSidebar(activeSection) {
         document.body.classList.remove('kaiden-demo-empty');
     }
 
-    const hideSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
+    const baseSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
         ? sidebarCfg.hiddenNavSections
         : (demoOnboarding ? ['dashboard', 'tasks', 'agent-feed', 'sessions', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
+
+    const hideSections = baseSections.concat(!isAgentFeedEnabled() ? ['agent-feed'] : []);
 
     document.querySelectorAll('.nav-item[data-section]').forEach((el) => {
         const sec = el.getAttribute('data-section');
