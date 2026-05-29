@@ -6,43 +6,12 @@
     <title>Kaiden - Coding agents</title>
         <script src="../assets/js/kaiden-theme.js"></script>
 <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
         /* Layout — same pattern as models/index.html */
         body.coding-agent-page .main-content {
             min-height: 0;
-        }
-
-        /**
-         * Light: left rail + main read as one product surface; agent block = card + border + shadow.
-         * Dark: preserve original charcoal rail + inset panel look.
-         */
-        body.coding-agent-page {
-            --cag-rail-bg: var(--kd-bg-card);
-            --cag-rail-border: var(--kd-border);
-            --cag-rail-title: var(--kd-text-primary);
-            --cag-rail-text: var(--kd-text-primary);
-            --cag-rail-muted: var(--kd-text-muted);
-            --cag-rail-icon: var(--kd-text-secondary);
-            --cag-rail-hover: color-mix(in srgb, var(--kd-text-primary) 5%, transparent);
-            --cag-rail-active-bg: color-mix(in srgb, var(--kd-accent) 14%, transparent);
-            --cag-box-shadow: 0 1px 2px rgba(13, 27, 46, 0.06), 0 10px 28px rgba(13, 27, 46, 0.08);
-            --cag-toggle-track: #cbd5e1;
-            --cag-toggle-knob: #ffffff;
-        }
-
-        html.dark body.coding-agent-page {
-            --cag-rail-bg: #0f0f12;
-            --cag-rail-border: #27272a;
-            --cag-rail-title: #fafafa;
-            --cag-rail-text: #fafafa;
-            --cag-rail-muted: #71717a;
-            --cag-rail-icon: #e4e4e7;
-            --cag-rail-hover: rgba(255, 255, 255, 0.06);
-            --cag-rail-active-bg: rgba(255, 255, 255, 0.09);
-            --cag-box-shadow: none;
-            --cag-toggle-track: #3f3f48;
-            --cag-toggle-knob: #f4f4f5;
         }
 
         /* Layout + left rail — match models/index.html */
@@ -57,6 +26,7 @@
             overflow-y: auto;
             padding: 32px 40px;
             min-width: 0;
+            background: color-mix(in srgb, var(--kd-bg-subtle) 60%, var(--kd-bg));
         }
 
         .services-main::-webkit-scrollbar { width: 6px; }
@@ -67,10 +37,11 @@
         }
 
         .services-sidebar {
+            --models-nav-accent: var(--kd-accent);
             width: 288px;
             min-width: 288px;
-            background: var(--cag-rail-bg);
-            border-right: 1px solid var(--cag-rail-border);
+            background: var(--kd-bg-card);
+            border-right: 1px solid var(--kd-border);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -80,7 +51,7 @@
         .services-sidebar-title {
             font-size: 22px;
             font-weight: 700;
-            color: var(--cag-rail-title);
+            color: var(--kd-text-primary);
             letter-spacing: -0.02em;
             padding: 24px 20px 20px;
             margin: 0;
@@ -97,7 +68,7 @@
         .services-cat-item {
             position: relative;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 12px;
             padding: 11px 16px 11px 18px;
             margin: 0;
@@ -109,11 +80,11 @@
         }
 
         .services-cat-item:hover {
-            background: var(--cag-rail-hover);
+            background: color-mix(in srgb, var(--kd-text-primary) 5%, var(--kd-bg-card));
         }
 
         .services-cat-item.active {
-            background: var(--cag-rail-active-bg);
+            background: color-mix(in srgb, var(--kd-accent) 12%, var(--kd-bg-card));
         }
 
         .services-cat-item.active::before {
@@ -123,7 +94,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: var(--kd-accent);
+            background: var(--models-nav-accent);
             border-radius: 0 2px 2px 0;
         }
 
@@ -134,18 +105,17 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 2px;
         }
 
         .services-cat-icon svg {
             width: 20px;
             height: 20px;
-            color: var(--cag-rail-icon);
+            color: var(--kd-text-secondary);
             stroke: currentColor;
         }
 
         .services-cat-item.active .services-cat-icon svg {
-            color: var(--cag-rail-text);
+            color: var(--kd-text-primary);
         }
 
         .services-cat-name {
@@ -153,20 +123,20 @@
             min-width: 0;
             font-size: 13px;
             font-weight: 500;
-            color: var(--cag-rail-text);
+            color: var(--kd-text-primary);
             letter-spacing: -0.01em;
             line-height: 1.35;
             white-space: normal;
         }
 
         .services-cat-item.active .services-cat-name {
-            color: var(--cag-rail-text);
+            color: var(--kd-text-primary);
             font-weight: 600;
         }
 
         .services-sidebar-divider {
             height: 1px;
-            background: var(--cag-rail-border);
+            background: var(--kd-border);
             margin: 16px 20px;
         }
 
@@ -175,7 +145,7 @@
         .services-sidebar-section-title {
             font-size: 11px;
             font-weight: 600;
-            color: var(--cag-rail-muted);
+            color: var(--kd-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 8px;
@@ -183,12 +153,12 @@
 
         .services-sidebar-note {
             font-size: 12px;
-            color: var(--cag-rail-muted);
+            color: var(--kd-text-muted);
             line-height: 1.5;
             margin: 0;
         }
 
-        /* Coding agents: subtitle under title + <button> rows */
+        /* Coding agents: <button> rows — reset to match models <div> items */
         body.coding-agent-page .services-sidebar button.services-cat-item {
             width: 100%;
             text-align: left;
@@ -196,26 +166,22 @@
             background: transparent;
         }
 
-        body.coding-agent-page .services-sidebar .services-cat-body {
-            flex: 1;
-            min-width: 0;
-        }
-
-        body.coding-agent-page .services-sidebar .services-cat-body .services-cat-name {
-            flex: none;
-            display: block;
-        }
-
-        body.coding-agent-page .services-sidebar .services-cat-meta {
-            display: block;
+        /* Badge — matches models sidebar services-cat-badge */
+        .services-cat-badge {
             font-size: 11px;
-            color: var(--cag-rail-muted);
-            margin-top: 2px;
-            line-height: 1.3;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-card));
+            color: var(--kd-text-muted);
+            flex-shrink: 0;
+            border: 1px solid var(--kd-border);
         }
 
-        body.coding-agent-page .services-sidebar .services-cat-item.active .services-cat-meta {
-            color: var(--kd-text-secondary);
+        .services-cat-item.active .services-cat-badge {
+            background: color-mix(in srgb, var(--kd-accent) 18%, var(--kd-bg-card));
+            color: var(--kd-accent-dim);
+            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
         }
 
         .cag-title-row {
@@ -237,7 +203,7 @@
 
         .cag-main-subtitle {
             font-size: 13px;
-            color: var(--kd-accent-dim);
+            color: var(--kd-text-muted);
             margin: 0 0 20px;
         }
 
@@ -364,81 +330,59 @@
             opacity: 0.9;
         }
 
-        .cag-agent-block {
-            --cag-accent: #71717a;
-            --cag-accent-soft: color-mix(in srgb, var(--cag-accent) 12%, var(--kd-bg-card));
-            --cag-accent-border: color-mix(in srgb, var(--cag-accent) 38%, var(--kd-border));
-            background: var(--kd-bg-card);
-            border: 1px solid var(--kd-border);
-            border-radius: 10px;
-            padding: 0;
-            max-width: 640px;
-            overflow: hidden;
-            box-shadow: var(--cag-box-shadow);
-        }
-
-        html.dark .cag-agent-block {
-            --cag-accent-soft: rgba(255, 255, 255, 0.04);
-            --cag-accent-border: rgba(255, 255, 255, 0.14);
-            background: #18181f;
-            border-color: #2a2a32;
-            box-shadow: none;
+        /* Table wrapper — uses models-table-wrap from models-catalog-table.css */
+        .cag-detail .models-table-wrap {
+            --cag-accent: var(--kd-accent);
+            --cag-accent-soft: color-mix(in srgb, var(--kd-accent) 10%, var(--kd-bg-card));
+            --cag-accent-border: color-mix(in srgb, var(--kd-accent) 30%, var(--kd-border));
+            max-width: 680px;
         }
 
         .cag-agent-block-head {
-            padding: 16px 18px 14px 22px;
-            background: var(--cag-accent-soft);
+            padding: 12px 14px;
             border-bottom: 1px solid var(--kd-border);
         }
 
-        .cag-card-pill {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--cag-accent);
-            border: 1px solid var(--cag-accent-border);
-            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-subtle));
-            padding: 3px 8px;
-            border-radius: 999px;
-            margin-bottom: 8px;
-        }
-
-        html.dark .cag-card-pill {
-            background: rgba(0, 0, 0, 0.2);
-        }
-
         .cag-agent-tagline {
-            font-size: 12px;
-            color: var(--kd-accent-dim);
+            font-size: 13px;
+            color: var(--kd-text-muted);
             margin: 0;
-            line-height: 1.45;
+            line-height: 1.5;
         }
 
-        .cag-agent-body {
-            padding: 16px 18px 18px 22px;
-        }
-
-        .cag-field {
-            margin-bottom: 16px;
-        }
-
-        .cag-field:last-child {
-            margin-bottom: 0;
-        }
-
-        .cag-field > label {
-            display: block;
+        /* Label column */
+        .cag-td-label {
+            width: 210px;
             font-size: 12px;
             font-weight: 500;
             color: var(--kd-text-muted);
-            margin-bottom: 6px;
+            vertical-align: middle;
+        }
+
+        .cag-td-label.top { vertical-align: top; padding-top: 14px; }
+
+        /* Toggle column */
+        .cag-td-toggle {
+            text-align: right;
+            width: 52px;
+            vertical-align: middle;
+        }
+
+        /* Full-width rows (hints, checkboxes, doc links) */
+        .cag-td-full {
+            font-size: 13px;
+            color: var(--kd-text-secondary);
+            padding-top: 4px !important;
+            padding-bottom: 4px !important;
         }
 
         .cag-optional {
             font-weight: 400;
             color: var(--kd-text-muted);
+        }
+
+        .cag-save-bar {
+            max-width: 680px;
         }
 
         .cag-select {
@@ -489,66 +433,6 @@
             box-shadow: 0 0 0 2px var(--cag-accent-soft);
         }
 
-        .cag-options {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            margin-bottom: 16px;
-        }
-
-        .cag-options--divider-top {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
-        }
-
-        .cag-opt {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 10px 0;
-            border-top: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
-            font-size: 13px;
-            color: var(--kd-text-primary);
-        }
-
-        .cag-opt:first-child {
-            border-top: none;
-            padding-top: 0;
-        }
-
-        .cag-toggle {
-            position: relative;
-            width: 40px;
-            height: 22px;
-            background: var(--cag-toggle-track);
-            border-radius: 11px;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-            flex-shrink: 0;
-        }
-
-        .cag-toggle.active {
-            background: var(--cag-accent);
-        }
-
-        .cag-toggle::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 18px;
-            height: 18px;
-            background: var(--cag-toggle-knob);
-            border-radius: 50%;
-            transition: transform 0.15s ease;
-        }
-
-        .cag-toggle.active::after {
-            transform: translateX(18px);
-        }
-
         .cag-save-bar {
             display: flex;
             justify-content: flex-end;
@@ -556,7 +440,7 @@
             margin-top: 24px;
             padding-top: 20px;
             border-top: 1px solid var(--kd-border);
-            max-width: 640px;
+            max-width: 680px;
         }
 
         .cag-save-btn {
@@ -693,40 +577,6 @@
             background: transparent;
         }
 
-        body.coding-agent-page .services-sidebar .cag-default-label {
-            flex-shrink: 0;
-            margin-left: auto;
-            align-self: center;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: color-mix(in srgb, var(--kd-text-primary) 6%, var(--kd-bg-subtle));
-            color: var(--kd-text-muted);
-            border: 1px solid var(--kd-border);
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-
-        body.coding-agent-page .services-sidebar .services-cat-item.active .cag-default-label {
-            background: color-mix(in srgb, var(--kd-accent) 16%, var(--kd-bg-card));
-            color: var(--kd-accent-dim);
-            border-color: color-mix(in srgb, var(--kd-accent) 35%, var(--kd-border));
-        }
-
-        html.dark body.coding-agent-page .services-sidebar .cag-default-label {
-            background: rgba(255, 255, 255, 0.08);
-            color: #a1a1aa;
-            border-color: rgba(255, 255, 255, 0.06);
-        }
-
-        html.dark body.coding-agent-page .services-sidebar .services-cat-item.active .cag-default-label {
-            background: rgba(79, 195, 247, 0.12);
-            color: var(--kd-accent-bright);
-            border-color: rgba(79, 195, 247, 0.28);
-        }
     </style>
 </head>
 <body class="coding-agent-page">
@@ -745,51 +595,36 @@
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
                             </div>
-                            <div class="services-cat-body">
-                                <span class="services-cat-name">Claude Code</span>
-                                <span class="services-cat-meta">Anthropic</span>
-                            </div>
-                            <span class="cag-default-label" hidden>Default</span>
+                            <span class="services-cat-name">Claude Code</span>
+                            <span class="cag-default-label services-cat-badge" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabClaudeVertex" aria-controls="cagPanelClaudeVertex" data-cag="claude-vertex" onclick="cagPick('claude-vertex', this)">
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                             </div>
-                            <div class="services-cat-body">
-                                <span class="services-cat-name">Claude Code (Vertex AI)</span>
-                                <span class="services-cat-meta">Google Cloud</span>
-                            </div>
-                            <span class="cag-default-label" hidden>Default</span>
+                            <span class="services-cat-name">Claude Code (Vertex AI)</span>
+                            <span class="cag-default-label services-cat-badge" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabCodex" aria-controls="cagPanelCodex" data-cag="codex" onclick="cagPick('codex', this)">
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
                             </div>
-                            <div class="services-cat-body">
-                                <span class="services-cat-name">Codex</span>
-                                <span class="services-cat-meta">OpenAI</span>
-                            </div>
-                            <span class="cag-default-label" hidden>Default</span>
+                            <span class="services-cat-name">Codex</span>
+                            <span class="cag-default-label services-cat-badge" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabGoose" aria-controls="cagPanelGoose" data-cag="goose" onclick="cagPick('goose', this)">
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                             </div>
-                            <div class="services-cat-body">
-                                <span class="services-cat-name">Goose</span>
-                                <span class="services-cat-meta">Block</span>
-                            </div>
-                            <span class="cag-default-label" hidden>Default</span>
+                            <span class="services-cat-name">Goose</span>
+                            <span class="cag-default-label services-cat-badge" hidden>Default</span>
                         </button>
                         <button type="button" class="services-cat-item" role="tab" aria-selected="false" id="cagTabOpencode" aria-controls="cagPanelOpencode" data-cag="opencode" onclick="cagPick('opencode', this)">
                             <div class="services-cat-icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                             </div>
-                            <div class="services-cat-body">
-                                <span class="services-cat-name">OpenCode</span>
-                                <span class="services-cat-meta">Ollama · Ramalama</span>
-                            </div>
-                            <span class="cag-default-label" hidden>Default</span>
+                            <span class="services-cat-name">OpenCode</span>
+                            <span class="cag-default-label services-cat-badge" hidden>Default</span>
                         </button>
                     </div>
 
@@ -811,219 +646,212 @@
                     </p>
 
                     <div class="cag-detail" id="cagPanelClaude" role="tabpanel" aria-labelledby="cagTabClaude" data-cag="claude">
-                        <div class="cag-agent-block">
-                            <header class="cag-agent-block-head">
-                                <div class="cag-card-pill">Defaults for this runtime</div>
+                        <div class="models-table-wrap">
+                            <div class="cag-agent-block-head">
                                 <p class="cag-agent-tagline">Strong for refactors and multi-file edits.</p>
-                            </header>
-                            <div class="cag-agent-body">
-                                <div class="cag-field">
-                                    <label for="cag-model-claude">Default model</label>
-                                    <select id="cag-model-claude" class="cag-select">
-                                        <option value="claude-4.6-sonnet-medium">claude-4.6-sonnet-medium</option>
-                                        <option value="claude-4.6-opus-high">claude-4.6-opus-high</option>
-                                        <option value="gpt-5.3-codex">gpt-5.3-codex (fallback)</option>
-                                    </select>
-                                </div>
-                                <div class="cag-options" aria-label="Options">
-                                    <div class="cag-opt">
-                                        <span>Auto-apply safe edits</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Run approved shell commands</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Verbose tool traces</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                </div>
-                                <div class="cag-field">
-                                    <label for="cag-instructions-claude">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-claude" class="cag-textarea" placeholder="Merged into context for Claude Code sessions."></textarea>
-                                </div>
                             </div>
+                            <table class="models-data-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="cag-td-label"><label for="cag-model-claude">Default model</label></td>
+                                        <td><select id="cag-model-claude" class="cag-select">
+                                            <option value="claude-4.6-sonnet-medium">claude-4.6-sonnet-medium</option>
+                                            <option value="claude-4.6-opus-high">claude-4.6-opus-high</option>
+                                            <option value="gpt-5.3-codex">gpt-5.3-codex (fallback)</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto-apply safe edits</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Run approved shell commands</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose tool traces</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label top"><label for="cag-instructions-claude">Extra instructions <span class="cag-optional">optional</span></label></td>
+                                        <td><textarea id="cag-instructions-claude" class="cag-textarea" placeholder="Merged into context for Claude Code sessions."></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelClaudeVertex" role="tabpanel" aria-labelledby="cagTabClaudeVertex" data-cag="claude-vertex" hidden>
-                        <div class="cag-agent-block">
-                            <header class="cag-agent-block-head">
-                                <div class="cag-card-pill">Same as onboarding · OTHER</div>
+                        <div class="models-table-wrap">
+                            <div class="cag-agent-block-head">
                                 <p class="cag-agent-tagline">Claude Code in the terminal, with inference routed through Vertex AI instead of the Anthropic API. Uses <code class="cag-code-chip">agents.json</code> env entries and optional gcloud mounts.</p>
-                            </header>
-                            <div class="cag-agent-body">
-                                <div class="cag-field">
-                                    <label for="cag-model-claude-vertex">Default Vertex model</label>
-                                    <select id="cag-model-claude-vertex" class="cag-select">
-                                        <option value="claude-sonnet-4-5@20250929">claude-sonnet-4-5@20250929</option>
-                                        <option value="claude-opus-4-1@20250805">claude-opus-4-1@20250805</option>
-                                        <option value="claude-sonnet-4@20250514">claude-sonnet-4@20250514</option>
-                                    </select>
-                                    <p class="cag-hint">Publisher model ID for your region and contract (mock list).</p>
-                                </div>
-                                <div class="cag-field">
-                                    <label class="cag-field-label-mono" for="cag-vertex-use-flag">CLAUDE_CODE_USE_VERTEX</label>
-                                    <input id="cag-vertex-use-flag" class="cag-input" type="text" value="1" readonly aria-readonly="true">
-                                </div>
-                                <div class="cag-field">
-                                    <label class="cag-field-label-mono" for="cag-vertex-project">ANTHROPIC_VERTEX_PROJECT_ID</label>
-                                    <input id="cag-vertex-project" class="cag-input" type="text" placeholder="my-gcp-project-id" autocomplete="off">
-                                </div>
-                                <div class="cag-field">
-                                    <label class="cag-field-label-mono" for="cag-vertex-region">CLOUD_ML_REGION</label>
-                                    <input id="cag-vertex-region" class="cag-input" type="text" placeholder="us-east5" autocomplete="off">
-                                </div>
-                                <p class="cag-hint">Written to environment for the Claude agent in <code class="cag-code-chip">~/.kdn/config/agents.json</code>. Run <code class="cag-code-chip">gcloud auth application-default login</code> on the host before starting the workspace.</p>
-                                <p class="cag-hint" style="margin-top:10px;">Mounts (<code class="cag-code-chip">claude.mounts</code> in the same file):</p>
-                                <label class="cag-check-row">
-                                    <input type="checkbox" id="cag-vertex-mount-gcloud" checked>
-                                    <span>Mount <code>$HOME/.config/gcloud</code> read-only for application default credentials</span>
-                                </label>
-                                <label class="cag-check-row">
-                                    <input type="checkbox" id="cag-vertex-mount-claude">
-                                    <span>Also mount <code>~/.claude</code> and <code>~/.claude.json</code> (optional)</span>
-                                </label>
-                                <p class="cag-hint" style="margin-top:12px;">No <code class="cag-code-chip">ANTHROPIC_API_KEY</code> when using Vertex; credentials come from the mounted gcloud config.</p>
-                                <a class="cag-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                    kdn README: Claude Code with Vertex AI
-                                </a>
-                                <div class="cag-options cag-options--divider-top" aria-label="Options">
-                                    <div class="cag-opt">
-                                        <span>Auto-apply safe edits</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Run approved shell commands</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Verbose tool traces</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                </div>
-                                <div class="cag-field" style="margin-top:16px;">
-                                    <label for="cag-instructions-claude-vertex">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-claude-vertex" class="cag-textarea" placeholder="Merged into context when this Vertex-backed Claude runtime is active."></textarea>
-                                </div>
                             </div>
+                            <table class="models-data-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="cag-td-label"><label for="cag-model-claude-vertex">Default Vertex model</label></td>
+                                        <td><select id="cag-model-claude-vertex" class="cag-select">
+                                            <option value="claude-sonnet-4-5@20250929">claude-sonnet-4-5@20250929</option>
+                                            <option value="claude-opus-4-1@20250805">claude-opus-4-1@20250805</option>
+                                            <option value="claude-sonnet-4@20250514">claude-sonnet-4@20250514</option>
+                                        </select>
+                                        <p class="cag-hint">Publisher model ID for your region and contract (mock list).</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label cag-field-label-mono"><label for="cag-vertex-use-flag">CLAUDE_CODE_USE_VERTEX</label></td>
+                                        <td><input id="cag-vertex-use-flag" class="cag-input" type="text" value="1" readonly aria-readonly="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label cag-field-label-mono"><label for="cag-vertex-project">ANTHROPIC_VERTEX_PROJECT_ID</label></td>
+                                        <td><input id="cag-vertex-project" class="cag-input" type="text" placeholder="my-gcp-project-id" autocomplete="off"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label cag-field-label-mono"><label for="cag-vertex-region">CLOUD_ML_REGION</label></td>
+                                        <td><input id="cag-vertex-region" class="cag-input" type="text" placeholder="us-east5" autocomplete="off"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="cag-td-full">
+                                            <p class="cag-hint">Written to environment for the Claude agent in <code class="cag-code-chip">~/.kdn/config/agents.json</code>. Run <code class="cag-code-chip">gcloud auth application-default login</code> on the host before starting the workspace.</p>
+                                            <p class="cag-hint" style="margin-top:8px;">Mounts (<code class="cag-code-chip">claude.mounts</code> in the same file):</p>
+                                            <label class="cag-check-row"><input type="checkbox" id="cag-vertex-mount-gcloud" checked><span>Mount <code>$HOME/.config/gcloud</code> read-only for application default credentials</span></label>
+                                            <label class="cag-check-row"><input type="checkbox" id="cag-vertex-mount-claude"><span>Also mount <code>~/.claude</code> and <code>~/.claude.json</code> (optional)</span></label>
+                                            <p class="cag-hint" style="margin-top:8px;">No <code class="cag-code-chip">ANTHROPIC_API_KEY</code> when using Vertex; credentials come from the mounted gcloud config.</p>
+                                            <a class="cag-doc-link" href="https://github.com/openkaiden/kdn/blob/a180ffd4183272739ce007f8b4d587b62771c811/README.md#claude-with-a-model-from-vertex-ai" target="_blank" rel="noopener noreferrer">
+                                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                                kdn README: Claude Code with Vertex AI
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto-apply safe edits</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Run approved shell commands</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose tool traces</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label top"><label for="cag-instructions-claude-vertex">Extra instructions <span class="cag-optional">optional</span></label></td>
+                                        <td><textarea id="cag-instructions-claude-vertex" class="cag-textarea" placeholder="Merged into context when this Vertex-backed Claude runtime is active."></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelCodex" role="tabpanel" aria-labelledby="cagTabCodex" data-cag="codex" hidden>
-                        <div class="cag-agent-block">
-                            <header class="cag-agent-block-head">
-                                <div class="cag-card-pill">Defaults for this runtime</div>
+                        <div class="models-table-wrap">
+                            <div class="cag-agent-block-head">
                                 <p class="cag-agent-tagline">Editor-native; fast iteration on open files.</p>
-                            </header>
-                            <div class="cag-agent-body">
-                                <div class="cag-field">
-                                    <label for="cag-model-codex">Default model</label>
-                                    <select id="cag-model-codex" class="cag-select">
-                                        <option value="composer-2-fast">composer-2-fast</option>
-                                        <option value="gpt-5.3-codex">gpt-5.3-codex</option>
-                                        <option value="claude-4.6-sonnet-medium">claude-4.6-sonnet-medium</option>
-                                    </select>
-                                </div>
-                                <div class="cag-options" aria-label="Options">
-                                    <div class="cag-opt">
-                                        <span>Auto-apply safe edits</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Run approved shell commands</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Verbose tool traces</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                </div>
-                                <div class="cag-field">
-                                    <label for="cag-instructions-codex">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-codex" class="cag-textarea" placeholder="Merged into context for Codex sessions."></textarea>
-                                </div>
                             </div>
+                            <table class="models-data-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="cag-td-label"><label for="cag-model-codex">Default model</label></td>
+                                        <td><select id="cag-model-codex" class="cag-select">
+                                            <option value="composer-2-fast">composer-2-fast</option>
+                                            <option value="gpt-5.3-codex">gpt-5.3-codex</option>
+                                            <option value="claude-4.6-sonnet-medium">claude-4.6-sonnet-medium</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto-apply safe edits</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Run approved shell commands</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose tool traces</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label top"><label for="cag-instructions-codex">Extra instructions <span class="cag-optional">optional</span></label></td>
+                                        <td><textarea id="cag-instructions-codex" class="cag-textarea" placeholder="Merged into context for Codex sessions."></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelGoose" role="tabpanel" aria-labelledby="cagTabGoose" data-cag="goose" hidden>
-                        <div class="cag-agent-block">
-                            <header class="cag-agent-block-head">
-                                <div class="cag-card-pill">Defaults for this runtime</div>
+                        <div class="models-table-wrap">
+                            <div class="cag-agent-block-head">
                                 <p class="cag-agent-tagline">Block’s extensible agent for the terminal — providers, extensions, and tool use. Configure API keys and backends under Models / provider settings as needed.</p>
-                            </header>
-                            <div class="cag-agent-body">
-                                <div class="cag-field">
-                                    <label for="cag-model-goose">Default model</label>
-                                    <select id="cag-model-goose" class="cag-select">
-                                        <option value="anthropic/claude-sonnet-4-5-20250929">anthropic/claude-sonnet-4-5-20250929</option>
-                                        <option value="openai/gpt-5.4-medium">openai/gpt-5.4-medium</option>
-                                        <option value="openai/gpt-5.3-codex">openai/gpt-5.3-codex</option>
-                                        <option value="ollama/qwen3-code">ollama/qwen3-code (local)</option>
-                                    </select>
-                                    <p class="cag-hint">Provider id mirrors what Goose expects for the active profile (mock).</p>
-                                </div>
-                                <div class="cag-options" aria-label="Options">
-                                    <div class="cag-opt">
-                                        <span>Auto-apply safe edits</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Run approved shell commands</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Verbose tool traces</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                </div>
-                                <div class="cag-field">
-                                    <label for="cag-instructions-goose">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-goose" class="cag-textarea" placeholder="Merged into context for Goose sessions."></textarea>
-                                </div>
                             </div>
+                            <table class="models-data-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="cag-td-label"><label for="cag-model-goose">Default model</label></td>
+                                        <td><select id="cag-model-goose" class="cag-select">
+                                            <option value="anthropic/claude-sonnet-4-5-20250929">anthropic/claude-sonnet-4-5-20250929</option>
+                                            <option value="openai/gpt-5.4-medium">openai/gpt-5.4-medium</option>
+                                            <option value="openai/gpt-5.3-codex">openai/gpt-5.3-codex</option>
+                                            <option value="ollama/qwen3-code">ollama/qwen3-code (local)</option>
+                                        </select>
+                                        <p class="cag-hint">Provider id mirrors what Goose expects for the active profile (mock).</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto-apply safe edits</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Run approved shell commands</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose tool traces</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label top"><label for="cag-instructions-goose">Extra instructions <span class="cag-optional">optional</span></label></td>
+                                        <td><textarea id="cag-instructions-goose" class="cag-textarea" placeholder="Merged into context for Goose sessions."></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelOpencode" role="tabpanel" aria-labelledby="cagTabOpencode" data-cag="opencode" hidden>
-                        <div class="cag-agent-block">
-                            <header class="cag-agent-block-head">
-                                <div class="cag-card-pill">Defaults for this runtime</div>
+                        <div class="models-table-wrap">
+                            <div class="cag-agent-block-head">
                                 <p class="cag-agent-tagline">Runs on your machine; no vendor inference API.</p>
-                            </header>
-                            <div class="cag-agent-body">
-                                <div class="cag-field">
-                                    <label for="cag-model-opencode">Default model</label>
-                                    <select id="cag-model-opencode" class="cag-select">
-                                        <option value="qwen3-code">qwen3-code</option>
-                                        <option value="llama3.2-3b">llama3.2:3b</option>
-                                        <option value="mistral-latest">mistral:latest</option>
-                                        <option value="ibm-granite-3.3-8b-instruct">ibm-granite-3.3-8b-instruct</option>
-                                    </select>
-                                    <p class="cag-hint">VRAM / RAM mirrors the Models page for this host.</p>
-                                </div>
-                                <div class="cag-options" aria-label="Options">
-                                    <div class="cag-opt">
-                                        <span>Auto-apply safe edits</span>
-                                        <div class="cag-toggle" role="switch" aria-checked="false" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Run approved shell commands</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                    <div class="cag-opt">
-                                        <span>Verbose tool traces</span>
-                                        <div class="cag-toggle active" role="switch" aria-checked="true" tabindex="0" onclick="cagToggle(this)" onkeydown="cagToggleKey(event, this)"></div>
-                                    </div>
-                                </div>
-                                <div class="cag-field">
-                                    <label for="cag-instructions-opencode">Extra instructions <span class="cag-optional">optional</span></label>
-                                    <textarea id="cag-instructions-opencode" class="cag-textarea" placeholder="Merged into context for OpenCode sessions."></textarea>
-                                </div>
                             </div>
+                            <table class="models-data-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="cag-td-label"><label for="cag-model-opencode">Default model</label></td>
+                                        <td><select id="cag-model-opencode" class="cag-select">
+                                            <option value="qwen3-code">qwen3-code</option>
+                                            <option value="llama3.2-3b">llama3.2:3b</option>
+                                            <option value="mistral-latest">mistral:latest</option>
+                                            <option value="ibm-granite-3.3-8b-instruct">ibm-granite-3.3-8b-instruct</option>
+                                        </select>
+                                        <p class="cag-hint">VRAM / RAM mirrors the Models page for this host.</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto-apply safe edits</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input"><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Run approved shell commands</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose tool traces</td>
+                                        <td class="cag-td-toggle"><label class="models-table-toggle-label"><input type="checkbox" class="models-table-toggle-input" checked><span class="models-table-toggle-track"><span class="models-table-toggle-knob"></span></span></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cag-td-label top"><label for="cag-instructions-opencode">Extra instructions <span class="cag-optional">optional</span></label></td>
+                                        <td><textarea id="cag-instructions-opencode" class="cag-textarea" placeholder="Merged into context for OpenCode sessions."></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -1213,18 +1041,6 @@
             document.getElementById('cagMainSubtitle').textContent = m.subtitle;
         }
 
-        function cagToggle(el) {
-            el.classList.toggle('active');
-            el.setAttribute('aria-checked', el.classList.contains('active') ? 'true' : 'false');
-        }
-
-        function cagToggleKey(ev, el) {
-            if (ev.key === ' ' || ev.key === 'Enter') {
-                ev.preventDefault();
-                cagToggle(el);
-            }
-        }
-
         function cagMockSave() {
             var b = document.querySelector('.cag-save-btn');
             if (!b) return;
@@ -1238,17 +1054,14 @@
         }
 
         function cagToggleDefaults(panel, id) {
-            panel.querySelectorAll('.cag-toggle').forEach(function (t, i) {
-                var on;
+            panel.querySelectorAll('.models-table-toggle-input').forEach(function (t, i) {
                 if (id === 'claude' || id === 'claude-vertex' || id === 'goose') {
-                    on = i < 2;
+                    t.checked = i < 2;
                 } else if (id === 'codex') {
-                    on = i === 0;
+                    t.checked = i === 0;
                 } else {
-                    on = i > 0;
+                    t.checked = i > 0;
                 }
-                t.classList.toggle('active', on);
-                t.setAttribute('aria-checked', on ? 'true' : 'false');
             });
         }
 

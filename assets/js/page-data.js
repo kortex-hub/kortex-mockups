@@ -297,30 +297,24 @@
     function renderSessionRow(s) {
         var running = s.status === 'running';
         var href = 'details.html?session=' + encodeURIComponent(s.id);
-        var iconHtml = '<div class="session-row-icon ' + esc(s.iconClass) + '">' + esc(s.iconLetter) + '</div>';
         var dotCls = running ? 'running' : 'stopped';
-        var labelCls = running ? 'running' : 'stopped';
         var actions = running
-            ? '<button type="button" class="session-row-action stop" onclick="stopSession(\'' + esc(s.id) + '\')" title="Stop">' + STOP_SVG + '</button>' +
-              '<button type="button" class="session-row-action terminal" onclick="window.location.href=\'cli.html?session=' + esc(s.id) + '\'" title="Open Terminal">' + TERM_SVG + '</button>' +
-              '<button type="button" class="session-row-action delete" onclick="deleteSession(\'' + esc(s.id) + '\')" title="Delete">' + TRASH_SVG + '</button>'
-            : '<button type="button" class="session-row-action play" onclick="startSession(\'' + esc(s.id) + '\')" title="Start">' + PLAY_SVG + '</button>' +
-              '<button type="button" class="session-row-action terminal" onclick="window.location.href=\'cli.html?session=' + esc(s.id) + '\'" title="Open Terminal">' + TERM_SVG + '</button>' +
-              '<button type="button" class="session-row-action delete" onclick="deleteSession(\'' + esc(s.id) + '\')" title="Delete">' + TRASH_SVG + '</button>';
-        return '<div class="session-row" onclick="window.location.href=\'' + href + '\'">' +
-            iconHtml +
-            '<div class="session-row-body">' +
-            '<div class="session-row-title">' + esc(s.title) + '</div>' +
-            '<div class="session-row-meta">' +
-            '<span class="session-agent-badge ' + esc(s.agentType) + '">' + esc(s.agentLabel) + '</span>' +
-            '<span class="session-row-status-dot ' + dotCls + '"></span>' +
-            '<span class="session-row-status-label ' + labelCls + '">' + (running ? 'Running' : 'Stopped') + '</span>' +
-            '</div></div>' +
-            '<div class="session-row-context">—</div>' +
-            '<div class="session-row-runtime">' + esc(s.runtime) + '</div>' +
-            '<span class="session-row-time">' + esc(s.time) + '</span>' +
-            '<div class="session-row-actions" onclick="event.stopPropagation()">' + actions + '</div>' +
-            '</div>';
+            ? '<button type="button" class="models-table-icon-btn sess-stop" onclick="event.stopPropagation();stopSession(\'' + esc(s.id) + '\')" title="Stop">' + STOP_SVG + '</button>' +
+              '<button type="button" class="models-table-icon-btn" onclick="event.stopPropagation();window.location.href=\'cli.html?session=' + esc(s.id) + '\'" title="Open Terminal">' + TERM_SVG + '</button>' +
+              '<button type="button" class="models-table-icon-btn sess-del" onclick="event.stopPropagation();deleteSession(\'' + esc(s.id) + '\')" title="Delete">' + TRASH_SVG + '</button>'
+            : '<button type="button" class="models-table-icon-btn sess-play" onclick="event.stopPropagation();startSession(\'' + esc(s.id) + '\')" title="Start">' + PLAY_SVG + '</button>' +
+              '<button type="button" class="models-table-icon-btn" onclick="event.stopPropagation();window.location.href=\'cli.html?session=' + esc(s.id) + '\'" title="Open Terminal">' + TERM_SVG + '</button>' +
+              '<button type="button" class="models-table-icon-btn sess-del" onclick="event.stopPropagation();deleteSession(\'' + esc(s.id) + '\')" title="Delete">' + TRASH_SVG + '</button>';
+        return '<tr style="cursor:pointer" onclick="window.location.href=\'' + href + '\'">' +
+            '<td class="models-table-status"><span class="sess-status-dot ' + dotCls + '"></span></td>' +
+            '<td><div class="models-table-name-stack">' +
+            '<div class="models-table-name-main">' + esc(s.title) + '</div>' +
+            '</div></td>' +
+            '<td><span class="sess-agent-badge ' + esc(s.agentType) + '">' + esc(s.agentLabel) + '</span></td>' +
+            '<td>' + esc(s.runtime) + '</td>' +
+            '<td style="text-align:right;font-variant-numeric:tabular-nums">' + esc(s.time) + '</td>' +
+            '<td><div class="models-table-actions">' + actions + '</div></td>' +
+            '</tr>';
     }
 
     function hydrateSessions(data) {
@@ -330,11 +324,9 @@
         if (statVals[1]) statVals[1].textContent = String(stats.totalSessions != null ? stats.totalSessions : '');
         if (statVals[2]) statVals[2].textContent = String(stats.configuredAgents != null ? stats.configuredAgents : '');
 
-        var list = document.querySelector('.sessions-list');
-        if (!list) return;
-        var header = list.querySelector('.sessions-column-header');
-        var rowsHtml = (data.sessions || []).map(renderSessionRow).join('');
-        list.innerHTML = (header ? header.outerHTML : '') + rowsHtml;
+        var tbody = document.getElementById('sessionsTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = (data.sessions || []).map(renderSessionRow).join('');
     }
 
     /* ── Tasks (left panel) ────────────────────────────────────────── */
@@ -561,7 +553,16 @@
         services:   { subtitle: '', catalogLead: '', integrationCatalog: [], genericSecrets: [] },
         knowledges: { rows: [] },
         mcp:        { ready: [], install: [] },
-        sessions:   { stats: {}, sessions: [] },
+        sessions: {
+            stats: { activeSessions: 3, totalSessions: 5, configuredAgents: 3 },
+            sessions: [
+                { id: 'my-new-app',        title: 'My New App',               agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'MN', status: 'running', runtime: 'podman', time: '25m' },
+                { id: 'frontend-refactor', title: 'Frontend Refactor',         agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'running', runtime: 'podman', time: '2h'  },
+                { id: 'api-integration',   title: 'API Integration',           agentType: 'codex',       agentLabel: 'Codex',       iconClass: 'codex',    iconLetter: 'AI', status: 'running', runtime: 'podman', time: '45m' },
+                { id: 'test-suite',        title: 'Test Suite Setup',          agentType: 'opencode',    agentLabel: 'OpenCode',    iconClass: 'opencode', iconLetter: 'TS', status: 'stopped', runtime: 'podman', time: '1d'  },
+                { id: 'docs-generator',    title: 'Documentation Generator',   agentType: 'claude-code', agentLabel: 'Claude Code', iconClass: 'claude',   iconLetter: 'C',  status: 'stopped', runtime: 'podman', time: '3d'  }
+            ]
+        },
         tasks:      { projects: [], sections: [] },
         dashboard:  { user: {}, stats: [], activeWorkspaces: [], recentActivity: [], resources: [], cost: {} }
     };
