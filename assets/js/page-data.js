@@ -546,6 +546,31 @@
         }
     }
 
+    /* ── Model pricing ────────────────────────────────────────────── */
+
+    function formatCost(p) {
+        if (!p || (p.inputPer1M === 0 && p.outputPer1M === 0)) {
+            return '<span style="color:var(--kd-text-muted);font-size:12px">Free · self-hosted</span>';
+        }
+        var fmt = function (n) { return '$' + n.toFixed(2); };
+        return '<div style="font-size:12px;font-weight:600;color:var(--kd-text-primary);font-variant-numeric:tabular-nums">' +
+            fmt(p.inputPer1M) + ' <span style="color:var(--kd-text-muted);font-weight:400">/</span> ' + fmt(p.outputPer1M) + '</div>' +
+            '<div style="font-size:11px;color:var(--kd-text-muted);margin-top:1px">in / out</div>';
+    }
+
+    function hydrateModelPricing(data) {
+        var pricing = data.pricing || {};
+        document.querySelectorAll('tr[data-model-id]').forEach(function (row) {
+            var id = row.getAttribute('data-model-id');
+            var p = pricing[id];
+            var cells = row.querySelectorAll('td');
+            var costCell = cells[2]; /* 3rd td — replaces the "—" Size cell */
+            if (costCell) costCell.innerHTML = formatCost(p);
+        });
+        /* Expose pricing globally so other screens can import it */
+        window.kaidenModelPricing = pricing;
+    }
+
     /* ── Bootstrap ─────────────────────────────────────────────────── */
 
     var DEFAULTS = {
@@ -564,7 +589,27 @@
             ]
         },
         tasks:      { projects: [], sections: [] },
-        dashboard:  { user: {}, stats: [], activeWorkspaces: [], recentActivity: [], resources: [], cost: {} }
+        dashboard:  { user: {}, stats: [], activeWorkspaces: [], recentActivity: [], resources: [], cost: {} },
+        models: { pricing: {
+            'composer-2-fast':            { provider: 'Composer',    tier: 'cloud',    contextK: 32,  inputPer1M: 0.50,  outputPer1M: 1.50  },
+            'composer-2':                 { provider: 'Composer',    tier: 'cloud',    contextK: 64,  inputPer1M: 2.00,  outputPer1M: 6.00  },
+            'composer-1.5':               { provider: 'Composer',    tier: 'cloud',    contextK: 32,  inputPer1M: 1.00,  outputPer1M: 3.00  },
+            'gpt-5.3-codex':              { provider: 'OpenAI',      tier: 'cloud',    contextK: 200, inputPer1M: 3.00,  outputPer1M: 20.00 },
+            'gpt-5.4-medium':             { provider: 'OpenAI',      tier: 'cloud',    contextK: 272, inputPer1M: 2.50,  outputPer1M: 15.00 },
+            'gpt-5.3-codex-low':          { provider: 'OpenAI',      tier: 'cloud',    contextK: 128, inputPer1M: 0.75,  outputPer1M: 4.00  },
+            'claude-4.6-sonnet-medium':   { provider: 'Anthropic',   tier: 'cloud',    contextK: 200, inputPer1M: 3.00,  outputPer1M: 15.00 },
+            'claude-4.6-opus-high':       { provider: 'Anthropic',   tier: 'cloud',    contextK: 200, inputPer1M: 5.00,  outputPer1M: 25.00 },
+            'claude-sonnet-4-5@20250929': { provider: 'Anthropic',   tier: 'cloud',    contextK: 200, inputPer1M: 3.00,  outputPer1M: 15.00 },
+            'claude-opus-4-1@20250805':   { provider: 'Anthropic',   tier: 'cloud',    contextK: 200, inputPer1M: 15.00, outputPer1M: 75.00 },
+            'claude-sonnet-4@20250514':   { provider: 'Anthropic',   tier: 'cloud',    contextK: 200, inputPer1M: 3.00,  outputPer1M: 15.00 },
+            'ibm-granite-3.3-8b-instruct':{ provider: 'IBM / RHOAI', tier: 'internal', contextK: 128, inputPer1M: 0.50,  outputPer1M: 0.50  },
+            'mistral-small-internal':     { provider: 'OpenShift AI',tier: 'internal', contextK: 32,  inputPer1M: 0.80,  outputPer1M: 0.80  },
+            'llama-3.1-70b-instruct':     { provider: 'OpenShift AI',tier: 'internal', contextK: 128, inputPer1M: 1.20,  outputPer1M: 1.20  },
+            'qwen3-code':                 { provider: 'Ollama',      tier: 'local',    contextK: 32,  inputPer1M: 0,     outputPer1M: 0     },
+            'llama3.2:3b':                { provider: 'Ollama',      tier: 'local',    contextK: 8,   inputPer1M: 0,     outputPer1M: 0     },
+            'mistral:latest':             { provider: 'Ollama',      tier: 'local',    contextK: 32,  inputPer1M: 0,     outputPer1M: 0     },
+            'qwen2.5:7b':                 { provider: 'Ramalama',    tier: 'local',    contextK: 32,  inputPer1M: 0,     outputPer1M: 0     }
+        }}
     };
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -591,6 +636,9 @@
         }
         if (body.classList.contains('dashboard-page')) {
             fetchJSON(root + '/dashboard.json', DEFAULTS.dashboard).then(hydrateDashboard);
+        }
+        if (body.classList.contains('models-page')) {
+            fetchJSON(root + '/models.json', DEFAULTS.models).then(hydrateModelPricing);
         }
     });
 })();

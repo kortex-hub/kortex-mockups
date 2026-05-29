@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/sidebar-loader.js"></script>
+    <script src="../assets/js/page-data.js"></script>
     <style>
         /* Align with Secret Vault (services/index.html) for search + title row */
         :root {
@@ -860,8 +861,10 @@
             flex-shrink: 0;
         }
 
-        .sr-flow-dot.local { background: #34d399; box-shadow: 0 0 5px rgba(52,211,153,0.4); }
-        .sr-flow-dot.cloud { background: #38bdf8; box-shadow: 0 0 5px rgba(56,189,248,0.4); }
+        .sr-flow-dot.local     { background: #34d399; box-shadow: 0 0 5px rgba(52,211,153,0.4); }
+        .sr-flow-dot.cloud     { background: #38bdf8; box-shadow: 0 0 5px rgba(56,189,248,0.4); }
+        .sr-flow-dot.openshift { background: #ee0000; box-shadow: 0 0 5px rgba(238,0,0,0.35); }
+        .sr-flow-dot.vertex    { background: #4285f4; box-shadow: 0 0 5px rgba(66,133,244,0.35); }
 
         /* Backend model list — full-width rows, handles any name length */
         .sr-backends-list {
@@ -886,8 +889,10 @@
             flex-shrink: 0;
         }
 
-        .sr-backend-dot.local { background: #34d399; }
-        .sr-backend-dot.cloud { background: #38bdf8; }
+        .sr-backend-dot.local     { background: #34d399; }
+        .sr-backend-dot.cloud     { background: #38bdf8; }
+        .sr-backend-dot.openshift { background: #ee0000; box-shadow: 0 0 5px rgba(238,0,0,0.35); }
+        .sr-backend-dot.vertex    { background: #4285f4; box-shadow: 0 0 5px rgba(66,133,244,0.35); }
 
         .sr-backend-name {
             flex: 1;
@@ -921,6 +926,18 @@
             background: rgba(56,189,248,0.1);
             color: #7dd3fc;
             border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        .sr-backend-tag.openshift {
+            background: rgba(238,0,0,0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(238,0,0,0.2);
+        }
+
+        .sr-backend-tag.vertex {
+            background: rgba(66,133,244,0.12);
+            color: #93c5fd;
+            border: 1px solid rgba(66,133,244,0.25);
         }
 
         /* Feature pills */
@@ -974,6 +991,24 @@
             background: rgba(139,92,246,0.1);
             color: #c4b5fd;
             border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        .sr-feat.cost {
+            background: rgba(52,211,153,0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(52,211,153,0.2);
+        }
+
+        .sr-feat.residency {
+            background: rgba(238,0,0,0.08);
+            color: #fca5a5;
+            border: 1px solid rgba(238,0,0,0.18);
+        }
+
+        .sr-feat.latency {
+            background: rgba(66,133,244,0.1);
+            color: #93c5fd;
+            border: 1px solid rgba(66,133,244,0.2);
         }
 
         html:not(.dark) .sr-card {
@@ -1117,13 +1152,13 @@
                                             <tr>
                                                 <th class="models-table-status" scope="col">Status</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Size</th>
+                                                <th scope="col">Cost <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:.7">/ 1M tokens</span></th>
                                                 <th scope="col">Runtime</th>
                                                 <th scope="col" style="text-align: right;">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-search="composer-2-fast composer">
+                                            <tr data-search="composer-2-fast composer" data-model-id="composer-2-fast">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                                 </td>
@@ -1147,7 +1182,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="gpt-5.3-codex gpt codex">
+                                            <tr data-search="gpt-5.3-codex gpt codex" data-model-id="gpt-5.3-codex">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                                 </td>
@@ -1171,7 +1206,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="gpt-5.4-medium gpt medium">
+                                            <tr data-search="gpt-5.4-medium gpt medium" data-model-id="gpt-5.4-medium">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                                 </td>
@@ -1195,7 +1230,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="claude-4.6-sonnet-medium claude sonnet">
+                                            <tr data-search="claude-4.6-sonnet-medium claude sonnet" data-model-id="claude-4.6-sonnet-medium">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                                 </td>
@@ -1219,7 +1254,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="claude-4.6-opus-high claude opus high">
+                                            <tr data-search="claude-4.6-opus-high claude opus high" data-model-id="claude-4.6-opus-high">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                                                 </td>
@@ -1243,7 +1278,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="composer-2">
+                                            <tr data-search="composer-2" data-model-id="composer-2">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
@@ -1267,7 +1302,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="composer-1.5">
+                                            <tr data-search="composer-1.5" data-model-id="composer-1.5">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
@@ -1291,7 +1326,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-search="gpt-5.3-codex-low gpt codex low">
+                                            <tr data-search="gpt-5.3-codex-low gpt codex low" data-model-id="gpt-5.3-codex-low">
                                                 <td class="models-table-status">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--kd-text-muted)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
                                                 </td>
@@ -1679,6 +1714,73 @@
                                         <span class="sr-feat domain">Domain classifier</span>
                                         <span class="sr-feat complexity">Complexity scoring</span>
                                         <span class="sr-feat jailbreak">Jailbreak detection</span>
+                                    </div>
+
+                                </a>
+
+                                <!-- ── Router card 3 ── -->
+                                <a class="sr-card" href="semantic-router-enterprise.html" role="listitem" data-search="enterprise router granite openshift vertex claude hybrid residency cost">
+
+                                    <div class="sr-card-header">
+                                        <div class="sr-card-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                        </div>
+                                        <div class="sr-card-title-block">
+                                            <div class="sr-card-name">enterprise-router</div>
+                                            <div class="sr-card-endpoint">localhost:8901</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Abstract routing flow -->
+                                    <div class="sr-flow">
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon agents">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon router">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label">Router</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-dots">
+                                                <span class="sr-flow-dot local"></span>
+                                                <span class="sr-flow-dot openshift"></span>
+                                                <span class="sr-flow-dot vertex"></span>
+                                            </div>
+                                            <span class="sr-flow-node-label">Backends</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Backend model list -->
+                                    <div class="sr-backends-list">
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot local"></span>
+                                            <span class="sr-backend-name">qwen3-code</span>
+                                            <span class="sr-backend-tag local">local</span>
+                                        </div>
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot openshift"></span>
+                                            <span class="sr-backend-name">ibm-granite-3.3-8b</span>
+                                            <span class="sr-backend-tag openshift">OpenShift AI</span>
+                                        </div>
+                                        <div class="sr-backend-row">
+                                            <span class="sr-backend-dot vertex"></span>
+                                            <span class="sr-backend-name">claude-sonnet-4-5 (Vertex)</span>
+                                            <span class="sr-backend-tag vertex">Vertex AI</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Capabilities -->
+                                    <div class="sr-features">
+                                        <span class="sr-feat cost">Cost optimizer</span>
+                                        <span class="sr-feat residency">Data residency</span>
+                                        <span class="sr-feat latency">Latency scoring</span>
                                     </div>
 
                                 </a>

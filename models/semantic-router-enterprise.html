@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden - enterprise-router</title>
+    <script src="../assets/js/kaiden-theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .rd-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .rd-page-header { padding: 22px 40px 0; flex-shrink: 0; }
+
+        .rd-breadcrumb {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; margin-bottom: 16px;
+        }
+        .rd-breadcrumb a { color: var(--kd-text-muted); text-decoration: none; transition: color 0.2s; }
+        .rd-breadcrumb a:hover { color: var(--kd-accent); }
+        .rd-breadcrumb svg { width: 13px; height: 13px; color: var(--kd-text-muted); }
+        .rd-breadcrumb span { color: var(--kd-text-primary); font-weight: 500; }
+
+        .rd-title-row {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            gap: 20px; margin-bottom: 0; flex-wrap: wrap;
+        }
+        .rd-title-block { display: flex; flex-direction: column; gap: 6px; }
+        .rd-title-name-row { display: flex; align-items: center; gap: 12px; }
+        .rd-title { font-size: 26px; font-weight: 700; color: var(--kd-text-primary); letter-spacing: -0.02em; margin: 0; }
+        .rd-status-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+        .rd-status-badge.running { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+        .rd-subtitle { font-size: 13px; color: var(--kd-text-muted); margin: 0; }
+        .rd-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+        .rd-btn-ghost {
+            padding: 8px 16px; background: var(--kd-bg-subtle, rgba(255,255,255,0.04));
+            border: 1px solid var(--kd-border); border-radius: 9px; color: var(--kd-text-primary);
+            font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer;
+            transition: all 0.15s; display: flex; align-items: center; gap: 7px;
+        }
+        .rd-btn-ghost svg { width: 14px; height: 14px; }
+        .rd-btn-ghost:hover { border-color: var(--kd-text-muted); }
+
+        .rd-btn-primary {
+            padding: 8px 18px; background: #7c3aed; border: none; border-radius: 9px;
+            color: #fff; font-size: 13px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 7px;
+        }
+        .rd-btn-primary:hover { background: #6d28d9; }
+
+        .rd-btn-danger {
+            padding: 8px 16px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 9px; color: #f87171; font-size: 13px; font-weight: 500;
+            font-family: inherit; cursor: pointer; transition: all 0.15s;
+        }
+        .rd-btn-danger:hover { background: rgba(239,68,68,0.15); }
+
+        .rd-tabs-bar {
+            display: flex; gap: 0; border-bottom: 1px solid var(--kd-border);
+            padding: 0 40px; margin-top: 20px; overflow-x: auto; flex-shrink: 0;
+        }
+        .rd-tab {
+            padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--kd-text-muted);
+            border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
+            margin-bottom: -1px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; font-family: inherit;
+        }
+        .rd-tab:hover { color: var(--kd-text-primary); }
+        .rd-tab.active { color: var(--kd-text-primary); border-bottom-color: #a78bfa; font-weight: 600; }
+
+        .rd-body { flex: 1; overflow-y: auto; padding: 28px 40px; }
+        .rd-body::-webkit-scrollbar { width: 6px; }
+        .rd-body::-webkit-scrollbar-track { background: transparent; }
+        .rd-body::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--kd-accent) 22%, transparent); border-radius: 3px; }
+
+        .rd-tab-panel { display: none; }
+        .rd-tab-panel.is-active { display: block; }
+
+        .rd-card {
+            background: var(--kd-bg-card); border: 1px solid var(--kd-border);
+            border-radius: 14px; padding: 22px 26px; margin-bottom: 18px;
+        }
+        html.dark .rd-card { background: linear-gradient(145deg, #111e33 0%, #080f1a 100%); border-color: #1e3358; }
+
+        .rd-card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin: 0 0 14px; }
+
+        .rd-overview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 18px; }
+        .rd-stat-card { background: var(--kd-bg-card); border: 1px solid var(--kd-border); border-radius: 12px; padding: 16px 18px; }
+        html.dark .rd-stat-card { background: rgba(255,255,255,0.02); border-color: #1e3358; }
+        .rd-stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted); margin: 0 0 6px; }
+        .rd-stat-value { font-size: 24px; font-weight: 700; color: var(--kd-text-primary); margin: 0; letter-spacing: -0.02em; }
+        .rd-stat-sub { font-size: 11px; color: var(--kd-text-muted); margin: 2px 0 0; }
+
+        .rd-info-row {
+            display: flex; gap: 10px; align-items: baseline;
+            padding: 9px 0; border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent); font-size: 13px;
+        }
+        .rd-info-row:last-child { border-bottom: none; }
+        .rd-info-label { width: 180px; flex-shrink: 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--kd-text-muted); }
+        .rd-info-value { color: var(--kd-text-primary); flex: 1; min-width: 0; }
+
+        .rd-table-wrap { border: 1px solid var(--kd-border); border-radius: 12px; overflow: hidden; }
+        html.dark .rd-table-wrap { border-color: #1e3358; }
+        .rd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .rd-table thead { background: color-mix(in srgb, var(--kd-bg-card) 60%, transparent); }
+        .rd-table th { text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); padding: 10px 14px; border-bottom: 1px solid var(--kd-border); }
+        .rd-table td { padding: 12px 14px; border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent); color: var(--kd-text-primary); vertical-align: middle; }
+        .rd-table tbody tr:last-child td { border-bottom: none; }
+        .rd-table tbody tr { transition: background 0.12s; }
+        .rd-table tbody tr:hover { background: color-mix(in srgb, var(--kd-accent) 5%, transparent); }
+
+        .rd-cap-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+        .rd-cap-chip { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 8px; border-radius: 20px; background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2); }
+
+        .rd-signal-row { border: 1px solid var(--kd-border); border-radius: 12px; padding: 14px 18px; margin-bottom: 12px; position: relative; }
+        html.dark .rd-signal-row { border-color: #1e3358; }
+        .rd-signal-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .rd-signal-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 20px; }
+        .rd-signal-type.keyword { background: rgba(6,182,212,0.12); color: #67e8f9; border: 1px solid rgba(6,182,212,0.25); }
+        .rd-signal-type.semantic { background: rgba(139,92,246,0.12); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.25); }
+        .rd-signal-name { font-size: 14px; font-weight: 600; color: var(--kd-text-primary); }
+        .rd-keyword-text { font-size: 12.5px; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--kd-text-secondary); line-height: 1.6; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; }
+
+        .rd-decision-row { border: 1px solid var(--kd-border); border-radius: 12px; padding: 14px 18px; margin-bottom: 12px; display: flex; gap: 14px; align-items: flex-start; position: relative; }
+        html.dark .rd-decision-row { border-color: #1e3358; }
+        .rd-decision-priority { flex-shrink: 0; width: 54px; height: 54px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .rd-decision-priority.high { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2); }
+        .rd-decision-priority.medium { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); }
+        .rd-decision-priority.low { background: rgba(107,114,128,0.12); border: 1px solid rgba(107,114,128,0.2); }
+        .rd-decision-priority-num { font-size: 18px; font-weight: 800; color: var(--kd-text-primary); line-height: 1; }
+        .rd-decision-priority-label { font-size: 9px; font-weight: 600; color: var(--kd-text-muted); text-transform: uppercase; margin-top: 2px; }
+        .rd-decision-body { flex: 1; min-width: 0; }
+        .rd-decision-name { font-size: 14px; font-weight: 600; color: var(--kd-text-primary); margin: 0 0 4px; }
+        .rd-decision-desc { font-size: 12px; color: var(--kd-text-muted); margin: 0 0 10px; line-height: 1.4; }
+        .rd-decision-metas { display: flex; flex-wrap: wrap; gap: 10px; }
+        .rd-decision-meta { font-size: 12px; color: var(--kd-text-muted); display: flex; align-items: center; gap: 5px; }
+        .rd-decision-meta strong { color: var(--kd-text-primary); }
+
+        .rd-adv-list { display: flex; flex-direction: column; }
+        .rd-adv-row { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent); }
+        .rd-adv-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .rd-adv-row:first-child { padding-top: 0; }
+        .rd-feature-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .rd-feature-icon svg { width: 16px; height: 16px; }
+        .rd-feature-icon.cost      { background: rgba(52,211,153,0.15);  color: #34d399; }
+        .rd-feature-icon.residency { background: rgba(238,0,0,0.12);     color: #fca5a5; }
+        .rd-feature-icon.latency   { background: rgba(66,133,244,0.12);  color: #93c5fd; }
+        .rd-feature-icon.pii       { background: rgba(245,158,11,0.12);  color: #fbbf24; }
+        .rd-feature-icon.jailbreak { background: rgba(239,68,68,0.12);   color: #f87171; }
+        .rd-feature-icon.complexity{ background: rgba(6,182,212,0.12);   color: #67e8f9; }
+        .rd-feature-body { flex: 1; min-width: 0; }
+        .rd-feature-name { font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin: 0 0 3px; }
+        .rd-feature-desc { font-size: 12px; color: var(--kd-text-muted); line-height: 1.4; }
+
+        .rd-toggle { flex-shrink: 0; display: flex; align-items: center; cursor: pointer; }
+        .rd-toggle input { display: none; }
+        .rd-toggle-track { position: relative; width: 36px; height: 20px; border-radius: 20px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); transition: background 0.2s, border-color 0.2s; }
+        .rd-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; opacity: 0.4; transition: transform 0.2s, opacity 0.2s; }
+        .rd-toggle input:checked + .rd-toggle-track { background: rgba(79,195,247,0.8); border-color: rgba(79,195,247,0.5); }
+        .rd-toggle input:checked + .rd-toggle-track .rd-toggle-thumb { transform: translateX(16px); opacity: 1; }
+
+        .rd-table-del-cell { width: 36px; padding: 0 8px 0 0; }
+        .rd-table-del { width: 26px; height: 26px; border-radius: 7px; background: transparent; border: none; color: var(--kd-text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.15s; }
+        .rd-table-del svg { width: 13px; height: 13px; }
+        .rd-table tbody tr:hover .rd-table-del { opacity: 1; }
+        .rd-table-del:hover { background: rgba(239,68,68,0.12); color: #f87171; }
+        .rd-row-del { position: absolute; top: 10px; right: 12px; width: 24px; height: 24px; border-radius: 6px; background: transparent; border: none; color: var(--kd-text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.15s; }
+        .rd-row-del svg { width: 13px; height: 13px; }
+        .rd-signal-row:hover .rd-row-del, .rd-decision-row:hover .rd-row-del { opacity: 1; }
+        .rd-row-del:hover { background: rgba(239,68,68,0.12); color: #f87171; }
+
+        /* ── Flow diagram ── */
+        .rd-flow-diagram { display: flex; align-items: center; gap: 0; padding: 12px 0 4px; overflow-x: auto; }
+        .rd-flow-source { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 7px; width: 80px; }
+        .rd-flow-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .rd-flow-icon svg { width: 18px; height: 18px; }
+        .rd-flow-icon.agents { background: rgba(79,195,247,0.1); border: 1.5px solid rgba(79,195,247,0.3); color: #4fc3f7; }
+        .rd-flow-icon.router { background: rgba(139,92,246,0.12); border: 1.5px solid rgba(139,92,246,0.3); color: #c4b5fd; }
+        .rd-flow-node-label { font-size: 12px; font-weight: 600; color: var(--kd-text-primary); text-align: center; }
+        .rd-flow-node-sub { font-size: 10px; color: var(--kd-text-muted); text-align: center; line-height: 1.3; }
+        .rd-flow-hline { flex: 1; min-width: 14px; max-width: 36px; height: 1.5px; background: linear-gradient(90deg, rgba(79,195,247,0.35), rgba(79,195,247,0.2)); flex-shrink: 0; }
+        .rd-flow-router-node { flex-shrink: 0; border: 1.5px solid rgba(139,92,246,0.35); border-radius: 14px; padding: 16px 20px; background: rgba(139,92,246,0.05); min-width: 220px; }
+        .rd-flow-router-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(139,92,246,0.15); }
+        .rd-flow-router-name { font-size: 13px; font-weight: 700; color: var(--kd-text-primary); }
+        .rd-flow-router-port { font-size: 11px; color: #4fc3f7; font-family: 'SF Mono', 'Fira Code', monospace; }
+        .rd-flow-rules { display: flex; flex-direction: column; gap: 6px; }
+        .rd-flow-rule { display: flex; align-items: baseline; gap: 5px; font-size: 11px; min-width: 0; }
+        .rd-flow-rule-sig { color: #67e8f9; font-family: 'SF Mono', 'Fira Code', monospace; flex-shrink: 0; }
+        .rd-flow-rule.is-default .rd-flow-rule-sig { color: var(--kd-text-muted); font-style: italic; }
+        .rd-flow-rule-sep { color: var(--kd-text-muted); flex-shrink: 0; }
+        .rd-flow-rule-tgt { color: var(--kd-text-secondary); font-family: 'SF Mono', 'Fira Code', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+        .rd-flow-backends { flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; padding-left: 28px; position: relative; }
+        .rd-flow-backends::before { content: ''; position: absolute; left: 0; top: 29px; bottom: 29px; width: 1.5px; background: rgba(79,195,247,0.25); }
+        .rd-flow-backend { position: relative; padding: 11px 15px; border-radius: 12px; border: 1.5px solid; min-width: 180px; }
+        .rd-flow-backend::before { content: ''; position: absolute; left: -28px; top: 50%; width: 27px; height: 1.5px; background: rgba(79,195,247,0.25); }
+        .rd-flow-backend.local      { border-color: rgba(52,211,153,0.3);  background: rgba(52,211,153,0.04); }
+        .rd-flow-backend.openshift  { border-color: rgba(238,0,0,0.3);    background: rgba(238,0,0,0.04); }
+        .rd-flow-backend.vertex     { border-color: rgba(66,133,244,0.3);  background: rgba(66,133,244,0.04); }
+        .rd-flow-backend-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 20px; margin-bottom: 5px; }
+        .rd-flow-backend.local     .rd-flow-backend-tag { background: rgba(52,211,153,0.15); color: #34d399; }
+        .rd-flow-backend.openshift .rd-flow-backend-tag { background: rgba(238,0,0,0.15);   color: #fca5a5; }
+        .rd-flow-backend.vertex    .rd-flow-backend-tag { background: rgba(66,133,244,0.15); color: #93c5fd; }
+        .rd-flow-backend-name { font-size: 12px; font-weight: 600; color: var(--kd-text-primary); font-family: 'SF Mono', 'Fira Code', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
+        .rd-flow-backend-ep { font-size: 10px; color: var(--kd-text-muted); font-family: 'SF Mono', 'Fira Code', monospace; margin-top: 2px; }
+
+        /* ── Per-backend traffic + cost row ── */
+        .rd-flow-backend-traffic {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 7px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .rd-flow-traffic-pct {
+            font-size: 11px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            width: 30px;
+        }
+        .rd-flow-backend.local     .rd-flow-traffic-pct { color: #34d399; }
+        .rd-flow-backend.openshift .rd-flow-traffic-pct { color: #fca5a5; }
+        .rd-flow-backend.vertex    .rd-flow-traffic-pct { color: #93c5fd; }
+        .rd-flow-traffic-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .rd-flow-traffic-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+        .rd-flow-backend.local     .rd-flow-traffic-fill { background: #34d399; }
+        .rd-flow-backend.openshift .rd-flow-traffic-fill { background: #ee0000; opacity: 0.7; }
+        .rd-flow-backend.vertex    .rd-flow-traffic-fill { background: #4285f4; }
+        .rd-flow-cost-label {
+            font-size: 10px;
+            font-weight: 600;
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+        }
+        .rd-flow-backend.local     .rd-flow-cost-label { color: #34d399; }
+        .rd-flow-backend.openshift .rd-flow-cost-label { color: #fca5a5; }
+        .rd-flow-backend.vertex    .rd-flow-cost-label { color: #93c5fd; }
+
+        /* ── Cost savings section (below flow) ── */
+        .rd-cost-savings {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+        }
+        .rd-cost-savings-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--kd-text-muted);
+            margin: 0 0 14px;
+        }
+        .rd-cost-compare {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .rd-cost-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .rd-cost-row-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        .rd-cost-row-label { flex: 1; color: var(--kd-text-secondary); font-weight: 500; }
+        .rd-cost-row-amount { font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--kd-text-primary); }
+        .rd-cost-bar-track {
+            height: 6px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .rd-cost-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+        .rd-cost-bar-fill.with-router { background: linear-gradient(90deg, #34d399, #059669); }
+        .rd-cost-bar-fill.without-router { background: linear-gradient(90deg, #f87171, #dc2626); opacity: 0.6; }
+        .rd-cost-breakdown-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .rd-cost-chip {
+            font-size: 10px;
+            color: var(--kd-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rd-cost-chip-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .rd-cost-savings-callout {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(52,211,153,0.07);
+            border: 1px solid rgba(52,211,153,0.2);
+        }
+        .rd-cost-savings-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(52,211,153,0.15);
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .rd-cost-savings-icon svg { width: 15px; height: 15px; }
+        .rd-cost-savings-text { flex: 1; }
+        .rd-cost-savings-headline { font-size: 14px; font-weight: 700; color: #34d399; }
+        .rd-cost-savings-sub { font-size: 12px; color: var(--kd-text-muted); margin-top: 2px; }
+
+        /* ── YAML ── */
+        .rd-yaml-wrap { background: color-mix(in srgb, #000 35%, transparent); border: 1px solid var(--kd-border); border-radius: 12px; overflow: hidden; }
+        .rd-yaml-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--kd-border); background: color-mix(in srgb, #000 20%, transparent); }
+        .rd-yaml-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted); }
+        .rd-yaml-copy { font-size: 11px; font-weight: 500; color: var(--kd-text-muted); background: none; border: 1px solid var(--kd-border); border-radius: 6px; padding: 3px 9px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .rd-yaml-copy:hover { border-color: var(--kd-text-muted); color: var(--kd-text-primary); }
+        .rd-yaml-code { padding: 20px 22px; font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; font-size: 12px; line-height: 1.65; color: #a8e6fc; overflow-x: auto; margin: 0; white-space: pre; }
+        .rc-yaml-key { color: #c4b5fd; }
+        .rc-yaml-str { color: #a8e6fc; }
+        .rc-yaml-num { color: #fbbf24; }
+        .rc-yaml-bool { color: #f87171; }
+        .rc-yaml-comment { color: #4b5563; }
+
+        /* ── Add form ── */
+        .rd-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .rd-card-header .rd-card-title { margin-bottom: 0; }
+        .rd-btn-add { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.3); border-radius: 8px; color: #4fc3f7; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+        .rd-btn-add svg { width: 13px; height: 13px; }
+        .rd-btn-add:hover { background: rgba(79,195,247,0.18); border-color: rgba(79,195,247,0.5); }
+        .rd-add-form { display: none; border: 1px solid rgba(79,195,247,0.25); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; background: rgba(79,195,247,0.04); }
+        .rd-add-form.is-open { display: block; }
+        .rd-form-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #4fc3f7; margin: 0 0 14px; }
+        .rd-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .rd-form-grid.full { grid-template-columns: 1fr; }
+        .rd-field { display: flex; flex-direction: column; gap: 5px; }
+        .rd-field-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted); }
+        .rd-input, .rd-select, .rd-textarea { padding: 7px 11px; background: rgba(255,255,255,0.04); border: 1px solid #1e3358; border-radius: 8px; color: var(--kd-text-primary); font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.15s; width: 100%; box-sizing: border-box; }
+        .rd-input:focus, .rd-select:focus, .rd-textarea:focus { border-color: rgba(79,195,247,0.5); }
+        .rd-textarea { resize: vertical; min-height: 62px; line-height: 1.5; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; }
+        .rd-form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .rd-btn-save { padding: 7px 18px; background: var(--kd-accent, #4fc3f7); border: none; border-radius: 8px; color: #0a1628; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
+        .rd-btn-save:hover { background: #6dd6ff; }
+        .rd-btn-cancel { padding: 7px 16px; background: transparent; border: 1px solid var(--kd-border); border-radius: 8px; color: var(--kd-text-muted); font-size: 13px; font-family: inherit; cursor: pointer; }
+        .rd-btn-cancel:hover { border-color: var(--kd-text-muted); color: var(--kd-text-primary); }
+    </style>
+</head>
+<body class="models-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="rd-layout">
+
+                <!-- Page header -->
+                <div class="rd-page-header">
+                    <div class="rd-breadcrumb">
+                        <a href="index.html">Models</a>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <a href="index.html?cat=router">Semantic Routers</a>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <span>enterprise-router</span>
+                    </div>
+
+                    <div class="rd-title-row">
+                        <div class="rd-title-block">
+                            <div class="rd-title-name-row">
+                                <h1 class="rd-title">enterprise-router</h1>
+                                <span class="rd-status-badge running">Running</span>
+                            </div>
+                            <p class="rd-subtitle">Routes by cost, data residency &amp; latency — local · OpenShift AI · Vertex AI · listening on <code style="color:var(--kd-accent-dim,#a78bfa);">0.0.0.0:8901</code></p>
+                        </div>
+                        <div class="rd-actions">
+                            <a href="semantic-router-create.html" class="rd-btn-ghost" style="text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </a>
+                            <button class="rd-btn-danger" onclick="confirm('Delete this router?') && history.back()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="rd-tabs-bar" role="tablist">
+                    <button class="rd-tab active" role="tab" onclick="switchTab('overview', this)">Overview</button>
+                    <button class="rd-tab" role="tab" onclick="switchTab('backends', this)">Backend models</button>
+                    <button class="rd-tab" role="tab" onclick="switchTab('signals', this)">Signals</button>
+                    <button class="rd-tab" role="tab" onclick="switchTab('decisions', this)">Decisions</button>
+                    <button class="rd-tab" role="tab" onclick="switchTab('advanced', this)">Advanced</button>
+                    <button class="rd-tab" role="tab" onclick="switchTab('yaml', this)">YAML config</button>
+                </div>
+
+                <!-- Tab body -->
+                <div class="rd-body">
+
+                    <!-- ── Overview ── -->
+                    <div class="rd-tab-panel is-active" id="rdTab-overview">
+                        <div class="rd-overview-grid">
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Backend models</div>
+                                <div class="rd-stat-value">3</div>
+                                <div class="rd-stat-sub">local · OpenShift AI · Vertex AI</div>
+                            </div>
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Routing decisions</div>
+                                <div class="rd-stat-value">4</div>
+                                <div class="rd-stat-sub">incl. default-route</div>
+                            </div>
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Signals</div>
+                                <div class="rd-stat-value">2</div>
+                                <div class="rd-stat-sub">keyword + semantic</div>
+                            </div>
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Routing latency (P50)</div>
+                                <div class="rd-stat-value">55ms</div>
+                                <div class="rd-stat-sub">P99: 120 ms</div>
+                            </div>
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Local requests</div>
+                                <div class="rd-stat-value">61%</div>
+                                <div class="rd-stat-sub">stayed on qwen3-code</div>
+                            </div>
+                            <div class="rd-stat-card">
+                                <div class="rd-stat-label">Est. cost savings</div>
+                                <div class="rd-stat-value">74%</div>
+                                <div class="rd-stat-sub">vs. all-cloud baseline</div>
+                            </div>
+                        </div>
+
+                        <!-- Flow diagram -->
+                        <div class="rd-card">
+                            <div class="rd-card-title">Routing flow</div>
+                            <div class="rd-flow-diagram">
+
+                                <div class="rd-flow-source">
+                                    <div class="rd-flow-icon agents">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                                    </div>
+                                    <div class="rd-flow-node-label">Agents</div>
+                                    <div class="rd-flow-node-sub">incoming requests</div>
+                                </div>
+
+                                <div class="rd-flow-hline"></div>
+
+                                <div class="rd-flow-router-node">
+                                    <div class="rd-flow-router-head">
+                                        <div class="rd-flow-icon router">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                                        </div>
+                                        <div>
+                                            <div class="rd-flow-router-name">enterprise-router</div>
+                                            <div class="rd-flow-router-port">localhost:8901</div>
+                                        </div>
+                                    </div>
+                                    <div class="rd-flow-rules">
+                                        <div class="rd-flow-rule">
+                                            <span class="rd-flow-rule-sig">sensitive_data</span>
+                                            <span class="rd-flow-rule-sep">&rarr;</span>
+                                            <span class="rd-flow-rule-tgt">ibm-granite-3.3-8b (RHOAI)</span>
+                                        </div>
+                                        <div class="rd-flow-rule">
+                                            <span class="rd-flow-rule-sig">high_complexity</span>
+                                            <span class="rd-flow-rule-sep">&rarr;</span>
+                                            <span class="rd-flow-rule-tgt">claude-sonnet-4-5 (Vertex)</span>
+                                        </div>
+                                        <div class="rd-flow-rule is-default">
+                                            <span class="rd-flow-rule-sig">default</span>
+                                            <span class="rd-flow-rule-sep">&rarr;</span>
+                                            <span class="rd-flow-rule-tgt">qwen3-code (local)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="rd-flow-hline"></div>
+
+                                <div class="rd-flow-backends">
+                                    <div class="rd-flow-backend local">
+                                        <span class="rd-flow-backend-tag">local</span>
+                                        <div class="rd-flow-backend-name">qwen3-code</div>
+                                        <div class="rd-flow-backend-ep">:11434 (Ollama)</div>
+                                        <div class="rd-flow-backend-traffic">
+                                            <span class="rd-flow-traffic-pct">61%</span>
+                                            <span class="rd-flow-traffic-bar"><span class="rd-flow-traffic-fill" style="width:61%"></span></span>
+                                            <span class="rd-flow-cost-label">Free</span>
+                                        </div>
+                                    </div>
+                                    <div class="rd-flow-backend openshift">
+                                        <span class="rd-flow-backend-tag">OpenShift AI</span>
+                                        <div class="rd-flow-backend-name">ibm-granite-3.3-8b</div>
+                                        <div class="rd-flow-backend-ep">rhoai.corp.example/…</div>
+                                        <div class="rd-flow-backend-traffic">
+                                            <span class="rd-flow-traffic-pct">28%</span>
+                                            <span class="rd-flow-traffic-bar"><span class="rd-flow-traffic-fill" style="width:28%"></span></span>
+                                            <span class="rd-flow-cost-label">$0.50/1M</span>
+                                        </div>
+                                    </div>
+                                    <div class="rd-flow-backend vertex">
+                                        <span class="rd-flow-backend-tag">Vertex AI</span>
+                                        <div class="rd-flow-backend-name">claude-sonnet-4-5</div>
+                                        <div class="rd-flow-backend-ep">aiplatform.googleapis.com/…</div>
+                                        <div class="rd-flow-backend-traffic">
+                                            <span class="rd-flow-traffic-pct">11%</span>
+                                            <span class="rd-flow-traffic-bar"><span class="rd-flow-traffic-fill" style="width:11%"></span></span>
+                                            <span class="rd-flow-cost-label">$3–15/1M</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Cost savings comparison -->
+                            <div class="rd-cost-savings">
+                                <div class="rd-cost-savings-title">Cost savings — this week</div>
+                                <div class="rd-cost-compare">
+                                    <div class="rd-cost-row">
+                                        <div class="rd-cost-row-head">
+                                            <span class="rd-cost-row-label">With enterprise-router</span>
+                                            <span class="rd-cost-row-amount" style="color:#34d399;">$7.82</span>
+                                        </div>
+                                        <div class="rd-cost-bar-track">
+                                            <div class="rd-cost-bar-fill with-router" style="width:26%"></div>
+                                        </div>
+                                        <div class="rd-cost-breakdown-chips">
+                                            <span class="rd-cost-chip"><span class="rd-cost-chip-dot" style="background:#34d399"></span>Local · $0.00 (61%)</span>
+                                            <span class="rd-cost-chip"><span class="rd-cost-chip-dot" style="background:#fca5a5"></span>OpenShift AI · $1.58 (28%)</span>
+                                            <span class="rd-cost-chip"><span class="rd-cost-chip-dot" style="background:#93c5fd"></span>Vertex AI · $6.24 (11%)</span>
+                                        </div>
+                                    </div>
+                                    <div class="rd-cost-row">
+                                        <div class="rd-cost-row-head">
+                                            <span class="rd-cost-row-label" style="color:var(--kd-text-muted);">Without router — all Vertex AI</span>
+                                            <span class="rd-cost-row-amount" style="color:var(--kd-text-muted);">$29.78</span>
+                                        </div>
+                                        <div class="rd-cost-bar-track">
+                                            <div class="rd-cost-bar-fill without-router" style="width:100%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rd-cost-savings-callout">
+                                    <div class="rd-cost-savings-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                                    </div>
+                                    <div class="rd-cost-savings-text">
+                                        <div class="rd-cost-savings-headline">$21.96 saved this week · 74% reduction</div>
+                                        <div class="rd-cost-savings-sub">Routing 61% of requests to local and 28% to on-prem avoids $21.96 in Vertex AI charges</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="rd-card">
+                            <div class="rd-card-title">Router configuration</div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Listener</span>
+                                <span class="rd-info-value"><code style="color:var(--kd-accent-dim,#a78bfa);">0.0.0.0:8901</code> (timeout: 300s)</span>
+                            </div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Last verified</span>
+                                <span class="rd-info-value" style="color:var(--kd-text-muted);">1 minute ago</span>
+                            </div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Description</span>
+                                <span class="rd-info-value">Enterprise hybrid router — optimises for cost, data residency, and latency across local, on-prem, and cloud backends</span>
+                            </div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Default model</span>
+                                <span class="rd-info-value"><code style="color:var(--kd-accent-dim,#a78bfa);">qwen3-code</code> (local · free)</span>
+                            </div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Advanced features</span>
+                                <span class="rd-info-value">Cost optimizer · Data residency enforcement · Latency scoring</span>
+                            </div>
+                            <div class="rd-info-row">
+                                <span class="rd-info-label">Created</span>
+                                <span class="rd-info-value" style="color:var(--kd-text-muted);">May 29, 2026</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Backend models ── -->
+                    <div class="rd-tab-panel" id="rdTab-backends">
+                        <div class="rd-card">
+                            <div class="rd-card-header">
+                                <div class="rd-card-title">Backend models</div>
+                                <button class="rd-btn-add" onclick="rdToggleForm('rdBackendForm')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add model
+                                </button>
+                            </div>
+                            <div class="rd-add-form" id="rdBackendForm">
+                                <div class="rd-form-title">Add backend model</div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field" style="grid-column:1/-1;">
+                                        <label class="rd-field-label">Model name</label>
+                                        <select class="rd-select">
+                                            <option value="">— pick from catalog —</option>
+                                            <optgroup label="Local (Ollama)">
+                                                <option>llama3.2:3b</option>
+                                                <option>mistral:latest</option>
+                                            </optgroup>
+                                            <optgroup label="OpenShift AI">
+                                                <option>mistral-small-internal</option>
+                                                <option>llama-3.1-70b-instruct</option>
+                                            </optgroup>
+                                            <optgroup label="Vertex AI">
+                                                <option>claude-opus-4-1 (Vertex)</option>
+                                                <option>gemini-2.5-pro</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Endpoint URL</label>
+                                        <input class="rd-input" type="text" placeholder="host:port or cloud API URL">
+                                    </div>
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Tier</label>
+                                        <select class="rd-select">
+                                            <option>local</option>
+                                            <option>openshift</option>
+                                            <option>vertex</option>
+                                            <option>cloud</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Weight</label>
+                                        <input class="rd-input" type="number" min="1" max="100" value="100">
+                                    </div>
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Quality score (0–1)</label>
+                                        <input class="rd-input" type="number" min="0" max="1" step="0.01" placeholder="0.90">
+                                    </div>
+                                </div>
+                                <div class="rd-form-actions">
+                                    <button class="rd-btn-cancel" onclick="rdToggleForm('rdBackendForm')">Cancel</button>
+                                    <button class="rd-btn-save" onclick="rdToggleForm('rdBackendForm')">Add model</button>
+                                </div>
+                            </div>
+
+                            <div class="rd-table-wrap">
+                                <table class="rd-table" aria-label="Backend models">
+                                    <thead>
+                                        <tr>
+                                            <th>Model name</th>
+                                            <th>Tier</th>
+                                            <th>Endpoint</th>
+                                            <th>Weight</th>
+                                            <th>Quality</th>
+                                            <th>Capabilities</th>
+                                            <th>Pricing (USD/1M)</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div style="font-weight:600;">qwen3-code</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);">32B · http · <strong style="color:#4fc3f7;">default</strong></div>
+                                            </td>
+                                            <td><span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);">local</span></td>
+                                            <td><code style="font-size:11px;color:var(--kd-text-secondary);">localhost:11434</code></td>
+                                            <td>100</td>
+                                            <td>0.82</td>
+                                            <td><div class="rd-cap-chips"><span class="rd-cap-chip">coding</span><span class="rd-cap-chip">debugging</span></div></td>
+                                            <td style="color:var(--kd-text-muted);">Free (local)</td>
+                                            <td class="rd-table-del-cell"><button class="rd-table-del" onclick="this.closest('tr').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div style="font-weight:600;">ibm-granite-3.3-8b-instruct</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);">8B · https · on-prem</div>
+                                            </td>
+                                            <td><span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(238,0,0,0.1);color:#fca5a5;border:1px solid rgba(238,0,0,0.2);">OpenShift AI</span></td>
+                                            <td><code style="font-size:11px;color:var(--kd-text-secondary);">rhoai.corp.example/…</code></td>
+                                            <td>100</td>
+                                            <td>0.88</td>
+                                            <td><div class="rd-cap-chips"><span class="rd-cap-chip">enterprise</span><span class="rd-cap-chip">analysis</span><span class="rd-cap-chip">secure</span></div></td>
+                                            <td>$0.50 / $0.50</td>
+                                            <td class="rd-table-del-cell"><button class="rd-table-del" onclick="this.closest('tr').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div style="font-weight:600;">claude-sonnet-4-5@20250929 (Vertex)</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);">200K ctx · https · GCP enterprise</div>
+                                            </td>
+                                            <td><span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(66,133,244,0.12);color:#93c5fd;border:1px solid rgba(66,133,244,0.25);">Vertex AI</span></td>
+                                            <td><code style="font-size:11px;color:var(--kd-text-secondary);">aiplatform.googleapis.com/…</code></td>
+                                            <td>100</td>
+                                            <td>0.96</td>
+                                            <td><div class="rd-cap-chips"><span class="rd-cap-chip">reasoning</span><span class="rd-cap-chip">coding</span><span class="rd-cap-chip">analysis</span><span class="rd-cap-chip">creative</span></div></td>
+                                            <td>$3.00 / $15.00</td>
+                                            <td class="rd-table-del-cell"><button class="rd-table-del" onclick="this.closest('tr').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Signals ── -->
+                    <div class="rd-tab-panel" id="rdTab-signals">
+                        <div class="rd-card">
+                            <div class="rd-card-header">
+                                <div class="rd-card-title">Signals</div>
+                                <button class="rd-btn-add" onclick="rdToggleForm('rdSignalForm')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add signal
+                                </button>
+                            </div>
+                            <div class="rd-add-form" id="rdSignalForm">
+                                <div class="rd-form-title">New signal</div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Signal name</label>
+                                        <input class="rd-input" type="text" placeholder="e.g. pii_keywords">
+                                    </div>
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Type</label>
+                                        <select class="rd-select"><option>Keyword</option><option>Semantic</option><option>Regex</option></select>
+                                    </div>
+                                </div>
+                                <div class="rd-form-grid full">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Keywords / patterns</label>
+                                        <textarea class="rd-textarea" placeholder="confidential, internal, private, GDPR, …"></textarea>
+                                    </div>
+                                </div>
+                                <div class="rd-form-actions">
+                                    <button class="rd-btn-cancel" onclick="rdToggleForm('rdSignalForm')">Cancel</button>
+                                    <button class="rd-btn-save" onclick="rdToggleForm('rdSignalForm')">Add signal</button>
+                                </div>
+                            </div>
+
+                            <div class="rd-signal-row">
+                                <button class="rd-row-del" onclick="this.closest('.rd-signal-row').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                                <div class="rd-signal-header">
+                                    <span class="rd-signal-type keyword">Keyword</span>
+                                    <span class="rd-signal-name">sensitive_data</span>
+                                    <span style="font-size:12px;color:var(--kd-text-muted);">operator: OR · case-insensitive</span>
+                                </div>
+                                <div class="rd-keyword-text">confidential, internal only, GDPR, PII, personal data, classified, proprietary, trade secret, NDA, restricted</div>
+                            </div>
+
+                            <div class="rd-signal-row">
+                                <button class="rd-row-del" onclick="this.closest('.rd-signal-row').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                                <div class="rd-signal-header">
+                                    <span class="rd-signal-type semantic">Semantic</span>
+                                    <span class="rd-signal-name">high_complexity</span>
+                                    <span style="font-size:12px;color:var(--kd-text-muted);">threshold: 0.75 · embedding: nomic-embed-v2</span>
+                                </div>
+                                <div class="rd-keyword-text">Requests semantically similar to: multi-step reasoning, formal analysis, architectural design, complex refactoring, system design at scale</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Decisions ── -->
+                    <div class="rd-tab-panel" id="rdTab-decisions">
+                        <div class="rd-card">
+                            <div class="rd-card-header">
+                                <div class="rd-card-title">Routing decisions — evaluated highest priority first</div>
+                                <button class="rd-btn-add" onclick="rdToggleForm('rdDecisionForm')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add decision
+                                </button>
+                            </div>
+                            <div class="rd-add-form" id="rdDecisionForm">
+                                <div class="rd-form-title">New routing decision</div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Decision name</label>
+                                        <input class="rd-input" type="text" placeholder="e.g. residency-route">
+                                    </div>
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Priority</label>
+                                        <input class="rd-input" type="number" min="1" max="999" placeholder="e.g. 100">
+                                    </div>
+                                </div>
+                                <div class="rd-form-grid">
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Condition signal</label>
+                                        <select class="rd-select">
+                                            <option>sensitive_data</option>
+                                            <option>high_complexity</option>
+                                            <option value="none">none (default)</option>
+                                        </select>
+                                    </div>
+                                    <div class="rd-field">
+                                        <label class="rd-field-label">Route to backend</label>
+                                        <select class="rd-select">
+                                            <option>ibm-granite-3.3-8b-instruct (OpenShift AI)</option>
+                                            <option>claude-sonnet-4-5 (Vertex AI)</option>
+                                            <option>qwen3-code (local)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="rd-form-actions">
+                                    <button class="rd-btn-cancel" onclick="rdToggleForm('rdDecisionForm')">Cancel</button>
+                                    <button class="rd-btn-save" onclick="rdToggleForm('rdDecisionForm')">Add decision</button>
+                                </div>
+                            </div>
+
+                            <div class="rd-decision-row">
+                                <button class="rd-row-del" onclick="this.closest('.rd-decision-row').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                                <div class="rd-decision-priority high">
+                                    <span class="rd-decision-priority-num">100</span>
+                                    <span class="rd-decision-priority-label">Priority</span>
+                                </div>
+                                <div class="rd-decision-body">
+                                    <div class="rd-decision-name">residency-route</div>
+                                    <div class="rd-decision-desc">Sensitive or classified data must stay on-premise — routed to OpenShift AI</div>
+                                    <div class="rd-decision-metas">
+                                        <span class="rd-decision-meta">Condition: <strong>sensitive_data</strong> (OR)</span>
+                                        <span class="rd-decision-meta">→ Model: <strong>ibm-granite-3.3-8b-instruct</strong></span>
+                                        <span class="rd-decision-meta" style="color:#fca5a5;">Data residency: on-prem enforced</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rd-decision-row">
+                                <button class="rd-row-del" onclick="this.closest('.rd-decision-row').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                                <div class="rd-decision-priority medium">
+                                    <span class="rd-decision-priority-num">80</span>
+                                    <span class="rd-decision-priority-label">Priority</span>
+                                </div>
+                                <div class="rd-decision-body">
+                                    <div class="rd-decision-name">complexity-route</div>
+                                    <div class="rd-decision-desc">High-complexity requests benefit from frontier reasoning — escalated to Vertex AI</div>
+                                    <div class="rd-decision-metas">
+                                        <span class="rd-decision-meta">Condition: <strong>high_complexity</strong> ≥ 0.75</span>
+                                        <span class="rd-decision-meta">→ Model: <strong>claude-sonnet-4-5 (Vertex)</strong></span>
+                                        <span class="rd-decision-meta" style="color:#93c5fd;">GCP enterprise contract</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rd-decision-row">
+                                <button class="rd-row-del" onclick="this.closest('.rd-decision-row').remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+                                <div class="rd-decision-priority medium" style="background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.2);">
+                                    <span class="rd-decision-priority-num">50</span>
+                                    <span class="rd-decision-priority-label">Priority</span>
+                                </div>
+                                <div class="rd-decision-body">
+                                    <div class="rd-decision-name">latency-route</div>
+                                    <div class="rd-decision-desc">P99 latency budget exceeded on local backend — overflow to OpenShift AI</div>
+                                    <div class="rd-decision-metas">
+                                        <span class="rd-decision-meta">Condition: <strong>latency_p99</strong> &gt; 400 ms</span>
+                                        <span class="rd-decision-meta">→ Model: <strong>ibm-granite-3.3-8b-instruct</strong></span>
+                                        <span class="rd-decision-meta" style="color:#34d399;">SLA: 300 ms target</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rd-decision-row" style="opacity:0.7;">
+                                <div class="rd-decision-priority low">
+                                    <span class="rd-decision-priority-num">1</span>
+                                    <span class="rd-decision-priority-label">Priority</span>
+                                </div>
+                                <div class="rd-decision-body">
+                                    <div class="rd-decision-name">default-route <span style="font-size:11px;color:var(--kd-text-muted);font-style:italic;">auto-generated</span></div>
+                                    <div class="rd-decision-desc">All remaining requests — served locally at zero cost</div>
+                                    <div class="rd-decision-metas">
+                                        <span class="rd-decision-meta">Condition: <strong>none</strong> (catches all remaining requests)</span>
+                                        <span class="rd-decision-meta">→ Model: <strong>qwen3-code</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Advanced ── -->
+                    <div class="rd-tab-panel" id="rdTab-advanced">
+                        <div class="rd-card">
+                            <div class="rd-card-title">Advanced features</div>
+                            <div class="rd-adv-list">
+
+                                <div class="rd-adv-row">
+                                    <div class="rd-feature-icon cost">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    </div>
+                                    <div class="rd-feature-body">
+                                        <div class="rd-feature-name">Cost optimizer</div>
+                                        <div class="rd-feature-desc">Prefers the cheapest backend that meets quality and latency requirements — estimated 74% cost saving vs. all-cloud baseline</div>
+                                    </div>
+                                    <label class="rd-toggle"><input type="checkbox" checked><span class="rd-toggle-track"><span class="rd-toggle-thumb"></span></span></label>
+                                </div>
+
+                                <div class="rd-adv-row">
+                                    <div class="rd-feature-icon residency">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                    </div>
+                                    <div class="rd-feature-body">
+                                        <div class="rd-feature-name">Data residency enforcement</div>
+                                        <div class="rd-feature-desc">Detects sensitive / classified content and hard-routes it to on-premise OpenShift AI — data never leaves the corporate network</div>
+                                    </div>
+                                    <label class="rd-toggle"><input type="checkbox" checked><span class="rd-toggle-track"><span class="rd-toggle-thumb"></span></span></label>
+                                </div>
+
+                                <div class="rd-adv-row">
+                                    <div class="rd-feature-icon latency">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                    </div>
+                                    <div class="rd-feature-body">
+                                        <div class="rd-feature-name">Latency scoring</div>
+                                        <div class="rd-feature-desc">Tracks per-backend P50/P99 latency in a rolling window and overflows to a faster backend when SLA budgets are exceeded</div>
+                                    </div>
+                                    <label class="rd-toggle"><input type="checkbox" checked><span class="rd-toggle-track"><span class="rd-toggle-thumb"></span></span></label>
+                                </div>
+
+                                <div class="rd-adv-row">
+                                    <div class="rd-feature-icon pii">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    </div>
+                                    <div class="rd-feature-body">
+                                        <div class="rd-feature-name">PII detection &amp; redaction</div>
+                                        <div class="rd-feature-desc">Strip personally identifiable information before any request leaves the on-prem perimeter</div>
+                                    </div>
+                                    <label class="rd-toggle"><input type="checkbox" checked><span class="rd-toggle-track"><span class="rd-toggle-thumb"></span></span></label>
+                                </div>
+
+                                <div class="rd-adv-row">
+                                    <div class="rd-feature-icon jailbreak">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    </div>
+                                    <div class="rd-feature-body">
+                                        <div class="rd-feature-name">Jailbreak detection</div>
+                                        <div class="rd-feature-desc">Block prompt injection and policy-violation attempts before they reach any backend</div>
+                                    </div>
+                                    <label class="rd-toggle"><input type="checkbox"><span class="rd-toggle-track"><span class="rd-toggle-thumb"></span></span></label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── YAML config ── -->
+                    <div class="rd-tab-panel" id="rdTab-yaml">
+                        <div class="rd-yaml-wrap">
+                            <div class="rd-yaml-header">
+                                <span class="rd-yaml-label">config.yaml — enterprise-router</span>
+                                <button class="rd-yaml-copy" onclick="alert('Mock: copied to clipboard')">Copy</button>
+                            </div>
+                            <pre class="rd-yaml-code"><span class="rc-yaml-key">version</span>: <span class="rc-yaml-str">v0.1</span>
+
+<span class="rc-yaml-key">listeners</span>:
+  - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"http-8901"</span>
+    <span class="rc-yaml-key">address</span>: <span class="rc-yaml-str">"0.0.0.0"</span>
+    <span class="rc-yaml-key">port</span>: <span class="rc-yaml-num">8901</span>
+    <span class="rc-yaml-key">timeout</span>: <span class="rc-yaml-str">"300s"</span>
+
+<span class="rc-yaml-key">providers</span>:
+  <span class="rc-yaml-key">models</span>:
+    - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"qwen3-code"</span>
+      <span class="rc-yaml-key">tier</span>: <span class="rc-yaml-str">"local"</span>
+      <span class="rc-yaml-key">param_size</span>: <span class="rc-yaml-str">"32b"</span>
+      <span class="rc-yaml-key">endpoints</span>:
+        - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"ollama-local"</span>
+          <span class="rc-yaml-key">weight</span>: <span class="rc-yaml-num">100</span>
+          <span class="rc-yaml-key">endpoint</span>: <span class="rc-yaml-str">"localhost:11434"</span>
+          <span class="rc-yaml-key">protocol</span>: <span class="rc-yaml-str">"http"</span>
+      <span class="rc-yaml-key">capabilities</span>: [<span class="rc-yaml-str">"coding"</span>, <span class="rc-yaml-str">"debugging"</span>]
+      <span class="rc-yaml-key">quality_score</span>: <span class="rc-yaml-num">0.82</span>
+      <span class="rc-yaml-key">pricing</span>:
+        <span class="rc-yaml-key">prompt_per_1m</span>: <span class="rc-yaml-num">0.0</span>
+        <span class="rc-yaml-key">completion_per_1m</span>: <span class="rc-yaml-num">0.0</span>
+
+    - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"ibm-granite-3.3-8b-instruct"</span>
+      <span class="rc-yaml-key">tier</span>: <span class="rc-yaml-str">"openshift"</span>
+      <span class="rc-yaml-key">param_size</span>: <span class="rc-yaml-str">"8b"</span>
+      <span class="rc-yaml-key">endpoints</span>:
+        - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"rhoai-primary"</span>
+          <span class="rc-yaml-key">weight</span>: <span class="rc-yaml-num">100</span>
+          <span class="rc-yaml-key">endpoint</span>: <span class="rc-yaml-str">"rhoai.corp.example/v1/chat/completions"</span>
+          <span class="rc-yaml-key">protocol</span>: <span class="rc-yaml-str">"https"</span>
+      <span class="rc-yaml-key">data_residency</span>: <span class="rc-yaml-str">"on-prem"</span>
+      <span class="rc-yaml-key">capabilities</span>: [<span class="rc-yaml-str">"enterprise"</span>, <span class="rc-yaml-str">"analysis"</span>, <span class="rc-yaml-str">"secure"</span>]
+      <span class="rc-yaml-key">quality_score</span>: <span class="rc-yaml-num">0.88</span>
+      <span class="rc-yaml-key">pricing</span>:
+        <span class="rc-yaml-key">prompt_per_1m</span>: <span class="rc-yaml-num">0.50</span>
+        <span class="rc-yaml-key">completion_per_1m</span>: <span class="rc-yaml-num">0.50</span>
+
+    - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"claude-sonnet-4-5@20250929"</span>
+      <span class="rc-yaml-key">tier</span>: <span class="rc-yaml-str">"vertex"</span>
+      <span class="rc-yaml-key">endpoints</span>:
+        - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"vertex-primary"</span>
+          <span class="rc-yaml-key">weight</span>: <span class="rc-yaml-num">100</span>
+          <span class="rc-yaml-key">endpoint</span>: <span class="rc-yaml-str">"us-east5-aiplatform.googleapis.com/v1/projects/my-gcp-project/locations/us-east5/publishers/anthropic/models/claude-sonnet-4-5@20250929"</span>
+          <span class="rc-yaml-key">protocol</span>: <span class="rc-yaml-str">"https"</span>
+      <span class="rc-yaml-key">gcp_project</span>: <span class="rc-yaml-str">"my-gcp-project"</span>
+      <span class="rc-yaml-key">gcp_region</span>: <span class="rc-yaml-str">"us-east5"</span>
+      <span class="rc-yaml-key">capabilities</span>: [<span class="rc-yaml-str">"reasoning"</span>, <span class="rc-yaml-str">"coding"</span>, <span class="rc-yaml-str">"analysis"</span>, <span class="rc-yaml-str">"creative"</span>]
+      <span class="rc-yaml-key">quality_score</span>: <span class="rc-yaml-num">0.96</span>
+      <span class="rc-yaml-key">pricing</span>:
+        <span class="rc-yaml-key">prompt_per_1m</span>: <span class="rc-yaml-num">3.00</span>
+        <span class="rc-yaml-key">completion_per_1m</span>: <span class="rc-yaml-num">15.00</span>
+
+  <span class="rc-yaml-key">default_model</span>: <span class="rc-yaml-str">"qwen3-code"</span>
+
+<span class="rc-yaml-key">signals</span>:
+  <span class="rc-yaml-key">keywords</span>:
+    - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"sensitive_data"</span>
+      <span class="rc-yaml-key">operator</span>: <span class="rc-yaml-str">"OR"</span>
+      <span class="rc-yaml-key">keywords</span>: [<span class="rc-yaml-str">"confidential"</span>, <span class="rc-yaml-str">"internal only"</span>, <span class="rc-yaml-str">"GDPR"</span>, <span class="rc-yaml-str">"PII"</span>, <span class="rc-yaml-str">"personal data"</span>, <span class="rc-yaml-str">"classified"</span>, <span class="rc-yaml-str">"proprietary"</span>, <span class="rc-yaml-str">"trade secret"</span>, <span class="rc-yaml-str">"NDA"</span>, <span class="rc-yaml-str">"restricted"</span>]
+      <span class="rc-yaml-key">case_sensitive</span>: <span class="rc-yaml-bool">false</span>
+  <span class="rc-yaml-key">semantic</span>:
+    - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"high_complexity"</span>
+      <span class="rc-yaml-key">embedding_model</span>: <span class="rc-yaml-str">"nomic-embed-v2"</span>
+      <span class="rc-yaml-key">threshold</span>: <span class="rc-yaml-num">0.75</span>
+      <span class="rc-yaml-key">reference_prompts</span>:
+        - <span class="rc-yaml-str">"multi-step reasoning and formal analysis"</span>
+        - <span class="rc-yaml-str">"architectural design at scale"</span>
+        - <span class="rc-yaml-str">"complex system-level refactoring"</span>
+
+<span class="rc-yaml-key">decisions</span>:
+  - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"residency-route"</span>
+    <span class="rc-yaml-key">description</span>: <span class="rc-yaml-str">"Sensitive data stays on-premise"</span>
+    <span class="rc-yaml-key">priority</span>: <span class="rc-yaml-num">100</span>
+    <span class="rc-yaml-key">rules</span>:
+      <span class="rc-yaml-key">operator</span>: <span class="rc-yaml-str">"OR"</span>
+      <span class="rc-yaml-key">conditions</span>:
+        - <span class="rc-yaml-key">type</span>: <span class="rc-yaml-str">"keyword"</span>
+          <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"sensitive_data"</span>
+    <span class="rc-yaml-key">modelRefs</span>:
+      - <span class="rc-yaml-key">model</span>: <span class="rc-yaml-str">"ibm-granite-3.3-8b-instruct"</span>
+
+  - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"complexity-route"</span>
+    <span class="rc-yaml-key">description</span>: <span class="rc-yaml-str">"High-complexity tasks escalated to Vertex AI"</span>
+    <span class="rc-yaml-key">priority</span>: <span class="rc-yaml-num">80</span>
+    <span class="rc-yaml-key">rules</span>:
+      <span class="rc-yaml-key">operator</span>: <span class="rc-yaml-str">"OR"</span>
+      <span class="rc-yaml-key">conditions</span>:
+        - <span class="rc-yaml-key">type</span>: <span class="rc-yaml-str">"semantic"</span>
+          <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"high_complexity"</span>
+    <span class="rc-yaml-key">modelRefs</span>:
+      - <span class="rc-yaml-key">model</span>: <span class="rc-yaml-str">"claude-sonnet-4-5@20250929"</span>
+
+  - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"latency-route"</span>
+    <span class="rc-yaml-key">description</span>: <span class="rc-yaml-str">"Overflow to OpenShift AI when local P99 exceeds 400ms"</span>
+    <span class="rc-yaml-key">priority</span>: <span class="rc-yaml-num">50</span>
+    <span class="rc-yaml-key">rules</span>:
+      <span class="rc-yaml-key">conditions</span>:
+        - <span class="rc-yaml-key">type</span>: <span class="rc-yaml-str">"latency"</span>
+          <span class="rc-yaml-key">backend</span>: <span class="rc-yaml-str">"qwen3-code"</span>
+          <span class="rc-yaml-key">metric</span>: <span class="rc-yaml-str">"p99"</span>
+          <span class="rc-yaml-key">threshold_ms</span>: <span class="rc-yaml-num">400</span>
+    <span class="rc-yaml-key">modelRefs</span>:
+      - <span class="rc-yaml-key">model</span>: <span class="rc-yaml-str">"ibm-granite-3.3-8b-instruct"</span>
+
+  - <span class="rc-yaml-key">name</span>: <span class="rc-yaml-str">"default-route"</span>
+    <span class="rc-yaml-key">description</span>: <span class="rc-yaml-str">"All remaining requests — served locally at zero cost"</span>
+    <span class="rc-yaml-key">priority</span>: <span class="rc-yaml-num">1</span>
+    <span class="rc-yaml-key">rules</span>:
+      <span class="rc-yaml-key">conditions</span>: []
+    <span class="rc-yaml-key">modelRefs</span>:
+      - <span class="rc-yaml-key">model</span>: <span class="rc-yaml-str">"qwen3-code"</span>
+
+<span class="rc-yaml-key">advanced</span>:
+  <span class="rc-yaml-key">cost_optimizer</span>: <span class="rc-yaml-bool">true</span>
+  <span class="rc-yaml-key">data_residency</span>: <span class="rc-yaml-bool">true</span>
+  <span class="rc-yaml-key">latency_scoring</span>: <span class="rc-yaml-bool">true</span>
+  <span class="rc-yaml-key">latency_window_s</span>: <span class="rc-yaml-num">60</span>
+  <span class="rc-yaml-key">pii_detection</span>: <span class="rc-yaml-bool">true</span>
+  <span class="rc-yaml-key">jailbreak_detection</span>: <span class="rc-yaml-bool">false</span></pre>
+                        </div>
+                    </div>
+
+                </div><!-- /rd-body -->
+            </div><!-- /rd-layout -->
+        </main>
+    </div>
+
+    <script>
+        function switchTab(id, el) {
+            document.querySelectorAll('.rd-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.rd-tab-panel').forEach(p => p.classList.remove('is-active'));
+            el.classList.add('active');
+            document.getElementById('rdTab-' + id).classList.add('is-active');
+        }
+        function rdToggleForm(id) {
+            document.getElementById(id).classList.toggle('is-open');
+        }
+    </script>
+</body>
+</html>
