@@ -6,6 +6,7 @@
     <title>Kortex - Agentic Workspaces</title>
         <script src="../assets/js/kaiden-theme.js"></script>
 <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <script src="../assets/js/page-data.js"></script>
     <style>
@@ -943,11 +944,45 @@
             user-select: none;
         }
 
-        /* right spacer matches traffic-lights + nav width so the search stays centered */
-        .titlebar-spacer {
-            flex-shrink: 0;
-            width: calc(16px + 3*12px + 2*7px + 12px + 2*28px + 2px + 12px);
+        /* Status dot in table */
+        .sess-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
         }
+        .sess-status-dot.running {
+            background: #34d399;
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+            animation: pulse 2s infinite;
+        }
+        .sess-status-dot.stopped {
+            background: var(--kd-text-muted);
+            opacity: 0.5;
+        }
+
+        /* Agent badge in table cell */
+        .sess-agent-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+        .sess-agent-badge.claude-code { background: rgba(217,119,6,0.15); color: #fbbf24; }
+        .sess-agent-badge.codex       { background: rgba(14,165,233,0.15); color: #38bdf8; }
+        .sess-agent-badge.opencode    { background: rgba(16,185,129,0.15); color: #34d399; }
+
+        /* Action buttons reuse models-table-icon-btn; tint variants */
+        .models-table-icon-btn.sess-stop   { color: #f87171; }
+        .models-table-icon-btn.sess-stop:hover { background: rgba(239,68,68,0.18); border-color: transparent; color: #f87171; }
+        .models-table-icon-btn.sess-play   { color: #34d399; }
+        .models-table-icon-btn.sess-play:hover { background: rgba(16,185,129,0.18); border-color: transparent; color: #34d399; }
+        .models-table-icon-btn.sess-del    { color: var(--kd-text-muted); }
+        .models-table-icon-btn.sess-del:hover  { background: rgba(239,68,68,0.14); border-color: transparent; color: #f87171; }
     </style>
 </head>
 <body class="sessions-page">
@@ -1019,19 +1054,21 @@
                 </div>
 
                 <!-- Sessions List -->
-                <div class="sessions-list">
-                    <div class="sessions-column-header">
-                        <span class="sessions-col-h-spacer" aria-hidden="true"></span>
-                        <span class="sessions-col-h-label">Workspace</span>
-                        <span class="sessions-col-h-label">Context</span>
-                        <span class="sessions-col-h-label">Runtime
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" style="opacity:.5;vertical-align:middle;margin-left:2px"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
-                        </span>
-                        <span class="sessions-col-h-label sessions-col-h-label--time">Time
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" style="opacity:.5;vertical-align:middle;margin-left:2px"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
-                        </span>
-                        <span aria-hidden="true"></span>
-                    </div>
+                <div class="models-table-wrap">
+                    <table class="models-data-table" id="sessionsTable" aria-label="Agentic Workspaces">
+                        <thead>
+                            <tr>
+                                <th class="models-table-status" scope="col">Status</th>
+                                <th scope="col">Workspace</th>
+                                <th scope="col">Agent</th>
+                                <th scope="col">Runtime</th>
+                                <th scope="col" style="text-align:right">Time</th>
+                                <th scope="col" style="text-align:right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionsTableBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
@@ -1086,50 +1123,31 @@
         });
 
         function filterSessions() {
-            const searchInput = document.getElementById('sessionSearch');
-            const filter = searchInput.value.toLowerCase();
-            const rows = document.querySelectorAll('.session-row');
-
-            rows.forEach(row => {
-                const titleEl = row.querySelector('.session-row-title');
-                const subtitleEl = row.querySelector('.session-row-subtitle');
-                const tagsEl = row.querySelector('.session-row-tags');
-                if (!titleEl || !subtitleEl) return;
-                const title = titleEl.textContent.toLowerCase();
-                const subtitle = subtitleEl.textContent.toLowerCase();
-                const tags = tagsEl ? tagsEl.textContent.toLowerCase() : '';
-                if (title.includes(filter) || subtitle.includes(filter) || tags.includes(filter)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+            const filter = document.getElementById('sessionSearch').value.toLowerCase();
+            document.querySelectorAll('#sessionsTableBody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
             });
         }
 
         function deleteSession(sessionId) {
             if (confirm('Delete this workspace? This cannot be undone.')) {
-                const row = event.target.closest('.session-row');
+                const row = event.target.closest('tr');
                 if (row) row.remove();
             }
         }
 
         function startSession(sessionId) {
-            const row = event.target.closest('.session-row');
-            const dot = row.querySelector('.session-row-status-dot');
-            const label = row.querySelector('.session-row-status-label');
-            dot.className = 'session-row-status-dot running';
-            label.className = 'session-row-status-label running';
-            label.textContent = 'Running';
+            const row = event.target.closest('tr');
+            const dot = row.querySelector('.sess-status-dot');
+            if (dot) { dot.className = 'sess-status-dot running'; }
         }
 
         function stopSession(sessionId) {
             if (confirm('Are you sure you want to stop this session?')) {
-                const row = event.target.closest('.session-row');
-                const dot = row.querySelector('.session-row-status-dot');
-                const label = row.querySelector('.session-row-status-label');
-                dot.className = 'session-row-status-dot stopped';
-                label.className = 'session-row-status-label stopped';
-                label.textContent = 'Stopped';
+                const row = event.target.closest('tr');
+                const dot = row.querySelector('.sess-status-dot');
+                if (dot) { dot.className = 'sess-status-dot stopped'; }
             }
         }
     </script>
