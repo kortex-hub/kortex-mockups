@@ -567,6 +567,75 @@
             color: var(--kd-text-muted);
         }
 
+        /* ── Cost card ── */
+        .cost-total-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .cost-total-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--kd-text-primary);
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+        }
+        .cost-total-label {
+            font-size: 11px;
+            color: var(--kd-text-muted);
+        }
+        .cost-token-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .cost-token-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .cost-token-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--kd-text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        .cost-token-label {
+            font-size: 10px;
+            color: var(--kd-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .cost-model-row {
+            padding-top: 10px;
+            border-top: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .cost-model-name {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--kd-text-muted);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cost-rate-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--kd-accent) 10%, transparent);
+            color: var(--kd-accent-dim);
+            border: 1px solid color-mix(in srgb, var(--kd-accent) 25%, transparent);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
         .terminal-window {
             background: #0a0a0f;
             border: 1px solid var(--kd-border);
@@ -1192,6 +1261,39 @@
                                     <div class="stat-box"><div class="stat-box-value">243</div><div class="stat-box-label">lines</div></div>
                                 </div>
                             </div>
+
+                            <!-- Cost -->
+                            <div class="summary-card">
+                                <div class="summary-card-header">
+                                    <div class="summary-card-title">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                        Cost
+                                    </div>
+                                </div>
+                                <div class="cost-total-row">
+                                    <span class="cost-total-value">$3.23</span>
+                                    <span class="cost-total-label">this session</span>
+                                </div>
+                                <div class="cost-token-row">
+                                    <div class="cost-token-block">
+                                        <span class="cost-token-value">485K</span>
+                                        <span class="cost-token-label">Input tkns</span>
+                                    </div>
+                                    <div class="cost-token-block">
+                                        <span class="cost-token-value">118K</span>
+                                        <span class="cost-token-label">Output tkns</span>
+                                    </div>
+                                    <div class="cost-token-block">
+                                        <span class="cost-token-value">~$1.62</span>
+                                        <span class="cost-token-label">per hour</span>
+                                    </div>
+                                </div>
+                                <div class="cost-model-row">
+                                    <span class="cost-model-name">claude-4.6-sonnet-medium</span>
+                                    <span class="cost-rate-badge">$3 / $15 per 1M</span>
+                                </div>
+                            </div>
+
                         </div>
 
                         <!-- Resources strip: Skills + MCP + Filesystem -->
