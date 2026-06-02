@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden — GitHub MCP</title>
+    <script src="../assets/js/kaiden-theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .gh-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        /* ── Header ── */
+        .gh-header { padding: 22px 40px 0; flex-shrink: 0; }
+
+        .gh-breadcrumb {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; margin-bottom: 16px;
+        }
+        .gh-breadcrumb a { color: var(--kd-text-muted); text-decoration: none; transition: color 0.15s; }
+        .gh-breadcrumb a:hover { color: var(--kd-accent); }
+        .gh-breadcrumb svg { width: 13px; height: 13px; color: var(--kd-text-muted); }
+        .gh-breadcrumb span { color: var(--kd-text-primary); font-weight: 500; }
+
+        .gh-hero {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; gap: 20px; flex-wrap: wrap;
+        }
+        .gh-hero-left { display: flex; align-items: center; gap: 16px; }
+        .gh-logo {
+            width: 52px; height: 52px; border-radius: 14px;
+            background: #24292f;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid color-mix(in srgb, var(--kd-border) 80%, transparent);
+        }
+        html:not(.dark) .gh-logo { background: #24292f; }
+        .gh-logo svg { width: 30px; height: 30px; color: #fff; }
+        .gh-hero-title { font-size: 24px; font-weight: 700; color: var(--kd-text-primary); letter-spacing: -0.02em; margin: 0 0 4px; }
+        .gh-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .gh-version { font-size: 12px; color: var(--kd-text-muted); font-family: 'SF Mono','Fira Code',monospace; }
+        .gh-status-badge {
+            font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+        }
+        .gh-status-badge.not-installed {
+            background: rgba(251,191,36,0.12); color: #fbbf24;
+            border: 1px solid rgba(251,191,36,0.25);
+        }
+        .gh-status-badge.installed {
+            background: rgba(52,211,153,0.12); color: #34d399;
+            border: 1px solid rgba(52,211,153,0.25);
+        }
+        .gh-actions { display: flex; gap: 10px; align-items: center; }
+
+        .gh-btn-install {
+            padding: 9px 20px; background: #24292f; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 9px; color: #fff; font-size: 13px; font-weight: 600;
+            font-family: inherit; cursor: pointer; transition: all 0.15s;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .gh-btn-install:hover { background: #333; }
+        .gh-btn-install svg { width: 14px; height: 14px; }
+
+        .gh-btn-ghost {
+            padding: 9px 16px; background: var(--kd-bg-subtle);
+            border: 1px solid var(--kd-border); border-radius: 9px;
+            color: var(--kd-text-primary); font-size: 13px; font-weight: 500;
+            font-family: inherit; cursor: pointer; transition: all 0.15s;
+        }
+        .gh-btn-ghost:hover { border-color: var(--kd-text-muted); }
+
+        /* ── Tabs ── */
+        .gh-tabs {
+            display: flex; gap: 0; border-bottom: 1px solid var(--kd-border);
+            padding: 0 40px; margin-top: 20px; overflow-x: auto; flex-shrink: 0;
+        }
+        .gh-tab {
+            padding: 10px 16px; font-size: 13px; font-weight: 500;
+            color: var(--kd-text-muted); border: none; background: none;
+            cursor: pointer; border-bottom: 2px solid transparent;
+            margin-bottom: -1px; white-space: nowrap;
+            transition: color 0.15s, border-color 0.15s; font-family: inherit;
+        }
+        .gh-tab:hover { color: var(--kd-text-primary); }
+        .gh-tab.active { color: var(--kd-text-primary); border-bottom-color: #24292f; font-weight: 600; }
+        html.dark .gh-tab.active { border-bottom-color: #e6edf3; }
+
+        /* ── Body ── */
+        .gh-body { flex: 1; overflow-y: auto; padding: 28px 40px; }
+        .gh-body::-webkit-scrollbar { width: 6px; }
+        .gh-body::-webkit-scrollbar-track { background: transparent; }
+        .gh-body::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--kd-accent) 22%, transparent); border-radius: 3px; }
+
+        .gh-tab-panel { display: none; }
+        .gh-tab-panel.active { display: block; }
+
+        /* ── Cards ── */
+        .gh-card {
+            background: var(--kd-bg-card); border: 1px solid var(--kd-border);
+            border-radius: 14px; padding: 22px 24px; margin-bottom: 16px;
+        }
+        .gh-card-title {
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--kd-text-muted); margin: 0 0 16px;
+        }
+        .gh-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .gh-card-header .gh-card-title { margin-bottom: 0; }
+
+        /* ── Overview: capability grid ── */
+        .gh-cap-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px; margin-bottom: 0;
+        }
+        .gh-cap-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 12px 14px;
+            background: color-mix(in srgb, var(--kd-bg-subtle) 50%, transparent);
+            border: 1px solid color-mix(in srgb, var(--kd-border) 70%, transparent);
+            border-radius: 10px;
+        }
+        .gh-cap-icon {
+            width: 30px; height: 30px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .gh-cap-icon svg { width: 14px; height: 14px; }
+        .gh-cap-icon.repo    { background: rgba(79,195,247,0.12); color: #4fc3f7; }
+        .gh-cap-icon.issue   { background: rgba(52,211,153,0.12); color: #34d399; }
+        .gh-cap-icon.pr      { background: rgba(139,92,246,0.12); color: #c4b5fd; }
+        .gh-cap-icon.action  { background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .gh-cap-icon.file    { background: rgba(6,182,212,0.12);  color: #67e8f9; }
+        .gh-cap-icon.search  { background: rgba(249,115,22,0.12); color: #fb923c; }
+        .gh-cap-name  { font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 2px; }
+        .gh-cap-desc  { font-size: 11px; color: var(--kd-text-muted); line-height: 1.4; }
+
+        /* ── Info rows ── */
+        .gh-info-row {
+            display: flex; gap: 10px; align-items: baseline;
+            padding: 9px 0; border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 50%, transparent);
+            font-size: 13px;
+        }
+        .gh-info-row:last-child { border-bottom: none; }
+        .gh-info-label {
+            width: 170px; flex-shrink: 0; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.04em; color: var(--kd-text-muted);
+        }
+        .gh-info-value { color: var(--kd-text-primary); flex: 1; min-width: 0; }
+
+        /* ── Auth tab ── */
+        .gh-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+        .gh-field:last-child { margin-bottom: 0; }
+        .gh-label { font-size: 12px; font-weight: 600; color: var(--kd-text-muted); }
+        .gh-input {
+            padding: 9px 12px; background: var(--kd-surface-input);
+            border: 1px solid var(--kd-surface-input-border); border-radius: 9px;
+            color: var(--kd-text-primary); font-size: 13px;
+            font-family: 'SF Mono','Fira Code',monospace; outline: none; width: 100%;
+            box-sizing: border-box; transition: border-color 0.15s;
+        }
+        .gh-input:focus { border-color: rgba(36,41,47,0.6); }
+        html.dark .gh-input:focus { border-color: rgba(230,237,243,0.35); }
+        .gh-hint { font-size: 11px; color: var(--kd-text-muted); margin-top: 4px; line-height: 1.4; }
+
+        .gh-token-type-row {
+            display: flex; gap: 8px; margin-bottom: 16px;
+        }
+        .gh-token-type-btn {
+            flex: 1; padding: 8px 12px; border-radius: 9px;
+            border: 1px solid var(--kd-border); background: transparent;
+            color: var(--kd-text-muted); font-size: 12px; font-weight: 500;
+            cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: center;
+        }
+        .gh-token-type-btn.active {
+            border-color: #24292f; background: #24292f; color: #fff;
+        }
+        html.dark .gh-token-type-btn.active {
+            border-color: rgba(230,237,243,0.5); background: rgba(230,237,243,0.1); color: #e6edf3;
+        }
+
+        /* ── Scope grid ── */
+        .gh-scopes-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 8px;
+        }
+        .gh-scope-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 12px; border-radius: 9px;
+            border: 1px solid var(--kd-border);
+            background: color-mix(in srgb, var(--kd-bg-subtle) 40%, transparent);
+        }
+        .gh-scope-item.required { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.04); }
+        .gh-scope-item.optional { border-color: color-mix(in srgb, var(--kd-border) 80%, transparent); }
+        .gh-scope-check { flex-shrink: 0; margin-top: 1px; accent-color: #24292f; width: 14px; height: 14px; }
+        html.dark .gh-scope-check { accent-color: #e6edf3; }
+        .gh-scope-body { flex: 1; min-width: 0; }
+        .gh-scope-name { font-size: 12px; font-weight: 600; font-family: 'SF Mono','Fira Code',monospace; color: var(--kd-text-primary); margin-bottom: 2px; }
+        .gh-scope-desc { font-size: 11px; color: var(--kd-text-muted); line-height: 1.35; }
+        .gh-scope-badge {
+            font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+            padding: 2px 6px; border-radius: 20px; flex-shrink: 0;
+        }
+        .gh-scope-badge.required { background: rgba(52,211,153,0.15); color: #34d399; }
+        .gh-scope-badge.optional { background: rgba(107,114,128,0.12); color: var(--kd-text-muted); }
+
+        /* ── Tool category ── */
+        .gh-tool-category { margin-bottom: 20px; }
+        .gh-tool-category-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--kd-text-muted);
+            margin-bottom: 8px; padding-bottom: 6px;
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+        }
+        .gh-tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 6px;
+        }
+        .gh-tool-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 12px; border-radius: 9px; border: 1px solid transparent;
+            transition: background 0.12s, border-color 0.12s;
+        }
+        .gh-tool-item:hover {
+            background: color-mix(in srgb, var(--kd-accent) 5%, transparent);
+            border-color: color-mix(in srgb, var(--kd-border) 80%, transparent);
+        }
+        .gh-tool-check { flex-shrink: 0; margin-top: 2px; accent-color: #24292f; }
+        html.dark .gh-tool-check { accent-color: #e6edf3; }
+        .gh-tool-name { font-size: 12px; font-weight: 600; font-family: 'SF Mono','Fira Code',monospace; color: var(--kd-text-primary); margin-bottom: 1px; }
+        .gh-tool-desc { font-size: 11px; color: var(--kd-text-muted); line-height: 1.35; }
+
+        /* ── JSON config ── */
+        .gh-json-wrap {
+            background: color-mix(in srgb, #000 30%, transparent);
+            border: 1px solid var(--kd-border); border-radius: 12px; overflow: hidden;
+        }
+        .gh-json-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px; border-bottom: 1px solid var(--kd-border);
+            background: color-mix(in srgb, #000 15%, transparent);
+        }
+        .gh-json-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted); }
+        .gh-json-copy {
+            font-size: 11px; font-weight: 500; color: var(--kd-text-muted);
+            background: none; border: 1px solid var(--kd-border); border-radius: 6px;
+            padding: 3px 9px; cursor: pointer; transition: all 0.15s; font-family: inherit;
+        }
+        .gh-json-copy:hover { border-color: var(--kd-text-muted); color: var(--kd-text-primary); }
+        .gh-json-code {
+            padding: 20px 22px; font-family: 'SF Mono','Fira Code',monospace;
+            font-size: 12px; line-height: 1.65; overflow-x: auto; margin: 0; white-space: pre;
+        }
+        .jk  { color: #c4b5fd; }
+        .jstr{ color: #a8e6fc; }
+        .jnum{ color: #fbbf24; }
+        .jcmt{ color: #4b5563; }
+
+        /* ── Save bar ── */
+        .gh-save-bar {
+            display: flex; justify-content: flex-end; align-items: center;
+            gap: 10px; padding: 16px 40px;
+            border-top: 1px solid var(--kd-border);
+            background: var(--kd-bg-card); flex-shrink: 0;
+        }
+        .gh-save-btn {
+            padding: 9px 22px; background: #24292f; border: none; border-radius: 9px;
+            color: #fff; font-size: 13px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 7px;
+        }
+        .gh-save-btn:hover { background: #333; }
+        .gh-cancel-btn {
+            padding: 9px 16px; background: transparent; border: 1px solid var(--kd-border);
+            border-radius: 9px; color: var(--kd-text-muted); font-size: 13px;
+            font-family: inherit; cursor: pointer; transition: all 0.15s;
+        }
+        .gh-cancel-btn:hover { border-color: var(--kd-text-muted); color: var(--kd-text-primary); }
+
+        /* ── Account status row ── */
+        .gh-account-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px; border-radius: 10px;
+            border: 1px solid rgba(52,211,153,0.25);
+            background: rgba(52,211,153,0.05); margin-bottom: 20px;
+        }
+        .gh-account-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #24292f; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; color: #fff; font-size: 14px; font-weight: 700;
+        }
+        .gh-account-name { font-size: 13px; font-weight: 600; color: var(--kd-text-primary); }
+        .gh-account-sub { font-size: 11px; color: var(--kd-text-muted); margin-top: 1px; }
+        .gh-account-right { margin-left: auto; flex-shrink: 0; }
+        .gh-connected-pill {
+            font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+            background: rgba(52,211,153,0.15); color: #34d399;
+            border: 1px solid rgba(52,211,153,0.25);
+        }
+    </style>
+</head>
+<body class="mcp-page">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+            <div class="gh-layout">
+
+                <!-- Header -->
+                <div class="gh-header">
+                    <div class="gh-breadcrumb">
+                        <a href="index.html">MCP Servers</a>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <a href="index.html">Catalog</a>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <span>com.github.mcp</span>
+                    </div>
+                    <div class="gh-hero">
+                        <div class="gh-hero-left">
+                            <div class="gh-logo">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.337 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                            </div>
+                            <div>
+                                <h1 class="gh-hero-title">GitHub MCP Server</h1>
+                                <div class="gh-hero-meta">
+                                    <span class="gh-version">com.github.mcp · Catalog</span>
+                                    <span class="gh-status-badge not-installed">Not installed</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gh-actions">
+                            <button class="gh-btn-ghost" onclick="window.location.href='index.html'">Cancel</button>
+                            <button class="gh-btn-install" onclick="installGithubMcp(this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Install &amp; Configure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="gh-tabs" role="tablist">
+                    <button class="gh-tab active" onclick="switchTab('overview', this)">Overview</button>
+                    <button class="gh-tab" onclick="switchTab('auth', this)">Authentication</button>
+                    <button class="gh-tab" onclick="switchTab('tools', this)">Tools <span style="font-size:10px;margin-left:4px;opacity:.7">24</span></button>
+                    <button class="gh-tab" onclick="switchTab('config', this)">JSON Config</button>
+                </div>
+
+                <!-- Body -->
+                <div class="gh-body">
+
+                    <!-- ── Overview ── -->
+                    <div class="gh-tab-panel active" id="ghTab-overview">
+                        <div class="gh-card">
+                            <div class="gh-card-title">About</div>
+                            <p style="font-size:13px;color:var(--kd-text-secondary);line-height:1.6;margin:0 0 16px;">GitHub's official MCP Server gives agents full access to the GitHub API through a standard Model Context Protocol interface. Agents can read and write repositories, manage issues and pull requests, trigger Actions workflows, and search code — all via natural language instructions.</p>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Publisher</span>
+                                <span class="gh-info-value">GitHub, Inc. (official)</span>
+                            </div>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Source</span>
+                                <span class="gh-info-value"><a href="#" style="color:var(--kd-accent-dim)">github.com/github/github-mcp-server</a></span>
+                            </div>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Transport</span>
+                                <span class="gh-info-value">stdio (runs as local process)</span>
+                            </div>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Install command</span>
+                                <span class="gh-info-value"><code style="font-size:11px;font-family:'SF Mono','Fira Code',monospace;background:color-mix(in srgb,var(--kd-bg-subtle) 60%,transparent);padding:2px 6px;border-radius:4px;">npx @github/mcp-server</code></span>
+                            </div>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Tools</span>
+                                <span class="gh-info-value">24 tools across 7 categories</span>
+                            </div>
+                            <div class="gh-info-row">
+                                <span class="gh-info-label">Requires</span>
+                                <span class="gh-info-value">GitHub Personal Access Token (classic or fine-grained)</span>
+                            </div>
+                        </div>
+
+                        <div class="gh-card">
+                            <div class="gh-card-title">Capabilities</div>
+                            <div class="gh-cap-grid">
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon repo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                                    <div><div class="gh-cap-name">Repositories</div><div class="gh-cap-desc">List, create, and inspect repos. Read and write files and branches.</div></div>
+                                </div>
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                    <div><div class="gh-cap-name">Issues</div><div class="gh-cap-desc">Create, comment, label, and close issues programmatically.</div></div>
+                                </div>
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon pr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg></div>
+                                    <div><div class="gh-cap-name">Pull Requests</div><div class="gh-cap-desc">Open, review, request reviewers, and merge pull requests.</div></div>
+                                </div>
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                                    <div><div class="gh-cap-name">GitHub Actions</div><div class="gh-cap-desc">List workflows and trigger runs on any branch or ref.</div></div>
+                                </div>
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                                    <div><div class="gh-cap-name">Releases &amp; Tags</div><div class="gh-cap-desc">List, create, and publish releases with release notes.</div></div>
+                                </div>
+                                <div class="gh-cap-item">
+                                    <div class="gh-cap-icon search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+                                    <div><div class="gh-cap-name">Code Search</div><div class="gh-cap-desc">Search across all repos for code patterns, symbols, or text.</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Authentication ── -->
+                    <div class="gh-tab-panel" id="ghTab-auth">
+
+                        <!-- Connected account (mock: not connected) -->
+                        <div class="gh-card">
+                            <div class="gh-card-title">GitHub Account</div>
+                            <p style="font-size:13px;color:var(--kd-text-muted);margin:0 0 16px;">No account connected. Provide a Personal Access Token below and save to connect.</p>
+
+                            <div class="gh-field">
+                                <label class="gh-label">Token type</label>
+                                <div class="gh-token-type-row">
+                                    <button class="gh-token-type-btn active" onclick="setTokenType('classic', this)">Classic PAT</button>
+                                    <button class="gh-token-type-btn" onclick="setTokenType('fine', this)">Fine-grained PAT</button>
+                                </div>
+                                <p class="gh-hint" id="tokenTypeHint">Classic tokens grant broad permissions by scope. Simpler to set up; recommended for personal use and development workflows.</p>
+                            </div>
+
+                            <div class="gh-field">
+                                <label class="gh-label">Personal Access Token <span style="color:#f87171;margin-left:2px">*</span></label>
+                                <div style="position:relative">
+                                    <input type="password" class="gh-input" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+                                    <button onclick="toggleTokenVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--kd-text-muted);cursor:pointer;padding:4px">
+                                        <svg id="eyeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                </div>
+                                <p class="gh-hint">Stored encrypted in the local Secret Vault. Generate at <a href="#" style="color:var(--kd-accent-dim)">github.com/settings/tokens</a></p>
+                            </div>
+
+                            <div class="gh-field" id="ghEnterpriseField" style="display:none">
+                                <label class="gh-label">GitHub Enterprise URL <span style="font-weight:400;color:var(--kd-text-muted)">(optional)</span></label>
+                                <input type="url" class="gh-input" placeholder="https://github.your-company.com" autocomplete="off">
+                                <p class="gh-hint">Leave blank to use github.com</p>
+                            </div>
+
+                            <div style="margin-top:4px">
+                                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--kd-text-secondary);cursor:pointer">
+                                    <input type="checkbox" id="enterpriseCheck" onclick="toggleEnterprise()" style="accent-color:#24292f;width:14px;height:14px">
+                                    Use GitHub Enterprise Server
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Token scopes -->
+                        <div class="gh-card">
+                            <div class="gh-card-title">Required Token Scopes</div>
+                            <p style="font-size:13px;color:var(--kd-text-muted);margin:0 0 16px;">Select the scopes your token has been granted. Required scopes are needed for core functionality; optional scopes unlock additional tools.</p>
+                            <div class="gh-scopes-grid">
+                                <div class="gh-scope-item required">
+                                    <input type="checkbox" class="gh-scope-check" checked>
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">repo</div>
+                                        <div class="gh-scope-desc">Full access to public and private repositories — read/write code, issues, PRs, wikis</div>
+                                    </div>
+                                    <span class="gh-scope-badge required">Required</span>
+                                </div>
+                                <div class="gh-scope-item required">
+                                    <input type="checkbox" class="gh-scope-check" checked>
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">read:user</div>
+                                        <div class="gh-scope-desc">Read-only access to profile data and email addresses</div>
+                                    </div>
+                                    <span class="gh-scope-badge required">Required</span>
+                                </div>
+                                <div class="gh-scope-item optional">
+                                    <input type="checkbox" class="gh-scope-check" checked>
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">workflow</div>
+                                        <div class="gh-scope-desc">Trigger and manage GitHub Actions workflows</div>
+                                    </div>
+                                    <span class="gh-scope-badge optional">Optional</span>
+                                </div>
+                                <div class="gh-scope-item optional">
+                                    <input type="checkbox" class="gh-scope-check" checked>
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">read:org</div>
+                                        <div class="gh-scope-desc">List teams and org membership for the authenticated user</div>
+                                    </div>
+                                    <span class="gh-scope-badge optional">Optional</span>
+                                </div>
+                                <div class="gh-scope-item optional">
+                                    <input type="checkbox" class="gh-scope-check">
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">gist</div>
+                                        <div class="gh-scope-desc">Create and manage gists (public and secret)</div>
+                                    </div>
+                                    <span class="gh-scope-badge optional">Optional</span>
+                                </div>
+                                <div class="gh-scope-item optional">
+                                    <input type="checkbox" class="gh-scope-check">
+                                    <div class="gh-scope-body">
+                                        <div class="gh-scope-name">admin:repo_hook</div>
+                                        <div class="gh-scope-desc">Manage webhooks on repositories you own or admin</div>
+                                    </div>
+                                    <span class="gh-scope-badge optional">Optional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── Tools ── -->
+                    <div class="gh-tab-panel" id="ghTab-tools">
+                        <div class="gh-card">
+                            <div class="gh-card-header">
+                                <div class="gh-card-title">Available Tools</div>
+                                <span style="font-size:12px;color:var(--kd-text-muted)">24 tools · <a href="#" onclick="toggleAllTools(true);return false" style="color:var(--kd-accent-dim)">Enable all</a> · <a href="#" onclick="toggleAllTools(false);return false" style="color:var(--kd-text-muted)">Disable all</a></span>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Repositories</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_repos</div><div class="gh-tool-desc">List repos for a user or org</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">get_repo</div><div class="gh-tool-desc">Get details about a repository</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_repo</div><div class="gh-tool-desc">Create a new repository</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_branches</div><div class="gh-tool-desc">List branches in a repository</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_branch</div><div class="gh-tool-desc">Create a new branch from ref</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_commits</div><div class="gh-tool-desc">List commits on a branch</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Files</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">get_file</div><div class="gh-tool-desc">Read file contents from any ref</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_file</div><div class="gh-tool-desc">Create or update a file with a commit</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">search_code</div><div class="gh-tool-desc">Search code across all repos</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Issues</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_issues</div><div class="gh-tool-desc">List open/closed issues with filters</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_issue</div><div class="gh-tool-desc">Open a new issue with title and body</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">add_comment</div><div class="gh-tool-desc">Comment on an issue or PR</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">add_labels</div><div class="gh-tool-desc">Apply labels to an issue or PR</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Pull Requests</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_prs</div><div class="gh-tool-desc">List open and closed pull requests</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_pr</div><div class="gh-tool-desc">Open a pull request between branches</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">merge_pr</div><div class="gh-tool-desc">Merge a pull request (merge/squash/rebase)</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">request_review</div><div class="gh-tool-desc">Request reviewers on a pull request</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">GitHub Actions</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">get_workflows</div><div class="gh-tool-desc">List workflows defined in the repo</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">trigger_workflow</div><div class="gh-tool-desc">Dispatch a workflow_dispatch event</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Releases</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">list_releases</div><div class="gh-tool-desc">List releases and their assets</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">create_release</div><div class="gh-tool-desc">Publish a new GitHub Release with notes</div></div></div>
+                                </div>
+                            </div>
+
+                            <div class="gh-tool-category">
+                                <div class="gh-tool-category-label">Users &amp; Gists</div>
+                                <div class="gh-tool-grid">
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check" checked><div><div class="gh-tool-name">get_user</div><div class="gh-tool-desc">Get public profile of any GitHub user</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check"><div><div class="gh-tool-name">list_gists</div><div class="gh-tool-desc">List gists for the authenticated user</div></div></div>
+                                    <div class="gh-tool-item"><input type="checkbox" class="gh-tool-check"><div><div class="gh-tool-name">create_gist</div><div class="gh-tool-desc">Create a public or secret gist</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── JSON Config ── -->
+                    <div class="gh-tab-panel" id="ghTab-config">
+                        <div class="gh-card">
+                            <p style="font-size:13px;color:var(--kd-text-secondary);line-height:1.6;margin:0 0 16px;">
+                                The configuration below is written to <code style="font-size:11px;font-family:'SF Mono','Fira Code',monospace;background:color-mix(in srgb,var(--kd-bg-subtle) 60%,transparent);padding:2px 6px;border-radius:4px;">~/.kdn/config/agents.json</code> under the <code style="font-size:11px;font-family:'SF Mono','Fira Code',monospace;background:color-mix(in srgb,var(--kd-bg-subtle) 60%,transparent);padding:2px 6px;border-radius:4px;">mcpServers</code> key when you click <strong>Install &amp; Configure</strong>.
+                            </p>
+                        </div>
+
+                        <div class="gh-json-wrap">
+                            <div class="gh-json-header">
+                                <span class="gh-json-label">~/.kdn/config/agents.json (excerpt)</span>
+                                <button class="gh-json-copy" onclick="alert('Mock: copied to clipboard')">Copy</button>
+                            </div>
+                            <pre class="gh-json-code">{
+  <span class="jk">"mcpServers"</span>: {
+    <span class="jk">"github"</span>: {
+      <span class="jk">"command"</span>: <span class="jstr">"npx"</span>,
+      <span class="jk">"args"</span>: [<span class="jstr">"-y"</span>, <span class="jstr">"@github/mcp-server"</span>],
+      <span class="jk">"env"</span>: {
+        <span class="jk">"GITHUB_PERSONAL_ACCESS_TOKEN"</span>: <span class="jstr">"&lt;your-token-from-vault&gt;"</span>
+      }
+    }
+  }
+}</pre>
+                        </div>
+
+                        <div class="gh-json-wrap" style="margin-top:14px;">
+                            <div class="gh-json-header">
+                                <span class="gh-json-label">Claude Desktop (claude_desktop_config.json)</span>
+                                <button class="gh-json-copy" onclick="alert('Mock: copied to clipboard')">Copy</button>
+                            </div>
+                            <pre class="gh-json-code">{
+  <span class="jk">"mcpServers"</span>: {
+    <span class="jk">"github"</span>: {
+      <span class="jk">"command"</span>: <span class="jstr">"npx"</span>,
+      <span class="jk">"args"</span>: [
+        <span class="jstr">"-y"</span>,
+        <span class="jstr">"@github/mcp-server"</span>,
+        <span class="jstr">"--toolsets"</span>,
+        <span class="jstr">"repos,issues,pull_requests,files,actions,releases"</span>
+      ],
+      <span class="jk">"env"</span>: {
+        <span class="jk">"GITHUB_PERSONAL_ACCESS_TOKEN"</span>: <span class="jstr">"ghp_xxxxxxxxxxxxxxxxxxxx"</span>
+      }
+    }
+  }
+}</pre>
+                        </div>
+
+                        <div class="gh-json-wrap" style="margin-top:14px;">
+                            <div class="gh-json-header">
+                                <span class="gh-json-label">GitHub Enterprise variant</span>
+                                <button class="gh-json-copy" onclick="alert('Mock: copied to clipboard')">Copy</button>
+                            </div>
+                            <pre class="gh-json-code">{
+  <span class="jk">"mcpServers"</span>: {
+    <span class="jk">"github"</span>: {
+      <span class="jk">"command"</span>: <span class="jstr">"npx"</span>,
+      <span class="jk">"args"</span>: [<span class="jstr">"-y"</span>, <span class="jstr">"@github/mcp-server"</span>],
+      <span class="jk">"env"</span>: {
+        <span class="jk">"GITHUB_PERSONAL_ACCESS_TOKEN"</span>: <span class="jstr">"ghp_xxxxxxxxxxxxxxxxxxxx"</span>,
+        <span class="jk">"GITHUB_HOST"</span>: <span class="jstr">"https://github.your-company.com"</span>,
+        <span class="jk">"GITHUB_API_URL"</span>: <span class="jstr">"https://github.your-company.com/api/v3"</span>
+      }
+    }
+  }
+}</pre>
+                        </div>
+                    </div>
+
+                </div><!-- /gh-body -->
+
+                <!-- Save bar -->
+                <div class="gh-save-bar">
+                    <button class="gh-cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
+                    <button class="gh-save-btn" onclick="installGithubMcp(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Install &amp; Configure
+                    </button>
+                </div>
+
+            </div><!-- /gh-layout -->
+        </main>
+    </div>
+
+    <script>
+        function switchTab(id, el) {
+            document.querySelectorAll('.gh-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.gh-tab-panel').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('ghTab-' + id).classList.add('active');
+        }
+
+        function setTokenType(type, el) {
+            document.querySelectorAll('.gh-token-type-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            const hint = document.getElementById('tokenTypeHint');
+            hint.textContent = type === 'classic'
+                ? 'Classic tokens grant broad permissions by scope. Simpler to set up; recommended for personal use and development workflows.'
+                : 'Fine-grained tokens are scoped to specific repositories and permissions. Preferred for production or shared environments.';
+        }
+
+        function toggleEnterprise() {
+            const field = document.getElementById('ghEnterpriseField');
+            const checked = document.getElementById('enterpriseCheck').checked;
+            field.style.display = checked ? 'flex' : 'none';
+        }
+
+        function toggleTokenVisibility() {
+            const input = document.getElementById('ghToken');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function toggleAllTools(enable) {
+            document.querySelectorAll('.gh-tool-check').forEach(cb => { cb.checked = enable; });
+        }
+
+        function installGithubMcp(btn) {
+            const token = document.getElementById('ghToken').value;
+            if (!token) {
+                switchTab('auth', document.querySelectorAll('.gh-tab')[1]);
+                document.getElementById('ghToken').focus();
+                return;
+            }
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Installed!';
+            btn.style.background = '#16a34a';
+            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+        }
+    </script>
+</body>
+</html>

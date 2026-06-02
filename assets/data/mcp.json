@@ -42,11 +42,12 @@
       "id": "github",
       "name": "com.github.mcp",
       "version": null,
-      "tools": null,
+      "tools": 24,
       "internal": false,
       "source": "Catalog",
       "description": "GitHub's official MCP Server",
-      "search": "com.github.mcp github official server"
+      "search": "com.github.mcp github official server",
+      "detailUrl": "github.html"
     },
     {
       "id": "sap-integration",
