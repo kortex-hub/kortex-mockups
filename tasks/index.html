@@ -4551,6 +4551,108 @@
             0%  { box-shadow: 0 0 0 2px rgba(248,113,113,0.6); }
             100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
         }
+
+        /* ── Cost section in Agent Details ── */
+        .rp-cost-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .rp-cost-stat {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1e3358;
+            border-radius: 8px;
+            padding: 9px 11px;
+        }
+        .rp-cost-stat-label {
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 3px;
+        }
+        .rp-cost-stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8eef7;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+        .rp-cost-stat-value.accent { color: #4fc3f7; }
+        .rp-cost-stat-sub {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 1px;
+        }
+
+        /* Cost comparison rows */
+        .rp-cost-compare { display: flex; flex-direction: column; gap: 5px; }
+        .rp-cost-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 11px;
+            border-radius: 8px;
+            border: 1px solid #1e3358;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.15s;
+        }
+        .rp-cost-row.current {
+            border-color: rgba(79,195,247,0.35);
+            background: rgba(79,195,247,0.05);
+        }
+        .rp-cost-row-icon {
+            width: 22px; height: 22px;
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 10px;
+        }
+        .rp-cost-row-icon.local  { background: rgba(52,211,153,0.15); color: #34d399; }
+        .rp-cost-row-icon.cloud  { background: rgba(79,195,247,0.12); color: #4fc3f7; }
+        .rp-cost-row-icon.router { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        .rp-cost-row-name { flex: 1; font-size: 12px; font-weight: 500; color: #e8eef7; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rp-cost-row-amount { font-size: 13px; font-weight: 700; color: #e8eef7; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
+        .rp-cost-row-amount.free { color: #34d399; }
+        .rp-cost-row-amount.cheaper { color: #34d399; font-size: 11px; }
+        .rp-cost-row-amount.expensive { color: #f87171; font-size: 11px; }
+        .rp-cost-row-amounts { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+
+        /* Router badge */
+        .rp-router-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 8px; border-radius: 6px;
+            background: rgba(139,92,246,0.12);
+            border: 1px solid rgba(139,92,246,0.25);
+            font-size: 10px; font-weight: 600; color: #c4b5fd;
+            margin-bottom: 10px;
+        }
+        .rp-router-badge svg { width: 11px; height: 11px; }
+
+        /* Router traffic breakdown */
+        .rp-router-breakdown { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+        .rp-router-tier {
+            display: flex; align-items: center; gap: 8px; font-size: 11px;
+        }
+        .rp-router-tier-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .rp-router-tier-name { flex: 1; color: #9ca3af; }
+        .rp-router-tier-pct { color: #6b7280; width: 28px; text-align: right; font-variant-numeric: tabular-nums; }
+        .rp-router-tier-bar { flex: 1; max-width: 60px; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .rp-router-tier-fill { height: 100%; border-radius: 2px; }
+        .rp-router-tier-cost { color: #e8eef7; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 36px; text-align: right; }
+
+        /* Savings callout */
+        .rp-savings-callout {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px; border-radius: 8px;
+            background: rgba(52,211,153,0.07);
+            border: 1px solid rgba(52,211,153,0.2);
+            margin-top: 8px;
+        }
+        .rp-savings-callout-icon { color: #34d399; flex-shrink: 0; }
+        .rp-savings-callout-icon svg { width: 13px; height: 13px; }
+        .rp-savings-headline { font-size: 12px; font-weight: 700; color: #34d399; }
+        .rp-savings-sub { font-size: 10px; color: #6b7280; margin-top: 1px; }
     </style>
 </head>
 <body class="tasks-page">
@@ -5115,21 +5217,38 @@
                 </div>
                 <div class="right-panel-tabs">
                     <button class="rp-tab active" data-rp-tab="overview" onclick="switchRpTab('overview', this)">Overview</button>
-                    <button class="rp-tab" data-rp-tab="context" onclick="switchRpTab('context', this)">Context</button>
                     <button class="rp-tab" data-rp-tab="changes" onclick="switchRpTab('changes', this)">Changes</button>
+                    <button class="rp-tab" data-rp-tab="context" onclick="switchRpTab('context', this)">Context</button>
                     <button class="rp-tab" data-rp-tab="sandbox" onclick="switchRpTab('sandbox', this)">Sandbox</button>
-                    <button class="rp-tab" data-rp-tab="monitor" onclick="switchRpTab('monitor', this)">Monitor</button>
                 </div>
 
                 <!-- Tab: Overview -->
                 <div class="rp-tab-content active" id="rpTabOverview">
-                    <!-- Goal -->
+
+                    <!-- 1. Token usage -->
                     <div class="rp-section">
-                        <div class="rp-section-title">Goal</div>
-                        <textarea class="rp-goal-input">Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.</textarea>
+                        <div class="rp-section-title">Session</div>
+                        <div class="rp-cost-stats">
+                            <div class="rp-cost-stat">
+                                <div class="rp-cost-stat-label">Requests</div>
+                                <div class="rp-cost-stat-value">34</div>
+                            </div>
+                            <div class="rp-cost-stat">
+                                <div class="rp-cost-stat-label">Input tokens</div>
+                                <div class="rp-cost-stat-value">485K</div>
+                            </div>
+                            <div class="rp-cost-stat">
+                                <div class="rp-cost-stat-label">Output tokens</div>
+                                <div class="rp-cost-stat-value">118K</div>
+                            </div>
+                            <div class="rp-cost-stat">
+                                <div class="rp-cost-stat-label">Duration</div>
+                                <div class="rp-cost-stat-value">2h 14m</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Project -->
+                    <!-- 2. Project -->
                     <div class="rp-section">
                         <div class="rp-section-title">Project</div>
                         <a href="../projects/details.html?project=doc-updater" class="rp-project-card" style="text-decoration: none;">
@@ -5142,7 +5261,7 @@
                         </a>
                     </div>
 
-                    <!-- Agent -->
+                    <!-- 3. Agent -->
                     <div class="rp-section">
                         <div class="rp-section-title">Agent</div>
                         <div class="rp-agent-card">
@@ -5152,6 +5271,50 @@
                                 <div class="rp-agent-model">Claude Sonnet 4.6</div>
                             </div>
                             <span class="rp-agent-change">Change</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Cost — semantic router view -->
+                    <div class="rp-section">
+                        <div class="rp-section-title" style="display:flex;align-items:center;justify-content:space-between">
+                            Cost
+                            <span class="rp-cost-stat-value accent" style="font-size:15px">$0.87</span>
+                        </div>
+                        <div class="rp-router-badge" style="margin-bottom:10px">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                            Routed via enterprise-router · :8901
+                        </div>
+                        <div class="rp-router-breakdown">
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#34d399"></span>
+                                <span class="rp-router-tier-name">Local · qwen3-code</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:61%;background:#34d399"></span></span>
+                                <span class="rp-router-tier-pct">61%</span>
+                                <span class="rp-router-tier-cost" style="color:#34d399">$0.00</span>
+                            </div>
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#fca5a5"></span>
+                                <span class="rp-router-tier-name">OpenShift AI · granite</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:28%;background:#fca5a5"></span></span>
+                                <span class="rp-router-tier-pct">28%</span>
+                                <span class="rp-router-tier-cost">$0.52</span>
+                            </div>
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#93c5fd"></span>
+                                <span class="rp-router-tier-name">Vertex AI · claude-sonnet</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:11%;background:#93c5fd"></span></span>
+                                <span class="rp-router-tier-pct">11%</span>
+                                <span class="rp-router-tier-cost">$0.35</span>
+                            </div>
+                        </div>
+                        <div class="rp-savings-callout" style="margin-top:8px">
+                            <div class="rp-savings-callout-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            </div>
+                            <div>
+                                <div class="rp-savings-headline">$2.36 saved · 73% reduction</div>
+                                <div class="rp-savings-sub">vs running all requests on claude-4.6-sonnet directly</div>
+                            </div>
                         </div>
                     </div>
 
@@ -5308,224 +5471,56 @@
                     </div>
                 </div>
 
-                <!-- Tab: Sandbox (Visualization) -->
+                <!-- Tab: Sandbox & Monitor (merged) -->
                 <div class="rp-tab-content" id="rpTabSandbox">
-                    <div class="sandbox-container" data-layer="0" id="sandboxContainer">
-                        <div class="sandbox-title">Sandbox</div>
-                        <div class="sandbox-subtitle">Each agent runs in an ephemeral microVM with layered isolation.</div>
-
-                        <div class="sandbox-cube-area">
-                            <div class="sandbox-cube-scene" id="sandboxCubeScene">
-                                <div class="sandbox-cube cube-outer">
-                                    <div class="face front"></div>
-                                    <div class="face back"></div>
-                                    <div class="face left"></div>
-                                    <div class="face right"></div>
-                                    <div class="face top"></div>
-                                    <div class="face bottom"></div>
-                                </div>
-                                <div class="sandbox-cube cube-mid">
-                                    <div class="face front"></div>
-                                    <div class="face back"></div>
-                                    <div class="face left"></div>
-                                    <div class="face right"></div>
-                                    <div class="face top"></div>
-                                    <div class="face bottom"></div>
-                                </div>
-                                <div class="sandbox-cube cube-inner">
-                                    <div class="face front"></div>
-                                    <div class="face back"></div>
-                                    <div class="face left"></div>
-                                    <div class="face right"></div>
-                                    <div class="face top"></div>
-                                    <div class="face bottom"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="sandbox-description" id="sandboxDesc">
-                            Each agent gets a short-lived microVM with its own kernel. The VM is destroyed after the task completes — nothing persists.
-                        </div>
-
-                        <div class="sandbox-nav">
-                            <button class="sandbox-nav-btn" id="sandboxBack" onclick="sandboxNav(-1)" disabled>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-                                Back
-                            </button>
-                            <div class="sandbox-dots">
-                                <div class="sandbox-dot active" data-dot="0"></div>
-                                <div class="sandbox-dot" data-dot="1"></div>
-                                <div class="sandbox-dot" data-dot="2"></div>
-                            </div>
-                            <button class="sandbox-nav-btn" id="sandboxDeeper" onclick="sandboxNav(1)">
-                                Deeper
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                            </button>
-                        </div>
-
-                        <div class="sandbox-layers" id="sandboxLayers">
-                            <div class="sandbox-layer active" data-sandbox-layer="0" onclick="goToSandboxLayer(0)">
-                                <div class="sandbox-layer-visual">
-                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <rect x="4" y="8" width="24" height="16" rx="2" stroke-opacity="0.6"/>
-                                        <rect x="7" y="11" width="8" height="4" rx="1" stroke-opacity="0.4"/>
-                                        <rect x="7" y="17" width="5" height="4" rx="1" stroke-opacity="0.4"/>
-                                        <circle cx="24" cy="13" r="1.5" fill="currentColor" opacity="0.5"/>
-                                        <circle cx="24" cy="19" r="1.5" fill="currentColor" opacity="0.3"/>
-                                    </svg>
-                                </div>
-                                <div class="sandbox-layer-info">
-                                    <span class="sandbox-layer-name">microVM</span>
-                                    <div class="sandbox-layer-tags">
-                                        <span class="sandbox-tag">ephemeral</span>
-                                        <span class="sandbox-tag">dedicated kernel</span>
-                                        <span class="sandbox-tag">memory isolation</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sandbox-layer" data-sandbox-layer="1" onclick="goToSandboxLayer(1)">
-                                <div class="sandbox-layer-visual">
-                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M6 8h20l-2 18H8L6 8z" stroke-opacity="0.6"/>
-                                        <path d="M6 8l3 -4h14l3 4" stroke-opacity="0.4"/>
-                                        <line x1="16" y1="12" x2="16" y2="22" stroke-opacity="0.3"/>
-                                        <line x1="11" y1="12" x2="12" y2="22" stroke-opacity="0.2"/>
-                                        <line x1="21" y1="12" x2="20" y2="22" stroke-opacity="0.2"/>
-                                    </svg>
-                                </div>
-                                <div class="sandbox-layer-info">
-                                    <span class="sandbox-layer-name">Filesystem</span>
-                                    <div class="sandbox-layer-tags">
-                                        <span class="sandbox-tag">overlay mount</span>
-                                        <span class="sandbox-tag">read-only rootfs</span>
-                                        <span class="sandbox-tag">tmpfs scratch</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sandbox-layer" data-sandbox-layer="2" onclick="goToSandboxLayer(2)">
-                                <div class="sandbox-layer-visual">
-                                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M16 3l11 6v14l-11 6L5 23V9l11-6z" stroke-opacity="0.6"/>
-                                        <path d="M16 3v26" stroke-opacity="0.2"/>
-                                        <path d="M5 9l11 6 11-6" stroke-opacity="0.3"/>
-                                        <circle cx="16" cy="16" r="3" stroke-opacity="0.4"/>
-                                    </svg>
-                                </div>
-                                <div class="sandbox-layer-info">
-                                    <span class="sandbox-layer-name">Syscall Filter</span>
-                                    <div class="sandbox-layer-tags">
-                                        <span class="sandbox-tag">seccomp</span>
-                                        <span class="sandbox-tag">landlock</span>
-                                        <span class="sandbox-tag">capabilities</span>
-                                        <span class="sandbox-tag">namespaces</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sandboxing Activities -->
-                        <div class="sandbox-activities">
-                            <div class="sandbox-activities-header">
-                                <span class="sandbox-activities-title">Sandboxing Activities</span>
-                                <span class="sandbox-activities-count" id="saCount">5 events</span>
-                            </div>
-                            <div class="sandbox-activity-list" id="saList">
-
-                                <div class="sandbox-activity">
-                                    <div class="sa-illust sa-net-blocked">
-                                        <div class="sa-boundary"></div>
-                                        <div class="sa-packet"></div>
-                                    </div>
-                                    <div class="sa-info">
-                                        <div class="sa-info-label">Outbound request blocked</div>
-                                        <div class="sa-info-detail">→ api.external-service.io:443</div>
-                                        <div class="sa-info-time">2s ago</div>
-                                    </div>
-                                    <span class="sa-badge sa-blocked">Blocked</span>
-                                </div>
-
-                                <div class="sandbox-activity">
-                                    <div class="sa-illust sa-net-allowed">
-                                        <div class="sa-boundary"></div>
-                                        <div class="sa-packet"></div>
-                                    </div>
-                                    <div class="sa-info">
-                                        <div class="sa-info-label">HTTPS request allowed</div>
-                                        <div class="sa-info-detail">→ registry.npmjs.org:443</div>
-                                        <div class="sa-info-time">5s ago</div>
-                                    </div>
-                                    <span class="sa-badge sa-allowed">Allowed</span>
-                                </div>
-
-                                <div class="sandbox-activity">
-                                    <div class="sa-illust sa-exec-blocked">
-                                        <div class="sa-exec-icon"></div>
-                                        <div class="sa-exec-arrow"></div>
-                                        <div class="sa-shield">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        </div>
-                                    </div>
-                                    <div class="sa-info">
-                                        <div class="sa-info-label">Process exec denied</div>
-                                        <div class="sa-info-detail">seccomp: /usr/bin/curl</div>
-                                        <div class="sa-info-time">8s ago</div>
-                                    </div>
-                                    <span class="sa-badge sa-blocked">Blocked</span>
-                                </div>
-
-                                <div class="sandbox-activity">
-                                    <div class="sa-illust sa-file-write">
-                                        <div class="sa-file-icon"></div>
-                                        <div class="sa-write-cursor"></div>
-                                        <div class="sa-boundary"></div>
-                                    </div>
-                                    <div class="sa-info">
-                                        <div class="sa-info-label">File write to scratch</div>
-                                        <div class="sa-info-detail">tmpfs: /tmp/build/out.js</div>
-                                        <div class="sa-info-time">12s ago</div>
-                                    </div>
-                                    <span class="sa-badge sa-allowed">Allowed</span>
-                                </div>
-
-                                <div class="sandbox-activity">
-                                    <div class="sa-illust sa-dns">
-                                        <div class="sa-dns-dot"></div>
-                                        <div class="sa-dns-wave"></div>
-                                        <div class="sa-dns-wave"></div>
-                                        <div class="sa-boundary"></div>
-                                    </div>
-                                    <div class="sa-info">
-                                        <div class="sa-info-label">DNS resolution filtered</div>
-                                        <div class="sa-info-detail">lookup: malware-c2.evil.net</div>
-                                        <div class="sa-info-time">15s ago</div>
-                                    </div>
-                                    <span class="sa-badge sa-filtered">Filtered</span>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Tab: Monitor -->
-                <div class="rp-tab-content" id="rpTabMonitor">
                     <div class="sbm-container">
-                        <!-- Header -->
-                        <div class="sbm-header">
-                            <div class="sbm-header-left">
-                                <div class="sbm-header-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+
+                        <!-- Compact sandbox identity strip -->
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1e3358;background:rgba(255,255,255,0.02)">
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div style="width:28px;height:28px;border-radius:7px;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.2);display:flex;align-items:center;justify-content:center;color:#4fc3f7;flex-shrink:0">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                 </div>
-                                <span class="sbm-header-title">Sandbox Monitor</span>
+                                <div>
+                                    <div style="font-size:12px;font-weight:600;color:#e8eef7">sbx-7f3a9c2e</div>
+                                    <div style="font-size:10px;color:#6b7280">Podman · rootless · microVM</div>
+                                </div>
                             </div>
-                            <div class="sbm-status">
-                                <div class="sbm-status-dot"></div>
+                            <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#34d399">
+                                <div style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:sbPulse 2s infinite"></div>
                                 Live
                             </div>
                         </div>
 
-                        <!-- Sub-tabs -->
+                        <!-- Resource mini-bars -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#1e3358;border-bottom:1px solid #1e3358">
+                            <div style="background:#080f1a;padding:8px 12px">
+                                <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+                                    <span style="color:#6b7280">CPU</span><span style="color:#e8eef7;font-weight:600;font-variant-numeric:tabular-nums">34%</span>
+                                </div>
+                                <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden">
+                                    <div style="width:34%;height:100%;background:#4fc3f7;border-radius:2px"></div>
+                                </div>
+                            </div>
+                            <div style="background:#080f1a;padding:8px 12px">
+                                <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+                                    <span style="color:#6b7280">Mem</span><span style="color:#e8eef7;font-weight:600;font-variant-numeric:tabular-nums">30%</span>
+                                </div>
+                                <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden">
+                                    <div style="width:30%;height:100%;background:#a78bfa;border-radius:2px"></div>
+                                </div>
+                            </div>
+                            <div style="background:#080f1a;padding:8px 12px">
+                                <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+                                    <span style="color:#6b7280">I/O</span><span style="color:#e8eef7;font-weight:600;font-variant-numeric:tabular-nums">4.2MB/s</span>
+                                </div>
+                                <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden">
+                                    <div style="width:18%;height:100%;background:#34d399;border-radius:2px"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-tabs: Files / Network / Services -->
                         <div class="sbm-subtabs">
                             <button class="sbm-subtab active" data-sbm-tab="fs" onclick="switchSbmTab('fs', this)">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
@@ -5544,7 +5539,7 @@
                             </button>
                         </div>
 
-                        <!-- Scrollable body -->
+                        <!-- Scrollable body (reuse existing Monitor content verbatim) -->
                         <div class="sbm-body">
 
                             <!-- ===== FILESYSTEM PANE ===== -->
@@ -5555,85 +5550,22 @@
                                     <div class="sbm-stat"><div class="sbm-stat-val yellow">1</div><div class="sbm-stat-lbl">Warned</div></div>
                                     <div class="sbm-stat"><div class="sbm-stat-val red">1</div><div class="sbm-stat-lbl">Blocked</div></div>
                                 </div>
-
                                 <div class="sbm-section-hdr">
                                     <span class="sbm-section-title">Activity Log</span>
                                     <span class="sbm-section-count">24 events</span>
                                 </div>
-
                                 <div class="sbm-log">
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">src/components/Dashboard.tsx</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:32</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">src/components/Header.tsx</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:32</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge write">WRITE</span>
-                                        <span class="sbm-log-detail">src/components/Dashboard.tsx</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:32</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">src/hooks/useDashboardData.ts</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge exec">EXEC</span>
-                                        <span class="sbm-log-detail">npx tsc --noEmit</span>
-                                        <span class="sbm-log-status ok">0</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge write">WRITE</span>
-                                        <span class="sbm-log-detail">src/components/Stats.tsx</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry warned">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">.env.local</span>
-                                        <span class="sbm-log-status warn">Warn</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry blocked">
-                                        <span class="sbm-badge delete">DEL</span>
-                                        <span class="sbm-log-detail">/etc/hosts</span>
-                                        <span class="sbm-log-status err">Deny</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">package.json</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:31</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge read">READ</span>
-                                        <span class="sbm-log-detail">tsconfig.json</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:30</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge write">WRITE</span>
-                                        <span class="sbm-log-detail">src/components/Chart.tsx</span>
-                                        <span class="sbm-log-status ok">OK</span>
-                                        <span class="sbm-log-time">14:30</span>
-                                    </div>
-                                    <div class="sbm-log-entry">
-                                        <span class="sbm-badge exec">EXEC</span>
-                                        <span class="sbm-log-detail">npm test -- --watchAll=false</span>
-                                        <span class="sbm-log-status ok">0</span>
-                                        <span class="sbm-log-time">14:30</span>
-                                    </div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">src/components/Dashboard.tsx</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:32</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">src/components/Header.tsx</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:32</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge write">WRITE</span><span class="sbm-log-detail">src/components/Dashboard.tsx</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:32</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">src/hooks/useDashboardData.ts</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge exec">EXEC</span><span class="sbm-log-detail">npx tsc --noEmit</span><span class="sbm-log-status ok">0</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge write">WRITE</span><span class="sbm-log-detail">src/components/Stats.tsx</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry warned"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">.env.local</span><span class="sbm-log-status warn">Warn</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry blocked"><span class="sbm-badge delete">DEL</span><span class="sbm-log-detail">/etc/hosts</span><span class="sbm-log-status err">Deny</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">package.json</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:31</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">tsconfig.json</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:30</span></div>
+                                    <div class="sbm-log-entry"><span class="sbm-badge write">WRITE</span><span class="sbm-log-detail">src/components/Chart.tsx</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:30</span></div>
                                 </div>
                             </div>
 
@@ -5896,6 +5828,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
             </div>
         </div>
     </div>
@@ -6402,6 +6337,16 @@
             document.getElementById('projectFilterBtn').classList.remove('open');
         }
 
+        function toggleRouterCostView() {
+            var direct = document.getElementById('rpCostDirect');
+            var router = document.getElementById('rpCostRouter');
+            var btn = document.getElementById('rpCostToggleBtn');
+            var showingRouter = router.style.display !== 'none';
+            direct.style.display = showingRouter ? '' : 'none';
+            router.style.display = showingRouter ? 'none' : '';
+            btn.textContent = showingRouter ? 'Show router view' : 'Show direct model view';
+        }
+
         function toggleRightPanel() {
             const panel = document.getElementById('rightPanel');
             panel.classList.toggle('collapsed');
@@ -6413,7 +6358,7 @@
             document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.rp-tab-content').forEach(c => c.classList.remove('active'));
-            const tabMap = { overview: 'rpTabOverview', context: 'rpTabContext', changes: 'rpTabChanges', sandbox: 'rpTabSandbox', monitor: 'rpTabMonitor' };
+            const tabMap = { overview: 'rpTabOverview', context: 'rpTabContext', changes: 'rpTabChanges', sandbox: 'rpTabSandbox' };
             document.getElementById(tabMap[tab]).classList.add('active');
         }
 

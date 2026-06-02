@@ -262,7 +262,7 @@
     }
 
     function renderMcpInstallRow(item) {
-        var href = 'details.html?mcp=' + encodeURIComponent(item.id);
+        var href = item.detailUrl || ('details.html?mcp=' + encodeURIComponent(item.id));
         var versionTools = [item.version, item.tools ? item.tools + ' tools' : null, item.source].filter(Boolean).join(' · ');
         var internalCls = item.internal ? ' internal-asset' : '';
         return '<tr class="mcp-server-row' + internalCls + '"' +
