@@ -1,20 +1,20 @@
 {
   "user": {
     "name": "Sebastien",
-    "contextLine": "3 workspaces running · 2 tasks awaiting review · System healthy"
+    "contextLine": "3 workspaces active · 4 sessions running · System healthy"
   },
   "stats": [
     {
       "type": "agents",
-      "label": "Active Workspaces",
-      "value": "3",
-      "detail": "<span class=\"up\">3 running</span> &middot; 2 stopped"
+      "label": "Workspaces",
+      "value": "4",
+      "detail": "<span class=\"up\">3 running</span> &middot; 1 stopped"
     },
     {
       "type": "tasks",
-      "label": "Tasks Today",
-      "value": "6",
-      "detail": "<span class=\"up\">2 completed</span> &middot; 4 active"
+      "label": "Active Sessions",
+      "value": "4",
+      "detail": "<span class=\"up\">1 blocked</span> &middot; 3 running"
     },
     {
       "type": "assets",
@@ -32,28 +32,28 @@
   ],
   "activeWorkspaces": [
     {
-      "id": "my-new-app",
-      "name": "My New App",
-      "task": "Building new application from scratch · Claude Code",
+      "id": "ws-doc-updater-main",
+      "name": "doc-updater · main",
+      "task": "2 sessions running · 1 blocked",
       "status": "running",
-      "progress": 30,
-      "time": "25m ago"
+      "progress": 60,
+      "time": "11 days ago"
     },
     {
-      "id": "frontend-refactor",
-      "name": "Frontend Refactor",
-      "task": "Implementing dark mode · feat/dark-mode",
+      "id": "ws-frontend-app-dashboard",
+      "name": "frontend-app · feat/dashboard",
+      "task": "1 session running · dark-mode toggle",
       "status": "running",
       "progress": 70,
-      "time": "2h ago"
+      "time": "8 days ago"
     },
     {
-      "id": "api-integration",
-      "name": "API Integration",
-      "task": "Generating types from OpenAPI spec · Codex",
+      "id": "ws-api-gateway-develop",
+      "name": "api-gateway · develop",
+      "task": "1 session · waiting for input",
       "status": "running",
       "progress": 45,
-      "time": "45m ago"
+      "time": "7 days ago"
     }
   ],
   "recentActivity": [

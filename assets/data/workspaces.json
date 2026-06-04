@@ -1,0 +1,64 @@
+{
+  "workspaces": [
+    {
+      "id": "ws-doc-updater-main",
+      "name": "doc-updater · main",
+      "projectSlug": "doc-updater",
+      "projectName": "Doc updater",
+      "projectIcon": { "text": "KB", "gradient": "linear-gradient(135deg, #4fc3f7, #2a8bbf)" },
+      "status": "running",
+      "runtime": "podman",
+      "containerId": "sbx-7f3a9c2e",
+      "branch": "main",
+      "createdAt": "2026-05-20",
+      "activeSessions": 2,
+      "totalSessions": 8,
+      "costThisWeek": 14.58
+    },
+    {
+      "id": "ws-frontend-app-dashboard",
+      "name": "frontend-app · feat/dashboard",
+      "projectSlug": "frontend-app",
+      "projectName": "Frontend App",
+      "projectIcon": { "text": "FA", "gradient": "linear-gradient(135deg, #06b6d4, #0891b2)" },
+      "status": "running",
+      "runtime": "podman",
+      "containerId": "sbx-3b82a1f4",
+      "branch": "feat/dashboard",
+      "createdAt": "2026-05-22",
+      "activeSessions": 1,
+      "totalSessions": 3,
+      "costThisWeek": 3.23
+    },
+    {
+      "id": "ws-api-gateway-develop",
+      "name": "api-gateway · develop",
+      "projectSlug": "api-gateway",
+      "projectName": "API Gateway",
+      "projectIcon": { "text": "AG", "gradient": "linear-gradient(135deg, #10b981, #059669)" },
+      "status": "running",
+      "runtime": "podman",
+      "containerId": "sbx-c91e7d2b",
+      "branch": "develop",
+      "createdAt": "2026-05-25",
+      "activeSessions": 1,
+      "totalSessions": 2,
+      "costThisWeek": 1.00
+    },
+    {
+      "id": "ws-infra-platform-main",
+      "name": "infra-platform · main",
+      "projectSlug": "infra-platform",
+      "projectName": "Infrastructure Platform",
+      "projectIcon": { "text": "IP", "gradient": "linear-gradient(135deg, #f97316, #ea580c)" },
+      "status": "stopped",
+      "runtime": "podman",
+      "containerId": "sbx-d44f8e91",
+      "branch": "main",
+      "createdAt": "2026-05-18",
+      "activeSessions": 0,
+      "totalSessions": 5,
+      "costThisWeek": 0
+    }
+  ]
+}

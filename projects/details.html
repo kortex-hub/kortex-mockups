@@ -2691,6 +2691,26 @@
                                 <div class="pd-nav-desc">Summary & project settings</div>
                             </div>
                         </div>
+                        <div class="pd-nav-item" data-pd-tab="workspaces" onclick="switchSection('workspaces')">
+                            <div class="pd-nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Workspaces</div>
+                                <div class="pd-nav-desc">Sandbox environments</div>
+                            </div>
+                            <div class="pd-nav-count" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">1</div>
+                        </div>
+                        <div class="pd-nav-item" data-pd-tab="issues" onclick="switchSection('issues')">
+                            <div class="pd-nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Issues</div>
+                                <div class="pd-nav-desc">GitHub repository issues</div>
+                            </div>
+                            <span class="pd-nav-count" style="background:rgba(248,113,113,0.12);color:#f87171;border-color:rgba(248,113,113,0.25)">9</span>
+                        </div>
                         <div class="pd-nav-item" data-pd-tab="skills" onclick="switchSection('skills')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
@@ -2866,6 +2886,447 @@
                         <div class="pd-save-row">
                             <button class="pd-save-btn">Save Changes</button>
                         </div>
+                    </div>
+
+                    <!-- Issues Section -->
+                    <div class="pd-section" id="section-issues" data-pd-tab="issues">
+                        <style>
+                        /* ── Issues layout ── */
+                        .issues-layout { display:grid; grid-template-columns:1fr 380px; gap:20px; align-items:start; }
+                        .issues-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+                        .issues-filter-btn { padding:5px 13px; border-radius:7px; border:1px solid var(--kd-border); background:transparent; color:var(--kd-text-muted); font-size:12px; font-weight:500; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+                        .issues-filter-btn.active { border-color:color-mix(in srgb,var(--kd-accent) 50%,transparent); background:color-mix(in srgb,var(--kd-accent) 10%,transparent); color:var(--kd-text-primary); font-weight:600; }
+                        .issues-search { flex:1; display:flex; align-items:center; gap:8px; padding:7px 12px; border-radius:8px; border:1px solid var(--kd-border); background:var(--kd-surface-input); }
+                        .issues-search svg { width:14px; height:14px; color:var(--kd-text-muted); flex-shrink:0; }
+                        .issues-search input { flex:1; background:none; border:none; outline:none; font-size:13px; color:var(--kd-text-primary); font-family:inherit; }
+                        .issues-search input::placeholder { color:var(--kd-text-muted); }
+                        /* Issue list */
+                        .issues-list { border:1px solid var(--kd-border); border-radius:12px; overflow:hidden; background:var(--kd-bg-card); }
+                        .issues-list-header { display:flex; align-items:center; gap:16px; padding:10px 16px; background:color-mix(in srgb,var(--kd-text-primary) 4%,var(--kd-bg-card)); border-bottom:1px solid var(--kd-border); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--kd-text-muted); }
+                        .issue-row { display:flex; align-items:flex-start; gap:12px; padding:13px 16px; border-bottom:1px solid color-mix(in srgb,var(--kd-border) 60%,transparent); cursor:pointer; transition:background 0.12s; }
+                        .issue-row:last-child { border-bottom:none; }
+                        .issue-row:hover { background:color-mix(in srgb,var(--kd-accent) 4%,transparent); }
+                        .issue-row.selected { background:color-mix(in srgb,var(--kd-accent) 8%,transparent); border-left:3px solid var(--kd-accent); padding-left:13px; }
+                        .issue-icon { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+                        .issue-icon svg { width:11px; height:11px; }
+                        .issue-icon.open { background:rgba(52,211,153,0.15); color:#34d399; }
+                        .issue-icon.bug { background:rgba(248,113,113,0.15); color:#f87171; }
+                        .issue-icon.closed { background:rgba(139,92,246,0.15); color:#c4b5fd; }
+                        .issue-body { flex:1; min-width:0; }
+                        .issue-title { font-size:13px; font-weight:600; color:var(--kd-text-primary); margin-bottom:4px; line-height:1.35; }
+                        .issue-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+                        .issue-num { font-size:11px; color:var(--kd-text-muted); font-family:'SF Mono','Fira Code',monospace; }
+                        .issue-label { font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; }
+                        .issue-label.bug    { background:rgba(248,113,113,0.12); color:#f87171; border:1px solid rgba(248,113,113,0.25); }
+                        .issue-label.feat   { background:rgba(52,211,153,0.12); color:#34d399; border:1px solid rgba(52,211,153,0.25); }
+                        .issue-label.perf   { background:rgba(251,191,36,0.12); color:#fbbf24; border:1px solid rgba(251,191,36,0.25); }
+                        .issue-label.refactor{ background:rgba(139,92,246,0.12); color:#c4b5fd; border:1px solid rgba(139,92,246,0.25); }
+                        .issue-label.docs   { background:rgba(6,182,212,0.12); color:#67e8f9; border:1px solid rgba(6,182,212,0.25); }
+                        .issue-label.sec    { background:rgba(249,115,22,0.12); color:#fb923c; border:1px solid rgba(249,115,22,0.25); }
+                        .issue-age { font-size:11px; color:var(--kd-text-muted); }
+                        .issue-comments { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--kd-text-muted); margin-left:auto; flex-shrink:0; }
+                        .issue-comments svg { width:12px; height:12px; }
+                        /* Assignment panel */
+                        .issue-assign-panel { border:1px solid var(--kd-border); border-radius:14px; background:var(--kd-bg-card); overflow:hidden; position:sticky; top:0; }
+                        .iap-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 24px; text-align:center; color:var(--kd-text-muted); }
+                        .iap-empty svg { width:36px; height:36px; margin-bottom:12px; opacity:0.4; }
+                        .iap-header { padding:16px 18px; border-bottom:1px solid color-mix(in srgb,var(--kd-border) 70%,transparent); }
+                        .iap-issue-num { font-size:11px; color:var(--kd-text-muted); font-family:monospace; margin-bottom:4px; }
+                        .iap-issue-title { font-size:14px; font-weight:700; color:var(--kd-text-primary); line-height:1.35; margin-bottom:8px; }
+                        .iap-labels { display:flex; flex-wrap:wrap; gap:5px; }
+                        .iap-body { padding:16px 18px; }
+                        .iap-section-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--kd-text-muted); margin-bottom:8px; }
+                        .iap-desc { font-size:12px; color:var(--kd-text-secondary); line-height:1.55; margin-bottom:16px; background:color-mix(in srgb,var(--kd-bg-subtle) 60%,transparent); padding:10px 12px; border-radius:8px; border:1px solid color-mix(in srgb,var(--kd-border) 60%,transparent); }
+                        /* Skill chips */
+                        .iap-skills { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+                        .iap-skill { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:9px; border:1px solid color-mix(in srgb,var(--kd-border) 70%,transparent); background:color-mix(in srgb,var(--kd-bg-subtle) 40%,transparent); cursor:pointer; transition:all 0.15s; }
+                        .iap-skill:hover { border-color:color-mix(in srgb,var(--kd-accent) 40%,transparent); background:color-mix(in srgb,var(--kd-accent) 6%,transparent); }
+                        .iap-skill.selected { border-color:color-mix(in srgb,var(--kd-accent) 50%,transparent); background:color-mix(in srgb,var(--kd-accent) 10%,transparent); }
+                        .iap-skill-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+                        .iap-skill-icon svg { width:13px; height:13px; }
+                        .iap-skill-name { font-size:12px; font-weight:600; color:var(--kd-text-primary); }
+                        .iap-skill-reason { font-size:10px; color:var(--kd-text-muted); margin-top:1px; }
+                        .iap-skill-match { margin-left:auto; font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px; background:rgba(52,211,153,0.12); color:#34d399; flex-shrink:0; }
+                        /* Agent picker */
+                        .iap-agents { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:16px; }
+                        .iap-agent { display:flex; align-items:center; gap:8px; padding:9px 11px; border-radius:9px; border:1px solid var(--kd-border); background:transparent; cursor:pointer; transition:all 0.15s; font-family:inherit; }
+                        .iap-agent:hover { border-color:color-mix(in srgb,var(--kd-accent) 40%,transparent); }
+                        .iap-agent.selected { border-color:color-mix(in srgb,var(--kd-accent) 60%,transparent); background:color-mix(in srgb,var(--kd-accent) 8%,transparent); }
+                        .iap-agent-avatar { width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; flex-shrink:0; }
+                        .iap-agent-name { font-size:11px; font-weight:600; color:var(--kd-text-primary); }
+                        .iap-agent-model { font-size:10px; color:var(--kd-text-muted); margin-top:1px; }
+                        /* CTA */
+                        .iap-cta { padding:14px 18px; border-top:1px solid color-mix(in srgb,var(--kd-border) 60%,transparent); }
+                        .iap-start-btn { width:100%; padding:11px; background:var(--kd-accent); border:none; border-radius:10px; color:#0a1628; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+                        .iap-start-btn:hover { opacity:0.9; }
+                        .iap-start-btn svg { width:14px; height:14px; }
+                        </style>
+
+                        <div class="pd-section-title" style="margin-bottom:4px">Issues</div>
+                        <p style="font-size:13px;color:var(--kd-text-muted);margin:0 0 18px">Open issues from <strong style="color:var(--kd-text-secondary)">github.com/acme/doc-updater</strong>. Pick an issue and assign an agent — it will create a session pre-loaded with the issue context and the right skills.</p>
+
+                        <div class="issues-toolbar">
+                            <button class="issues-filter-btn active" onclick="filterIssues('open',this)">Open <span style="opacity:.7">9</span></button>
+                            <button class="issues-filter-btn" onclick="filterIssues('closed',this)">Closed <span style="opacity:.7">14</span></button>
+                            <button class="issues-filter-btn" onclick="filterIssues('all',this)">All</button>
+                            <div class="issues-search">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                <input type="text" placeholder="Search issues…" oninput="searchIssues(this.value)">
+                            </div>
+                        </div>
+
+                        <div class="issues-layout">
+                            <!-- Issue list -->
+                            <div>
+                                <div class="issues-list" id="issuesList">
+                                    <div class="issues-list-header">
+                                        <span>9 open issues</span>
+                                    </div>
+
+                                    <div class="issue-row selected" data-issue="1" onclick="selectIssue(1)">
+                                        <div class="issue-icon bug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">JWT token refresh fails silently when expiry window overlaps midnight</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#142</span>
+                                                <span class="issue-label bug">bug</span>
+                                                <span class="issue-label sec">security</span>
+                                                <span class="issue-age">opened 2 days ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>3</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="2" onclick="selectIssue(2)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Add pagination support to /api/v2/documents endpoint</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#139</span>
+                                                <span class="issue-label feat">feature</span>
+                                                <span class="issue-age">opened 4 days ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>1</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="3" onclick="selectIssue(3)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Refactor authentication middleware to support OAuth 2.0 PKCE flow</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#137</span>
+                                                <span class="issue-label refactor">refactor</span>
+                                                <span class="issue-label feat">feature</span>
+                                                <span class="issue-age">opened 5 days ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>7</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="4" onclick="selectIssue(4)">
+                                        <div class="issue-icon bug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Memory leak in WebSocket connection pool after 200+ concurrent connections</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#134</span>
+                                                <span class="issue-label bug">bug</span>
+                                                <span class="issue-label perf">performance</span>
+                                                <span class="issue-age">opened 1 week ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>12</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="5" onclick="selectIssue(5)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Generate OpenAPI 3.1 spec from existing route handlers</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#131</span>
+                                                <span class="issue-label docs">docs</span>
+                                                <span class="issue-label feat">feature</span>
+                                                <span class="issue-age">opened 1 week ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>2</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="6" onclick="selectIssue(6)">
+                                        <div class="issue-icon bug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Race condition in session cleanup when multiple requests arrive simultaneously</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#128</span>
+                                                <span class="issue-label bug">bug</span>
+                                                <span class="issue-age">opened 2 weeks ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>5</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="7" onclick="selectIssue(7)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Improve response time for /search endpoint — add Redis caching layer</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#125</span>
+                                                <span class="issue-label perf">performance</span>
+                                                <span class="issue-age">opened 2 weeks ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>4</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="8" onclick="selectIssue(8)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Write integration tests for the document ingestion pipeline</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#122</span>
+                                                <span class="issue-label feat">testing</span>
+                                                <span class="issue-age">opened 3 weeks ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>0</div>
+                                    </div>
+
+                                    <div class="issue-row" data-issue="9" onclick="selectIssue(9)">
+                                        <div class="issue-icon open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                                        <div class="issue-body">
+                                            <div class="issue-title">Migrate remaining endpoint handlers from Express callbacks to async/await</div>
+                                            <div class="issue-meta">
+                                                <span class="issue-num">#118</span>
+                                                <span class="issue-label refactor">refactor</span>
+                                                <span class="issue-age">opened 1 month ago</span>
+                                            </div>
+                                        </div>
+                                        <div class="issue-comments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>2</div>
+                                    </div>
+
+                                </div><!-- /issues-list -->
+                            </div>
+
+                            <!-- Assignment panel -->
+                            <div class="issue-assign-panel" id="issueAssignPanel">
+                                <!-- Default: issue #142 selected -->
+                                <div class="iap-header">
+                                    <div class="iap-issue-num">#142 · bug · security</div>
+                                    <div class="iap-issue-title">JWT token refresh fails silently when expiry window overlaps midnight</div>
+                                    <div class="iap-labels">
+                                        <span class="issue-label bug">bug</span>
+                                        <span class="issue-label sec">security</span>
+                                    </div>
+                                </div>
+                                <div class="iap-body">
+
+                                    <div class="iap-section-label">Issue summary</div>
+                                    <div class="iap-desc">The <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px">refreshToken()</code> function uses a fixed midnight boundary check that causes silent failures when tokens expire between 23:58–00:02 UTC. Affects ~0.3% of daily active users. No error is logged or surfaced to the client.</div>
+
+                                    <div class="iap-section-label">Recommended skills <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px;color:var(--kd-text-muted)">— matched from labels &amp; issue content</span></div>
+                                    <div class="iap-skills">
+                                        <div class="iap-skill selected" onclick="toggleSkill(this)">
+                                            <div class="iap-skill-icon" style="background:rgba(248,113,113,0.15);color:#f87171"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                                            <div><div class="iap-skill-name">security-review</div><div class="iap-skill-reason">Security label · token auth pattern</div></div>
+                                            <span class="iap-skill-match">95%</span>
+                                        </div>
+                                        <div class="iap-skill selected" onclick="toggleSkill(this)">
+                                            <div class="iap-skill-icon" style="background:rgba(79,195,247,0.12);color:#4fc3f7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+                                            <div><div class="iap-skill-name">code-review</div><div class="iap-skill-reason">Bug fix · middleware change</div></div>
+                                            <span class="iap-skill-match">88%</span>
+                                        </div>
+                                        <div class="iap-skill" onclick="toggleSkill(this)">
+                                            <div class="iap-skill-icon" style="background:rgba(52,211,153,0.12);color:#34d399"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
+                                            <div><div class="iap-skill-name">write-tests</div><div class="iap-skill-reason">Edge case — regression risk</div></div>
+                                            <span class="iap-skill-match">74%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="iap-section-label">Choose agent</div>
+                                    <div class="iap-agents">
+                                        <button class="iap-agent selected" onclick="selectAgent(this,'claude')">
+                                            <div class="iap-agent-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">Cl</div>
+                                            <div style="text-align:left">
+                                                <div class="iap-agent-name">Claude Code</div>
+                                                <div class="iap-agent-model">Sonnet 4.6</div>
+                                            </div>
+                                        </button>
+                                        <button class="iap-agent" onclick="selectAgent(this,'codex')">
+                                            <div class="iap-agent-avatar" style="background:linear-gradient(135deg,#0ea5e9,#2563eb)">Cx</div>
+                                            <div style="text-align:left">
+                                                <div class="iap-agent-name">Codex</div>
+                                                <div class="iap-agent-model">gpt-5.3-codex</div>
+                                            </div>
+                                        </button>
+                                        <button class="iap-agent" onclick="selectAgent(this,'goose')">
+                                            <div class="iap-agent-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">Go</div>
+                                            <div style="text-align:left">
+                                                <div class="iap-agent-name">Goose</div>
+                                                <div class="iap-agent-model">claude-sonnet-4-5</div>
+                                            </div>
+                                        </button>
+                                        <button class="iap-agent" onclick="selectAgent(this,'opencode')">
+                                            <div class="iap-agent-avatar" style="background:linear-gradient(135deg,#374151,#1f2937)">OC</div>
+                                            <div style="text-align:left">
+                                                <div class="iap-agent-name">OpenCode</div>
+                                                <div class="iap-agent-model">qwen3-code · local</div>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <div class="iap-section-label">Workspace</div>
+                                    <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;border:1px solid color-mix(in srgb,var(--kd-accent) 40%,transparent);background:color-mix(in srgb,var(--kd-accent) 6%,transparent);margin-bottom:16px">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#4fc3f7" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        <span style="font-size:12px;font-weight:600;color:var(--kd-text-primary);flex:1">doc-updater · main</span>
+                                        <span style="font-size:10px;color:var(--kd-text-muted)">Running · sbx-7f3a9c2e</span>
+                                    </div>
+
+                                </div><!-- /iap-body -->
+                                <div class="iap-cta">
+                                    <button class="iap-start-btn" onclick="startIssueSession()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        Start agent session for #142
+                                    </button>
+                                </div>
+                            </div><!-- /issue-assign-panel -->
+
+                        </div><!-- /issues-layout -->
+
+                        <script>
+                        var issueData = {
+                            1: { num:'#142', title:'JWT token refresh fails silently when expiry window overlaps midnight', labels:[{cls:'bug',text:'bug'},{cls:'sec',text:'security'}], desc:'The <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px">refreshToken()</code> function uses a fixed midnight boundary check that causes silent failures when tokens expire between 23:58–00:02 UTC. Affects ~0.3% of daily active users. No error is logged or surfaced to the client.', skills:[{icon:'🛡',color:'rgba(248,113,113,0.15)',tc:'#f87171',name:'security-review',reason:'Security label · token auth pattern',match:'95%',sel:true},{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Bug fix · middleware change',match:'88%',sel:true},{icon:'📄',color:'rgba(52,211,153,0.12)',tc:'#34d399',name:'write-tests',reason:'Edge case — regression risk',match:'74%',sel:false}] },
+                            2: { num:'#139', title:'Add pagination support to /api/v2/documents endpoint', labels:[{cls:'feat',text:'feature'}], desc:'The <code style="font-size:10px;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px">/api/v2/documents</code> endpoint currently returns all records. With growing datasets this is causing timeouts. We need cursor-based or offset pagination with standard Link headers.', skills:[{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'API design · REST conventions',match:'91%',sel:true},{icon:'📄',color:'rgba(52,211,153,0.12)',tc:'#34d399',name:'write-tests',reason:'Pagination edge cases',match:'82%',sel:true}] },
+                            3: { num:'#137', title:'Refactor authentication middleware to support OAuth 2.0 PKCE flow', labels:[{cls:'refactor',text:'refactor'},{cls:'feat',text:'feature'}], desc:'We need to extend the current JWT middleware to also support OAuth 2.0 with PKCE for our new mobile client. Should be backward-compatible with existing session-based auth. Reference the RFC 7636 spec.', skills:[{icon:'🛡',color:'rgba(248,113,113,0.15)',tc:'#f87171',name:'security-review',reason:'Auth flow · PKCE spec',match:'97%',sel:true},{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Middleware refactor',match:'89%',sel:true}] },
+                            4: { num:'#134', title:'Memory leak in WebSocket connection pool after 200+ concurrent connections', labels:[{cls:'bug',text:'bug'},{cls:'perf',text:'performance'}], desc:'Under load testing with 200+ concurrent WebSocket connections the process heap grows unboundedly. Suspected leak in the connection pool cleanup callback. Profile shows retained listeners.', skills:[{icon:'⚡',color:'rgba(251,191,36,0.12)',tc:'#fbbf24',name:'performance',reason:'Memory · concurrency · profiling',match:'98%',sel:true},{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Bug fix · async patterns',match:'85%',sel:true}] },
+                            5: { num:'#131', title:'Generate OpenAPI 3.1 spec from existing route handlers', labels:[{cls:'docs',text:'docs'},{cls:'feat',text:'feature'}], desc:'We have ~60 Express route handlers with no formal API spec. Goal: auto-generate an OpenAPI 3.1 YAML from the existing handlers using zod-to-openapi or similar, then validate it against a few known clients.', skills:[{icon:'📄',color:'rgba(52,211,153,0.12)',tc:'#34d399',name:'write-tests',reason:'Validation against spec',match:'80%',sel:true},{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Schema design',match:'75%',sel:false}] },
+                            6: { num:'#128', title:'Race condition in session cleanup when multiple requests arrive simultaneously', labels:[{cls:'bug',text:'bug'}], desc:'When 3+ logout requests arrive for the same session ID within 50ms, the cleanup job runs multiple times and occasionally corrupts the session store. Needs mutex or deduplication.', skills:[{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Concurrency · race condition',match:'93%',sel:true},{icon:'📄',color:'rgba(52,211,153,0.12)',tc:'#34d399',name:'write-tests',reason:'Concurrent test scenarios',match:'86%',sel:true}] },
+                            7: { num:'#125', title:'Improve response time for /search endpoint — add Redis caching layer', labels:[{cls:'perf',text:'performance'}], desc:'The full-text search endpoint runs a DB query on every request. Adding a Redis cache with a 60s TTL would cut p95 latency from 800ms to ~40ms for repeated queries. Cache invalidation on document write.', skills:[{icon:'⚡',color:'rgba(251,191,36,0.12)',tc:'#fbbf24',name:'performance',reason:'Caching · latency optimisation',match:'96%',sel:true}] },
+                            8: { num:'#122', title:'Write integration tests for the document ingestion pipeline', labels:[{cls:'feat',text:'testing'}], desc:'The ingestion pipeline (upload → parse → chunk → embed → store) has no integration tests. We need end-to-end tests covering happy path, malformed input, and storage failures.', skills:[{icon:'📄',color:'rgba(52,211,153,0.12)',tc:'#34d399',name:'write-tests',reason:'Integration test pattern',match:'99%',sel:true}] },
+                            9: { num:'#118', title:'Migrate remaining endpoint handlers from Express callbacks to async/await', labels:[{cls:'refactor',text:'refactor'}], desc:'About 30% of route handlers still use the old callback style. Goal: systematic migration to async/await with proper error propagation. Run the test suite after each batch.', skills:[{icon:'💻',color:'rgba(79,195,247,0.12)',tc:'#4fc3f7',name:'code-review',reason:'Codebase migration · consistency',match:'90%',sel:true}] }
+                        };
+                        var selectedIssue = 1;
+                        var selectedAgent = 'claude';
+
+                        function selectIssue(id) {
+                            selectedIssue = id;
+                            document.querySelectorAll('#issuesList .issue-row').forEach(r => r.classList.remove('selected'));
+                            document.querySelector('#issuesList [data-issue="'+id+'"]').classList.add('selected');
+                            var d = issueData[id];
+                            if (!d) return;
+                            var p = document.getElementById('issueAssignPanel');
+                            var labelsHtml = d.labels.map(l => '<span class="issue-label '+l.cls+'">'+l.text+'</span>').join(' ');
+                            var skillsHtml = d.skills.map(s => '<div class="iap-skill'+(s.sel?' selected':'')+'" onclick="toggleSkill(this)"><div class="iap-skill-icon" style="background:'+s.color+';color:'+s.tc+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><div><div class="iap-skill-name">'+s.name+'</div><div class="iap-skill-reason">'+s.reason+'</div></div><span class="iap-skill-match">'+s.match+'</span></div>').join('');
+                            p.innerHTML = '<div class="iap-header"><div class="iap-issue-num">'+d.num+' · '+d.labels.map(l=>l.text).join(' · ')+'</div><div class="iap-issue-title">'+d.title+'</div><div class="iap-labels">'+labelsHtml+'</div></div>'
+                              +'<div class="iap-body">'
+                              +'<div class="iap-section-label">Issue summary</div><div class="iap-desc">'+d.desc+'</div>'
+                              +'<div class="iap-section-label">Recommended skills <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px;color:var(--kd-text-muted)">— matched from labels &amp; issue content</span></div>'
+                              +'<div class="iap-skills">'+skillsHtml+'</div>'
+                              +'<div class="iap-section-label">Choose agent</div>'
+                              +'<div class="iap-agents">'
+                              +'<button class="iap-agent selected" onclick="selectAgent(this,\'claude\')"><div class="iap-agent-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">Cl</div><div style="text-align:left"><div class="iap-agent-name">Claude Code</div><div class="iap-agent-model">Sonnet 4.6</div></div></button>'
+                              +'<button class="iap-agent" onclick="selectAgent(this,\'codex\')"><div class="iap-agent-avatar" style="background:linear-gradient(135deg,#0ea5e9,#2563eb)">Cx</div><div style="text-align:left"><div class="iap-agent-name">Codex</div><div class="iap-agent-model">gpt-5.3-codex</div></div></button>'
+                              +'<button class="iap-agent" onclick="selectAgent(this,\'goose\')"><div class="iap-agent-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">Go</div><div style="text-align:left"><div class="iap-agent-name">Goose</div><div class="iap-agent-model">claude-sonnet-4-5</div></div></button>'
+                              +'<button class="iap-agent" onclick="selectAgent(this,\'opencode\')"><div class="iap-agent-avatar" style="background:linear-gradient(135deg,#374151,#1f2937)">OC</div><div style="text-align:left"><div class="iap-agent-name">OpenCode</div><div class="iap-agent-model">qwen3-code · local</div></div></button>'
+                              +'</div>'
+                              +'<div class="iap-section-label">Workspace</div>'
+                              +'<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;border:1px solid color-mix(in srgb,var(--kd-accent) 40%,transparent);background:color-mix(in srgb,var(--kd-accent) 6%,transparent);margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="#4fc3f7" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span style="font-size:12px;font-weight:600;color:var(--kd-text-primary);flex:1">doc-updater · main</span><span style="font-size:10px;color:var(--kd-text-muted)">Running · sbx-7f3a9c2e</span></div>'
+                              +'</div>'
+                              +'<div class="iap-cta"><button class="iap-start-btn" onclick="startIssueSession()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px"><polygon points="5 3 19 12 5 21 5 3"/></svg>Start agent session for '+d.num+'</button></div>';
+                            selectedAgent = 'claude';
+                        }
+
+                        function toggleSkill(el) { el.classList.toggle('selected'); }
+
+                        function selectAgent(el, id) {
+                            selectedAgent = id;
+                            el.closest('.iap-agents').querySelectorAll('.iap-agent').forEach(a => a.classList.remove('selected'));
+                            el.classList.add('selected');
+                        }
+
+                        function filterIssues(state, btn) {
+                            document.querySelectorAll('.issues-filter-btn').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                        }
+
+                        function searchIssues(q) {
+                            document.querySelectorAll('#issuesList .issue-row').forEach(row => {
+                                row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+                            });
+                        }
+
+                        function startIssueSession() {
+                            var d = issueData[selectedIssue];
+                            var btn = document.querySelector('.iap-start-btn');
+                            var orig = btn.innerHTML;
+                            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg> Session started!';
+                            btn.style.background = '#10b981';
+                            setTimeout(function(){ btn.innerHTML = orig; btn.style.background = ''; }, 2200);
+                        }
+                        </script>
+                    </div>
+
+                    <!-- Workspaces Section -->
+                    <div class="pd-section" id="section-workspaces" data-pd-tab="workspaces">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+                            <div>
+                                <h1 class="pd-section-title" style="margin-bottom:4px">Workspaces</h1>
+                                <p style="font-size:13px;color:var(--kd-text-muted);margin:0">Persistent sandbox environments for this project. Each workspace is configured once — filesystem scope, network policy, runtime — and you start multiple agent sessions inside it.</p>
+                            </div>
+                            <a href="../sessions/create.html?project=doc-updater" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:var(--kd-accent);border:none;border-radius:9px;color:#0a1628;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;flex-shrink:0">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New Workspace
+                            </a>
+                        </div>
+
+                        <!-- Active workspace card -->
+                        <div style="border:1px solid var(--kd-border);border-radius:14px;overflow:hidden;margin-bottom:12px;background:var(--kd-bg-card)">
+                            <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid color-mix(in srgb,var(--kd-border) 60%,transparent)">
+                                <div style="width:36px;height:36px;border-radius:10px;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.25);display:flex;align-items:center;justify-content:center;color:#4fc3f7;flex-shrink:0">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div style="flex:1;min-width:0">
+                                    <div style="font-size:14px;font-weight:700;color:var(--kd-text-primary);margin-bottom:3px">doc-updater · main</div>
+                                    <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--kd-text-muted)">
+                                        <span style="display:flex;align-items:center;gap:4px">
+                                            <span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:wdPulse 2s infinite"></span>
+                                            Running
+                                        </span>
+                                        <span>Podman · rootless</span>
+                                        <span style="font-family:'SF Mono',monospace">sbx-7f3a9c2e</span>
+                                        <span>Created May 20</span>
+                                    </div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+                                    <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25)">2 sessions running</span>
+                                    <a href="../workspaces/index.html" style="padding:7px 14px;border-radius:8px;border:1px solid var(--kd-border);background:transparent;color:var(--kd-text-primary);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:border-color 0.15s">Open →</a>
+                                </div>
+                            </div>
+                            <!-- Sessions inside this workspace -->
+                            <div style="padding:0">
+                                <div style="display:flex;align-items:center;padding:8px 20px 6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);border-bottom:1px solid color-mix(in srgb,var(--kd-border) 50%,transparent)">Active Sessions</div>
+                                <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid color-mix(in srgb,var(--kd-border) 40%,transparent);cursor:pointer" onclick="window.location.href='../work/index.html'">
+                                    <span style="width:7px;height:7px;border-radius:50%;background:#f87171;flex-shrink:0"></span>
+                                    <span style="font-size:12px;font-weight:500;color:var(--kd-text-primary);flex:1">Refactor auth module to JWT</span>
+                                    <span style="font-size:11px;color:#f87171;font-weight:600">Blocked</span>
+                                    <span style="font-size:11px;color:var(--kd-text-muted);font-family:'SF Mono',monospace">feat/jwt-auth</span>
+                                    <span style="font-size:11px;color:var(--kd-text-muted)">$3.23</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer" onclick="window.location.href='../work/index.html'">
+                                    <span style="width:7px;height:7px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span>
+                                    <span style="font-size:12px;font-weight:500;color:var(--kd-text-primary);flex:1">Generate OpenAPI docs for REST endpoints</span>
+                                    <span style="font-size:11px;color:#fbbf24;font-weight:600">Paused</span>
+                                    <span style="font-size:11px;color:var(--kd-text-muted);font-family:'SF Mono',monospace">docs/openapi-spec</span>
+                                    <span style="font-size:11px;color:var(--kd-text-muted)">$5.91</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align:center;padding:20px;font-size:12px;color:var(--kd-text-muted)">
+                            <a href="../sessions/create.html?project=doc-updater" style="color:var(--kd-accent-dim);text-decoration:none;font-weight:500">+ Add another workspace</a>
+                            <span style="margin:0 8px;opacity:0.4">·</span>
+                            <span>e.g. a staging branch, a performance workspace, or a teammate's environment</span>
+                        </div>
+                        <style>@keyframes wdPulse{0%,100%{opacity:1}50%{opacity:0.4}}</style>
                     </div>
 
                     <!-- Skills Section -->
@@ -4509,6 +4970,8 @@
          */
         const PD_PROJECT_DETAILS_TABS = {
             overview:   { hash: '#overview',   sectionId: 'section-overview',   label: 'Overview' },
+            workspaces: { hash: '#workspaces', sectionId: 'section-workspaces', label: 'Workspaces' },
+            issues:     { hash: '#issues',     sectionId: 'section-issues',     label: 'Issues' },
             skills:     { hash: '#skills',     sectionId: 'section-skills',     label: 'Skills' },
             mcp:        { hash: '#mcp',        sectionId: 'section-mcp',        label: 'MCP Servers' },
             knowledge:  { hash: '#knowledge',  sectionId: 'section-knowledge',  label: 'Knowledge' },

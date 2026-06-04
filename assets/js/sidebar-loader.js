@@ -32,13 +32,13 @@ function buildSidebarHTML() {
         <span>Overview</span>
     </a>
 
-    <a href="${R}/tasks/index.html" class="nav-item" data-section="tasks">
+    <a href="${R}/work/index.html" class="nav-item" data-section="work">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
-            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
-        <span>Agents</span>
+        <span>Work</span>
     </a>
 
     <a href="${R}/agent-feed/index.html" class="nav-item" data-section="agent-feed" id="agent-feed-nav-item">
@@ -51,15 +51,6 @@ function buildSidebarHTML() {
             <circle cx="15.5" cy="16" r="1.5" fill="currentColor"/>
         </svg>
         <span>Agent Feed</span>
-    </a>
-
-    <a href="${R}/sessions/index.html" class="nav-item" data-section="sessions">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor"/>
-            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor"/>
-        </svg>
-        <span>Workspaces</span>
     </a>
 
     <a href="${R}/coding-agent/index.html" class="nav-item" data-section="coding-agent">
@@ -327,7 +318,7 @@ function loadSidebar(activeSection) {
 
     const baseSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
         ? sidebarCfg.hiddenNavSections
-        : (demoOnboarding ? ['dashboard', 'tasks', 'agent-feed', 'sessions', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
+        : (demoOnboarding ? ['dashboard', 'work', 'agent-feed', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
 
     const hideSections = baseSections.concat(!isAgentFeedEnabled() ? ['agent-feed'] : []);
 

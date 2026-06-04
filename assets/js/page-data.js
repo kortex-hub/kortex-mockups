@@ -58,6 +58,12 @@
             '<span class="project-card-branch">' + esc(p.branch) + '</span>' +
             '</div>' +
             '<div class="project-card-assets">' + assets + '</div>' +
+            '<div class="project-card-workspace-row">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' +
+            '<span>' + (p.workspacesCount || 0) + ' workspace' + ((p.workspacesCount || 0) !== 1 ? 's' : '') + '</span>' +
+            (p.activeSessionsCount > 0 ? '<span class="project-card-sessions-pill running">' + p.activeSessionsCount + ' running</span>' : '') +
+            '<a href="../work/index.html" class="project-card-work-link" onclick="event.stopPropagation()">Open in Work →</a>' +
+            '</div>' +
             '<div class="project-card-footer">' +
             '<div class="project-card-meta"><div class="project-card-meta-item">' + CLOCK_SVG + esc(p.footerMeta) + '</div></div>' +
             '<span class="' + badgeClass + '">' + esc(p.agentsBadge) + '</span>' +

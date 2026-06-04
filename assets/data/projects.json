@@ -9,13 +9,15 @@
       "statusDot": "active",
       "gitRemote": "github.com/acme/doc-updater",
       "branch": "main",
+      "workspacesCount": 1,
+      "activeSessionsCount": 2,
       "assets": [
         { "type": "skills", "label": "3 Skills" },
         { "type": "mcp", "label": "2 MCP" },
         { "type": "knowledge", "label": "1 KB" }
       ],
       "footerMeta": "Active 2 min ago",
-      "agentsBadge": "1 agent running",
+      "agentsBadge": "2 sessions running",
       "agentsBadgeVariant": "running"
     },
     {
@@ -26,13 +28,15 @@
       "statusDot": "active",
       "gitRemote": "github.com/acme/docs-portal",
       "branch": "feat/dashboard",
+      "workspacesCount": 1,
+      "activeSessionsCount": 1,
       "assets": [
         { "type": "skills", "label": "2 Skills" },
         { "type": "mcp", "label": "1 MCP" },
         { "type": "knowledge", "label": "2 KB" }
       ],
       "footerMeta": "Active 15 min ago",
-      "agentsBadge": "2 agents running",
+      "agentsBadge": "1 session running",
       "agentsBadgeVariant": "running"
     },
     {
@@ -43,13 +47,15 @@
       "statusDot": "idle",
       "gitRemote": "gitlab.corp.example.com/platform/infra",
       "branch": "main",
+      "workspacesCount": 1,
+      "activeSessionsCount": 0,
       "assets": [
         { "type": "skills", "label": "4 Skills" },
         { "type": "mcp", "label": "3 MCP" },
         { "type": "knowledge", "label": "1 KB" }
       ],
       "footerMeta": "Last active 3 days ago",
-      "agentsBadge": "No agents",
+      "agentsBadge": "No active sessions",
       "agentsBadgeVariant": "idle"
     },
     {
@@ -57,16 +63,18 @@
       "name": "API Gateway",
       "path": "~/dev/api-gateway",
       "icon": { "text": "AG", "gradient": "linear-gradient(135deg, #10b981, #059669)" },
-      "statusDot": "idle",
+      "statusDot": "active",
       "gitRemote": "github.com/acme/api-gateway",
       "branch": "develop",
+      "workspacesCount": 1,
+      "activeSessionsCount": 1,
       "assets": [
         { "type": "skills", "label": "2 Skills" },
         { "type": "mcp", "label": "2 MCP" }
       ],
-      "footerMeta": "Last active 1 week ago",
-      "agentsBadge": "No agents",
-      "agentsBadgeVariant": "idle"
+      "footerMeta": "Active 45 min ago",
+      "agentsBadge": "1 session running",
+      "agentsBadgeVariant": "running"
     }
   ]
 }

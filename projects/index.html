@@ -306,6 +306,35 @@
             border: 1px solid rgba(59, 130, 246, 0.15);
         }
 
+        .project-card-workspace-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--kd-text-muted);
+            margin-bottom: 10px;
+        }
+        .project-card-sessions-pill {
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .project-card-sessions-pill.running {
+            background: rgba(52,211,153,0.12);
+            color: #34d399;
+        }
+        .project-card-work-link {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--kd-accent-dim);
+            text-decoration: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .project-card:hover .project-card-work-link { opacity: 1; }
+
         .project-card-footer {
             display: flex;
             align-items: center;
