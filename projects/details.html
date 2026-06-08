@@ -2778,6 +2778,16 @@
                                 <div class="pd-nav-desc">AgentDev configuration</div>
                             </div>
                         </div>
+                        <div class="pd-nav-item" data-pd-tab="devcontainer-features" onclick="switchSection('devcontainer-features')">
+                            <div class="pd-nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            </div>
+                            <div class="pd-nav-info">
+                                <div class="pd-nav-name">Dev Container Features</div>
+                                <div class="pd-nav-desc">Tooling &amp; runtime features</div>
+                            </div>
+                            <span class="pd-nav-count">3</span>
+                        </div>
                         <div class="pd-nav-item" data-pd-tab="history" onclick="switchSection('history')">
                             <div class="pd-nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -4205,6 +4215,346 @@
                         </div>
                     </div>
 
+                    <!-- Dev Container Features Section -->
+                    <div class="pd-section" id="section-devcontainer-features" data-pd-tab="devcontainer-features">
+                        <style>
+                        .dcf-header { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:20px; }
+                        .dcf-title-block h1 { font-size:22px; font-weight:700; margin:0 0 4px; color:var(--kd-text-primary); }
+                        .dcf-title-block p { font-size:13px; color:var(--kd-text-muted); margin:0; line-height:1.5; }
+                        .dcf-title-block a { color:var(--kd-accent-dim); }
+                        .dcf-add-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; background:var(--kd-accent); border:none; border-radius:9px; color:#0a1628; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; }
+                        .dcf-add-btn svg { width:14px; height:14px; }
+
+                        /* Installed features */
+                        .dcf-installed { display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+                        .dcf-feature-card { background:var(--kd-bg-card); border:1px solid var(--kd-border); border-radius:12px; overflow:hidden; }
+                        .dcf-feature-head { display:flex; align-items:center; gap:12px; padding:14px 16px; }
+                        .dcf-feature-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+                        .dcf-feature-icon svg { width:16px; height:16px; }
+                        .dcf-feature-name { font-size:13px; font-weight:700; color:var(--kd-text-primary); margin-bottom:2px; }
+                        .dcf-feature-ref { font-size:11px; color:var(--kd-text-muted); font-family:'SF Mono','Fira Code',monospace; }
+                        .dcf-feature-actions { margin-left:auto; display:flex; align-items:center; gap:8px; }
+                        .dcf-feature-version { font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; background:color-mix(in srgb,var(--kd-text-primary) 6%,var(--kd-bg-card)); color:var(--kd-text-muted); border:1px solid var(--kd-border); }
+                        .dcf-feature-remove { width:26px; height:26px; border-radius:6px; background:transparent; border:none; color:var(--kd-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+                        .dcf-feature-remove svg { width:13px; height:13px; }
+                        .dcf-feature-remove:hover { background:rgba(248,113,113,0.1); color:#f87171; }
+                        .dcf-feature-opts { padding:0 16px 14px; display:flex; flex-direction:column; gap:6px; }
+                        .dcf-opt-row { display:flex; align-items:center; gap:10px; font-size:12px; }
+                        .dcf-opt-key { color:var(--kd-text-muted); width:120px; flex-shrink:0; font-family:'SF Mono','Fira Code',monospace; font-size:11px; }
+                        .dcf-opt-val { flex:1; background:var(--kd-surface-input); border:1px solid var(--kd-surface-input-border); border-radius:6px; padding:5px 9px; color:var(--kd-text-primary); font-size:12px; font-family:inherit; outline:none; }
+                        .dcf-opt-val:focus { border-color:color-mix(in srgb,var(--kd-accent) 50%,transparent); }
+
+                        /* Catalog browser */
+                        .dcf-catalog-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--kd-text-muted); margin-bottom:10px; }
+                        .dcf-search-wrap { display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:9px; border:1px solid var(--kd-border); background:var(--kd-surface-input); margin-bottom:12px; }
+                        .dcf-search-wrap svg { width:15px; height:15px; color:var(--kd-text-muted); flex-shrink:0; }
+                        .dcf-search-wrap input { flex:1; background:none; border:none; outline:none; font-size:13px; color:var(--kd-text-primary); font-family:inherit; }
+                        .dcf-search-wrap input::placeholder { color:var(--kd-text-muted); }
+                        .dcf-filter-tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+                        .dcf-filter-tab { padding:4px 12px; border-radius:20px; border:1px solid var(--kd-border); background:transparent; color:var(--kd-text-muted); font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+                        .dcf-filter-tab.active { border-color:color-mix(in srgb,var(--kd-accent) 50%,transparent); background:color-mix(in srgb,var(--kd-accent) 10%,transparent); color:var(--kd-text-primary); }
+                        .dcf-catalog-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+                        .dcf-catalog-card { display:flex; align-items:flex-start; gap:10px; padding:11px 13px; border-radius:10px; border:1px solid var(--kd-border); background:var(--kd-bg-card); cursor:pointer; transition:all 0.15s; }
+                        .dcf-catalog-card:hover { border-color:color-mix(in srgb,var(--kd-accent) 35%,transparent); background:color-mix(in srgb,var(--kd-accent) 5%,transparent); }
+                        .dcf-catalog-card.installed { border-color:rgba(52,211,153,0.3); background:rgba(52,211,153,0.04); cursor:default; }
+                        .dcf-catalog-icon { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+                        .dcf-catalog-icon svg { width:14px; height:14px; }
+                        .dcf-catalog-body { flex:1; min-width:0; }
+                        .dcf-catalog-name { font-size:12px; font-weight:600; color:var(--kd-text-primary); margin-bottom:1px; }
+                        .dcf-catalog-desc { font-size:11px; color:var(--kd-text-muted); line-height:1.35; }
+                        .dcf-catalog-add { margin-top:4px; font-size:10px; font-weight:700; color:var(--kd-accent-dim); }
+                        .dcf-catalog-check { color:#34d399; font-size:10px; font-weight:700; margin-top:4px; }
+
+                        /* devcontainer.json snippet */
+                        .dcf-json-wrap { background:color-mix(in srgb,#000 30%,transparent); border:1px solid var(--kd-border); border-radius:12px; overflow:hidden; margin-top:24px; }
+                        .dcf-json-header { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid var(--kd-border); background:color-mix(in srgb,#000 15%,transparent); }
+                        .dcf-json-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--kd-text-muted); }
+                        .dcf-json-copy { font-size:11px; color:var(--kd-text-muted); background:none; border:1px solid var(--kd-border); border-radius:6px; padding:3px 9px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+                        .dcf-json-copy:hover { border-color:var(--kd-text-muted); color:var(--kd-text-primary); }
+                        .dcf-json-code { padding:18px 20px; font-family:'SF Mono','Fira Code',monospace; font-size:12px; line-height:1.65; overflow-x:auto; margin:0; white-space:pre; }
+                        .jk { color:#c4b5fd; } .js { color:#a8e6fc; } .jn { color:#fbbf24; } .jc { color:#4b5563; }
+                        </style>
+
+                        <div class="dcf-header">
+                            <div class="dcf-title-block">
+                                <h1 class="pd-section-title" style="margin-bottom:4px">Dev Container Features</h1>
+                                <p>Add tooling, runtimes, and CLIs to the project's dev container. Features are pulled from <a href="https://containers.dev/features" target="_blank" rel="noopener">containers.dev/features</a> and injected at workspace build time.</p>
+                            </div>
+                            <button class="dcf-add-btn" onclick="dcfFocusSearch()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Add feature
+                            </button>
+                        </div>
+
+                        <!-- Installed features -->
+                        <div class="dcf-catalog-label">Installed (3)</div>
+                        <div class="dcf-installed" id="dcfInstalled">
+
+                            <div class="dcf-feature-card">
+                                <div class="dcf-feature-head">
+                                    <div class="dcf-feature-icon" style="background:rgba(247,223,30,0.15);color:#f7df1e">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="dcf-feature-name">Node.js (via nvm)</div>
+                                        <div class="dcf-feature-ref">ghcr.io/devcontainers/features/node:2</div>
+                                    </div>
+                                    <div class="dcf-feature-actions">
+                                        <span class="dcf-feature-version">v20 LTS</span>
+                                        <button class="dcf-feature-remove" onclick="this.closest('.dcf-feature-card').remove();dcfUpdateJson()" title="Remove">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="dcf-feature-opts">
+                                    <div class="dcf-opt-row">
+                                        <span class="dcf-opt-key">version</span>
+                                        <input class="dcf-opt-val" type="text" value="20" onchange="dcfUpdateJson()">
+                                    </div>
+                                    <div class="dcf-opt-row">
+                                        <span class="dcf-opt-key">npmVersion</span>
+                                        <input class="dcf-opt-val" type="text" value="latest" onchange="dcfUpdateJson()">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-feature-card">
+                                <div class="dcf-feature-head">
+                                    <div class="dcf-feature-icon" style="background:rgba(36,41,47,0.4);color:#e6edf3">
+                                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="dcf-feature-name">GitHub CLI</div>
+                                        <div class="dcf-feature-ref">ghcr.io/devcontainers/features/github-cli:1</div>
+                                    </div>
+                                    <div class="dcf-feature-actions">
+                                        <span class="dcf-feature-version">latest</span>
+                                        <button class="dcf-feature-remove" onclick="this.closest('.dcf-feature-card').remove();dcfUpdateJson()" title="Remove">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-feature-card">
+                                <div class="dcf-feature-head">
+                                    <div class="dcf-feature-icon" style="background:rgba(79,195,247,0.12);color:#4fc3f7">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="dcf-feature-name">Docker-in-Docker</div>
+                                        <div class="dcf-feature-ref">ghcr.io/devcontainers/features/docker-in-docker:3</div>
+                                    </div>
+                                    <div class="dcf-feature-actions">
+                                        <span class="dcf-feature-version">latest</span>
+                                        <button class="dcf-feature-remove" onclick="this.closest('.dcf-feature-card').remove();dcfUpdateJson()" title="Remove">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Catalog browser -->
+                        <div class="dcf-catalog-label">Add from catalog</div>
+                        <div class="dcf-search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input type="text" id="dcfSearch" placeholder="Search features… (e.g. Python, Terraform, kubectl)" oninput="dcfFilterCatalog(this.value)">
+                        </div>
+                        <div class="dcf-filter-tabs">
+                            <button class="dcf-filter-tab active" onclick="dcfFilterCat('all',this)">All</button>
+                            <button class="dcf-filter-tab" onclick="dcfFilterCat('language',this)">Languages</button>
+                            <button class="dcf-filter-tab" onclick="dcfFilterCat('tool',this)">Tools &amp; CLIs</button>
+                            <button class="dcf-filter-tab" onclick="dcfFilterCat('infra',this)">Infrastructure</button>
+                            <button class="dcf-filter-tab" onclick="dcfFilterCat('official',this)">Official only</button>
+                        </div>
+                        <div class="dcf-catalog-grid" id="dcfCatalog">
+
+                            <div class="dcf-catalog-card installed" data-cat="language official">
+                                <div class="dcf-catalog-icon" style="background:rgba(247,223,30,0.12);color:#f7df1e"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Node.js</div>
+                                    <div class="dcf-catalog-desc">Node.js via nvm — specify version</div>
+                                    <div class="dcf-catalog-check">✓ Installed</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="language official" onclick="dcfAddFeature(this,'Python','ghcr.io/devcontainers/features/python:1','language official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(55,118,171,0.15);color:#3776ab"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Python</div>
+                                    <div class="dcf-catalog-desc">Python via pyenv with pip, venv</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="language official" onclick="dcfAddFeature(this,'Go','ghcr.io/devcontainers/features/go:1','language official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(0,173,216,0.12);color:#00add8"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.07-.117.07zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .059.023.047.059l-.093.28c-.012.047-.059.07-.105.07zm2.828 1.075c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.07-.07.117-.07h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082zm12.129-2.36c-.736.187-1.239.327-1.963.514-.176.046-.187.058-.34-.117-.174-.199-.303-.327-.548-.444-.737-.362-1.45-.257-2.115.175-.795.514-1.204 1.274-1.192 2.22.011.935.654 1.706 1.577 1.835.795.105 1.46-.175 1.987-.771.105-.129.198-.269.315-.432H10.47c-.245 0-.304-.152-.222-.35.152-.362.432-.968.596-1.274a.315.315 0 01.292-.187h4.253c-.023.316-.023.631-.07.947a4.983 4.983 0 01-.958 2.29c-.841 1.11-1.94 1.8-3.33 1.986-1.145.152-2.209-.07-3.143-.77-.865-.655-1.356-1.52-1.484-2.595-.152-1.274.222-2.419.993-3.424.83-1.086 1.928-1.776 3.272-2.02 1.098-.2 2.15-.07 3.096.571.62.41 1.063.97 1.356 1.648.07.105.023.164-.117.2zm3.868 6.461c-1.064-.024-2.034-.328-2.852-1.029a3.665 3.665 0 01-1.262-2.255c-.21-1.32.152-2.489.947-3.529.853-1.122 1.881-1.706 3.272-1.95 1.192-.21 2.314-.095 3.33.595.923.63 1.496 1.484 1.648 2.605.198 1.578-.257 2.863-1.344 3.962-.771.783-1.718 1.273-2.805 1.495-.315.06-.63.07-.934.106zm2.78-4.72c-.011-.153-.011-.27-.034-.387-.21-1.157-1.274-1.81-2.384-1.554-1.087.245-1.788 1.05-1.87 2.15-.07.934.595 1.87 1.526 2.01.772.117 1.45-.152 1.975-.701.41-.434.68-.971.787-1.518z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Go</div>
+                                    <div class="dcf-catalog-desc">Go programming language toolchain</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="language official" onclick="dcfAddFeature(this,'Rust','ghcr.io/devcontainers/features/rust:1','language official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(222,165,132,0.15);color:#dea584"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.634 11.468l-1.036-.64a12.48 12.48 0 00-.064-.326l.885-.797a.342.342 0 00-.084-.55l-1.147-.555a12.65 12.65 0 00-.146-.307l.71-.948a.342.342 0 00-.155-.528l-1.226-.447a12.47 12.47 0 00-.225-.278l.52-1.09a.342.342 0 00-.222-.493L20.254 4.3a13.11 13.11 0 00-.297-.241l.316-1.211a.342.342 0 00-.282-.422l-1.279-.18a12.76 12.76 0 00-.36-.196l.104-1.246a.342.342 0 00-.334-.364l-1.286.073a12.55 12.55 0 00-.413-.146L16.122.216a.342.342 0 00-.374-.3l-1.26.268c-.142-.06-.285-.117-.43-.17L13.88.014a.342.342 0 00-.403-.218l-1.204.5a12.85 12.85 0 00-.44-.09L11.38.014a.342.342 0 00-.408.214l-1.157.511c-.144.051-.287.106-.428.165L8.14-.083a.342.342 0 00-.377.297L7.62 1.46a12.6 12.6 0 00-.415.143L5.92 1.526a.342.342 0 00-.337.362l.097 1.247a12.62 12.62 0 00-.364.193l-1.284-.08a.342.342 0 00-.284.42l.306 1.213a12.87 12.87 0 00-.299.239l-1.213-.374a.342.342 0 00-.224.492l.512 1.092a12.68 12.68 0 00-.227.276l-1.229.44a.342.342 0 00-.157.527l.703.952a12.79 12.79 0 00-.148.304l-1.149.549a.342.342 0 00-.087.549l.877.803a12.63 12.63 0 00-.066.325l-1.04.636a.342.342 0 00-.009.573l1.01.672c.012.11.026.22.041.329l-.88.803a.342.342 0 00.08.553l1.146.558c.046.103.094.206.143.308l-.714.945a.342.342 0 00.151.53l1.224.453c.072.094.147.187.223.279l-.523 1.089a.342.342 0 00.218.494l1.277.385c.096.082.195.162.295.241l-.32 1.209a.342.342 0 00.28.423l1.278.186c.118.068.238.134.359.197l-.108 1.245a.342.342 0 00.333.366l1.286-.067c.135.053.27.103.407.15l.292 1.24a.342.342 0 00.373.303l1.261-.262c.143.062.287.12.432.174l.155 1.282a.342.342 0 00.401.221l1.206-.498c.146.035.293.066.44.093l.047 1.31a.342.342 0 00.408.217l1.159-.507c.143.03.287.058.432.082l.013 1.292a.342.342 0 00.403.24l1.18-.458c.22-.02.44-.044.66-.073"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Rust</div>
+                                    <div class="dcf-catalog-desc">Rust via rustup with cargo</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card installed" data-cat="tool official" onclick="">
+                                <div class="dcf-catalog-icon" style="background:rgba(36,41,47,0.4);color:#e6edf3"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">GitHub CLI</div>
+                                    <div class="dcf-catalog-desc">gh CLI for GitHub operations</div>
+                                    <div class="dcf-catalog-check">✓ Installed</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="tool official" onclick="dcfAddFeature(this,'Terraform','ghcr.io/devcontainers/features/terraform:1','tool official infra')">
+                                <div class="dcf-catalog-icon" style="background:rgba(96,63,139,0.15);color:#7b42bc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.32 2.91l-6.06 3.5v6.93l6.06-3.5V2.91zM.87 6.41v6.93L6.94 16.84V9.91zm14.45 9.03l-6.06 3.5 6.06 3.5 6.07-3.5z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Terraform</div>
+                                    <div class="dcf-catalog-desc">Terraform CLI for IaC workflows</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="infra official" onclick="dcfAddFeature(this,'kubectl, Helm &amp; Minikube','ghcr.io/devcontainers/features/kubectl-helm-minikube:1','infra official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(50,108,229,0.12);color:#326ce5"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 01-2.075-2.597l2.578-.437.49.612h-.001zm4.486.598l.567-.688 2.61.446a5.177 5.177 0 01-2.097 2.615l-1.08-2.373zm-4.741-2.984l.01.002.009-.002.003-.009-.001-.001v-.002l-1.65-2.197-.003-.003-.001.001L7.49 9.758c-.04.127-.07.258-.1.392l2.559-.786zm4.741 1.993l.003.009 2.61.864c.03-.132.049-.268.065-.406l-2.678-.467zm-2.19-1.023l-.003-.009-.005.009-.009.005.009.003.003.009.005-.009.009-.003-.009-.005zm-.67-2.984l.671-2.782h-.002c-.268.028-.531.076-.788.144l.119 2.638zm2.234.145l.096-2.638a5.189 5.189 0 00-.788-.144l.692 2.782z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">kubectl, Helm &amp; Minikube</div>
+                                    <div class="dcf-catalog-desc">Kubernetes tooling bundle</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card installed" data-cat="infra official">
+                                <div class="dcf-catalog-icon" style="background:rgba(79,195,247,0.12);color:#4fc3f7"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Docker-in-Docker</div>
+                                    <div class="dcf-catalog-desc">Full Docker daemon inside container</div>
+                                    <div class="dcf-catalog-check">✓ Installed</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="tool official" onclick="dcfAddFeature(this,'AWS CLI','ghcr.io/devcontainers/features/aws-cli:1','tool official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(255,153,0,0.12);color:#ff9900"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.064.056.128.056.184 0 .08-.048.16-.152.24l-.503.335a.383.383 0 01-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 01-.287-.375 6.18 6.18 0 01-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.03-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 01-.28.104.488.488 0 01-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 01.224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 011.246-.151c.95 0 1.644.216 2.091.647.439.43.663 1.085.663 1.963v2.586zm-3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 00-.735-.136 6.02 6.02 0 00-.75-.048c-.535 0-.926.104-1.19.32-.263.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm6.41.862c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55a1.398 1.398 0 01-.072-.32c0-.128.064-.2.191-.2h.783c.151 0 .255.025.31.08.065.048.113.16.16.312l1.342 5.284 1.245-5.284c.04-.16.088-.264.151-.312a.549.549 0 01.32-.08h.638c.152 0 .256.025.32.08.063.048.12.16.151.312l1.261 5.348 1.381-5.348c.048-.16.104-.264.16-.312a.52.52 0 01.311-.08h.743c.127 0 .2.065.2.2 0 .04-.009.08-.017.128a1.137 1.137 0 01-.056.2l-1.923 6.17c-.048.16-.104.264-.168.311a.51.51 0 01-.303.08h-.687c-.151 0-.255-.024-.32-.08-.063-.056-.119-.16-.15-.32l-1.238-5.148-1.23 5.141c-.04.16-.087.264-.15.32-.065.056-.177.08-.32.08h-.686zm10.24.229c-.415 0-.83-.048-1.229-.143-.399-.096-.71-.2-.918-.32-.128-.071-.215-.151-.247-.223a.563.563 0 01-.048-.224v-.407c0-.167.064-.247.183-.247.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.566.215.878.279.319.064.63.096.95.096.502 0 .894-.088 1.165-.264a.86.86 0 00.415-.758.778.778 0 00-.215-.559c-.144-.151-.416-.287-.807-.415l-1.157-.36c-.583-.183-1.014-.454-1.277-.813a1.902 1.902 0 01-.4-1.158c0-.335.073-.63.216-.886.144-.255.335-.479.575-.654.24-.184.51-.32.83-.415.32-.096.655-.136 1.006-.136.175 0 .359.008.535.032.183.024.35.056.518.088.16.04.312.08.455.127.144.048.256.096.336.144a.69.69 0 01.24.2.43.43 0 01.071.263v.375c0 .168-.064.256-.184.256a.83.83 0 01-.303-.096 3.652 3.652 0 00-1.532-.311c-.455 0-.815.071-1.062.223-.248.152-.375.383-.375.71 0 .224.08.416.24.567.159.152.454.304.877.44l1.134.358c.574.184.99.44 1.237.767.247.327.367.702.367 1.117 0 .343-.072.655-.207.926-.144.272-.336.511-.583.703-.248.2-.543.343-.886.447-.36.111-.743.167-1.155.167z"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">AWS CLI</div>
+                                    <div class="dcf-catalog-desc">AWS command-line interface</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="tool" onclick="dcfAddFeature(this,'Claude Code','ghcr.io/stu-bell/devcontainer-features/claude-code:0','tool')">
+                                <div class="dcf-catalog-icon" style="background:rgba(217,119,6,0.15);color:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Claude Code</div>
+                                    <div class="dcf-catalog-desc">Anthropic Claude Code CLI agent</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                            <div class="dcf-catalog-card" data-cat="tool official" onclick="dcfAddFeature(this,'Git LFS','ghcr.io/devcontainers/features/git-lfs:1','tool official')">
+                                <div class="dcf-catalog-icon" style="background:rgba(248,113,113,0.12);color:#f87171"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div>
+                                <div class="dcf-catalog-body">
+                                    <div class="dcf-catalog-name">Git LFS</div>
+                                    <div class="dcf-catalog-desc">Large File Storage for Git repos</div>
+                                    <div class="dcf-catalog-add">+ Add</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- devcontainer.json preview -->
+                        <div class="dcf-json-wrap">
+                            <div class="dcf-json-header">
+                                <span class="dcf-json-label">.devcontainer/devcontainer.json — features excerpt</span>
+                                <button class="dcf-json-copy" onclick="alert('Mock: copied')">Copy</button>
+                            </div>
+                            <pre class="dcf-json-code" id="dcfJsonPreview">{
+  <span class="jk">"features"</span>: {
+    <span class="jk">"ghcr.io/devcontainers/features/node:2"</span>: {
+      <span class="jk">"version"</span>: <span class="js">"20"</span>,
+      <span class="jk">"npmVersion"</span>: <span class="js">"latest"</span>
+    },
+    <span class="jk">"ghcr.io/devcontainers/features/github-cli:1"</span>: {},
+    <span class="jk">"ghcr.io/devcontainers/features/docker-in-docker:3"</span>: {}
+  }
+}</pre>
+                        </div>
+
+                        <script>
+                        function dcfFocusSearch() {
+                            switchSection('devcontainer-features');
+                            setTimeout(function(){ document.getElementById('dcfSearch').focus(); }, 50);
+                        }
+                        function dcfFilterCatalog(q) {
+                            q = q.toLowerCase();
+                            document.querySelectorAll('#dcfCatalog .dcf-catalog-card').forEach(function(c) {
+                                c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none';
+                            });
+                        }
+                        function dcfFilterCat(cat, btn) {
+                            document.querySelectorAll('.dcf-filter-tab').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            document.querySelectorAll('#dcfCatalog .dcf-catalog-card').forEach(function(c) {
+                                c.style.display = (cat === 'all' || c.getAttribute('data-cat').includes(cat)) ? '' : 'none';
+                            });
+                        }
+                        function dcfAddFeature(card, name, ref, cat) {
+                            if (card.classList.contains('installed')) return;
+                            card.classList.add('installed');
+                            card.querySelector('.dcf-catalog-add').outerHTML = '<div class="dcf-catalog-check">✓ Installed</div>';
+                            card.onclick = null;
+                            var fc = document.createElement('div');
+                            fc.className = 'dcf-feature-card';
+                            fc.innerHTML = '<div class="dcf-feature-head">'
+                                + '<div class="dcf-feature-icon" style="background:color-mix(in srgb,var(--kd-accent) 12%,transparent);color:var(--kd-accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>'
+                                + '<div><div class="dcf-feature-name">'+name+'</div><div class="dcf-feature-ref">'+ref+'</div></div>'
+                                + '<div class="dcf-feature-actions"><span class="dcf-feature-version">latest</span>'
+                                + '<button class="dcf-feature-remove" onclick="dcfRemoveFeature(this,\''+ref+'\')" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>'
+                                + '</div></div>';
+                            document.getElementById('dcfInstalled').appendChild(fc);
+                            dcfUpdateJson();
+                        }
+                        function dcfRemoveFeature(btn, ref) {
+                            btn.closest('.dcf-feature-card').remove();
+                            document.querySelectorAll('#dcfCatalog .dcf-catalog-card').forEach(function(c) {
+                                if (c.textContent.includes(ref.split('/').pop().split(':')[0])) {
+                                    c.classList.remove('installed');
+                                    var chk = c.querySelector('.dcf-catalog-check');
+                                    if (chk) chk.outerHTML = '<div class="dcf-catalog-add">+ Add</div>';
+                                }
+                            });
+                            dcfUpdateJson();
+                        }
+                        function dcfUpdateJson() {
+                            var lines = [];
+                            document.querySelectorAll('#dcfInstalled .dcf-feature-card').forEach(function(card) {
+                                var ref = card.querySelector('.dcf-feature-ref').textContent.trim();
+                                var opts = {};
+                                card.querySelectorAll('.dcf-opt-row').forEach(function(row) {
+                                    var k = row.querySelector('.dcf-opt-key').textContent.trim();
+                                    var v = row.querySelector('.dcf-opt-val').value.trim();
+                                    if (v) opts[k] = v;
+                                });
+                                var optStr = Object.keys(opts).length
+                                    ? '{\n      ' + Object.entries(opts).map(([k,v]) => '"'+k+'": "'+v+'"').join(',\n      ') + '\n    }'
+                                    : '{}';
+                                lines.push('    <span class="jk">"'+ref+'"</span>: '+optStr);
+                            });
+                            document.getElementById('dcfJsonPreview').innerHTML = '{\n  <span class="jk">"features"</span>: {\n' + lines.join(',\n') + '\n  }\n}';
+                        }
+                        </script>
+                    </div>
+
                     <!-- Agent History Section -->
                     <div class="pd-section" id="section-history" data-pd-tab="history">
 
@@ -4979,6 +5329,7 @@
             filesystem: { hash: '#filesystem', sectionId: 'section-filesystem', label: 'Filesystem' },
             network:    { hash: '#network',    sectionId: 'section-network',    label: 'Network Policy' },
             workspace:  { hash: '#workspace',  sectionId: 'section-workspace',  label: 'Workspace File' },
+            'devcontainer-features': { hash: '#devcontainer-features', sectionId: 'section-devcontainer-features', label: 'Dev Container Features' },
             history:    { hash: '#history',    sectionId: 'section-history',    label: 'Agent History' }
         };
         const PD_PROJECT_DETAILS_TAB_KEYS = new Set(Object.keys(PD_PROJECT_DETAILS_TABS));
