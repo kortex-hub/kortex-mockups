@@ -678,10 +678,10 @@
                 <div class="tasks-left-header">
                     <div class="tasks-left-header-row">
                         <div class="tasks-left-title">Work</div>
-                        <a href="../sessions/create.html" class="new-task-btn">
+                        <button class="new-task-btn" onclick="openNewSessionModal()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                             New session
-                        </a>
+                        </button>
                     </div>
                     <div class="tasks-filters">
                         <button class="tasks-filter-btn active" onclick="filterWork('active', this)">Active</button>
@@ -1437,6 +1437,407 @@
         function allowNetworkHost(host) { console.log('Allow host:', host); }
         function allowNetworkHostSession(host) { console.log('Allow host for session:', host); }
         function handleNetworkReply(input) { if (input.value.trim()) input.value = ''; }
+
+        // ── New Session Modal ──
+        function openNewSessionModal() {
+            document.getElementById('newSessionOverlay').classList.add('open');
+            setTimeout(function() { document.getElementById('nsGoal').focus(); }, 80);
+        }
+        function closeNewSessionModal() {
+            document.getElementById('newSessionOverlay').classList.remove('open');
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeNewSessionModal();
+        });
+        function nsSelectProject(el) {
+            document.querySelectorAll('.ns-project-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            var name = el.querySelector('.ns-proj-name').textContent;
+            var path = el.querySelector('.ns-proj-path').textContent;
+            var color = el.getAttribute('data-color');
+            var letter = el.getAttribute('data-letter');
+            document.getElementById('nsSelectedProj').innerHTML =
+                '<div class="ns-sel-icon" style="background:'+color+'">'+letter+'</div>'
+                +'<div><div class="ns-sel-name">'+name+'</div><div class="ns-sel-sub">'+path+'</div></div>'
+                +'<svg class="ns-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
+            el.closest('.ns-dropdown').classList.remove('open');
+            updateNsAssets(name);
+        }
+        function nsSelectProfile(el) {
+            document.querySelectorAll('.ns-profile-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            var name = el.querySelector('.ns-proj-name').textContent;
+            var sub  = el.querySelector('.ns-proj-path').textContent;
+            document.getElementById('nsSelectedProfile').innerHTML =
+                '<div class="ns-sel-icon ns-profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>'
+                +'<div><div class="ns-sel-name">'+name+'</div><div class="ns-sel-sub">'+sub+'</div></div>'
+                +'<svg class="ns-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
+            el.closest('.ns-dropdown').classList.remove('open');
+        }
+        function nsToggle(id) {
+            var dd = document.getElementById(id);
+            var open = dd.classList.contains('open');
+            document.querySelectorAll('.ns-dropdown').forEach(d => d.classList.remove('open'));
+            if (!open) dd.classList.add('open');
+        }
+        function nsPillToggle(btn, group) {
+            document.querySelectorAll('.ns-pill[data-group="'+group+'"]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        function nsOpenPillDropdown(id, btn) {
+            var dd = document.getElementById(id);
+            var isOpen = dd.classList.contains('show');
+            // Close all pill dropdowns and project/profile dropdowns
+            document.querySelectorAll('.ns-pill-dropdown').forEach(d => d.classList.remove('show'));
+            document.querySelectorAll('.ns-dropdown').forEach(d => d.classList.remove('open'));
+            if (!isOpen) {
+                // Position dropdown above the button
+                var bar = btn.closest('.ns-pills-bar');
+                var btnRect = btn.getBoundingClientRect();
+                var barRect = bar.getBoundingClientRect();
+                dd.style.left = (btnRect.left - barRect.left) + 'px';
+                dd.classList.add('show');
+            }
+        }
+        function nsPickAgent(name, letter, gradient) {
+            document.getElementById('nsAgentLabel').textContent = name;
+            document.getElementById('nsAgentAvatar').textContent = letter;
+            document.getElementById('nsAgentAvatar').style.background = gradient;
+            document.querySelectorAll('.ns-pill-dropdown').forEach(d => d.classList.remove('show'));
+        }
+        function nsPickModel(name) {
+            document.getElementById('nsModelLabel').textContent = name;
+            document.querySelectorAll('.ns-pill-dropdown').forEach(d => d.classList.remove('show'));
+        }
+        function nsPickEnv(name) {
+            document.getElementById('nsEnvLabel').textContent = name;
+            document.querySelectorAll('.ns-pill-dropdown').forEach(d => d.classList.remove('show'));
+        }
+        // Close pill dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.ns-pills-bar')) {
+                document.querySelectorAll('.ns-pill-dropdown').forEach(d => d.classList.remove('show'));
+            }
+        });
+        function updateNsAssets(proj) {
+            var assets = { 'Doc updater': '3 skills · 2 MCP servers · 1 knowledge base', 'Frontend App': '2 skills · 1 MCP server · 2 knowledge bases', 'API Gateway': '2 skills · 2 MCP servers', 'Infrastructure Platform': '4 skills · 3 MCP servers · 1 knowledge base' };
+            document.getElementById('nsAssets').textContent = assets[proj] || '— no assets';
+        }
+        function startNewSession() {
+            var goal = document.getElementById('nsGoal').value.trim();
+            if (!goal) { document.getElementById('nsGoal').focus(); document.getElementById('nsGoal').style.borderColor='rgba(248,113,113,0.6)'; return; }
+            var btn = document.getElementById('nsStartBtn');
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg> Session started!';
+            setTimeout(function() { closeNewSessionModal(); document.getElementById('nsGoal').value=''; document.getElementById('nsGoal').style.borderColor=''; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px"><polygon points="5 3 19 12 5 21 5 3"/></svg> Start in terminal'; }, 1600);
+        }
     </script>
+
+    <!-- ── New Session Modal ── -->
+    <style>
+        .ns-overlay {
+            position: fixed; inset: 0; z-index: 3000;
+            background: rgba(4, 9, 20, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.18s ease;
+        }
+        .ns-overlay.open { opacity: 1; pointer-events: all; }
+
+        .ns-modal {
+            width: 560px; max-width: calc(100vw - 40px);
+            background: linear-gradient(145deg, #111927 0%, #0d1421 100%);
+            border: 1px solid rgba(79, 195, 247, 0.25);
+            border-radius: 18px;
+            box-shadow: 0 0 0 1px rgba(79,195,247,0.08), 0 32px 80px rgba(0,0,0,0.6);
+            overflow: visible;
+            transform: translateY(12px) scale(0.98);
+            transition: transform 0.18s ease;
+        }
+        .ns-overlay.open .ns-modal { transform: none; }
+
+        .ns-head { padding: 22px 24px 14px; display: flex; align-items: flex-start; gap: 12px; }
+        .ns-head-text { flex: 1; min-width: 0; }
+        .ns-title { font-size: 18px; font-weight: 700; color: #e8eef7; margin: 0 0 6px; }
+        .ns-subtitle { font-size: 12px; color: #6b7280; line-height: 1.5; }
+        .ns-subtitle strong { color: #d1d5db; }
+        .ns-close { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #6b7280; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+        .ns-close:hover { background: rgba(255,255,255,0.1); color: #e8eef7; }
+        .ns-close svg { width: 14px; height: 14px; }
+
+        /* Section label */
+        .ns-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; padding: 0 24px; margin-bottom: 6px; }
+
+        /* Dropdown selector */
+        .ns-dropdown { position: relative; margin: 0 24px 16px; }
+        .ns-sel-btn {
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            padding: 11px 14px; border-radius: 10px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; transition: border-color 0.15s;
+            font-family: inherit; color: inherit; text-align: left;
+        }
+        .ns-sel-btn:hover, .ns-dropdown.open .ns-sel-btn { border-color: rgba(79,195,247,0.45); }
+        .ns-sel-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+        .ns-profile-icon { background: rgba(79,195,247,0.12); color: #4fc3f7; }
+        .ns-profile-icon svg { width: 16px; height: 16px; }
+        .ns-sel-name { font-size: 14px; font-weight: 600; color: #e8eef7; }
+        .ns-sel-sub { font-size: 11px; color: #6b7280; font-family: 'SF Mono','Fira Code',monospace; margin-top: 1px; }
+        .ns-chevron { width: 16px; height: 16px; color: #4b5563; margin-left: auto; flex-shrink: 0; }
+        .ns-dropdown-list {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 10;
+            background: #131e2e; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+            display: none;
+        }
+        .ns-dropdown.open .ns-dropdown-list { display: block; }
+        .ns-project-option, .ns-profile-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; cursor: pointer; transition: background 0.12s;
+        }
+        .ns-project-option:hover, .ns-profile-option:hover { background: rgba(79,195,247,0.07); }
+        .ns-project-option.selected, .ns-profile-option.selected { background: rgba(79,195,247,0.1); }
+        .ns-proj-name { font-size: 13px; font-weight: 600; color: #e8eef7; }
+        .ns-proj-path { font-size: 11px; color: #6b7280; font-family: monospace; margin-top: 1px; }
+
+        /* Goal textarea area */
+        .ns-goal-wrap {
+            margin: 0 24px 14px; border-radius: 12px;
+            border: 1px solid rgba(79,195,247,0.3);
+            background: rgba(255,255,255,0.03);
+            transition: border-color 0.15s;
+            overflow: visible;
+            position: relative;
+        }
+        .ns-goal-wrap:focus-within { border-color: rgba(79,195,247,0.65); box-shadow: 0 0 0 3px rgba(79,195,247,0.08); }
+        #nsGoal {
+            width: 100%; min-height: 110px; max-height: 200px;
+            background: none; border: none; outline: none;
+            color: #d1d5db; font-size: 15px; line-height: 1.55;
+            font-family: inherit; resize: none;
+            padding: 16px 16px 10px; box-sizing: border-box;
+        }
+        #nsGoal::placeholder { color: #4b5563; }
+
+        /* Config bar inside goal box — selectors left, start btn right */
+        .ns-pills-bar {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px 10px;
+            border-top: 1px solid rgba(30,51,88,0.5);
+            flex-wrap: nowrap;
+        }
+        .ns-config-spacer { flex: 1; }
+        .ns-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 11px; border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #9ca3af; font-size: 12px; font-weight: 500;
+            cursor: pointer; transition: all 0.15s; font-family: inherit;
+            white-space: nowrap;
+        }
+        .ns-pill:hover { border-color: rgba(79,195,247,0.35); color: #d1d5db; }
+        .ns-pill.active { border-color: rgba(79,195,247,0.45); background: rgba(79,195,247,0.1); color: #a8e6fc; }
+        .ns-pill svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .ns-pill-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+        /* Pill dropdowns */
+        .ns-pills-bar { position: relative; }
+        .ns-pill-dropdown {
+            display: none; position: absolute;
+            top: calc(100% + 6px); left: 0;
+            min-width: 200px; z-index: 500;
+            background: #111e33; border: 1px solid #1e3358;
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            animation: nsPillDrop 0.12s ease;
+        }
+        .ns-pill-dropdown.show { display: block; }
+        @keyframes nsPillDrop {
+            from { opacity:0; transform:translateY(-4px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .ns-pill-dd-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; cursor: pointer; transition: background 0.1s;
+        }
+        .ns-pill-dd-item + .ns-pill-dd-item { border-top: 1px solid rgba(30,51,88,0.4); }
+        .ns-pill-dd-item:hover { background: rgba(79,195,247,0.08); }
+
+        /* Start button */
+        .ns-start-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 18px; border-radius: 8px;
+            background: var(--kd-accent, #4fc3f7);
+            border: none; color: #041020; font-size: 13px; font-weight: 600;
+            cursor: pointer; font-family: inherit; flex-shrink: 0;
+            transition: box-shadow 0.15s, transform 0.15s;
+        }
+        .ns-start-btn:hover { box-shadow: 0 4px 16px rgba(79,195,247,0.4); transform: translateY(-1px); }
+        .ns-start-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+        /* Footer */
+        .ns-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .ns-assets { font-size: 11px; color: #4b5563; display: flex; align-items: center; gap: 6px; }
+        .ns-assets svg { width: 13px; height: 13px; color: #374151; }
+        .ns-advanced { display: flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); background: transparent; color: #6b7280; font-size: 11px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+        .ns-advanced:hover { border-color: rgba(255,255,255,0.18); color: #9ca3af; }
+        .ns-advanced svg { width: 13px; height: 13px; }
+        .ns-hint { text-align: center; padding: 0 24px 14px; font-size: 11px; color: #374151; }
+        .ns-hint kbd { padding: 2px 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-family: inherit; font-size: 10px; color: #6b7280; }
+    </style>
+
+    <div class="ns-overlay" id="newSessionOverlay" onclick="if(event.target===this)closeNewSessionModal()">
+        <div class="ns-modal" role="dialog" aria-modal="true" aria-labelledby="nsModalTitle">
+
+            <!-- Header -->
+            <div class="ns-head">
+                <div class="ns-head-text">
+                    <div class="ns-title" id="nsModalTitle">New agent session</div>
+                    <div class="ns-subtitle">Starts a session inside the selected workspace. <strong>Start in terminal</strong> copies the CLI command and opens the terminal view.</div>
+                </div>
+                <button class="ns-close" onclick="closeNewSessionModal()" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Project -->
+            <div class="ns-label">Project</div>
+            <div class="ns-dropdown" id="ddProject">
+                <button class="ns-sel-btn" onclick="nsToggle('ddProject')">
+                    <div id="nsSelectedProj" style="display:flex;align-items:center;gap:12px;flex:1">
+                        <div class="ns-sel-icon" style="background:linear-gradient(135deg,#4fc3f7,#2a8bbf)">KB</div>
+                        <div><div class="ns-sel-name">Doc updater</div><div class="ns-sel-sub">~/dev/doc-updater</div></div>
+                        <svg class="ns-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </button>
+                <div class="ns-dropdown-list">
+                    <div class="ns-project-option selected" data-color="linear-gradient(135deg,#4fc3f7,#2a8bbf)" data-letter="KB" onclick="nsSelectProject(this)">
+                        <div class="ns-sel-icon" style="background:linear-gradient(135deg,#4fc3f7,#2a8bbf);width:30px;height:30px;font-size:11px">KB</div>
+                        <div><div class="ns-proj-name">Doc updater</div><div class="ns-proj-path">~/dev/doc-updater</div></div>
+                    </div>
+                    <div class="ns-project-option" data-color="linear-gradient(135deg,#06b6d4,#0891b2)" data-letter="FA" onclick="nsSelectProject(this)">
+                        <div class="ns-sel-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2);width:30px;height:30px;font-size:11px">FA</div>
+                        <div><div class="ns-proj-name">Frontend App</div><div class="ns-proj-path">~/dev/docs-portal</div></div>
+                    </div>
+                    <div class="ns-project-option" data-color="linear-gradient(135deg,#10b981,#059669)" data-letter="AG" onclick="nsSelectProject(this)">
+                        <div class="ns-sel-icon" style="background:linear-gradient(135deg,#10b981,#059669);width:30px;height:30px;font-size:11px">AG</div>
+                        <div><div class="ns-proj-name">API Gateway</div><div class="ns-proj-path">~/dev/api-gateway</div></div>
+                    </div>
+                    <div class="ns-project-option" data-color="linear-gradient(135deg,#f97316,#ea580c)" data-letter="IP" onclick="nsSelectProject(this)">
+                        <div class="ns-sel-icon" style="background:linear-gradient(135deg,#f97316,#ea580c);width:30px;height:30px;font-size:11px">IP</div>
+                        <div><div class="ns-proj-name">Infrastructure Platform</div><div class="ns-proj-path">~/dev/infra-platform</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile -->
+            <div class="ns-label">Profile</div>
+            <div class="ns-dropdown" id="ddProfile">
+                <button class="ns-sel-btn" onclick="nsToggle('ddProfile')">
+                    <div id="nsSelectedProfile" style="display:flex;align-items:center;gap:12px;flex:1">
+                        <div class="ns-sel-icon ns-profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                        <div><div class="ns-sel-name">Backend Engineer</div><div class="ns-sel-sub">Go, Python, APIs, microservices</div></div>
+                        <svg class="ns-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </button>
+                <div class="ns-dropdown-list">
+                    <div class="ns-profile-option selected" onclick="nsSelectProfile(this)">
+                        <div class="ns-sel-icon ns-profile-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                        <div><div class="ns-proj-name">Backend Engineer</div><div class="ns-proj-path">Go, Python, APIs, microservices</div></div>
+                    </div>
+                    <div class="ns-profile-option" onclick="nsSelectProfile(this)">
+                        <div class="ns-sel-icon ns-profile-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                        <div><div class="ns-proj-name">DevOps Engineer</div><div class="ns-proj-path">Docker, CI/CD, Kubernetes, infra</div></div>
+                    </div>
+                    <div class="ns-profile-option" onclick="nsSelectProfile(this)">
+                        <div class="ns-sel-icon ns-profile-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                        <div><div class="ns-proj-name">Full-Stack Developer</div><div class="ns-proj-path">React, Node, TypeScript, databases</div></div>
+                    </div>
+                    <div class="ns-profile-option" onclick="nsSelectProfile(this)">
+                        <div class="ns-sel-icon ns-profile-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                        <div><div class="ns-proj-name">Code Reviewer</div><div class="ns-proj-path">Security, best practices, refactoring</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goal + agent/model/env selectors -->
+            <div class="ns-goal-wrap">
+                <textarea id="nsGoal" placeholder="What should the agent do?" onkeydown="if(event.key==='Enter'&&(event.metaKey||event.ctrlKey))startNewSession()"></textarea>
+                <div class="ns-pills-bar">
+                    <button class="ns-pill active" data-group="agent" onclick="nsOpenPillDropdown('ddAgent',this)">
+                        <div style="width:16px;height:16px;border-radius:4px;background:linear-gradient(135deg,#d97706,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0" id="nsAgentAvatar">Cl</div>
+                        <span id="nsAgentLabel">Claude Code</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="ns-pill-sep"></div>
+                    <button class="ns-pill active" data-group="model" onclick="nsOpenPillDropdown('ddModel',this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                        <span id="nsModelLabel">Claude Sonnet 4.6</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="ns-pill-sep"></div>
+                    <button class="ns-pill active" data-group="env" onclick="nsOpenPillDropdown('ddEnv',this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <span id="nsEnvLabel">Local</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <!-- Pill dropdowns -->
+                    <div class="ns-pill-dropdown" id="ddAgent">
+                        <div class="ns-pill-dd-item" onclick="nsPickAgent('Claude Code','Cl','linear-gradient(135deg,#d97706,#f59e0b)')">
+                            <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#d97706,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff">Cl</div>
+                            <div><div style="font-size:12px;font-weight:600;color:#e8eef7">Claude Code</div><div style="font-size:10px;color:#6b7280">Anthropic</div></div>
+                        </div>
+                        <div class="ns-pill-dd-item" onclick="nsPickAgent('Codex','Cx','linear-gradient(135deg,#0ea5e9,#2563eb)')">
+                            <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#0ea5e9,#2563eb);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff">Cx</div>
+                            <div><div style="font-size:12px;font-weight:600;color:#e8eef7">Codex</div><div style="font-size:10px;color:#6b7280">OpenAI</div></div>
+                        </div>
+                        <div class="ns-pill-dd-item" onclick="nsPickAgent('OpenCode','OC','linear-gradient(135deg,#374151,#1f2937)')">
+                            <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#374151,#1f2937);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#9ca3af">OC</div>
+                            <div><div style="font-size:12px;font-weight:600;color:#e8eef7">OpenCode</div><div style="font-size:10px;color:#6b7280">Local · Ollama</div></div>
+                        </div>
+                    </div>
+                    <div class="ns-pill-dropdown" id="ddModel">
+                        <div class="ns-pill-dd-item" onclick="nsPickModel('Claude Sonnet 4.6')"><div style="font-size:12px;font-weight:600;color:#e8eef7">Claude Sonnet 4.6</div><div style="font-size:10px;color:#6b7280">$3 / $15 per 1M</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickModel('Claude Opus 4.7')"><div style="font-size:12px;font-weight:600;color:#e8eef7">Claude Opus 4.7</div><div style="font-size:10px;color:#6b7280">$5 / $25 per 1M</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickModel('GPT-5.4')"><div style="font-size:12px;font-weight:600;color:#e8eef7">GPT-5.4</div><div style="font-size:10px;color:#6b7280">$2.50 / $15 per 1M</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickModel('Auto (router)')"><div style="font-size:12px;font-weight:600;color:#e8eef7">Auto (semantic router)</div><div style="font-size:10px;color:#6b7280">enterprise-router · :8901</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickModel('qwen3-code · local')"><div style="font-size:12px;font-weight:600;color:#e8eef7">qwen3-code</div><div style="font-size:10px;color:#34d399">Free · local</div></div>
+                    </div>
+                    <div class="ns-pill-dropdown" id="ddEnv">
+                        <div class="ns-pill-dd-item" onclick="nsPickEnv('Local')"><div style="font-size:12px;font-weight:600;color:#e8eef7">Local</div><div style="font-size:10px;color:#6b7280">Podman · this machine</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickEnv('OpenShift AI')"><div style="font-size:12px;font-weight:600;color:#e8eef7">OpenShift AI</div><div style="font-size:10px;color:#6b7280">api.dev.openshift.corp</div></div>
+                        <div class="ns-pill-dd-item" onclick="nsPickEnv('Remote')"><div style="font-size:12px;font-weight:600;color:#e8eef7">Remote</div><div style="font-size:10px;color:#6b7280">Cloud sandbox</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start button — outside the input card -->
+            <div style="padding:10px 24px 0;display:flex;align-items:center;justify-content:flex-start">
+                <button id="nsStartBtn" class="ns-start-btn" onclick="startNewSession()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Start in terminal
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="ns-footer">
+                <div class="ns-assets">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <span id="nsAssets">3 skills · 2 MCP servers · 1 knowledge base</span>
+                </div>
+                <button class="ns-advanced" onclick="window.location.href='../sessions/create.html'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Advanced
+                </button>
+            </div>
+            <div class="ns-hint">Press <kbd>Cmd+Enter</kbd> to start &middot; <kbd>Esc</kbd> to cancel</div>
+
+        </div><!-- /ns-modal -->
+    </div><!-- /ns-overlay -->
 </body>
 </html>
