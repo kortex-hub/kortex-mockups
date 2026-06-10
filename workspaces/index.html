@@ -3,314 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaiden — Workspace</title>
+    <title>Kaiden — Sandboxes</title>
     <script src="../assets/js/kaiden-theme.js"></script>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
     <script src="../assets/js/sidebar-loader.js"></script>
     <style>
-        .ws-layout {
+        .sb-layout {
             display: flex;
             flex-direction: column;
             height: calc(100vh - 32px);
             overflow: hidden;
         }
 
-        .ws-header { padding: 22px 40px 0; flex-shrink: 0; }
+        .sb-header {
+            padding: 24px 40px 16px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--kd-border);
+        }
 
-        .ws-breadcrumb {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 13px; margin-bottom: 16px;
+        .sb-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
         }
-        .ws-breadcrumb a { color: var(--kd-text-muted); text-decoration: none; transition: color 0.15s; }
-        .ws-breadcrumb a:hover { color: var(--kd-accent); }
-        .ws-breadcrumb svg { width: 13px; height: 13px; color: var(--kd-text-muted); }
-        .ws-breadcrumb span { color: var(--kd-text-primary); font-weight: 500; }
 
-        .ws-hero {
-            display: flex; align-items: flex-start;
-            justify-content: space-between; gap: 20px; flex-wrap: wrap;
+        .sb-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            letter-spacing: -0.02em;
+            margin: 0 0 4px;
         }
-        .ws-hero-left { display: flex; align-items: center; gap: 14px; }
-        .ws-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
-            color: #4fc3f7; flex-shrink: 0;
-        }
-        .ws-icon svg { width: 20px; height: 20px; }
-        .ws-hero-name { font-size: 22px; font-weight: 700; color: var(--kd-text-primary); letter-spacing: -0.02em; margin: 0 0 4px; }
-        .ws-hero-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .ws-project-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 11px; font-weight: 600; padding: 3px 9px;
-            border-radius: 6px; background: rgba(79,195,247,0.1);
-            border: 1px solid rgba(79,195,247,0.25); color: #4fc3f7;
-        }
-        .ws-status-badge {
-            font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-        }
-        .ws-status-badge.running { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
-        .ws-status-badge.stopped { background: rgba(107,114,128,0.12); color: var(--kd-text-muted); border: 1px solid rgba(107,114,128,0.2); }
-        .ws-container-id { font-size: 11px; color: var(--kd-text-muted); font-family: 'SF Mono','Fira Code',monospace; }
 
-        .ws-actions { display: flex; gap: 8px; align-items: center; }
-        .ws-btn {
+        .sb-subtitle {
+            font-size: 13px;
+            color: var(--kd-text-muted);
+            margin: 0;
+        }
+
+        .sb-actions { display: flex; gap: 8px; align-items: center; }
+
+        .sb-btn-primary {
+            display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 16px; border-radius: 9px; font-size: 13px;
-            font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.15s;
-            display: flex; align-items: center; gap: 6px;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            background: var(--kd-accent); color: #fff; border: none;
+            transition: opacity 0.15s;
         }
-        .ws-btn svg { width: 14px; height: 14px; }
-        .ws-btn-ghost { background: var(--kd-bg-subtle); border: 1px solid var(--kd-border); color: var(--kd-text-primary); }
-        .ws-btn-ghost:hover { border-color: var(--kd-text-muted); }
-        .ws-btn-primary { background: var(--kd-accent); border: none; color: #0a1628; font-weight: 600; }
-        .ws-btn-primary:hover { opacity: 0.9; }
+        .sb-btn-primary:hover { opacity: 0.88; }
+        .sb-btn-primary svg { width: 14px; height: 14px; }
 
-        .ws-body { flex: 1; overflow-y: auto; padding: 24px 40px 40px; }
-        .ws-body::-webkit-scrollbar { width: 6px; }
-        .ws-body::-webkit-scrollbar-track { background: transparent; }
-        .ws-body::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--kd-accent) 22%, transparent); border-radius: 3px; }
-
-        .ws-columns {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-            align-items: start;
+        .sb-filters {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px 40px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--kd-border);
         }
 
-        /* Config sidebar */
-        .ws-config-card {
-            background: var(--kd-bg-card); border: 1px solid var(--kd-border);
-            border-radius: 14px; overflow: hidden;
+        .sb-filter-btn {
+            padding: 5px 14px; border-radius: 20px; font-size: 12px;
+            font-weight: 500; font-family: inherit; cursor: pointer;
+            border: 1px solid var(--kd-border); background: transparent;
+            color: var(--kd-text-secondary); transition: all 0.15s;
         }
-        .ws-config-section { padding: 16px 18px; border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 70%, transparent); }
-        .ws-config-section:last-child { border-bottom: none; }
-        .ws-config-label {
-            font-size: 10px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 10px;
+        .sb-filter-btn.active {
+            background: color-mix(in srgb, var(--kd-accent) 12%, transparent);
+            border-color: var(--kd-accent);
+            color: var(--kd-accent);
         }
-        .ws-config-row {
-            display: flex; justify-content: space-between; align-items: baseline;
-            font-size: 12px; padding: 4px 0;
+        .sb-filter-btn:hover:not(.active) {
+            background: color-mix(in srgb, var(--kd-accent) 5%, transparent);
+            color: var(--kd-text-primary);
         }
-        .ws-config-key { color: var(--kd-text-muted); }
-        .ws-config-val { color: var(--kd-text-primary); font-weight: 500; text-align: right; }
-        .ws-config-val.mono { font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; }
-        .ws-config-val.green { color: #34d399; }
-        .ws-config-val.yellow { color: #fbbf24; }
-        .ws-config-edit-link {
-            display: block; margin-top: 12px; font-size: 11px;
-            color: var(--kd-accent-dim); text-decoration: none; text-align: center;
-        }
-        .ws-config-edit-link:hover { color: var(--kd-accent); }
 
-        /* Sessions panel */
-        .ws-sessions-panel { display: flex; flex-direction: column; gap: 16px; }
-        .ws-sessions-header {
-            display: flex; align-items: center; justify-content: space-between;
+        .sb-search {
+            margin-left: auto;
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 8px;
         }
-        .ws-sessions-title { font-size: 16px; font-weight: 700; color: var(--kd-text-primary); }
-        .ws-sessions-subtitle { font-size: 12px; color: var(--kd-text-muted); margin-top: 2px; }
+        .sb-search svg { width: 14px; height: 14px; color: var(--kd-text-muted); flex-shrink: 0; }
+        .sb-search input {
+            background: none; border: none; outline: none;
+            font-size: 13px; color: var(--kd-text-primary); width: 180px;
+        }
+        .sb-search input::placeholder { color: var(--kd-text-muted); }
 
-        /* Resource mini strip */
-        .ws-resource-strip {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 10px; margin-bottom: 4px;
+        .sb-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 40px 32px;
         }
-        .ws-resource-tile {
-            background: var(--kd-bg-card); border: 1px solid var(--kd-border);
-            border-radius: 10px; padding: 12px 14px;
-        }
-        .ws-resource-label { font-size: 10px; color: var(--kd-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        .ws-resource-value { font-size: 18px; font-weight: 700; color: var(--kd-text-primary); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
-        .ws-resource-bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-        .ws-resource-bar-fill { height: 100%; border-radius: 2px; }
 
-        /* Sessions table rows — coloured status */
-        .ws-session-status {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 11px; font-weight: 600;
+        /* Project group */
+        .sb-project-group { margin-top: 28px; }
+
+        .sb-project-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 10px;
         }
-        .ws-session-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-        .ws-session-status.running .ws-session-status-dot { background: #34d399; animation: wsPulse 2s infinite; }
-        .ws-session-status.blocked .ws-session-status-dot { background: #f87171; }
-        .ws-session-status.paused  .ws-session-status-dot { background: #fbbf24; }
-        .ws-session-status.waiting .ws-session-status-dot { background: #fbbf24; }
-        .ws-session-status.completed .ws-session-status-dot { background: var(--kd-text-muted); }
-        .ws-session-status.running { color: #34d399; }
-        .ws-session-status.blocked { color: #f87171; }
-        .ws-session-status.paused  { color: #fbbf24; }
-        .ws-session-status.waiting { color: #fbbf24; }
-        .ws-session-status.completed { color: var(--kd-text-muted); }
-        @keyframes wsPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .sb-project-icon {
+            width: 24px; height: 24px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+
+        .sb-project-name {
+            font-size: 13px; font-weight: 600; color: var(--kd-text-secondary);
+        }
+
+        .sb-project-count {
+            font-size: 11px; color: var(--kd-text-muted);
+            background: color-mix(in srgb, var(--kd-accent) 8%, transparent);
+            border: 1px solid var(--kd-border);
+            padding: 1px 8px; border-radius: 10px;
+        }
+
+        .sb-project-link {
+            margin-left: auto;
+            font-size: 12px; color: var(--kd-accent); text-decoration: none;
+        }
+        .sb-project-link:hover { text-decoration: underline; }
+
+        /* Table */
+        .models-table-wrap { margin: 0; }
+
+        .sb-status-dot {
+            display: inline-block;
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+        }
+        .sb-status-dot.running { background: #4ade80; }
+        .sb-status-dot.stopped { background: var(--kd-text-muted); opacity: 0.5; }
+
+        .sb-secured-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 10px; font-weight: 600;
+            padding: 2px 7px; border-radius: 4px;
+            background: rgba(74,222,128,0.1);
+            border: 1px solid rgba(74,222,128,0.25);
+            color: #4ade80;
+        }
+
+        .sb-blocked-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 10px; font-weight: 600;
+            padding: 2px 7px; border-radius: 4px;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.25);
+            color: #f59e0b;
+            cursor: pointer;
+        }
+
+        .sb-row-actions {
+            display: flex; gap: 6px; align-items: center; justify-content: flex-end;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .models-data-table tbody tr:hover .sb-row-actions { opacity: 1; }
+
+        .sb-action-btn {
+            padding: 4px 10px; border-radius: 6px; font-size: 11px;
+            font-weight: 500; font-family: inherit; cursor: pointer;
+            border: 1px solid var(--kd-border);
+            background: color-mix(in srgb, var(--kd-accent) 6%, transparent);
+            color: var(--kd-text-secondary);
+            transition: all 0.15s; white-space: nowrap;
+            text-decoration: none; display: inline-flex; align-items: center;
+        }
+        .sb-action-btn:hover { border-color: var(--kd-accent); color: var(--kd-accent); }
+
+        .sb-action-btn.primary {
+            background: color-mix(in srgb, var(--kd-accent) 15%, transparent);
+            border-color: color-mix(in srgb, var(--kd-accent) 40%, transparent);
+            color: var(--kd-accent);
+        }
+
+        .sb-cost { font-size: 12px; color: var(--kd-text-muted); font-variant-numeric: tabular-nums; }
+
+        .models-data-table td { vertical-align: middle; }
     </style>
 </head>
-<body class="workspaces-page" data-nav-root="..">
+<body class="sandboxes-page" data-nav-root="..">
     <div class="app-container">
         <div id="sidebar-container"></div>
 
         <main class="main-content">
             <div class="header"></div>
-            <div class="ws-layout">
 
-                <div class="ws-header">
-                    <div class="ws-breadcrumb">
-                        <a href="../projects/index.html">Projects</a>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                        <a href="../projects/details.html?project=doc-updater">Doc updater</a>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                        <span>doc-updater · main</span>
-                    </div>
-                    <div class="ws-hero">
-                        <div class="ws-hero-left">
-                            <div class="ws-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            </div>
-                            <div>
-                                <div class="ws-hero-name">doc-updater · main</div>
-                                <div class="ws-hero-meta">
-                                    <span class="ws-project-badge">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                        Doc updater
-                                    </span>
-                                    <span class="ws-status-badge running">Running</span>
-                                    <span class="ws-container-id">sbx-7f3a9c2e</span>
-                                </div>
-                            </div>
+            <div class="sb-layout">
+
+                <div class="sb-header">
+                    <div class="sb-header-row">
+                        <div>
+                            <h1 class="sb-title">Sandboxes</h1>
+                            <p class="sb-subtitle">3 running · 1 stopped · 4 total</p>
                         </div>
-                        <div class="ws-actions">
-                            <a href="../work/index.html" class="ws-btn ws-btn-ghost" style="text-decoration:none">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                Open in Work
-                            </a>
-                            <button class="ws-btn ws-btn-primary" onclick="alert('Mock: opening new session form')">
+                        <div class="sb-actions">
+                            <a href="../sessions/create.html" class="sb-btn-primary" style="text-decoration:none;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                New session
-                            </button>
+                                New sandbox
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="ws-body">
-                    <div class="ws-columns">
-
-                        <!-- Config sidebar -->
-                        <div class="ws-config-card">
-                            <div class="ws-config-section">
-                                <div class="ws-config-label">Sandbox</div>
-                                <div class="ws-config-row"><span class="ws-config-key">Runtime</span><span class="ws-config-val">Podman · rootless</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Container</span><span class="ws-config-val mono">sbx-7f3a9c2e</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Uptime</span><span class="ws-config-val green">11 days</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Image</span><span class="ws-config-val mono" style="font-size:10px">ubi9-minimal</span></div>
-                            </div>
-                            <div class="ws-config-section">
-                                <div class="ws-config-label">Filesystem</div>
-                                <div class="ws-config-row"><span class="ws-config-key">Scope</span><span class="ws-config-val mono" style="font-size:10px">~/dev/doc-updater</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Mode</span><span class="ws-config-val">Read &amp; write</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Mounts</span><span class="ws-config-val">2 active</span></div>
-                            </div>
-                            <div class="ws-config-section">
-                                <div class="ws-config-label">Network</div>
-                                <div class="ws-config-row"><span class="ws-config-key">Policy</span><span class="ws-config-val yellow">Allowlist</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Allowed</span><span class="ws-config-val">6 hosts</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Blocked</span><span class="ws-config-val" style="color:#f87171">3 attempts</span></div>
-                            </div>
-                            <div class="ws-config-section">
-                                <div class="ws-config-label">Resources</div>
-                                <div class="ws-config-row"><span class="ws-config-key">CPU limit</span><span class="ws-config-val">4 cores</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Memory</span><span class="ws-config-val">8 GB</span></div>
-                                <div class="ws-config-row"><span class="ws-config-key">Created</span><span class="ws-config-val">May 20, 2026</span></div>
-                                <a href="../sessions/settings.html?embed=0&workspace=ws-doc-updater-main" class="ws-config-edit-link">Edit configuration →</a>
-                            </div>
-                        </div>
-
-                        <!-- Sessions panel -->
-                        <div class="ws-sessions-panel">
-
-                            <!-- Resource mini strip -->
-                            <div class="ws-resource-strip">
-                                <div class="ws-resource-tile">
-                                    <div class="ws-resource-label">CPU</div>
-                                    <div class="ws-resource-value">34%</div>
-                                    <div class="ws-resource-bar"><div class="ws-resource-bar-fill" style="width:34%;background:#4fc3f7"></div></div>
-                                </div>
-                                <div class="ws-resource-tile">
-                                    <div class="ws-resource-label">Memory</div>
-                                    <div class="ws-resource-value">1.2 GB</div>
-                                    <div class="ws-resource-bar"><div class="ws-resource-bar-fill" style="width:15%;background:#a78bfa"></div></div>
-                                </div>
-                                <div class="ws-resource-tile">
-                                    <div class="ws-resource-label">Cost · this week</div>
-                                    <div class="ws-resource-value">$14.58</div>
-                                    <div class="ws-resource-bar"><div class="ws-resource-bar-fill" style="width:49%;background:#34d399"></div></div>
-                                </div>
-                            </div>
-
-                            <!-- Sessions table -->
-                            <div>
-                                <div class="ws-sessions-header" style="margin-bottom:12px">
-                                    <div>
-                                        <div class="ws-sessions-title">Agent Sessions</div>
-                                        <div class="ws-sessions-subtitle">8 total · 2 active</div>
-                                    </div>
-                                </div>
-
-                                <div class="models-table-wrap" style="margin:0">
-                                    <table class="models-data-table" style="width:100%;table-layout:fixed">
-                                        <colgroup>
-                                            <col style="width:100px">
-                                            <col>
-                                            <col style="width:110px">
-                                            <col style="width:90px">
-                                            <col style="width:80px">
-                                            <col style="width:100px">
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Goal</th>
-                                                <th>Agent</th>
-                                                <th>Branch</th>
-                                                <th style="text-align:right">Cost</th>
-                                                <th style="text-align:right">Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr style="cursor:pointer" onclick="window.location.href='../work/index.html'">
-                                                <td><span class="ws-session-status blocked"><span class="ws-session-status-dot"></span>Blocked</span></td>
-                                                <td><div style="font-weight:600;font-size:13px">Refactor auth to JWT</div><div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px">Claude Code · claude-4.6-sonnet</div></td>
-                                                <td><span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;background:rgba(217,119,6,0.15);color:#fbbf24">Claude Code</span></td>
-                                                <td style="font-family:'SF Mono',monospace;font-size:11px;color:var(--kd-text-muted)">feat/jwt-auth</td>
-                                                <td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:600">$3.23</td>
-                                                <td style="text-align:right;color:var(--kd-text-muted)">34m</td>
-                                            </tr>
-                                            <tr style="cursor:pointer" onclick="window.location.href='../work/index.html'">
-                                                <td><span class="ws-session-status paused"><span class="ws-session-status-dot"></span>Paused</span></td>
-                                                <td><div style="font-weight:600;font-size:13px">Generate OpenAPI docs</div><div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px">Claude Code · claude-4.6-sonnet</div></td>
-                                                <td><span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;background:rgba(217,119,6,0.15);color:#fbbf24">Claude Code</span></td>
-                                                <td style="font-family:'SF Mono',monospace;font-size:11px;color:var(--kd-text-muted)">docs/openapi</td>
-                                                <td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:600">$5.91</td>
-                                                <td style="text-align:right;color:var(--kd-text-muted)">3h</td>
-                                            </tr>
-                                            <tr style="opacity:0.6">
-                                                <td><span class="ws-session-status completed"><span class="ws-session-status-dot"></span>Done</span></td>
-                                                <td><div style="font-weight:600;font-size:13px">Create production Dockerfile</div><div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px">Claude Code · claude-4.6-sonnet</div></td>
-                                                <td><span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;background:rgba(107,114,128,0.12);color:var(--kd-text-muted)">Claude Code</span></td>
-                                                <td style="font-family:'SF Mono',monospace;font-size:11px;color:var(--kd-text-muted)">infra/docker</td>
-                                                <td style="text-align:right;font-variant-numeric:tabular-nums;color:var(--kd-text-muted)">$2.52</td>
-                                                <td style="text-align:right;color:var(--kd-text-muted)">5h ago</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="sb-filters">
+                    <button class="sb-filter-btn active" onclick="filterSandboxes('all', this)">All</button>
+                    <button class="sb-filter-btn" onclick="filterSandboxes('running', this)">Running</button>
+                    <button class="sb-filter-btn" onclick="filterSandboxes('stopped', this)">Stopped</button>
+                    <div class="sb-search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" placeholder="Search sandboxes…" oninput="searchSandboxes(this.value)">
                     </div>
                 </div>
 
+                <div class="sb-body" id="sbBody">
+
+                    <!-- Doc updater group -->
+                    <div class="sb-project-group" data-project="doc-updater">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background: linear-gradient(135deg, #4fc3f7, #2a8bbf);">KB</div>
+                            <span class="sb-project-name">Doc updater</span>
+                            <span class="sb-project-count">1 sandbox</span>
+                            <a href="../projects/details.html?project=doc-updater" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" style="table-layout: fixed;">
+                                <colgroup>
+                                    <col style="width: 28px;">
+                                    <col>
+                                    <col style="width: 100px;">
+                                    <col style="width: 130px;">
+                                    <col style="width: 120px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 160px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sandbox</th>
+                                        <th>Runtime</th>
+                                        <th>Security</th>
+                                        <th>Sessions</th>
+                                        <th>Cost / wk</th>
+                                        <th style="text-align:right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="sb-row" data-status="running">
+                                        <td><span class="sb-status-dot running"></span></td>
+                                        <td>
+                                            <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);">doc-updater · main</div>
+                                            <div style="font-size:11px;color:var(--kd-text-muted);font-family:monospace;margin-top:2px;">sbx-7f3a9c2e · 11 days</div>
+                                        </td>
+                                        <td><span style="font-size:12px;color:var(--kd-text-secondary);">Podman</span></td>
+                                        <td>
+                                            <span class="sb-secured-badge">🔒 Secured</span>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:13px;color:var(--kd-text-primary);font-weight:500;">2</span>
+                                            <span style="font-size:11px;color:var(--kd-text-muted);"> active · 8 total</span>
+                                        </td>
+                                        <td class="sb-cost">$14.58</td>
+                                        <td>
+                                            <div class="sb-row-actions">
+                                                <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                                <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Frontend App group -->
+                    <div class="sb-project-group" data-project="frontend-app">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">FA</div>
+                            <span class="sb-project-name">Frontend App</span>
+                            <span class="sb-project-count">1 sandbox</span>
+                            <a href="../projects/details.html?project=frontend-app" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" style="table-layout: fixed;">
+                                <colgroup>
+                                    <col style="width: 28px;">
+                                    <col>
+                                    <col style="width: 100px;">
+                                    <col style="width: 130px;">
+                                    <col style="width: 120px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 160px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sandbox</th>
+                                        <th>Runtime</th>
+                                        <th>Security</th>
+                                        <th>Sessions</th>
+                                        <th>Cost / wk</th>
+                                        <th style="text-align:right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="sb-row" data-status="running">
+                                        <td><span class="sb-status-dot running"></span></td>
+                                        <td>
+                                            <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);">frontend-app · feat/dashboard</div>
+                                            <div style="font-size:11px;color:var(--kd-text-muted);font-family:monospace;margin-top:2px;">sbx-3b82a1f4 · 18 days</div>
+                                        </td>
+                                        <td><span style="font-size:12px;color:var(--kd-text-secondary);">Podman</span></td>
+                                        <td>
+                                            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                                                <span class="sb-secured-badge">🔒 Secured</span>
+                                                <span class="sb-blocked-badge" onclick="window.location.href='../projects/details.html#network'">⚠ 1 blocked</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:13px;color:var(--kd-text-primary);font-weight:500;">1</span>
+                                            <span style="font-size:11px;color:var(--kd-text-muted);"> active · 3 total</span>
+                                        </td>
+                                        <td class="sb-cost">$3.23</td>
+                                        <td>
+                                            <div class="sb-row-actions">
+                                                <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                                <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- API Gateway group -->
+                    <div class="sb-project-group" data-project="api-gateway">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background: linear-gradient(135deg, #10b981, #059669);">AG</div>
+                            <span class="sb-project-name">API Gateway</span>
+                            <span class="sb-project-count">1 sandbox</span>
+                            <a href="../projects/details.html?project=api-gateway" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" style="table-layout: fixed;">
+                                <colgroup>
+                                    <col style="width: 28px;">
+                                    <col>
+                                    <col style="width: 100px;">
+                                    <col style="width: 130px;">
+                                    <col style="width: 120px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 160px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sandbox</th>
+                                        <th>Runtime</th>
+                                        <th>Security</th>
+                                        <th>Sessions</th>
+                                        <th>Cost / wk</th>
+                                        <th style="text-align:right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="sb-row" data-status="running">
+                                        <td><span class="sb-status-dot running"></span></td>
+                                        <td>
+                                            <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);">api-gateway · develop</div>
+                                            <div style="font-size:11px;color:var(--kd-text-muted);font-family:monospace;margin-top:2px;">sbx-c91e7d2b · 15 days</div>
+                                        </td>
+                                        <td><span style="font-size:12px;color:var(--kd-text-secondary);">Podman</span></td>
+                                        <td>
+                                            <span class="sb-secured-badge">🔒 Secured</span>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:13px;color:var(--kd-text-primary);font-weight:500;">1</span>
+                                            <span style="font-size:11px;color:var(--kd-text-muted);"> active · 2 total</span>
+                                        </td>
+                                        <td class="sb-cost">$1.00</td>
+                                        <td>
+                                            <div class="sb-row-actions">
+                                                <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                                <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Infrastructure Platform group -->
+                    <div class="sb-project-group" data-project="infra-platform">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">IP</div>
+                            <span class="sb-project-name">Infrastructure Platform</span>
+                            <span class="sb-project-count">1 sandbox</span>
+                            <a href="../projects/details.html?project=infra-platform" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="models-table-wrap">
+                            <table class="models-data-table" style="table-layout: fixed;">
+                                <colgroup>
+                                    <col style="width: 28px;">
+                                    <col>
+                                    <col style="width: 100px;">
+                                    <col style="width: 130px;">
+                                    <col style="width: 120px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 160px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Sandbox</th>
+                                        <th>Runtime</th>
+                                        <th>Security</th>
+                                        <th>Sessions</th>
+                                        <th>Cost / wk</th>
+                                        <th style="text-align:right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="sb-row" data-status="stopped">
+                                        <td><span class="sb-status-dot stopped"></span></td>
+                                        <td>
+                                            <div style="font-size:13px;font-weight:600;color:var(--kd-text-secondary);">infra-platform · main</div>
+                                            <div style="font-size:11px;color:var(--kd-text-muted);font-family:monospace;margin-top:2px;">sbx-d44f8e91 · stopped</div>
+                                        </td>
+                                        <td><span style="font-size:12px;color:var(--kd-text-muted);">Podman</span></td>
+                                        <td>
+                                            <span style="font-size:11px;color:var(--kd-text-muted);">—</span>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:13px;color:var(--kd-text-muted);font-weight:500;">0</span>
+                                            <span style="font-size:11px;color:var(--kd-text-muted);"> active · 5 total</span>
+                                        </td>
+                                        <td class="sb-cost" style="color:var(--kd-text-muted);">$0.00</td>
+                                        <td>
+                                            <div class="sb-row-actions">
+                                                <button class="sb-action-btn" onclick="alert('Mock: starting sandbox…')">Start</button>
+                                                <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div><!-- /sb-body -->
             </div>
         </main>
     </div>
+
+    <script>
+        function filterSandboxes(status, btn) {
+            document.querySelectorAll('.sb-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.sb-row').forEach(row => {
+                const match = status === 'all' || row.dataset.status === status;
+                row.style.display = match ? '' : 'none';
+            });
+            document.querySelectorAll('.sb-project-group').forEach(group => {
+                const visible = [...group.querySelectorAll('.sb-row')].some(r => r.style.display !== 'none');
+                group.style.display = visible ? '' : 'none';
+            });
+        }
+
+        function searchSandboxes(q) {
+            q = q.toLowerCase();
+            document.querySelectorAll('.sb-row').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+            document.querySelectorAll('.sb-project-group').forEach(group => {
+                const visible = [...group.querySelectorAll('.sb-row')].some(r => r.style.display !== 'none');
+                group.style.display = visible ? '' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>

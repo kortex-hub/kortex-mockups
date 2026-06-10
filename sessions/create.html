@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaiden — New Workspace</title>
+    <title>Kaiden — New Sandbox</title>
         <script src="../assets/js/kaiden-theme.js"></script>
 <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
@@ -3889,7 +3889,7 @@
                             </svg>
                             Guided setup
                         </div>
-                        <h1 class="create-session-title">New Workspace</h1>
+                        <h1 class="create-session-title">New Sandbox</h1>
                         <p class="create-session-subtitle" id="caCreateSessionSubtitle">
                             Configure your sandbox once — filesystem scope, network policy, tools &amp; secrets. Agent sessions are started inside the workspace after creation.
                         </p>
@@ -4468,7 +4468,40 @@
 
                         <div class="ca-wizard-step" data-wizard-step="3" id="caWizardPanel3" role="tabpanel" aria-labelledby="caWizardHeading3" aria-hidden="true">
                             <h2 class="ca-wizard-step-title" id="caWizardHeading3">Tools &amp; secrets</h2>
-                            <p class="ca-wizard-step-lead" id="caToolsStepLead">Every skill, MCP server, vault credential, and listed knowledge base is included by default so you can go faster. Expand <strong>Customize</strong> when you want a smaller toolset.</p>
+                            <p class="ca-wizard-step-lead" id="caToolsStepLead">Which credentials does this workspace need? Kaiden will give the agent access to each selected service automatically.</p>
+
+                            <!-- Credential picker -->
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 10px;">Credentials</div>
+                                <div style="border: 1px solid var(--kd-border); border-radius: 8px; overflow: hidden;">
+                                    <div style="display: grid; grid-template-columns: 32px 1fr 1fr; gap: 0; padding: 8px 14px; border-bottom: 1px solid var(--kd-border); background: color-mix(in srgb, var(--kd-accent) 4%, transparent);">
+                                        <div></div>
+                                        <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted);">Service</div>
+                                        <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted);">Access granted to</div>
+                                    </div>
+                                    <label style="display: grid; grid-template-columns: 32px 1fr 1fr; gap: 0; padding: 10px 14px; border-bottom: 1px solid var(--kd-border); cursor: pointer; align-items: center;" onmouseover="this.style.background='color-mix(in srgb, var(--kd-accent) 5%, transparent)'" onmouseout="this.style.background=''">
+                                        <input type="checkbox" checked style="accent-color: var(--kd-accent); width: 15px; height: 15px;" id="cred-github" onchange="updateNetworkPreview()">
+                                        <div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">GitHub <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(synced)</span></div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); font-family: monospace;">api.github.com</div>
+                                    </label>
+                                    <label style="display: grid; grid-template-columns: 32px 1fr 1fr; gap: 0; padding: 10px 14px; border-bottom: 1px solid var(--kd-border); cursor: pointer; align-items: center;" onmouseover="this.style.background='color-mix(in srgb, var(--kd-accent) 5%, transparent)'" onmouseout="this.style.background=''">
+                                        <input type="checkbox" checked style="accent-color: var(--kd-accent); width: 15px; height: 15px;" id="cred-anthropic" onchange="updateNetworkPreview()">
+                                        <div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Anthropic <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(synced)</span></div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); font-family: monospace;">api.anthropic.com</div>
+                                    </label>
+                                    <label style="display: grid; grid-template-columns: 32px 1fr 1fr; gap: 0; padding: 10px 14px; border-bottom: 1px solid var(--kd-border); cursor: pointer; align-items: center;" onmouseover="this.style.background='color-mix(in srgb, var(--kd-accent) 5%, transparent)'" onmouseout="this.style.background=''">
+                                        <input type="checkbox" style="accent-color: var(--kd-accent); width: 15px; height: 15px;" id="cred-jira" onchange="updateNetworkPreview()">
+                                        <div style="font-size: 13px; font-weight: 500; color: var(--kd-text-secondary);">Jira</div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); font-family: monospace;">atlassian.net</div>
+                                    </label>
+                                    <label style="display: grid; grid-template-columns: 32px 1fr 1fr; gap: 0; padding: 10px 14px; cursor: pointer; align-items: center;" onmouseover="this.style.background='color-mix(in srgb, var(--kd-accent) 5%, transparent)'" onmouseout="this.style.background=''">
+                                        <input type="checkbox" style="accent-color: var(--kd-accent); width: 15px; height: 15px;" id="cred-slack" onchange="updateNetworkPreview()">
+                                        <div style="font-size: 13px; font-weight: 500; color: var(--kd-text-secondary);">Slack</div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); font-family: monospace;">slack.com</div>
+                                    </label>
+                                </div>
+                                <button type="button" style="margin-top: 8px; font-size: 12px; color: var(--kd-accent); background: none; border: none; cursor: pointer; padding: 0;">+ Add a new secret</button>
+                            </div>
 
                             <div class="ca-tools-quick-card" role="region" aria-label="Tools and secrets summary">
                                 <p class="ca-tools-quick-summary" id="caToolsQuickSummaryLine"></p>
@@ -4849,183 +4882,99 @@
                         </div>
 
                                                 <div class="ca-wizard-step ca-sandbox-ob" data-wizard-step="4" id="caWizardPanel4" role="tabpanel" aria-labelledby="caWizardHeading4" aria-hidden="true">
-                            <h2 class="ca-wizard-step-title" id="caWizardHeading4">Sandbox · Filesystem</h2>
-                            <p class="ca-wizard-step-lead">Host <strong>file access</strong> for this workspace. Same presets as first-run setup — click a row or use <strong>Use</strong>.</p>
-                            <div class="ob-sandbox-step">
-                                <div class="ob-step-panel ob-onboarding-model-catalog">
-                                    <section class="ob-sandbox-section" aria-labelledby="caSandboxFsHeading">
-                                        <input type="hidden" id="caDefaultFs" value="workspace" aria-hidden="true">
-                                        <h3 class="model-config-panel-title" id="caSandboxFsHeading">File system</h3>
-                                        <p class="ca-wizard-step-lead" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#6dd6ff;text-decoration:none;font-weight:500;">Models</a> — pick one scope for agent read/write on the host.</p>
-                                        <div class="models-table-wrap" id="caSandboxFsWrap">
-                                            <table class="models-data-table" aria-label="Workspace file system access">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="models-table-status" scope="col">Status</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Access</th>
-                                                        <th scope="col">Notes</th>
-                                                        <th class="ob-models-pick-cell" scope="col">Use</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-fs="workspace" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#7090b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">No host filesystem access</div>
-                                                            <div class="models-table-name-sub">The agent cannot read or write files on your host. Use for API-only or fully remote workflows.</div>
-                                                            <span class="models-table-ram">Recommended</span>
-                                                        </td>
-                                                        <td>None</td>
-                                                        <td>Strict isolation</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogFs" value="workspace" checked aria-label="Use no host filesystem access" onchange="caSelectFsCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row" data-fs="home" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Home Directory</div>
-                                                            <div class="models-table-name-sub">Agent can access your entire home directory (~/) and all subdirectories.</div>
-                                                        </td>
-                                                        <td>Home (~)</td>
-                                                        <td>Local development</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogFs" value="home" aria-label="Use Home Directory" onchange="caSelectFsCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row" data-fs="custom" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Custom Paths</div>
-                                                            <div class="models-table-name-sub">Specify exact directories the agent can access.</div>
-                                                        </td>
-                                                        <td>Listed paths</td>
-                                                        <td>Set path below</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogFs" value="custom" aria-label="Use Custom Paths" onchange="caSelectFsCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row" data-fs="full" role="button" tabindex="0" onclick="caSelectFsCatalogRow(this)" onkeydown="caFsCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Full System Access</div>
-                                                            <div class="models-table-name-sub">Agent can access the entire filesystem. Use with caution.</div>
-                                                        </td>
-                                                        <td>Full host</td>
-                                                        <td>High privilege</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogFs" value="full" aria-label="Use Full System Access" onchange="caSelectFsCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                            <h2 class="ca-wizard-step-title" id="caWizardHeading4">Filesystem</h2>
+                            <p class="ca-wizard-step-lead">Your project files are mounted into a secured workspace with filesystem isolation — the agent cannot reach anything outside these paths.</p>
+
+                            <!-- Filesystem layout diagram -->
+                            <div style="border: 1px solid var(--kd-border); border-radius: 8px; overflow: hidden; font-family: monospace; font-size: 13px; margin-bottom: 16px;">
+                                <div style="padding: 8px 14px; background: color-mix(in srgb, var(--kd-accent) 4%, transparent); border-bottom: 1px solid var(--kd-border); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kd-text-muted); font-family: inherit;">Filesystem layout</div>
+                                <div style="padding: 14px 18px; display: flex; flex-direction: column; gap: 12px;">
+                                    <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: color-mix(in srgb, #4ade80 6%, transparent); border: 1px solid color-mix(in srgb, #4ade80 20%, transparent); border-radius: 6px;">
+                                        <div style="color: #4ade80; font-size: 15px; margin-top: 1px;">✓</div>
+                                        <div>
+                                            <div style="color: var(--kd-text-primary); font-weight: 600;">/sandbox/workspace/sources</div>
+                                            <div style="font-size: 11px; color: var(--kd-text-muted); font-family: sans-serif; margin-top: 3px;">Your project files — Read + Write</div>
                                         </div>
-                                        <div class="ob-fs-custom-hint" id="caFsCustomHint" aria-live="polite">
-                                            <p class="ob-fs-custom-hint-lead">Allowed path for <strong>custom</strong> access. You can refine paths later in project or workspace settings.</p>
-                                            <div class="ob-config-field">
-                                                <label class="ob-config-label" for="caFsCustomPath">Allowed path</label>
-                                                <input type="text" class="ob-config-input" id="caFsCustomPath" placeholder="/home/you/dev/my-project" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="caFsCustomPathHint">
-                                            </div>
-                                            <p class="ob-config-hint" id="caFsCustomPathHint">Use an absolute path on the host. Tilde (~) is expanded when the workspace starts.</p>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: color-mix(in srgb, #4ade80 6%, transparent); border: 1px solid color-mix(in srgb, #4ade80 20%, transparent); border-radius: 6px;">
+                                        <div style="color: #4ade80; font-size: 15px; margin-top: 1px;">✓</div>
+                                        <div>
+                                            <div style="color: var(--kd-text-primary); font-weight: 600;">/sandbox/</div>
+                                            <div style="font-size: 11px; color: var(--kd-text-muted); font-family: sans-serif; margin-top: 3px;">Agent home directory — Read + Write</div>
                                         </div>
-                                    </section>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: color-mix(in srgb, #ef4444 6%, transparent); border: 1px solid color-mix(in srgb, #ef4444 20%, transparent); border-radius: 6px;">
+                                        <div style="color: #ef4444; font-size: 15px; margin-top: 1px;">✕</div>
+                                        <div>
+                                            <div style="color: var(--kd-text-secondary); font-weight: 600;">Everything else</div>
+                                            <div style="font-size: 11px; color: var(--kd-text-muted); font-family: sans-serif; margin-top: 3px;">Not accessible to the agent</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <p style="font-size: 12px; color: var(--kd-text-muted); margin-bottom: 14px;">Files outside these paths are not accessible to the agent — enforced at the kernel level.</p>
+
+                            <details style="border: 1px solid var(--kd-border); border-radius: 6px; overflow: hidden;">
+                                <summary style="padding: 10px 14px; font-size: 13px; color: var(--kd-text-secondary); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 6px; user-select: none; background: color-mix(in srgb, var(--kd-accent) 3%, transparent);">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                    Advanced — add extra read-only or read-write paths
+                                </summary>
+                                <div style="padding: 14px; border-top: 1px solid var(--kd-border);">
+                                    <div style="margin-bottom: 10px;">
+                                        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--kd-text-secondary); margin-bottom: 4px;">Extra read-only path</label>
+                                        <input type="text" placeholder="/opt/my-tools" style="width: 100%; box-sizing: border-box; padding: 7px 10px; font-size: 13px; background: var(--kd-bg-card); border: 1px solid var(--kd-border); border-radius: 4px; color: var(--kd-text-primary); font-family: monospace;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--kd-text-secondary); margin-bottom: 4px;">Extra read-write path</label>
+                                        <input type="text" placeholder="/data/outputs" style="width: 100%; box-sizing: border-box; padding: 7px 10px; font-size: 13px; background: var(--kd-bg-card); border: 1px solid var(--kd-border); border-radius: 4px; color: var(--kd-text-primary); font-family: monospace;">
+                                    </div>
+                                    <p style="font-size: 11px; color: var(--kd-text-muted); margin-top: 8px;">Changes to filesystem paths require recreating the workspace.</p>
+                                </div>
+                            </details>
                         </div>
 
                         <div class="ca-wizard-step ca-sandbox-ob" data-wizard-step="5" id="caWizardPanel5" role="tabpanel" aria-labelledby="caWizardHeading5" aria-hidden="true">
-                            <h2 class="ca-wizard-step-title" id="caWizardHeading5">Sandbox · Networking</h2>
-                            <p class="ca-wizard-step-lead"><strong>Outbound network</strong> for this workspace sandbox. Separate from filesystem access on the previous step.</p>
-                            <div class="ob-sandbox-step">
-                                <div class="ob-step-panel ob-onboarding-model-catalog">
-                                    <section class="ob-sandbox-section" aria-labelledby="caSandboxNetHeading">
-                                        <input type="hidden" id="caDefaultNet" value="registries" aria-hidden="true">
-                                        <h3 class="model-config-panel-title" id="caSandboxNetHeading">Network policy</h3>
-                                        <p class="ca-wizard-step-lead" style="margin-top:0;margin-bottom:12px;">Same layout as <a href="../models/index.html" style="color:#6dd6ff;text-decoration:none;font-weight:500;">Models</a> — click a row or use <strong>Use</strong>.</p>
-                                        <div class="models-table-wrap" id="caSandboxNetWrap">
-                                            <table class="models-data-table" aria-label="Workspace network policy">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="models-table-status" scope="col">Status</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Egress</th>
-                                                        <th scope="col">Notes</th>
-                                                        <th class="ob-models-pick-cell" scope="col">Use</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="ob-catalog-model-row" data-net="blocked" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Deny All</div>
-                                                            <div class="models-table-name-sub">No outbound HTTP/HTTPS from the sandbox.</div>
-                                                        </td>
-                                                        <td>None</td>
-                                                        <td>Strict</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogNet" value="blocked" aria-label="Deny all outbound" onchange="caSelectNetCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row ob-catalog-model-row--selected" data-net="registries" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Developer Preset</div>
-                                                            <div class="models-table-name-sub">Allow npm, PyPI, and similar registries — not arbitrary public hosts.</div>
-                                                            <span class="models-table-ram">Recommended</span>
-                                                        </td>
-                                                        <td>Registries</td>
-                                                        <td>Balanced default</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogNet" value="registries" checked aria-label="Developer preset network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row" data-net="agent_mode" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Agent mode</div>
-                                                            <div class="models-table-name-sub">The agent requests each outbound access; you approve before traffic leaves the sandbox.</div>
-                                                        </td>
-                                                        <td>Per request</td>
-                                                        <td>Human in the loop</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogNet" value="agent_mode" aria-label="Agent mode network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ob-catalog-model-row" data-net="open" role="button" tabindex="0" onclick="caSelectNetCatalogRow(this)" onkeydown="caNetCatalogRowKey(event)">
-                                                        <td class="models-table-status">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                                                        </td>
-                                                        <td>
-                                                            <div class="models-table-name-main">Unrestricted</div>
-                                                            <div class="models-table-name-sub">Permit all outbound traffic. Best for trusted dev setups.</div>
-                                                        </td>
-                                                        <td>All hosts</td>
-                                                        <td>Trusted setups</td>
-                                                        <td class="ob-models-pick-cell" onclick="event.stopPropagation()">
-                                                            <input type="radio" name="caCatalogNet" value="open" aria-label="Unrestricted network" onchange="caSelectNetCatalogRow(this.closest('tr'))">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                            <h2 class="ca-wizard-step-title" id="caWizardHeading5">Networking</h2>
+                            <p class="ca-wizard-step-lead">What can this workspace connect to? Choose a mode — you can adjust this later in the project's network settings.</p>
+
+                            <!-- Network mode selector -->
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 2px solid var(--kd-accent); border-radius: 8px; cursor: pointer; margin-bottom: 10px; background: color-mix(in srgb, var(--kd-accent) 6%, transparent);">
+                                    <input type="radio" name="netMode" value="allow" checked style="accent-color: var(--kd-accent); width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0;" onclick="document.querySelectorAll('.net-mode-card').forEach(c=>c.style.borderColor='var(--kd-border)'); this.closest('label').style.borderColor='var(--kd-accent)';" class="net-mode-card">
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 600; color: var(--kd-text-primary);">Allow known services <span style="font-size: 11px; font-weight: 500; color: var(--kd-accent); margin-left: 6px;">(recommended)</span></div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); margin-top: 3px;">The agent can reach services covered by your selected credentials. Additional hosts can be added later in the project's network settings.</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 2px solid var(--kd-border); border-radius: 8px; cursor: pointer;">
+                                    <input type="radio" name="netMode" value="strict" style="accent-color: var(--kd-accent); width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0;" onclick="document.querySelectorAll('label:has([name=netMode])').forEach(l=>l.style.borderColor='var(--kd-border)'); this.closest('label').style.borderColor='var(--kd-accent)'; document.getElementById('strictHostInput').style.display='block';">
+                                    <div style="width: 100%;">
+                                        <div style="font-size: 14px; font-weight: 600; color: var(--kd-text-primary);">Strict mode</div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted); margin-top: 3px;">Only hosts you list explicitly.</div>
+                                        <div id="strictHostInput" style="display: none; margin-top: 10px;">
+                                            <input type="text" placeholder="Add host (e.g. api.example.com)" style="width: 100%; box-sizing: border-box; padding: 7px 10px; font-size: 13px; background: var(--kd-bg-card); border: 1px solid var(--kd-border); border-radius: 4px; color: var(--kd-text-primary); font-family: monospace;">
                                         </div>
-                                        <p class="ob-config-hint" style="margin-top:14px;margin-bottom:0;max-width:52rem;line-height:1.5;"><strong>Allowlists and more</strong> — Fine-grained host allowlists and static egress rules live in project or workspace settings when you need them.</p>
-                                    </section>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Hosts derived from secrets -->
+                            <div>
+                                <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 8px;">Based on your credentials, this workspace can reach:</div>
+                                <div id="networkPreviewList" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--kd-text-secondary);">
+                                        <span style="color: #4ade80;">✓</span>
+                                        <span style="font-family: monospace;">api.anthropic.com</span>
+                                        <span style="font-size: 11px; color: var(--kd-text-muted);">from Anthropic</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--kd-text-secondary);">
+                                        <span style="color: #4ade80;">✓</span>
+                                        <span style="font-family: monospace;">api.github.com</span>
+                                        <span style="font-size: 11px; color: var(--kd-text-muted);">from GitHub</span>
+                                    </div>
                                 </div>
+                                <button type="button" style="font-size: 12px; color: var(--kd-accent); background: none; border: none; cursor: pointer; padding: 0;">+ Add another host</button>
                             </div>
                         </div>
 

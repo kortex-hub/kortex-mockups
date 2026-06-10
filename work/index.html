@@ -678,10 +678,15 @@
                 <div class="tasks-left-header">
                     <div class="tasks-left-header-row">
                         <div class="tasks-left-title">Work</div>
-                        <button class="new-task-btn" onclick="openNewSessionModal()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New session
-                        </button>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <a href="index-option2.html" title="Switch to status view" style="padding:4px 9px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid #1e3358;display:inline-flex;align-items:center;gap:4px;color:#4b5563;text-decoration:none;font-size:11px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor='#4fc3f7';this.style.color='#4fc3f7'" onmouseout="this.style.borderColor='#1e3358';this.style.color='#4b5563'">
+                                Option 2
+                            </a>
+                            <button class="new-task-btn" onclick="openNewSessionModal()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New session
+                            </button>
+                        </div>
                     </div>
                     <div class="tasks-filters">
                         <button class="tasks-filter-btn active" onclick="filterWork('active', this)">Active</button>

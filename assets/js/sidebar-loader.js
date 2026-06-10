@@ -41,6 +41,13 @@ function buildSidebarHTML() {
         <span>Work</span>
     </a>
 
+    <a href="${R}/sandboxes/index.html" class="nav-item" data-section="sandboxes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>Sandboxes</span>
+    </a>
+
     <a href="${R}/agent-feed/index.html" class="nav-item" data-section="agent-feed" id="agent-feed-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 4a9 9 0 0 0 12 0"/>
@@ -146,12 +153,28 @@ function buildSidebarHTML() {
             </svg>
             <span style="color: #6dd6ff;">Sandbox active</span>
         </div>
-        <div class="status-bar-item status-bar-cli" onclick="window.location.href='${R}/cli/index.html'" style="cursor: pointer; padding: 4px 10px; background: rgba(103, 232, 249, 0.1); border-radius: 4px; border: 1px solid rgba(103, 232, 249, 0.2);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2">
-                <polyline points="4 17 10 11 4 5"/>
-                <line x1="12" y1="19" x2="20" y2="19"/>
+        <div class="status-bar-item status-bar-openshell" id="openshellGatewayChip" onclick="window.toggleOpenshellGatewayPopover()" style="cursor: pointer; padding: 4px 10px; background: rgba(74, 222, 128, 0.1); border-radius: 4px; border: 1px solid rgba(74, 222, 128, 0.2); position: relative;">
+            <div id="openshellGatewayDot" style="width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0;"></div>
+            <span style="color: #4ade80;">OpenShell</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" style="margin-left: 2px;">
+                <polyline points="6 9 12 15 18 9"/>
             </svg>
-            <span style="color: #67e8f9;">kdn CLI</span>
+        </div>
+        <div id="openshellGatewayPopover" style="display:none; position: fixed; background: var(--kd-bg-card, #1a1d2e); border: 1px solid var(--kd-border, rgba(255,255,255,0.1)); border-radius: 8px; padding: 14px 16px; min-width: 220px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 9999; bottom: 40px; left: 120px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--kd-text-primary, #e2e8f0); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                <div style="width: 7px; height: 7px; border-radius: 50%; background: #4ade80;"></div>
+                OpenShell Gateway
+            </div>
+            <div style="font-size: 11px; color: var(--kd-text-muted, #8892a4); line-height: 1.8;">
+                <div>Version: <span style="color: var(--kd-text-secondary, #a8b4c8);">v2.1.0</span></div>
+                <div>Driver: <span style="color: var(--kd-text-secondary, #a8b4c8);">Podman</span></div>
+                <div>Uptime: <span style="color: var(--kd-text-secondary, #a8b4c8);">2h 14m</span></div>
+                <div>Sandboxes: <span style="color: var(--kd-text-secondary, #a8b4c8);">3 active</span></div>
+            </div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--kd-border, rgba(255,255,255,0.08)); display: flex; gap: 8px;">
+                <button onclick="window.stopOpenshellGateway()" style="flex: 1; padding: 4px 8px; font-size: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: var(--kd-text-secondary, #a8b4c8); cursor: pointer;">Stop</button>
+                <button onclick="window.restartOpenshellGateway()" style="flex: 1; padding: 4px 8px; font-size: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: var(--kd-text-secondary, #a8b4c8); cursor: pointer;">Restart</button>
+            </div>
         </div>
     </div>
     <div class="status-bar-right">
@@ -279,6 +302,39 @@ function isOpenshiftAIModuleEnabled() {
     }
 }
 
+// OpenShell gateway popover
+window.toggleOpenshellGatewayPopover = function() {
+    const popover = document.getElementById('openshellGatewayPopover');
+    if (!popover) return;
+    const isVisible = popover.style.display !== 'none';
+    popover.style.display = isVisible ? 'none' : 'block';
+    if (!isVisible) {
+        const close = (e) => {
+            const chip = document.getElementById('openshellGatewayChip');
+            if (!chip || (!chip.contains(e.target) && !popover.contains(e.target))) {
+                popover.style.display = 'none';
+                document.removeEventListener('click', close);
+            }
+        };
+        setTimeout(() => document.addEventListener('click', close), 0);
+    }
+};
+window.stopOpenshellGateway = function() {
+    const dot = document.getElementById('openshellGatewayDot');
+    const chip = document.getElementById('openshellGatewayChip');
+    if (dot) dot.style.background = '#ef4444';
+    if (chip) { chip.style.background = 'rgba(239,68,68,0.1)'; chip.style.borderColor = 'rgba(239,68,68,0.2)'; chip.querySelector('span').style.color = '#ef4444'; chip.querySelector('svg').setAttribute('stroke','#ef4444'); }
+    const popover = document.getElementById('openshellGatewayPopover');
+    if (popover) popover.style.display = 'none';
+};
+window.restartOpenshellGateway = function() {
+    const dot = document.getElementById('openshellGatewayDot');
+    if (dot) dot.style.background = '#f59e0b';
+    setTimeout(() => { if (dot) dot.style.background = '#4ade80'; }, 1500);
+    const popover = document.getElementById('openshellGatewayPopover');
+    if (popover) popover.style.display = 'none';
+};
+
 // Load sidebar component
 function loadSidebar(activeSection) {
     const sidebarContainer = document.getElementById('sidebar-container');
@@ -318,7 +374,7 @@ function loadSidebar(activeSection) {
 
     const baseSections = sidebarCfg && Array.isArray(sidebarCfg.hiddenNavSections)
         ? sidebarCfg.hiddenNavSections
-        : (demoOnboarding ? ['dashboard', 'work', 'agent-feed', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
+        : (demoOnboarding ? ['dashboard', 'work', 'sandboxes', 'agent-feed', 'coding-agent', 'models', 'services', 'knowledges', 'mcp', 'skills'] : []);
 
     const hideSections = baseSections.concat(!isAgentFeedEnabled() ? ['agent-feed'] : []);
 
@@ -337,9 +393,9 @@ function loadSidebar(activeSection) {
     if (sandboxChip) {
         sandboxChip.style.display = hiddenStatus.indexOf('sandbox') !== -1 ? 'none' : '';
     }
-    const cliChip = document.querySelector('.global-status-bar .status-bar-cli');
-    if (cliChip) {
-        cliChip.style.display = hiddenStatus.indexOf('cli') !== -1 ? 'none' : '';
+    const openshellGatewayChip = document.querySelector('.global-status-bar .status-bar-openshell');
+    if (openshellGatewayChip) {
+        openshellGatewayChip.style.display = hiddenStatus.indexOf('cli') !== -1 ? 'none' : '';
     }
     if (openshiftStatusItem) {
         if (!isOpenshiftAIModuleEnabled()) {

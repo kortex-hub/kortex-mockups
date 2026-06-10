@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden — Sandboxes</title>
+    <script src="../assets/js/kaiden-theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/models-catalog-table.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        .sb-layout {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 32px);
+            overflow: hidden;
+        }
+
+        .sb-header {
+            padding: 24px 40px 16px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--kd-border);
+        }
+
+        .sb-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .sb-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--kd-text-primary);
+            letter-spacing: -0.02em;
+            margin: 0 0 4px;
+        }
+
+        .sb-subtitle {
+            font-size: 13px;
+            color: var(--kd-text-muted);
+            margin: 0;
+        }
+
+        .sb-btn-primary {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 9px; font-size: 13px;
+            font-weight: 600; font-family: inherit; cursor: pointer;
+            background: var(--kd-accent); color: #fff; border: none;
+            transition: opacity 0.15s; text-decoration: none;
+        }
+        .sb-btn-primary:hover { opacity: 0.88; }
+        .sb-btn-primary svg { width: 14px; height: 14px; }
+
+        .sb-filters {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px 40px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--kd-border);
+        }
+
+        .sb-filter-btn {
+            padding: 5px 14px; border-radius: 20px; font-size: 12px;
+            font-weight: 500; font-family: inherit; cursor: pointer;
+            border: 1px solid var(--kd-border); background: transparent;
+            color: var(--kd-text-secondary); transition: all 0.15s;
+        }
+        .sb-filter-btn.active {
+            background: color-mix(in srgb, var(--kd-accent) 12%, transparent);
+            border-color: var(--kd-accent);
+            color: var(--kd-accent);
+        }
+        .sb-filter-btn:hover:not(.active) {
+            background: color-mix(in srgb, var(--kd-accent) 5%, transparent);
+            color: var(--kd-text-primary);
+        }
+
+        .sb-search {
+            margin-left: auto;
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px;
+            background: var(--kd-bg-card);
+            border: 1px solid var(--kd-border);
+            border-radius: 8px;
+        }
+        .sb-search svg { width: 14px; height: 14px; color: var(--kd-text-muted); flex-shrink: 0; }
+        .sb-search input {
+            background: none; border: none; outline: none;
+            font-size: 13px; color: var(--kd-text-primary); width: 180px;
+        }
+        .sb-search input::placeholder { color: var(--kd-text-muted); }
+
+        .sb-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 40px 40px;
+        }
+
+        .sb-project-group { margin-top: 28px; }
+
+        .sb-project-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sb-project-icon {
+            width: 24px; height: 24px; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+
+        .sb-project-name { font-size: 13px; font-weight: 600; color: var(--kd-text-secondary); }
+
+        .sb-project-count {
+            font-size: 11px; color: var(--kd-text-muted);
+            background: color-mix(in srgb, var(--kd-accent) 8%, transparent);
+            border: 1px solid var(--kd-border);
+            padding: 1px 8px; border-radius: 10px;
+        }
+
+        .sb-project-link {
+            margin-left: auto;
+            font-size: 12px; color: var(--kd-accent); text-decoration: none;
+        }
+        .sb-project-link:hover { text-decoration: underline; }
+
+        /* Sandbox + sessions card */
+        .sb-sandbox-block {
+            border: 1px solid var(--kd-border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        /* Sandbox row */
+        .sb-sandbox-row {
+            display: grid;
+            grid-template-columns: 14px 1fr 80px 150px 110px 70px auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--kd-bg-card);
+            border-bottom: 1px solid var(--kd-border);
+        }
+        .sb-sandbox-row:hover { background: color-mix(in srgb, var(--kd-accent) 3%, var(--kd-bg-card)); }
+
+        .sb-status-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .sb-status-dot.running { background: #4ade80; box-shadow: 0 0 0 2px rgba(74,222,128,0.2); }
+        .sb-status-dot.stopped { background: var(--kd-text-muted); opacity: 0.4; }
+
+        .sb-sandbox-name { font-size: 13px; font-weight: 600; color: var(--kd-text-primary); }
+        .sb-sandbox-id {
+            font-size: 10px; color: var(--kd-text-muted);
+            font-family: 'SF Mono','Fira Code',monospace; margin-top: 2px;
+        }
+
+        .sb-secured-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px;
+            background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25); color: #4ade80;
+        }
+
+        .sb-blocked-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px;
+            background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+            color: #f59e0b; cursor: pointer; margin-left: 5px;
+        }
+
+        .sb-session-count { font-size: 12px; color: var(--kd-text-muted); }
+        .sb-session-count strong { color: var(--kd-text-primary); font-size: 13px; }
+
+        .sb-cost { font-size: 12px; color: var(--kd-text-muted); font-variant-numeric: tabular-nums; }
+
+        .sb-sandbox-actions {
+            display: flex; gap: 6px; align-items: center;
+            opacity: 0; transition: opacity 0.15s;
+        }
+        .sb-sandbox-row:hover .sb-sandbox-actions { opacity: 1; }
+
+        .sb-action-btn {
+            padding: 4px 10px; border-radius: 6px; font-size: 11px;
+            font-weight: 500; font-family: inherit; cursor: pointer;
+            border: 1px solid var(--kd-border);
+            background: color-mix(in srgb, var(--kd-accent) 6%, transparent);
+            color: var(--kd-text-secondary);
+            transition: all 0.15s; white-space: nowrap;
+            text-decoration: none; display: inline-flex; align-items: center;
+        }
+        .sb-action-btn:hover { border-color: var(--kd-accent); color: var(--kd-accent); }
+        .sb-action-btn.primary {
+            background: color-mix(in srgb, var(--kd-accent) 15%, transparent);
+            border-color: color-mix(in srgb, var(--kd-accent) 40%, transparent);
+            color: var(--kd-accent);
+        }
+
+        /* Sessions nested section */
+        .sb-sessions {
+            background: color-mix(in srgb, var(--kd-accent) 2%, transparent);
+        }
+
+        .sb-sessions-col-header {
+            display: grid;
+            grid-template-columns: 10px 1fr 100px 130px 55px 55px 60px;
+            gap: 12px;
+            padding: 5px 16px 5px 20px;
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 60%, transparent);
+        }
+        .sb-sessions-col-header span {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--kd-text-muted);
+        }
+
+        .sb-session-row {
+            display: grid;
+            grid-template-columns: 10px 1fr 100px 130px 55px 55px 60px;
+            gap: 12px;
+            align-items: center;
+            padding: 8px 16px 8px 20px;
+            border-bottom: 1px solid color-mix(in srgb, var(--kd-border) 40%, transparent);
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+        .sb-session-row:last-child { border-bottom: none; }
+        .sb-session-row:hover { background: color-mix(in srgb, var(--kd-accent) 5%, transparent); }
+
+        .sb-session-dot {
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+        }
+        .sb-session-dot.running   { background: #4ade80; }
+        .sb-session-dot.blocked   { background: #ef4444; }
+        .sb-session-dot.waiting   { background: #f59e0b; }
+        .sb-session-dot.paused    { background: #f59e0b; opacity: 0.6; }
+        .sb-session-dot.completed { background: var(--kd-text-muted); opacity: 0.4; }
+
+        .sb-session-title {
+            font-size: 12px; font-weight: 500; color: var(--kd-text-primary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sb-session-branch {
+            font-size: 10px; color: var(--kd-text-muted);
+            font-family: 'SF Mono','Fira Code',monospace;
+            margin-top: 1px;
+        }
+
+        .sb-agent-badge {
+            display: inline-flex; align-items: center;
+            font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px;
+            white-space: nowrap;
+        }
+        .sb-agent-badge.claude { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.2); }
+        .sb-agent-badge.codex  { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+
+        .sb-session-status { font-size: 11px; font-weight: 500; }
+        .sb-session-status.running   { color: #4ade80; }
+        .sb-session-status.blocked   { color: #ef4444; }
+        .sb-session-status.waiting   { color: #f59e0b; }
+        .sb-session-status.paused    { color: var(--kd-text-muted); }
+        .sb-session-status.completed { color: var(--kd-text-muted); }
+
+        .sb-session-time { font-size: 11px; color: var(--kd-text-muted); }
+        .sb-session-cost { font-size: 11px; color: var(--kd-text-muted); font-variant-numeric: tabular-nums; }
+
+        .sb-session-open {
+            font-size: 11px; color: var(--kd-accent); text-decoration: none;
+            opacity: 0; transition: opacity 0.12s; white-space: nowrap;
+        }
+        .sb-session-row:hover .sb-session-open { opacity: 1; }
+
+        .sb-empty-sessions {
+            padding: 10px 20px;
+            font-size: 12px; color: var(--kd-text-muted); font-style: italic;
+        }
+    </style>
+</head>
+<body class="sandboxes-page" data-nav-root="..">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <main class="main-content">
+            <div class="header"></div>
+
+            <div class="sb-layout">
+
+                <div class="sb-header">
+                    <div class="sb-header-row">
+                        <div>
+                            <h1 class="sb-title">Sandboxes</h1>
+                            <p class="sb-subtitle">3 running · 1 stopped · 4 sandboxes · 6 sessions</p>
+                        </div>
+                        <a href="../sessions/create.html" class="sb-btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            New sandbox
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sb-filters">
+                    <button class="sb-filter-btn active" onclick="filterSandboxes('all', this)">All</button>
+                    <button class="sb-filter-btn" onclick="filterSandboxes('running', this)">Running</button>
+                    <button class="sb-filter-btn" onclick="filterSandboxes('stopped', this)">Stopped</button>
+                    <div class="sb-search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" placeholder="Search sandboxes or sessions…" oninput="searchSandboxes(this.value)">
+                    </div>
+                </div>
+
+                <div class="sb-body">
+
+                    <!-- Doc updater -->
+                    <div class="sb-project-group" data-project="doc-updater">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background:linear-gradient(135deg,#4fc3f7,#2a8bbf)">KB</div>
+                            <span class="sb-project-name">Doc updater</span>
+                            <span class="sb-project-count">1 sandbox · 3 sessions</span>
+                            <a href="../projects/details.html?project=doc-updater" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="sb-sandbox-block">
+                            <div class="sb-sandbox-row" data-status="running">
+                                <span class="sb-status-dot running"></span>
+                                <div>
+                                    <div class="sb-sandbox-name">doc-updater · main</div>
+                                    <div class="sb-sandbox-id">sbx-7f3a9c2e · running 11 days</div>
+                                </div>
+                                <span style="font-size:12px;color:var(--kd-text-muted);">Podman</span>
+                                <div><span class="sb-secured-badge">🔒 Secured</span></div>
+                                <div class="sb-session-count"><strong>2</strong> active · 3 total</div>
+                                <div class="sb-cost">$14.58</div>
+                                <div class="sb-sandbox-actions">
+                                    <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                    <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                </div>
+                            </div>
+                            <div class="sb-sessions">
+                                <div class="sb-sessions-col-header">
+                                    <span></span><span>Session</span><span>Agent</span><span>Status</span><span>Time</span><span>Cost</span><span></span>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot blocked"></span>
+                                    <div><div class="sb-session-title">Refactor auth module to JWT</div><div class="sb-session-branch">feat/jwt-auth</div></div>
+                                    <span class="sb-agent-badge claude">Claude Code</span>
+                                    <span class="sb-session-status blocked">Blocked</span>
+                                    <span class="sb-session-time">34m</span>
+                                    <span class="sb-session-cost">$3.23</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot paused"></span>
+                                    <div><div class="sb-session-title">Generate OpenAPI docs for REST endpoints</div><div class="sb-session-branch">docs/openapi-spec</div></div>
+                                    <span class="sb-agent-badge claude">Claude Code</span>
+                                    <span class="sb-session-status paused">Paused</span>
+                                    <span class="sb-session-time">3h</span>
+                                    <span class="sb-session-cost">$5.91</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot completed"></span>
+                                    <div><div class="sb-session-title">Create multi-stage Dockerfile for production</div><div class="sb-session-branch">infra/docker-prod</div></div>
+                                    <span class="sb-agent-badge claude">Claude Code</span>
+                                    <span class="sb-session-status completed">Completed</span>
+                                    <span class="sb-session-time">5h ago</span>
+                                    <span class="sb-session-cost">$2.52</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frontend App -->
+                    <div class="sb-project-group" data-project="frontend-app">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">FA</div>
+                            <span class="sb-project-name">Frontend App</span>
+                            <span class="sb-project-count">1 sandbox · 2 sessions</span>
+                            <a href="../projects/details.html?project=frontend-app" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="sb-sandbox-block">
+                            <div class="sb-sandbox-row" data-status="running">
+                                <span class="sb-status-dot running"></span>
+                                <div>
+                                    <div class="sb-sandbox-name">frontend-app · feat/dashboard</div>
+                                    <div class="sb-sandbox-id">sbx-3b82a1f4 · running 18 days</div>
+                                </div>
+                                <span style="font-size:12px;color:var(--kd-text-muted);">Podman</span>
+                                <div>
+                                    <span class="sb-secured-badge">🔒 Secured</span>
+                                    <span class="sb-blocked-badge" onclick="event.stopPropagation();window.location.href='../projects/details.html#network'">⚠ 1 blocked</span>
+                                </div>
+                                <div class="sb-session-count"><strong>1</strong> active · 2 total</div>
+                                <div class="sb-cost">$3.23</div>
+                                <div class="sb-sandbox-actions">
+                                    <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                    <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                </div>
+                            </div>
+                            <div class="sb-sessions">
+                                <div class="sb-sessions-col-header">
+                                    <span></span><span>Session</span><span>Agent</span><span>Status</span><span>Time</span><span>Cost</span><span></span>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot running"></span>
+                                    <div><div class="sb-session-title">Add dark mode toggle to settings</div><div class="sb-session-branch">feat/dark-mode</div></div>
+                                    <span class="sb-agent-badge claude">Claude Code</span>
+                                    <span class="sb-session-status running">Running</span>
+                                    <span class="sb-session-time">2h</span>
+                                    <span class="sb-session-cost">$3.23</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot completed"></span>
+                                    <div><div class="sb-session-title">Update npm dependencies</div><div class="sb-session-branch">chore/update-deps</div></div>
+                                    <span class="sb-agent-badge claude">Claude Code</span>
+                                    <span class="sb-session-status completed">Completed</span>
+                                    <span class="sb-session-time">2h ago</span>
+                                    <span class="sb-session-cost">$1.35</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Gateway -->
+                    <div class="sb-project-group" data-project="api-gateway">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background:linear-gradient(135deg,#10b981,#059669)">AG</div>
+                            <span class="sb-project-name">API Gateway</span>
+                            <span class="sb-project-count">1 sandbox · 1 session</span>
+                            <a href="../projects/details.html?project=api-gateway" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="sb-sandbox-block">
+                            <div class="sb-sandbox-row" data-status="running">
+                                <span class="sb-status-dot running"></span>
+                                <div>
+                                    <div class="sb-sandbox-name">api-gateway · develop</div>
+                                    <div class="sb-sandbox-id">sbx-c91e7d2b · running 15 days</div>
+                                </div>
+                                <span style="font-size:12px;color:var(--kd-text-muted);">Podman</span>
+                                <div><span class="sb-secured-badge">🔒 Secured</span></div>
+                                <div class="sb-session-count"><strong>1</strong> active · 2 total</div>
+                                <div class="sb-cost">$1.00</div>
+                                <div class="sb-sandbox-actions">
+                                    <a href="../work/index.html" class="sb-action-btn">Open in Work</a>
+                                    <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                </div>
+                            </div>
+                            <div class="sb-sessions">
+                                <div class="sb-sessions-col-header">
+                                    <span></span><span>Session</span><span>Agent</span><span>Status</span><span>Time</span><span>Cost</span><span></span>
+                                </div>
+                                <div class="sb-session-row" onclick="window.location.href='../work/index.html'">
+                                    <span class="sb-session-dot waiting"></span>
+                                    <div><div class="sb-session-title">Fix memory leak in WebSocket handler</div><div class="sb-session-branch">fix/ws-memory-leak</div></div>
+                                    <span class="sb-agent-badge codex">Codex</span>
+                                    <span class="sb-session-status waiting">Waiting for input</span>
+                                    <span class="sb-session-time">45m</span>
+                                    <span class="sb-session-cost">$1.00</span>
+                                    <a href="../work/index.html" class="sb-session-open">Open →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Infrastructure Platform -->
+                    <div class="sb-project-group" data-project="infra-platform">
+                        <div class="sb-project-header">
+                            <div class="sb-project-icon" style="background:linear-gradient(135deg,#f97316,#ea580c)">IP</div>
+                            <span class="sb-project-name">Infrastructure Platform</span>
+                            <span class="sb-project-count">1 sandbox · 0 sessions</span>
+                            <a href="../projects/details.html?project=infra-platform" class="sb-project-link">View project →</a>
+                        </div>
+                        <div class="sb-sandbox-block">
+                            <div class="sb-sandbox-row" data-status="stopped">
+                                <span class="sb-status-dot stopped"></span>
+                                <div>
+                                    <div class="sb-sandbox-name" style="color:var(--kd-text-secondary)">infra-platform · main</div>
+                                    <div class="sb-sandbox-id">sbx-d44f8e91 · stopped</div>
+                                </div>
+                                <span style="font-size:12px;color:var(--kd-text-muted);">Podman</span>
+                                <div><span style="font-size:11px;color:var(--kd-text-muted)">—</span></div>
+                                <div class="sb-session-count" style="color:var(--kd-text-muted)"><strong style="color:var(--kd-text-muted)">0</strong> active · 5 total</div>
+                                <div class="sb-cost" style="color:var(--kd-text-muted)">$0.00</div>
+                                <div class="sb-sandbox-actions">
+                                    <button class="sb-action-btn" onclick="alert('Mock: starting sandbox…')">Start</button>
+                                    <a href="../sessions/create.html" class="sb-action-btn primary">+ Session</a>
+                                </div>
+                            </div>
+                            <div class="sb-empty-sessions">No sessions — start the sandbox to run a new session.</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function filterSandboxes(status, btn) {
+            document.querySelectorAll('.sb-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.sb-project-group').forEach(group => {
+                const row = group.querySelector('.sb-sandbox-row');
+                const match = status === 'all' || (row && row.dataset.status === status);
+                group.style.display = match ? '' : 'none';
+            });
+        }
+
+        function searchSandboxes(q) {
+            q = q.toLowerCase();
+            document.querySelectorAll('.sb-project-group').forEach(group => {
+                group.style.display = group.textContent.toLowerCase().includes(q) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

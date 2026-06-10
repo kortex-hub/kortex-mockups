@@ -13,9 +13,19 @@
         custom: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M12 11V7a4 4 0 0 0-4-4H8"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>'
     };
 
-    global.VAULT_PROVIDERS_ORDER = ['github', 'jira', 'gitlab', 'slack', 'openshift', 'ansible-aap', 'custom'];
+    global.VAULT_PROVIDERS_ORDER = ['anthropic', 'github', 'jira', 'gitlab', 'slack', 'openshift', 'ansible-aap', 'custom'];
 
     global.VAULT_PROVIDER_REGISTRY = {
+        anthropic: {
+            id: 'anthropic',
+            label: 'Anthropic',
+            description: 'API key for Claude models. Automatically injected as ANTHROPIC_API_KEY in workspaces.',
+            defaultCategory: 'api',
+            icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+            fields: [
+                { id: 'anthropic_key', name: 'anthropic_key', label: 'API key', type: 'password', placeholder: 'sk-ant-…', hint: 'From console.anthropic.com → API keys.', required: true, secretToggle: true }
+            ]
+        },
         github: {
             id: 'github',
             label: 'GitHub',

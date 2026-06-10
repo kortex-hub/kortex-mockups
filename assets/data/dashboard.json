@@ -1,12 +1,12 @@
 {
   "user": {
     "name": "Sebastien",
-    "contextLine": "3 workspaces active · 4 sessions running · System healthy"
+    "contextLine": "3 sandboxes running · 4 sessions active · System healthy"
   },
   "stats": [
     {
       "type": "agents",
-      "label": "Workspaces",
+      "label": "Sandboxes",
       "value": "4",
       "detail": "<span class=\"up\">3 running</span> &middot; 1 stopped"
     },
@@ -69,7 +69,7 @@
     },
     {
       "type": "deploy",
-      "html": "<strong>API Integration</strong> workspace started &mdash; Codex on <strong>api-gateway</strong>",
+      "html": "<strong>API Integration</strong> sandbox started &mdash; Codex on <strong>api-gateway</strong>",
       "time": "45 minutes ago"
     },
     {
@@ -99,7 +99,7 @@
       "label": "CPU Usage",
       "value": "42%",
       "barPct": 42,
-      "detail": "3 workspaces consuming &middot; 8 cores available"
+      "detail": "3 sandboxes consuming &middot; 8 cores available"
     },
     {
       "type": "memory",

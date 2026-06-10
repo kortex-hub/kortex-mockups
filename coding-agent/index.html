@@ -679,6 +679,20 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Sandbox Defaults -->
+                        <div style="margin: 16px 0 0; padding: 16px; border-top: 1px solid var(--kd-border);">
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 12px;">Sandbox Defaults</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 8px;">Default runtime</div>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-claude" value="podman" checked style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Podman <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(recommended — faster startup)</span></div></div>
+                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-claude" value="microvm" style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">MicroVM <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(stronger isolation, slower start)</span></div></div>
+                            </label>
+                            <p style="font-size: 11px; color: var(--kd-text-muted); margin-top: 8px;">MicroVM provides hardware-level isolation. Use for regulated environments or untrusted code.</p>
+                        </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelClaudeVertex" role="tabpanel" aria-labelledby="cagTabClaudeVertex" data-cag="claude-vertex" hidden>
@@ -741,6 +755,18 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div style="margin: 16px 0 0; padding: 16px; border-top: 1px solid var(--kd-border);">
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 12px;">Sandbox Defaults</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 8px;">Default runtime</div>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-vertex" value="podman" checked style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Podman <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(recommended — faster startup)</span></div></div>
+                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-vertex" value="microvm" style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">MicroVM <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(stronger isolation, slower start)</span></div></div>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelCodex" role="tabpanel" aria-labelledby="cagTabCodex" data-cag="codex" hidden>
@@ -776,6 +802,19 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div style="margin: 16px 0 0; padding: 16px; border-top: 1px solid var(--kd-border);">
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 12px;">Sandbox Defaults</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 8px;">Default runtime</div>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-codex" value="microvm" checked style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">MicroVM <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(stronger isolation)</span></div></div>
+                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-codex" value="podman" style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Podman <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(faster startup)</span></div></div>
+                            </label>
+                            <p style="font-size: 11px; color: var(--kd-text-muted); margin-top: 8px;">MicroVM defaults recommended for Codex — untrusted code execution environments.</p>
                         </div>
                     </div>
 
@@ -815,6 +854,18 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div style="margin: 16px 0 0; padding: 16px; border-top: 1px solid var(--kd-border);">
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 12px;">Sandbox Defaults</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 8px;">Default runtime</div>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-goose" value="podman" checked style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Podman <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(recommended — faster startup)</span></div></div>
+                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-goose" value="microvm" style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">MicroVM <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(stronger isolation, slower start)</span></div></div>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="cag-detail" id="cagPanelOpencode" role="tabpanel" aria-labelledby="cagTabOpencode" data-cag="opencode" hidden>
@@ -852,6 +903,18 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div style="margin: 16px 0 0; padding: 16px; border-top: 1px solid var(--kd-border);">
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kd-text-muted); margin-bottom: 12px;">Sandbox Defaults</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary); margin-bottom: 8px;">Default runtime</div>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-opencode" value="podman" checked style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">Podman <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(recommended — faster startup)</span></div></div>
+                            </label>
+                            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+                                <input type="radio" name="sandbox-driver-opencode" value="microvm" style="accent-color: var(--kd-accent); margin-top: 2px;">
+                                <div><div style="font-size: 13px; font-weight: 500; color: var(--kd-text-primary);">MicroVM <span style="font-size: 11px; font-weight: 400; color: var(--kd-text-muted);">(stronger isolation, slower start)</span></div></div>
+                            </label>
                         </div>
                     </div>
 

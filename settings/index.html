@@ -506,6 +506,22 @@
             margin: 24px 0;
         }
 
+        /* ── OpenShell panel helpers ── */
+        .os-radio-row { display: flex; align-items: flex-start; gap: 12px; }
+        .os-radio-input { margin-top: 4px; accent-color: var(--kd-accent); flex-shrink: 0; }
+        .os-sub-label { font-size: 11px; font-weight: 400; color: var(--kd-text-muted); }
+        .os-sub-label-accent { font-size: 11px; font-weight: 400; color: var(--kd-accent); }
+        .os-mono { font-family: 'SF Mono','Fira Code','Courier New',monospace; font-size: 11px; }
+        .os-status-dot-green { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2); display: inline-block; flex-shrink: 0; }
+        .os-row-clickable { cursor: pointer; }
+        .os-row-clickable:hover { background: color-mix(in srgb, var(--kd-accent) 3%, transparent); }
+        .os-row-selected {
+            background: color-mix(in srgb, var(--kd-accent) 10%, transparent);
+            box-shadow: inset 3px 0 0 var(--kd-accent);
+        }
+        .form-row.no-border { border-bottom: none; }
+        .form-row-label-mono { font-size: 14px; font-weight: 500; color: var(--kd-text-primary); font-family: 'SF Mono','Fira Code','Courier New',monospace; margin-bottom: 3px; }
+
         /* ── Preferences panel new styles ── */
         .pref-section-title { font-size:15px; font-weight:600; color:var(--kd-text-primary); padding:20px 0 12px; border-bottom:1px solid var(--kd-border); margin-bottom:0; }
         .pref-row { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; padding:16px 0; border-bottom:1px solid color-mix(in srgb,var(--kd-border) 50%,transparent); }
@@ -582,6 +598,22 @@
                                     <line x1="12" y1="19" x2="20" y2="19"/>
                                 </svg>
                                 CLI Tools
+                            </div>
+                        </div>
+
+                        <div class="settings-nav-group">
+                            <div class="settings-nav-label">OpenShell</div>
+                            <div class="settings-nav-item" onclick="showSection('os-gateway')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Gateway
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('os-sandboxes')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                                Sandboxes
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('os-logs')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                Logs
                             </div>
                         </div>
 
@@ -691,7 +723,7 @@
                         <!-- Resources panel -->
                         <div id="panel-resources" class="settings-panel active">
                             <h2 class="settings-panel-title">Resources</h2>
-                            <p class="settings-panel-subtitle">AI provider connections and container runtime status</p>
+                            <p class="settings-panel-subtitle">AI provider connections</p>
 
                             <!-- AI Providers -->
                             <div class="settings-card">
@@ -785,30 +817,417 @@
                                 </div>
                             </div>
 
-                            <!-- Container Runtime -->
+                            <!-- OpenShell runtime summary tile -->
                             <div class="settings-card">
-                                <div class="settings-card-header">Container Runtime</div>
-
-                                <!-- OpenShell / Podman -->
-                                <div class="provider-tile">
+                                <div class="settings-card-header">Sandbox Runtime</div>
+                                <div class="provider-tile" style="cursor: pointer;" onclick="showSection('os-gateway')">
                                     <div class="provider-icon podman">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="2" y="7" width="20" height="14" rx="2"/>
-                                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                                         </svg>
                                     </div>
                                     <div class="provider-info">
                                         <div class="provider-name">
-                                            OpenShell (Podman)
+                                            OpenShell
                                             <span class="status-badge connected">Running</span>
                                         </div>
-                                        <div class="provider-detail">Podman socket · unix:///run/user/1000/podman/podman.sock</div>
-                                        <div class="provider-meta">Version 5.4.1 &middot; Connected</div>
+                                        <div class="provider-detail">local-default · Podman · v2.1.0 · Uptime 2h 14m</div>
+                                        <div class="provider-meta">3 active sandboxes · 3 gateways registered</div>
                                     </div>
                                     <div class="provider-actions">
-                                        <button class="btn btn-secondary">Configure</button>
+                                        <button class="btn btn-secondary" onclick="event.stopPropagation(); showSection('os-gateway')">Settings →</button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- OpenShell panel -->
+                        <!-- ── OpenShell: Gateway ── -->
+                        <div id="panel-os-gateway" class="settings-panel">
+                            <h2 class="settings-panel-title">Gateway</h2>
+                            <p class="settings-panel-subtitle">Each gateway is an independent runtime with its own driver, created once. Select one to view and manage its settings.</p>
+
+                            <!-- Master-detail: list left, details right -->
+                            <div class="settings-card" style="overflow:hidden;">
+                                <div style="display:flex;min-height:260px;">
+
+                                    <!-- Left: gateway list -->
+                                    <div style="width:200px;flex-shrink:0;border-right:1px solid var(--kd-border);display:flex;flex-direction:column;">
+                                        <div style="padding:10px 12px;border-bottom:1px solid var(--kd-border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);display:flex;align-items:center;justify-content:space-between;">
+                                            Gateways
+                                            <button class="btn btn-ghost" style="font-size:11px;padding:2px 7px;" onclick="document.getElementById('addGatewayForm').style.display=document.getElementById('addGatewayForm').style.display==='none'?'flex':'none'">+ Add</button>
+                                        </div>
+                                        <div style="flex:1;overflow-y:auto;">
+
+                                            <!-- local-default -->
+                                            <div id="gwItem-local" onclick="selectGateway('local')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid var(--kd-accent);background:color-mix(in srgb,var(--kd-accent) 8%,transparent);transition:all 0.12s;">
+                                                <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;box-shadow:0 0 0 2px rgba(74,222,128,0.2);"></div>
+                                                <div style="flex:1;min-width:0;">
+                                                    <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">local-default</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Podman · local</div>
+                                                </div>
+                                                <span class="status-badge connected" style="font-size:9px;padding:1px 5px;flex-shrink:0;">Active</span>
+                                            </div>
+
+                                            <!-- team-shared -->
+                                            <div id="gwItem-team" onclick="selectGateway('team')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid transparent;transition:all 0.12s;" onmouseover="if(!this.classList.contains('gw-selected'))this.style.background='color-mix(in srgb,var(--kd-accent) 4%,transparent)'" onmouseout="if(!this.classList.contains('gw-selected'))this.style.background=''">
+                                                <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;"></div>
+                                                <div style="flex:1;min-width:0;">
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">team-shared</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">MicroVM · remote</div>
+                                                </div>
+                                            </div>
+
+                                            <!-- dev-sandbox -->
+                                            <div id="gwItem-dev" onclick="selectGateway('dev')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid transparent;transition:all 0.12s;" onmouseover="if(!this.classList.contains('gw-selected'))this.style.background='color-mix(in srgb,var(--kd-accent) 4%,transparent)'" onmouseout="if(!this.classList.contains('gw-selected'))this.style.background=''">
+                                                <div style="width:7px;height:7px;border-radius:50%;background:var(--kd-text-muted);opacity:0.35;flex-shrink:0;"></div>
+                                                <div style="flex:1;min-width:0;">
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">dev-sandbox</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Podman · remote</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Right: gateway detail -->
+                                    <div style="flex:1;min-width:0;overflow-y:auto;">
+                                        <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;">
+                                            <div>
+                                                <div style="font-size:14px;font-weight:600;color:var(--kd-text-primary);" id="gwDetailName">local-default</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px;" id="gwDetailMeta">local · Podman · v2.1.0 · Port 17670</div>
+                                            </div>
+                                            <div style="display:flex;gap:6px;align-items:center;">
+                                                <button id="gwDetailMakeActive" class="btn btn-primary" style="display:none;font-size:12px;padding:4px 10px;" onclick="alert('Mock: switching active gateway…')">Make active</button>
+                                                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;">Restart</button>
+                                                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;">Stop</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Status -->
+                                        <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                            <span id="gwDetailDot" class="os-status-dot-green"></span>
+                                            <span id="gwDetailStatus" style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Running</span>
+                                            <span id="gwDetailUptime" style="font-size:12px;color:var(--kd-text-muted);">· Uptime: 2h 14m</span>
+                                        </div>
+
+                                        <!-- Driver -->
+                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                            <div>
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Driver</div>
+                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">Set at creation — cannot be changed without recreating.</div>
+                                            </div>
+                                            <span id="gwDetailDriver" style="font-size:12px;font-weight:600;color:var(--kd-text-primary);padding:4px 10px;background:color-mix(in srgb,var(--kd-accent) 8%,transparent);border:1px solid var(--kd-border);border-radius:6px;white-space:nowrap;">Podman</span>
+                                        </div>
+
+                                        <!-- Endpoint -->
+                                        <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);margin-bottom:6px;">Endpoint</div>
+                                            <input type="text" id="gwDetailEndpoint" value="grpc://localhost:17670" readonly style="width:100%;box-sizing:border-box;padding:6px 10px;font-size:12px;font-family:monospace;background:var(--kd-bg-card);border:1px solid var(--kd-border);border-radius:6px;color:var(--kd-text-muted);outline:none;">
+                                        </div>
+
+                                        <!-- Sandboxes -->
+                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                            <div>
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Sandboxes</div>
+                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;" id="gwDetailSandboxes">3 running across all projects</div>
+                                            </div>
+                                            <a href="../sandboxes/index.html" class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;">View all →</a>
+                                        </div>
+
+                                        <!-- Logs -->
+                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+                                            <div>
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Security logs</div>
+                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">OCSF events from sandboxes on this gateway</div>
+                                            </div>
+                                            <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;" onclick="showSection('os-logs')">View logs →</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Add gateway form (slides in below) -->
+                                <div id="addGatewayForm" style="display:none;padding:16px 18px;border-top:1px solid var(--kd-border);background:color-mix(in srgb,var(--kd-accent) 3%,transparent);flex-direction:column;gap:12px;">
+                                    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--kd-text-muted);">Register gateway</div>
+                                    <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;">
+                                        <div>
+                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Name</label>
+                                            <input type="text" class="settings-input" placeholder="e.g. team-shared" style="min-width:0;width:100%;box-sizing:border-box;">
+                                        </div>
+                                        <div>
+                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Endpoint URL</label>
+                                            <input type="text" class="settings-input" placeholder="grpc://gateway.corp.example.com:17670" style="min-width:0;width:100%;box-sizing:border-box;">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-row-desc" style="margin-bottom:8px;font-weight:600;">Driver <span style="font-weight:400;color:var(--kd-text-muted);">— fixed at creation</span></div>
+                                        <div style="display:flex;gap:10px;">
+                                            <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-accent);border-radius:7px;flex:1;background:color-mix(in srgb,var(--kd-accent) 5%,transparent);">
+                                                <input type="radio" name="gwDriver" value="podman" checked class="os-radio-input">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Podman <span class="os-sub-label-accent">(recommended)</span></div>
+                                                    <div class="form-row-desc">Container-based — faster startup, lower overhead</div>
+                                                </div>
+                                            </label>
+                                            <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;flex:1;">
+                                                <input type="radio" name="gwDriver" value="microvm" class="os-radio-input">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">MicroVM</div>
+                                                    <div class="form-row-desc">VM-based — hardware-level isolation, slower start</div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-row-desc" style="margin-bottom:6px;font-weight:600;">Auth</div>
+                                        <div style="display:flex;align-items:center;gap:16px;">
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="local" class="os-radio-input"> Local</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="remote" checked class="os-radio-input"> Remote</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="oidc" class="os-radio-input"> Remote · OIDC</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="mtls" class="os-radio-input"> Remote · mTLS</label>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex;gap:8px;">
+                                        <button class="btn btn-primary" onclick="alert('Mock: gateway registered')">Register</button>
+                                        <button class="btn btn-ghost" onclick="document.getElementById('addGatewayForm').style.display='none'">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Startup (local gateways only) -->
+                            <div class="settings-card">
+                                <div class="settings-card-header">Startup <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--kd-text-muted);margin-left:4px;">— local gateways only</span></div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Auto-start gateway</div>
+                                        <div class="form-row-desc">Start local gateways automatically when Kaiden launches. Remote gateways are always-on and unaffected.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row" style="border-bottom:none;">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Gateway port</div>
+                                        <div class="form-row-desc">Local port the gateway listens on (default 17670). Change only if there is a conflict.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <input type="number" class="settings-input" value="17670" style="min-width:0;width:90px;text-align:right;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-save-bar">
+                                <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
+                                <button class="settings-save-btn" onclick="saveSettings()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ── OpenShell: Sandboxes ── -->
+                        <div id="panel-os-sandboxes" class="settings-panel">
+                            <h2 class="settings-panel-title">Sandboxes</h2>
+                            <p class="settings-panel-subtitle">Default behaviour for new sandboxes — overridable per project or per sandbox</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">Network</div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Allow known services</div>
+                                        <div class="form-row-desc">New sandboxes can reach services covered by their attached credentials. Additional hosts can be added per project.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row" style="border-bottom:none;">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Strict mode by default</div>
+                                        <div class="form-row-desc">Block all outbound traffic unless explicitly listed. Overrides "Allow known services" when on.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <div class="settings-toggle" onclick="toggleSetting(this)"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">Filesystem</div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Include working directory</div>
+                                        <div class="form-row-desc">Automatically grant read-write access to the project working directory. Disable to create a fully isolated sandbox with no host filesystem access.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row" style="border-bottom:none;">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Isolation mode</div>
+                                        <div class="form-row-desc"><strong>Best effort</strong> falls back silently on older kernels. <strong>Strict</strong> fails sandbox creation if kernel-level isolation cannot be guaranteed.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <select class="settings-input" style="min-width:0;width:140px;">
+                                            <option selected>Best effort</option>
+                                            <option>Strict</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">Lifecycle</div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Keep sandbox after session ends</div>
+                                        <div class="form-row-desc">When on, the sandbox stays running after the agent session completes so you can reconnect or start a new session without recreating the environment.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                    </div>
+                                </div>
+                                <div class="form-row" style="border-bottom:none;">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Process identity</div>
+                                        <div class="form-row-desc">Unix user the agent process runs as inside the sandbox.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <input type="text" class="settings-input" value="sandbox" style="min-width:0;width:120px;font-family:monospace;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-save-bar">
+                                <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
+                                <button class="settings-save-btn" onclick="saveSettings()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ── OpenShell: Logs ── -->
+                        <div id="panel-os-logs" class="settings-panel">
+                            <h2 class="settings-panel-title">Logs</h2>
+                            <p class="settings-panel-subtitle">Security event stream from all sandboxes — OCSF v1.7.0 structured format</p>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header" style="display:flex;align-items:center;justify-content:space-between;">
+                                    <span>Recent security events</span>
+                                    <div style="display:flex;gap:8px;">
+                                        <select class="settings-input" style="font-size:12px;padding:4px 8px;min-width:0;">
+                                            <option>All sandboxes</option>
+                                            <option>doc-updater · main</option>
+                                            <option>frontend-app · feat/dashboard</option>
+                                            <option>api-gateway · develop</option>
+                                        </select>
+                                        <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;">Export OCSF</button>
+                                    </div>
+                                </div>
+
+                                <div class="cli-tool-row">
+                                    <div class="cli-tool-name">
+                                        <div class="cli-tool-label" style="font-size:11px;font-family:'Courier New',monospace;">6m ago</div>
+                                    </div>
+                                    <div class="cli-tool-path">
+                                        <div class="cli-tool-label" style="font-size:13px;font-weight:400;">TCP connect to auth.example.com:443 — no matching network policy</div>
+                                        <div class="cli-tool-version">doc-updater</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge error">DENY</span>
+                                    </div>
+                                </div>
+
+                                <div class="cli-tool-row">
+                                    <div class="cli-tool-name">
+                                        <div class="cli-tool-label" style="font-size:11px;font-family:'Courier New',monospace;">12m ago</div>
+                                    </div>
+                                    <div class="cli-tool-path">
+                                        <div class="cli-tool-label" style="font-size:13px;font-weight:400;">POST api.anthropic.com/v1/messages</div>
+                                        <div class="cli-tool-version">doc-updater</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge connected">ALLOW</span>
+                                    </div>
+                                </div>
+
+                                <div class="cli-tool-row">
+                                    <div class="cli-tool-name">
+                                        <div class="cli-tool-label" style="font-size:11px;font-family:'Courier New',monospace;">18m ago</div>
+                                    </div>
+                                    <div class="cli-tool-path">
+                                        <div class="cli-tool-label" style="font-size:13px;font-weight:400;">GET api.github.com/repos/acme-corp/api</div>
+                                        <div class="cli-tool-version">frontend-app</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge connected">ALLOW</span>
+                                    </div>
+                                </div>
+
+                                <div class="cli-tool-row">
+                                    <div class="cli-tool-name">
+                                        <div class="cli-tool-label" style="font-size:11px;font-family:'Courier New',monospace;">34m ago</div>
+                                    </div>
+                                    <div class="cli-tool-path">
+                                        <div class="cli-tool-label" style="font-size:13px;font-weight:400;">Process started — claude-code agent launched</div>
+                                        <div class="cli-tool-version">api-gateway</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge connected">ALLOW</span>
+                                    </div>
+                                </div>
+
+                                <div class="cli-tool-row">
+                                    <div class="cli-tool-name">
+                                        <div class="cli-tool-label" style="font-size:11px;font-family:'Courier New',monospace;">1h ago</div>
+                                    </div>
+                                    <div class="cli-tool-path">
+                                        <div class="cli-tool-label" style="font-size:13px;font-weight:400;">Policy reloaded — revision #4 applied</div>
+                                        <div class="cli-tool-version">doc-updater</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge connected">ALLOW</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <div class="settings-card-header">Log settings</div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Minimum severity</div>
+                                        <div class="form-row-desc">Only show events at or above this level.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <select class="settings-input" style="min-width:0;width:150px;">
+                                            <option>Informational</option>
+                                            <option selected>Low</option>
+                                            <option>Medium</option>
+                                            <option>High</option>
+                                            <option>Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">OCSF export sink</div>
+                                        <div class="form-row-desc">Stream structured events to an external endpoint (SIEM). Leave blank to disable.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <input type="url" class="settings-input" placeholder="https://siem.corp.example/ingest" style="width:240px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-save-bar">
+                                <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
+                                <button class="settings-save-btn" onclick="saveSettings()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Save Settings
+                                </button>
                             </div>
                         </div>
 
@@ -1703,6 +2122,78 @@
 
         function toggleSetting(element) {
             element.classList.toggle('active');
+        }
+
+        // Gateway data per gateway
+        var GW_DATA = {
+            'local': {
+                name: 'local-default',
+                driver: 'Podman',
+                endpoint: 'grpc://localhost:17670',
+                meta: 'local · v2.1.0 · Port 17670',
+                status: 'Running',
+                uptime: 'Uptime: 2h 14m',
+                sandboxes: '3 running across all projects',
+                isActive: true,
+                isRunning: true
+            },
+            'team': {
+                name: 'team-shared',
+                driver: 'MicroVM',
+                endpoint: 'grpc://gateway.corp.example.com:17670',
+                meta: 'remote · OIDC auth · v2.0.5',
+                status: 'Connected',
+                uptime: 'Uptime: 4d 11h',
+                sandboxes: '0 running (not active gateway)',
+                isActive: false,
+                isRunning: true
+            },
+            'dev': {
+                name: 'dev-sandbox',
+                driver: 'Podman',
+                endpoint: 'grpc://dev.corp.example.com:17670',
+                meta: 'remote · mTLS auth',
+                status: 'Disconnected',
+                uptime: 'Last seen: 2 days ago',
+                sandboxes: '—',
+                isActive: false,
+                isRunning: false
+            }
+        };
+
+        function selectGateway(id) {
+            var gw = GW_DATA[id];
+            if (!gw) return;
+
+            // Update list item styles
+            ['local', 'team', 'dev'].forEach(function(key) {
+                var item = document.getElementById('gwItem-' + key);
+                if (!item) return;
+                if (key === id) {
+                    item.style.borderLeftColor = 'var(--kd-accent)';
+                    item.style.background = 'color-mix(in srgb,var(--kd-accent) 8%,transparent)';
+                    item.querySelector('[style*="font-size:13px"]').style.color = 'var(--kd-text-primary)';
+                    item.querySelector('[style*="font-size:13px"]').style.fontWeight = '600';
+                } else {
+                    item.style.borderLeftColor = 'transparent';
+                    item.style.background = '';
+                }
+            });
+
+            // Update detail panel
+            document.getElementById('gwDetailName').textContent = GW_DATA[id].name || id;
+            document.getElementById('gwDetailMeta').textContent = gw.meta;
+            document.getElementById('gwDetailEndpoint').value = gw.endpoint;
+            document.getElementById('gwDetailDriver').textContent = gw.driver;
+            document.getElementById('gwDetailStatus').textContent = gw.status;
+            document.getElementById('gwDetailUptime').textContent = '· ' + gw.uptime;
+            document.getElementById('gwDetailSandboxes').textContent = gw.sandboxes;
+
+            var dot = document.getElementById('gwDetailDot');
+            dot.style.background = gw.isRunning ? '#4ade80' : 'var(--kd-text-muted)';
+            dot.style.boxShadow = gw.isRunning ? '0 0 0 3px rgba(74,222,128,0.2)' : 'none';
+
+            document.getElementById('gwDetailMakeActive').style.display = gw.isActive ? 'none' : '';
         }
 
         function togglePwd(id) {

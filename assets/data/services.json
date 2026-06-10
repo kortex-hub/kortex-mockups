@@ -3,6 +3,14 @@
   "catalogLead": "Built-in providers use Configure on each row. Generic secrets (header injection by host/path) appear below them. Add another generic secret with the button above.",
   "integrationCatalog": [
     {
+      "providerId": "anthropic",
+      "configured": true,
+      "detailId": "anthropic",
+      "connection": "—",
+      "masked": "sk-ant-••••••••••••••••",
+      "revealValue": "sk-ant-api03-••••••••••••••••"
+    },
+    {
       "providerId": "github",
       "configured": true,
       "detailId": "github-pat",

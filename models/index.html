@@ -1599,17 +1599,24 @@
                                         </div>
                                         <div class="sr-card-title-block">
                                             <div class="sr-card-name">coding-router</div>
-                                            <div class="sr-card-endpoint">localhost:8899</div>
+                                            <div class="sr-card-endpoint" style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Active in 2 workspaces</div>
                                         </div>
                                     </div>
 
-                                    <!-- Abstract routing flow -->
-                                    <div class="sr-flow">
+                                    <!-- Abstract routing flow with inference.local -->
+                                    <div class="sr-flow" style="gap: 4px;">
                                         <div class="sr-flow-node">
                                             <div class="sr-flow-node-icon agents">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
                                             </div>
                                             <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5); width: 28px; height: 28px;">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label" style="font-size:9px;">Smart routing</span>
                                         </div>
                                         <div class="sr-flow-arrow"></div>
                                         <div class="sr-flow-node">
@@ -1649,6 +1656,15 @@
                                         <span class="sr-feat pii">PII detection</span>
                                     </div>
 
+                                    <!-- Set as inference endpoint toggle -->
+                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--kd-border); display: flex; align-items: center; justify-content: space-between;" onclick="event.preventDefault(); event.stopPropagation();">
+                                        <span style="font-size: 11px; color: var(--kd-text-muted);">Set as inference endpoint</span>
+                                        <label style="position:relative;display:inline-block;width:34px;height:18px;cursor:pointer;">
+                                            <input type="checkbox" checked style="opacity:0;width:0;height:0;" onchange="this.nextElementSibling.style.background = this.checked ? 'var(--kd-accent)' : 'rgba(255,255,255,0.15)'">
+                                            <span style="position:absolute;inset:0;border-radius:9px;background:var(--kd-accent);transition:.2s;"><span style="position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:.2s;transform:translateX(${c?16:0}px)"></span></span>
+                                        </label>
+                                    </div>
+
                                 </a>
 
                                 <!-- ── Router card 2 ── -->
@@ -1660,17 +1676,24 @@
                                         </div>
                                         <div class="sr-card-title-block">
                                             <div class="sr-card-name">general-purpose-router</div>
-                                            <div class="sr-card-endpoint">localhost:8900</div>
+                                            <div class="sr-card-endpoint" style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--kd-text-muted);display:inline-block;opacity:0.5;"></span> Inactive</div>
                                         </div>
                                     </div>
 
-                                    <!-- Abstract routing flow -->
-                                    <div class="sr-flow">
+                                    <!-- Abstract routing flow with inference.local -->
+                                    <div class="sr-flow" style="gap: 4px;">
                                         <div class="sr-flow-node">
                                             <div class="sr-flow-node-icon agents">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
                                             </div>
                                             <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5); width: 28px; height: 28px; opacity: 0.5;">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label" style="font-size:9px;opacity:0.6;">Smart routing</span>
                                         </div>
                                         <div class="sr-flow-arrow"></div>
                                         <div class="sr-flow-node">
@@ -1716,6 +1739,15 @@
                                         <span class="sr-feat jailbreak">Jailbreak detection</span>
                                     </div>
 
+                                    <!-- Set as inference endpoint toggle -->
+                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--kd-border); display: flex; align-items: center; justify-content: space-between;" onclick="event.preventDefault(); event.stopPropagation();">
+                                        <span style="font-size: 11px; color: var(--kd-text-muted);">Set as inference endpoint</span>
+                                        <label style="position:relative;display:inline-block;width:34px;height:18px;cursor:pointer;">
+                                            <input type="checkbox" style="opacity:0;width:0;height:0;" onchange="this.nextElementSibling.style.background = this.checked ? 'var(--kd-accent)' : 'rgba(255,255,255,0.15)'">
+                                            <span style="position:absolute;inset:0;border-radius:9px;background:rgba(255,255,255,0.15);transition:.2s;"></span>
+                                        </label>
+                                    </div>
+
                                 </a>
 
                                 <!-- ── Router card 3 ── -->
@@ -1727,17 +1759,24 @@
                                         </div>
                                         <div class="sr-card-title-block">
                                             <div class="sr-card-name">enterprise-router</div>
-                                            <div class="sr-card-endpoint">localhost:8901</div>
+                                            <div class="sr-card-endpoint" style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Active in 1 workspace</div>
                                         </div>
                                     </div>
 
-                                    <!-- Abstract routing flow -->
-                                    <div class="sr-flow">
+                                    <!-- Abstract routing flow with inference.local -->
+                                    <div class="sr-flow" style="gap: 4px;">
                                         <div class="sr-flow-node">
                                             <div class="sr-flow-node-icon agents">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
                                             </div>
                                             <span class="sr-flow-node-label">Agents</span>
+                                        </div>
+                                        <div class="sr-flow-arrow"></div>
+                                        <div class="sr-flow-node">
+                                            <div class="sr-flow-node-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5); width: 28px; height: 28px;">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                            </div>
+                                            <span class="sr-flow-node-label" style="font-size:9px;">Smart routing</span>
                                         </div>
                                         <div class="sr-flow-arrow"></div>
                                         <div class="sr-flow-node">
@@ -1781,6 +1820,15 @@
                                         <span class="sr-feat cost">Cost optimizer</span>
                                         <span class="sr-feat residency">Data residency</span>
                                         <span class="sr-feat latency">Latency scoring</span>
+                                    </div>
+
+                                    <!-- Set as inference endpoint toggle -->
+                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--kd-border); display: flex; align-items: center; justify-content: space-between;" onclick="event.preventDefault(); event.stopPropagation();">
+                                        <span style="font-size: 11px; color: var(--kd-text-muted);">Set as inference endpoint</span>
+                                        <label style="position:relative;display:inline-block;width:34px;height:18px;cursor:pointer;">
+                                            <input type="checkbox" style="opacity:0;width:0;height:0;" onchange="this.nextElementSibling.style.background = this.checked ? 'var(--kd-accent)' : 'rgba(255,255,255,0.15)'">
+                                            <span style="position:absolute;inset:0;border-radius:9px;background:rgba(255,255,255,0.15);transition:.2s;"></span>
+                                        </label>
                                     </div>
 
                                 </a>

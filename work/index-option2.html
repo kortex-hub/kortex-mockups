@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiden — Work</title>
+    <script src="../assets/js/kaiden-theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script src="../assets/js/sidebar-loader.js"></script>
+    <style>
+        /* ══════════════════════════════════════════
+           LAYOUT
+        ══════════════════════════════════════════ */
+        .w2-layout {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 28px);
+            overflow: hidden;
+        }
+
+        /* ══════════════════════════════════════════
+           LEFT PANEL — status-grouped session list
+        ══════════════════════════════════════════ */
+        .w2-left {
+            width: 340px;
+            min-width: 240px;
+            max-width: 520px;
+            background: #080f1a;
+            border-right: 1px solid #111f35;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .w2-resize-handle {
+            position: absolute; top: 0; right: 0;
+            width: 5px; height: 100%;
+            cursor: col-resize; z-index: 10;
+            background: #1e3358;
+            transition: background 0.15s;
+        }
+        .w2-resize-handle:hover { background: #4fc3f7; }
+
+        /* Header */
+        .w2-left-header {
+            padding: 14px 14px 0;
+            border-bottom: 1px solid #111f35;
+            flex-shrink: 0;
+        }
+        .w2-left-header-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .w2-left-title {
+            font-size: 15px; font-weight: 700;
+            color: #e8eef7; letter-spacing: -0.01em;
+        }
+        .w2-new-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 5px 10px;
+            background: rgba(79,195,247,0.1);
+            border: 1px solid rgba(79,195,247,0.25);
+            border-radius: 7px;
+            color: #4fc3f7; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s; text-decoration: none;
+        }
+        .w2-new-btn:hover { background: rgba(79,195,247,0.18); border-color: rgba(79,195,247,0.45); }
+        .w2-new-btn svg { width: 12px; height: 12px; }
+
+        /* Tabs */
+        .w2-tabs {
+            display: flex; gap: 2px; margin-bottom: 10px;
+        }
+        .w2-tab-btn {
+            flex: 1; padding: 5px 0;
+            background: none; border: none;
+            color: #6b7280; font-size: 12px; font-weight: 500;
+            cursor: pointer; border-radius: 6px; transition: all 0.15s;
+        }
+        .w2-tab-btn:hover { color: #9ca3af; background: rgba(255,255,255,0.04); }
+        .w2-tab-btn.active { color: #e8eef7; background: rgba(255,255,255,0.07); font-weight: 600; }
+
+        /* Project filter */
+        .w2-project-filter {
+            display: flex; align-items: center; gap: 7px;
+            padding: 7px 12px; margin: 8px 14px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1e3358; border-radius: 7px;
+            font-size: 12px; color: #6b7280; cursor: pointer;
+        }
+        .w2-project-filter svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .w2-project-filter span { flex: 1; }
+
+        /* Session list scroll area */
+        .w2-list {
+            flex: 1; overflow-y: auto; padding: 4px 10px 16px;
+        }
+        .w2-list::-webkit-scrollbar { width: 4px; }
+        .w2-list::-webkit-scrollbar-track { background: transparent; }
+        .w2-list::-webkit-scrollbar-thumb { background: #1e3358; border-radius: 2px; }
+
+        /* Status group */
+        .w2-group { margin-top: 8px; }
+        .w2-group + .w2-group { margin-top: 16px; }
+
+        .w2-group-header {
+            display: flex; align-items: center; gap: 6px;
+            padding: 4px 4px 8px;
+        }
+        .w2-group-label {
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+        }
+        .w2-group-label.needs-input { color: #f87171; }
+        .w2-group-label.running     { color: #34d399; }
+        .w2-group-label.paused      { color: #fbbf24; }
+        .w2-group-label.completed   { color: #4b5563; }
+
+        .w2-group-count {
+            font-size: 10px; font-weight: 700;
+            padding: 1px 6px; border-radius: 10px;
+        }
+        .w2-group-count.needs-input { background: rgba(248,113,113,0.15); color: #f87171; }
+        .w2-group-count.running     { background: rgba(52,211,153,0.15); color: #34d399; }
+        .w2-group-count.paused      { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .w2-group-count.completed   { background: rgba(255,255,255,0.06); color: #4b5563; }
+
+        /* Session card */
+        .w2-card {
+            position: relative;
+            padding: 10px 10px 10px 14px;
+            border-radius: 8px;
+            border: none;
+            border-left: 3px solid transparent;
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .w2-card:hover { background: rgba(255,255,255,0.04); }
+        .w2-card.active { background: rgba(79,195,247,0.06); border-left-color: rgba(79,195,247,0.6) !important; }
+
+        .w2-card.border-red    { border-left-color: #f87171; }
+        .w2-card.border-blue   { border-left-color: #f87171; }
+        .w2-card.border-green  { border-left-color: transparent; }
+        .w2-card.border-yellow { border-left-color: transparent; }
+        .w2-card.border-gray   { border-left-color: transparent; }
+
+        .w2-card-title {
+            font-size: 13px; font-weight: 600;
+            color: #e8eef7; margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .w2-card-title.dimmed { color: #6b7280; }
+
+        .w2-card-status {
+            display: flex; align-items: center; gap: 6px;
+            margin-bottom: 5px;
+        }
+        .w2-status-dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+        .w2-status-dot.blocked   { background: #f87171; }
+        .w2-status-dot.waiting   { background: #60a5fa; }
+        .w2-status-dot.running   { background: #34d399; animation: w2pulse 2s infinite; }
+        .w2-status-dot.paused    { background: #fbbf24; }
+        .w2-status-dot.completed { background: #374151; }
+
+        @keyframes w2pulse {
+            0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(52,211,153,0.4); }
+            50% { opacity:0.8; box-shadow:0 0 0 4px rgba(52,211,153,0); }
+        }
+
+        .w2-status-text { font-size: 11px; font-weight: 500; }
+        .w2-status-text.blocked   { color: #fca5a5; }
+        .w2-status-text.waiting   { color: #93c5fd; }
+        .w2-status-text.running   { color: #34d399; }
+        .w2-status-text.paused    { color: #fbbf24; }
+        .w2-status-text.completed { color: #6b7280; }
+
+        .w2-card-time { font-size: 11px; color: #4b5563; margin-left: auto; }
+
+        .w2-card-footer {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+        .w2-card-project {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 11px; color: #6b7280;
+        }
+        .w2-card-project svg { width: 11px; height: 11px; }
+        .w2-card-branch {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 11px; color: #4b5563; font-family: monospace;
+        }
+        .w2-card-branch svg { width: 11px; height: 11px; }
+
+        /* Action badge on needs-input cards */
+        .w2-action-badge {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; align-items: center; gap: 4px;
+            padding: 3px 8px; border-radius: 5px;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
+            color: #f87171; cursor: pointer;
+        }
+        .w2-action-badge svg { width: 10px; height: 10px; }
+
+        /* Bottom bar */
+        .w2-bottom-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px;
+            border-top: 1px solid #111f35;
+            background: rgba(255,255,255,0.02);
+            cursor: pointer; transition: background 0.15s; flex-shrink: 0;
+        }
+        .w2-bottom-bar:hover { background: rgba(79,195,247,0.05); }
+        .w2-bottom-bar-left { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #6b7280; }
+        .w2-live-dot {
+            width: 7px; height: 7px; border-radius: 50%; background: #34d399;
+            animation: w2pulse 2s infinite;
+        }
+        .w2-bottom-bar svg { width: 13px; height: 13px; color: #4b5563; }
+
+        /* ══════════════════════════════════════════
+           RIGHT PANEL — Agent detail (from work/index.html)
+        ══════════════════════════════════════════ */
+        .tasks-right-panel {
+            width: 300px;
+            min-width: 220px;
+            max-width: 420px;
+            flex-shrink: 0;
+            background: #080f1a;
+            border-left: 1px solid #111f35;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .right-panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 14px;
+            border-bottom: 1px solid #111f35;
+            flex-shrink: 0;
+        }
+        .right-panel-title { font-size: 13px; font-weight: 600; color: #9ca3af; }
+        .right-panel-session-name { font-size: 13px; font-weight: 600; color: #e8eef7; }
+
+        .right-panel-tabs {
+            display: flex; gap: 0;
+            border-bottom: 1px solid #111f35;
+            padding: 0 14px;
+            flex-shrink: 0;
+        }
+        .rp-tab {
+            padding: 8px 10px;
+            background: none; border: none; border-bottom: 2px solid transparent;
+            color: #6b7280; font-size: 12px; font-weight: 500;
+            cursor: pointer; transition: all 0.15s; margin-bottom: -1px;
+        }
+        .rp-tab:hover { color: #9ca3af; }
+        .rp-tab.active { color: #4fc3f7; border-bottom-color: #4fc3f7; font-weight: 600; }
+
+        .rp-tab-content { display: none; flex: 1; overflow-y: auto; }
+        .rp-tab-content.active { display: block; }
+        .rp-tab-content::-webkit-scrollbar { width: 4px; }
+        .rp-tab-content::-webkit-scrollbar-track { background: transparent; }
+        .rp-tab-content::-webkit-scrollbar-thumb { background: #1e3358; border-radius: 2px; }
+
+        .rp-section { padding: 14px 14px 14px; border-bottom: 1px solid #111f35; }
+        .rp-section:last-child { border-bottom: none; }
+        .rp-section-title {
+            font-size: 10px; font-weight: 700; color: #6b7280;
+            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px;
+        }
+
+        .rp-cost-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+        .rp-cost-stat { background: rgba(255,255,255,0.03); border: 1px solid #1e3358; border-radius: 8px; padding: 9px 11px; }
+        .rp-cost-stat-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+        .rp-cost-stat-value { font-size: 16px; font-weight: 700; color: #e8eef7; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+        .rp-cost-stat-value.accent { color: #4fc3f7; }
+
+        .rp-project-card { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 8px; border: 1px solid #1e3358; background: rgba(255,255,255,0.02); cursor: pointer; transition: border-color 0.15s; text-decoration: none; }
+        .rp-project-card:hover { border-color: rgba(79,195,247,0.3); }
+        .rp-project-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+        .rp-project-info { flex: 1; min-width: 0; }
+        .rp-project-name { font-size: 12px; font-weight: 600; color: #e8eef7; }
+        .rp-project-path { font-size: 10px; color: #6b7280; font-family: monospace; margin-top: 1px; }
+        .rp-project-link { width: 14px; height: 14px; color: #4b5563; flex-shrink: 0; }
+
+        .rp-agent-card { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 8px; border: 1px solid #1e3358; background: rgba(255,255,255,0.02); }
+        .rp-agent-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+        .rp-agent-info { flex: 1; min-width: 0; }
+        .rp-agent-name { font-size: 12px; font-weight: 600; color: #e8eef7; }
+        .rp-agent-model { font-size: 10px; color: #6b7280; margin-top: 1px; }
+        .rp-agent-change { font-size: 11px; color: #4fc3f7; cursor: pointer; }
+
+        .rp-router-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px; background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25); font-size: 10px; font-weight: 600; color: #c4b5fd; margin-bottom: 10px; }
+        .rp-router-badge svg { width: 11px; height: 11px; }
+        .rp-router-breakdown { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+        .rp-router-tier { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+        .rp-router-tier-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .rp-router-tier-name { flex: 1; color: #9ca3af; }
+        .rp-router-tier-bar { flex: 1; max-width: 60px; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .rp-router-tier-fill { height: 100%; border-radius: 2px; }
+        .rp-router-tier-pct { color: #6b7280; width: 28px; text-align: right; font-variant-numeric: tabular-nums; }
+        .rp-router-tier-cost { color: #e8eef7; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 36px; text-align: right; }
+
+        .rp-savings-callout { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.2); margin-top: 8px; }
+        .rp-savings-callout-icon { color: #34d399; flex-shrink: 0; }
+        .rp-savings-callout-icon svg { width: 13px; height: 13px; }
+        .rp-savings-headline { font-size: 12px; font-weight: 700; color: #34d399; }
+        .rp-savings-sub { font-size: 10px; color: #6b7280; margin-top: 1px; }
+
+        .rp-network-policy { padding: 10px; border-radius: 8px; border: 1px solid #1e3358; background: rgba(255,255,255,0.02); }
+        .rp-network-policy-header { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+        .rp-network-policy-header svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .rp-network-policy-label { font-size: 12px; font-weight: 600; color: #f87171; flex: 1; }
+        .rp-network-policy-mode { font-size: 10px; color: #6b7280; padding: 2px 6px; background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .rp-network-hosts { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+        .rp-network-host { display: flex; align-items: center; gap: 7px; padding: 5px 0; }
+        .rp-network-host-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .rp-network-host-dot.allowed { background: #34d399; }
+        .rp-network-host-dot.blocked { background: #f87171; }
+        .rp-network-host-name { flex: 1; font-size: 11px; color: #9ca3af; font-family: monospace; }
+        .rp-network-host-status { font-size: 10px; font-weight: 600; }
+        .rp-network-host-status.allowed { color: #34d399; }
+        .rp-network-host-status.blocked { color: #f87171; }
+        .rp-network-configure-link { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #4fc3f7; text-decoration: none; }
+        .rp-network-configure-link svg { width: 12px; height: 12px; }
+        .rp-network-configure-link:hover { text-decoration: underline; }
+
+        .rp-file-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #0e1e30; }
+        .rp-file-item:last-of-type { border-bottom: none; }
+        .rp-file-item svg { width: 13px; height: 13px; color: #4b5563; flex-shrink: 0; }
+        .rp-file-name { flex: 1; font-size: 11px; color: #9ca3af; font-family: monospace; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .rp-file-badge { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+        .rp-file-badge.modified { background: rgba(251,191,36,0.12); color: #fbbf24; }
+        .rp-file-badge.added { background: rgba(52,211,153,0.12); color: #34d399; }
+
+        .rp-git-branch { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #9ca3af; font-family: monospace; margin-bottom: 8px; }
+        .rp-git-branch svg { width: 13px; height: 13px; color: #4b5563; }
+        .rp-git-commit { display: flex; gap: 8px; padding: 5px 0; border-bottom: 1px solid #0e1e30; font-size: 11px; color: #6b7280; }
+        .rp-git-commit:last-child { border-bottom: none; }
+        .rp-git-hash { color: #4fc3f7; font-family: monospace; }
+
+        .rp-asset-category { margin-bottom: 12px; }
+        .rp-asset-category-header { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+        .rp-asset-category-icon { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .rp-asset-category-icon.mcp { background: rgba(103,232,249,0.1); }
+        .rp-asset-category-icon.mcp svg { color: #67e8f9; width: 11px; height: 11px; }
+        .rp-asset-category-icon.skill { background: rgba(110,231,183,0.1); }
+        .rp-asset-category-icon.skill svg { color: #6ee7b7; width: 11px; height: 11px; }
+        .rp-asset-category-icon.knowledge { background: rgba(147,197,253,0.1); }
+        .rp-asset-category-icon.knowledge svg { color: #93c5fd; width: 11px; height: 11px; }
+        .rp-asset-category-label { flex: 1; font-size: 12px; font-weight: 600; color: #9ca3af; }
+        .rp-asset-category-count { font-size: 10px; color: #4b5563; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 10px; }
+        .rp-asset-list { display: flex; flex-direction: column; gap: 2px; }
+        .rp-asset-item { display: flex; align-items: center; gap: 7px; padding: 5px 8px; border-radius: 6px; background: rgba(255,255,255,0.02); }
+        .rp-asset-item svg { width: 12px; height: 12px; flex-shrink: 0; }
+        .rp-asset-item-name { flex: 1; font-size: 11px; color: #9ca3af; }
+        .rp-asset-item-badge { font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 3px; }
+        .rp-asset-item-badge.active { background: rgba(52,211,153,0.1); color: #34d399; }
+        .rp-assets-footer { padding-top: 8px; }
+        .rp-add-asset { display: flex; align-items: center; gap: 5px; padding: 5px 10px; background: rgba(255,255,255,0.04); border: 1px solid #1e3358; border-radius: 6px; color: #6b7280; font-size: 11px; cursor: pointer; transition: all 0.15s; }
+        .rp-add-asset:hover { background: rgba(255,255,255,0.07); color: #9ca3af; }
+
+        /* Sandbox sub-tabs */
+        .sbm-subtabs { display: flex; border-bottom: 1px solid #111f35; padding: 0 14px; }
+        .sbm-subtab { padding: 7px 8px; background: none; border: none; border-bottom: 2px solid transparent; color: #6b7280; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: -1px; transition: all 0.15s; }
+        .sbm-subtab svg { width: 11px; height: 11px; }
+        .sbm-subtab:hover { color: #9ca3af; }
+        .sbm-subtab.active { color: #4fc3f7; border-bottom-color: #4fc3f7; font-weight: 600; }
+        .sbm-subtab-count { font-size: 9px; background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 8px; }
+        .sbm-body { flex: 1; overflow-y: auto; }
+        .sbm-pane { display: none; }
+        .sbm-pane.active { display: block; }
+        .sbm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #1e3358; border-bottom: 1px solid #1e3358; }
+        .sbm-stat { background: #080f1a; padding: 8px; text-align: center; }
+        .sbm-stat-val { font-size: 16px; font-weight: 700; color: #9ca3af; font-variant-numeric: tabular-nums; }
+        .sbm-stat-val.green { color: #34d399; }
+        .sbm-stat-val.yellow { color: #fbbf24; }
+        .sbm-stat-val.red { color: #f87171; }
+        .sbm-stat-lbl { font-size: 9px; color: #4b5563; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+        .sbm-section-hdr { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #0e1e30; }
+        .sbm-section-title { font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; }
+        .sbm-section-count { font-size: 10px; color: #4b5563; }
+        .sbm-log { display: flex; flex-direction: column; }
+        .sbm-log-entry { display: flex; align-items: center; gap: 6px; padding: 5px 12px; font-size: 10px; border-bottom: 1px solid #0a1628; }
+        .sbm-log-entry.warned { background: rgba(251,191,36,0.04); }
+        .sbm-log-entry.blocked { background: rgba(248,113,113,0.04); }
+        .sbm-badge { padding: 1px 5px; border-radius: 3px; font-size: 8px; font-weight: 700; flex-shrink: 0; }
+        .sbm-badge.read  { background: rgba(79,195,247,0.15); color: #4fc3f7; }
+        .sbm-badge.write { background: rgba(52,211,153,0.15); color: #34d399; }
+        .sbm-badge.exec  { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        .sbm-badge.delete { background: rgba(248,113,113,0.15); color: #f87171; }
+        .sbm-log-detail { flex: 1; color: #9ca3af; font-family: monospace; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sbm-log-status { font-size: 9px; font-weight: 700; flex-shrink: 0; }
+        .sbm-log-status.ok   { color: #34d399; }
+        .sbm-log-status.warn { color: #fbbf24; }
+        .sbm-log-status.err  { color: #f87171; }
+        .sbm-log-time { font-size: 9px; color: #4b5563; flex-shrink: 0; }
+        .sbm-conns { display: flex; flex-direction: column; }
+        .sbm-conn { display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-bottom: 1px solid #0a1628; }
+        .sbm-conn-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .sbm-conn-dot.active { background: #34d399; animation: w2pulse 2s infinite; }
+        .sbm-conn-dot.idle { background: #4b5563; }
+        .sbm-conn-text { flex: 1; }
+        .sbm-conn-host { font-size: 11px; color: #9ca3af; font-family: monospace; }
+        .sbm-conn-proto { font-size: 9px; color: #4b5563; margin-top: 1px; }
+
+        /* ══════════════════════════════════════════
+           CENTER PANEL — agent conversation
+        ══════════════════════════════════════════ */
+        .w2-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #060d18;
+            min-width: 0;
+        }
+
+        @keyframes taskPulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+        .task-conv-header { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; background:#080f1a; border-bottom:1px solid #1e3358; min-height:56px; flex-shrink:0; }
+        .task-conv-header-left { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+        .task-conv-title { font-size:15px; font-weight:600; color:#e8eef7; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .task-conv-status { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:500; flex-shrink:0; background:rgba(239,68,68,0.1); color:#f87171; border:1px solid rgba(239,68,68,0.25); }
+        .task-conv-header-actions { display:flex; align-items:center; gap:6px; }
+        .task-conv-action-btn { width:34px; height:34px; border-radius:8px; background:rgba(255,255,255,0.05); border:none; color:#7090b8; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .task-conv-action-btn:hover { background:rgba(79,195,247,0.15); color:#e8eef7; }
+
+        .task-messages { flex:1; overflow-y:auto; padding:20px 24px; }
+        .task-messages::-webkit-scrollbar { width:6px; }
+        .task-messages::-webkit-scrollbar-track { background:transparent; }
+        .task-messages::-webkit-scrollbar-thumb { background:rgba(79,195,247,0.15); border-radius:3px; }
+
+        .flow-prompt { padding:14px 16px; background:rgba(79,195,247,0.08); border:1px solid rgba(79,195,247,0.18); border-radius:10px; margin-bottom:20px; font-size:14px; line-height:1.6; color:#e8eef7; }
+        .flow-prompt-label { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:#4fc3f7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+        .flow-prompt-label svg { width:12px; height:12px; }
+
+        .flow-plan { padding:14px 16px; background:rgba(255,255,255,0.02); border:1px solid #1e3358; border-radius:10px; margin-bottom:20px; }
+        .flow-plan-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+        .flow-plan-title { font-size:13px; font-weight:600; color:#e8eef7; }
+        .flow-plan-progress { display:flex; align-items:center; gap:8px; }
+        .flow-plan-bar { width:80px; height:4px; background:#1e3358; border-radius:2px; overflow:hidden; }
+        .flow-plan-bar-fill { height:100%; background:linear-gradient(90deg,#34d399,#10b981); border-radius:2px; }
+        .flow-plan-count { font-size:11px; color:#6b7280; font-weight:500; }
+        .flow-plan-steps { display:flex; flex-direction:column; gap:2px; }
+        .flow-plan-step { display:flex; align-items:center; gap:10px; padding:7px 8px; border-radius:6px; }
+        .flow-plan-icon { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .flow-plan-icon svg { width:11px; height:11px; }
+        .flow-plan-icon.done { background:rgba(52,211,153,0.15); color:#34d399; }
+        .flow-plan-icon.queued { background:rgba(255,255,255,0.04); border:1.5px solid #1e3358; }
+        .flow-plan-icon.blocked { background:rgba(239,68,68,0.15); color:#f87171; }
+        .flow-plan-step-text { font-size:13px; color:#d1d5db; flex:1; }
+        .flow-plan-step.is-done .flow-plan-step-text { color:#6b7280; text-decoration:line-through; }
+        .flow-plan-step.is-blocked .flow-plan-step-text { color:#fca5a5; font-weight:500; }
+        .flow-plan-step-badge { font-size:10px; font-weight:600; padding:2px 7px; border-radius:4px; text-transform:uppercase; letter-spacing:0.03em; flex-shrink:0; }
+        .flow-plan-step-badge.done { background:rgba(52,211,153,0.1); color:#34d399; }
+        .flow-plan-step-badge.queued { background:rgba(255,255,255,0.04); color:#4b5563; }
+        .flow-plan-step-badge.blocked { background:rgba(239,68,68,0.12); color:#f87171; }
+
+        .flow-step { position:relative; padding-left:24px; padding-bottom:20px; }
+        .flow-step::before { content:''; position:absolute; left:7px; top:6px; bottom:0; width:1px; background:#1e3358; }
+        .flow-step:last-child::before { display:none; }
+        .flow-step-dot { position:absolute; left:2px; top:5px; width:11px; height:11px; border-radius:50%; background:#1e3358; border:2px solid #060d18; }
+        .flow-step-dot.done { background:#34d399; }
+        .flow-step-dot.active { background:#fbbf24; box-shadow:0 0 6px rgba(251,191,36,0.4); animation:taskPulse 2s infinite; }
+        .flow-summary { font-size:13px; line-height:1.6; color:#d1d5db; margin-bottom:8px; }
+        .flow-summary code { background:rgba(255,255,255,0.06); padding:1px 5px; border-radius:3px; font-size:12px; }
+
+        .flow-tool { display:flex; align-items:center; gap:7px; padding:6px 10px; background:rgba(255,255,255,0.03); border:1px solid #1e3358; border-radius:7px; font-size:12px; color:#67e8f9; font-weight:500; cursor:pointer; margin-bottom:6px; }
+        .flow-tool svg { width:13px; height:13px; flex-shrink:0; }
+        .flow-tool-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .flow-tool-status { font-size:10px; font-weight:600; padding:1px 6px; border-radius:3px; text-transform:uppercase; }
+        .flow-tool-status.done { background:rgba(52,211,153,0.12); color:#34d399; }
+        .flow-tool-status.blocked-status { background:rgba(239,68,68,0.12); color:#f87171; }
+        .flow-tool-body { background:#060d18; border:1px solid #111f35; border-radius:0 0 6px 6px; padding:8px 12px; font-size:11px; font-family:monospace; color:#6b7280; white-space:pre; overflow-x:auto; margin-top:-7px; margin-bottom:6px; display:none; }
+        .flow-tool-body.open { display:block; }
+
+        .flow-diff { border-radius:8px; overflow:hidden; border:1px solid #1e3358; font-family:monospace; font-size:11px; margin-bottom:8px; }
+        .flow-diff-header { display:flex; align-items:center; gap:7px; padding:7px 10px; background:rgba(79,195,247,0.06); color:#a8e6fc; font-weight:500; font-size:12px; cursor:pointer; }
+        .flow-diff-header svg { width:13px; height:13px; }
+        .flow-diff-stats { margin-left:auto; display:flex; gap:6px; font-size:10px; font-weight:600; }
+        .diff-adds { color:#34d399; }
+        .diff-dels { color:#f87171; }
+        .flow-diff-body { max-height:200px; overflow-y:auto; }
+        .flow-diff-line { padding:1px 12px; line-height:1.6; }
+        .flow-diff-line.add { background:rgba(52,211,153,0.08); color:#6ee7b7; }
+        .flow-diff-line.remove { background:rgba(248,113,113,0.08); color:#fca5a5; }
+        .flow-diff-line.ctx { color:#4b5563; }
+
+        .flow-followup { padding:10px 14px; background:rgba(79,195,247,0.05); border:1px solid rgba(79,195,247,0.12); border-radius:8px; font-size:13px; color:#a8e6fc; margin-bottom:16px; }
+        .flow-followup-label { font-size:10px; font-weight:700; color:#4fc3f7; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+
+        .flow-network-block { margin:4px 0 20px; border:1px solid rgba(239,68,68,0.25); border-radius:10px; background:rgba(239,68,68,0.04); overflow:hidden; }
+        .flow-network-block-header { display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(239,68,68,0.06); border-bottom:1px solid rgba(239,68,68,0.12); }
+        .flow-network-block-icon { width:32px; height:32px; border-radius:8px; background:rgba(239,68,68,0.12); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .flow-network-block-icon svg { width:16px; height:16px; stroke:#f87171; }
+        .flow-network-block-title { display:flex; flex-direction:column; gap:2px; flex:1; }
+        .flow-network-block-label { font-size:13px; font-weight:600; color:#fca5a5; }
+        .flow-network-block-time { font-size:11px; color:#6b7280; }
+        .flow-network-block-body { padding:14px 16px; }
+        .flow-network-block-message { font-size:13px; color:#d1d5db; line-height:1.6; margin-bottom:14px; }
+        .flow-network-block-message strong { color:#fca5a5; }
+        .flow-network-block-details { background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; flex-direction:column; gap:8px; }
+        .flow-network-detail-row { display:flex; align-items:baseline; gap:10px; font-size:12px; }
+        .flow-network-detail-key { color:#6b7280; font-weight:500; min-width:72px; flex-shrink:0; }
+        .flow-network-detail-value { color:#d1d5db; font-size:11.5px; word-break:break-all; }
+        .flow-network-detail-value code { background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px; font-size:11px; }
+        .flow-network-policy-badge { display:inline-flex; align-items:center; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; }
+        .flow-network-policy-badge.deny { background:rgba(239,68,68,0.15); color:#f87171; }
+        .flow-network-block-actions { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+        .flow-network-action-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:500; cursor:pointer; border:none; transition:all 0.15s; }
+        .flow-network-action-btn svg { width:13px; height:13px; flex-shrink:0; }
+        .flow-network-action-btn.primary { background:rgba(52,211,153,0.15); color:#6ee7b7; border:1px solid rgba(52,211,153,0.25); }
+        .flow-network-action-btn.primary:hover { background:rgba(52,211,153,0.25); }
+        .flow-network-action-btn.secondary { background:rgba(251,191,36,0.1); color:#fbbf24; border:1px solid rgba(251,191,36,0.2); }
+        .flow-network-action-btn.tertiary { background:rgba(255,255,255,0.04); color:#7090b8; border:1px solid rgba(255,255,255,0.08); }
+        .flow-network-block-reply { display:flex; gap:8px; margin-top:8px; }
+        .flow-network-reply-input { flex:1; background:rgba(255,255,255,0.04); border:1px solid #1e3358; border-radius:7px; padding:8px 12px; color:#d1d5db; font-size:12px; font-family:inherit; outline:none; }
+        .flow-network-reply-input::placeholder { color:#4b5563; }
+        .flow-network-reply-send { width:34px; height:34px; border-radius:7px; background:rgba(79,195,247,0.15); border:1px solid rgba(79,195,247,0.25); color:#4fc3f7; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+        .flow-network-reply-send svg { width:13px; height:13px; }
+
+        .task-input-area { padding:16px 24px 20px; border-top:1px solid #1e3358; background:linear-gradient(0deg,#080f1a 0%,#0a1323 100%); flex-shrink:0; }
+        .task-input-wrapper { display:flex; align-items:flex-end; gap:10px; background:linear-gradient(145deg,#111e33 0%,#080f1a 100%); border:1px solid #1e3358; border-radius:14px; padding:10px 14px; transition:border-color 0.2s; }
+        .task-input-wrapper:focus-within { border-color:rgba(79,195,247,0.5); }
+        .task-input-field { flex:1; background:none; border:none; outline:none; color:#e8eef7; font-size:14px; line-height:1.5; resize:none; min-height:22px; max-height:120px; font-family:inherit; }
+        .task-input-field::placeholder { color:#4b5563; }
+        .task-input-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .task-input-btn { width:32px; height:32px; border-radius:8px; background:none; border:none; color:#6b7280; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .task-input-btn:hover { background:rgba(79,195,247,0.15); color:#a8e6fc; }
+        .task-input-btn.send { background:var(--kd-accent,#4fc3f7); color:#fff; }
+        .task-input-btn.send:hover { box-shadow:0 2px 12px rgba(79,195,247,0.4); }
+        .task-input-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; padding:0 4px; }
+        .task-input-hint { font-size:11px; color:#4b5563; }
+        .task-input-hint kbd { padding:1px 5px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:3px; font-family:inherit; font-size:10px; }
+        .task-model-selector { display:flex; align-items:center; gap:6px; padding:4px 10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; color:#7090b8; font-size:12px; cursor:pointer; transition:all 0.15s; }
+        .task-model-selector:hover { border-color:rgba(79,195,247,0.3); color:#a8e6fc; }
+        .task-model-selector svg { width:12px; height:12px; }
+
+        /* Empty right panel state */
+        .rp-empty {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 10px; padding: 40px;
+        }
+        .rp-empty svg { width: 36px; height: 36px; color: #1e3358; }
+        .rp-empty-label { font-size: 13px; color: #4b5563; text-align: center; }
+    </style>
+</head>
+<body class="work-page" data-nav-root="..">
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <div class="w2-layout">
+
+            <!-- ════════════════════════════════
+                 LEFT PANEL — Status-grouped list
+            ════════════════════════════════════ -->
+            <div class="w2-left" id="w2Left">
+                <div class="w2-resize-handle"></div>
+
+                <div class="w2-left-header">
+                    <div class="w2-left-header-row">
+                        <div class="w2-left-title">Work</div>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <a href="index.html" title="Switch to workspace view" style="padding:4px 9px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid #1e3358;display:inline-flex;align-items:center;gap:4px;color:#4b5563;text-decoration:none;font-size:11px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor='#4fc3f7';this.style.color='#4fc3f7'" onmouseout="this.style.borderColor='#1e3358';this.style.color='#4b5563'">
+                                Option 1
+                            </a>
+                            <a href="../sessions/create.html" class="w2-new-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                New
+                            </a>
+                        </div>
+                    </div>
+                    <div class="w2-tabs">
+                        <button class="w2-tab-btn active" onclick="setTab('active',this)">Active</button>
+                        <button class="w2-tab-btn" onclick="setTab('completed',this)">Completed</button>
+                        <button class="w2-tab-btn" onclick="setTab('all',this)">All</button>
+                    </div>
+                </div>
+
+                <div class="w2-project-filter">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    <span>All Projects</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+
+                <div class="w2-list">
+
+                    <!-- NEEDS YOUR INPUT -->
+                    <div class="w2-group" id="grpNeedsInput">
+                        <div class="w2-group-header">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <span class="w2-group-label needs-input">Needs your input</span>
+                            <span class="w2-group-count needs-input">2</span>
+                        </div>
+
+                        <div class="w2-card border-red active" onclick="selectCard(this, 'refactor-auth')">
+                            <div class="w2-card-title">Refactor auth module to JWT</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot blocked"></span>
+                                <span class="w2-status-text blocked">Blocked — network</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Doc updater
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    feat/jwt-auth
+                                </div>
+                            </div>
+                            <div class="w2-action-badge" onclick="event.stopPropagation()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Action
+                            </div>
+                        </div>
+
+                        <div class="w2-card border-blue" onclick="selectCard(this, 'fix-memory-leak')">
+                            <div class="w2-card-title">Fix memory leak in WebSocket handler</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot waiting"></span>
+                                <span class="w2-status-text waiting">Waiting for input</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    API Gateway
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    fix/ws-memory-leak
+                                </div>
+                            </div>
+                            <div class="w2-action-badge" onclick="event.stopPropagation()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Action
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RUNNING -->
+                    <div class="w2-group" id="grpRunning">
+                        <div class="w2-group-header">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#34d399"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            <span class="w2-group-label running">Running</span>
+                            <span class="w2-group-count running">1</span>
+                        </div>
+
+                        <div class="w2-card border-green" onclick="selectCard(this, 'dark-mode')">
+                            <div class="w2-card-title">Add dark mode toggle to settings page</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot running"></span>
+                                <span class="w2-status-text running">Running</span>
+                                <span class="w2-card-time">34m</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Frontend App
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    feat/dark-mode
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAUSED -->
+                    <div class="w2-group" id="grpPaused">
+                        <div class="w2-group-header">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#fbbf24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                            <span class="w2-group-label paused">Paused</span>
+                            <span class="w2-group-count paused">1</span>
+                        </div>
+
+                        <div class="w2-card border-yellow" onclick="selectCard(this, 'openapi-docs')">
+                            <div class="w2-card-title">Generate OpenAPI docs for REST endpoints</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot paused"></span>
+                                <span class="w2-status-text paused">Paused</span>
+                                <span class="w2-card-time">3h</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Doc updater
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    docs/openapi-spec
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COMPLETED TODAY -->
+                    <div class="w2-group" id="grpCompleted" style="display:none;">
+                        <div class="w2-group-header">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="w2-group-label completed">Completed today</span>
+                            <span class="w2-group-count completed">2</span>
+                        </div>
+
+                        <div class="w2-card border-gray" onclick="selectCard(this, 'update-deps')" style="opacity:0.6;">
+                            <div class="w2-card-title dimmed">Update npm dependencies and fix breaking changes</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot completed"></span>
+                                <span class="w2-status-text completed">Completed</span>
+                                <span class="w2-card-time">2h ago</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Frontend App
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    chore/update-deps
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w2-card border-gray" onclick="selectCard(this, 'dockerfile')" style="opacity:0.6;">
+                            <div class="w2-card-title dimmed">Create multi-stage Dockerfile for production</div>
+                            <div class="w2-card-status">
+                                <span class="w2-status-dot completed"></span>
+                                <span class="w2-status-text completed">Completed</span>
+                                <span class="w2-card-time">5h ago</span>
+                            </div>
+                            <div class="w2-card-footer">
+                                <div class="w2-card-project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                    Doc updater
+                                </div>
+                                <div class="w2-card-branch">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    infra/docker-prod
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /w2-list -->
+
+                <div class="w2-bottom-bar" onclick="window.location.href='index.html'">
+                    <div class="w2-bottom-bar-left">
+                        <div class="w2-live-dot"></div>
+                        Live Monitoring
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════
+                 CENTER PANEL — Conversation
+            ════════════════════════════════════ -->
+            <div class="w2-center">
+                <!-- Header -->
+                <div class="task-conv-header">
+                    <div class="task-conv-header-left">
+                        <span class="task-conv-title">Refactor authentication module to use JWT tokens</span>
+                        <div class="task-conv-status">
+                            <div class="w2-status-dot blocked"></div>
+                            Needs input — network blocked
+                        </div>
+                    </div>
+                    <div class="task-conv-header-actions">
+                        <button class="task-conv-action-btn" title="Pause">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        </button>
+                        <button class="task-conv-action-btn" title="Stop">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        </button>
+                        <button class="task-conv-action-btn" title="Toggle details">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="task-messages">
+
+                    <!-- User prompt -->
+                    <div class="flow-prompt">
+                        <div class="flow-prompt-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Your prompt
+                        </div>
+                        Refactor the authentication module to use JWT tokens instead of session-based auth. Update the middleware and all related handlers.
+                    </div>
+
+                    <!-- Plan -->
+                    <div class="flow-plan">
+                        <div class="flow-plan-header">
+                            <div class="flow-plan-title">Plan</div>
+                            <div class="flow-plan-progress">
+                                <div class="flow-plan-bar"><div class="flow-plan-bar-fill" style="width:60%"></div></div>
+                                <span class="flow-plan-count">3 / 5</span>
+                            </div>
+                        </div>
+                        <div class="flow-plan-steps">
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="flow-plan-step-text">Analyze existing auth handler and middleware</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="flow-plan-step-text">Refactor auth handler to use JWT signing</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-done">
+                                <div class="flow-plan-icon done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                                <span class="flow-plan-step-text">Update middleware for Bearer token verification</span>
+                                <span class="flow-plan-step-badge done">done</span>
+                            </div>
+                            <div class="flow-plan-step is-blocked">
+                                <div class="flow-plan-icon blocked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+                                <span class="flow-plan-step-text">Add refresh token endpoint with rotation</span>
+                                <span class="flow-plan-step-badge blocked">blocked</span>
+                            </div>
+                            <div class="flow-plan-step is-queued">
+                                <div class="flow-plan-icon queued"></div>
+                                <span class="flow-plan-step-text">Update route handlers and add tests</span>
+                                <span class="flow-plan-step-badge queued">queued</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Analyzed the existing authentication setup to understand the current session-based implementation.</div>
+                        <div class="flow-tool" onclick="this.nextElementSibling.classList.toggle('open')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="flow-tool-name">Read src/auth/handler.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                        <div class="flow-tool-body">export class AuthHandler {
+  private sessionStore: SessionStore;
+
+  async login(req: Request): Promise&lt;Response&gt; {
+    const session = await this.sessionStore.create(req.body);
+    return res.cookie('sid', session.id);
+  }
+}</div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span class="flow-tool-name">Read src/middleware/auth.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Replaced session-based login with JWT token signing. Added <code>jwtSecret</code> and <code>tokenExpiry</code> configuration.</div>
+                        <div class="flow-diff">
+                            <div class="flow-diff-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                                src/auth/handler.ts
+                                <div class="flow-diff-stats"><span class="diff-adds">+6</span><span class="diff-dels">-3</span></div>
+                            </div>
+                            <div class="flow-diff-body">
+                                <div class="flow-diff-line remove">- private sessionStore: SessionStore;</div>
+                                <div class="flow-diff-line add">+ private jwtSecret: string;</div>
+                                <div class="flow-diff-line add">+ private tokenExpiry: string = '24h';</div>
+                                <div class="flow-diff-line ctx"> </div>
+                                <div class="flow-diff-line remove">-   const session = await this.sessionStore.create(req.body);</div>
+                                <div class="flow-diff-line remove">-   return res.cookie('sid', session.id);</div>
+                                <div class="flow-diff-line add">+   const user = await this.validateCredentials(req.body);</div>
+                                <div class="flow-diff-line add">+   const token = jwt.sign({ sub: user.id }, this.jwtSecret, {</div>
+                                <div class="flow-diff-line add">+     expiresIn: this.tokenExpiry</div>
+                                <div class="flow-diff-line add">+   });</div>
+                                <div class="flow-diff-line add">+   return res.json({ token });</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot done"></div>
+                        <div class="flow-summary">Updated the auth middleware to verify JWT tokens from the <code>Authorization: Bearer</code> header instead of reading session cookies.</div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="flow-tool-name">Edited src/middleware/auth.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                    </div>
+
+                    <!-- Follow-up -->
+                    <div class="flow-followup">
+                        <div class="flow-followup-label">Follow-up</div>
+                        Good, but also add refresh token support with a separate endpoint.
+                    </div>
+
+                    <!-- Step 4 — active / blocked -->
+                    <div class="flow-step">
+                        <div class="flow-step-dot active"></div>
+                        <div class="flow-summary">Adding refresh token support with a dedicated <code>/auth/refresh</code> endpoint. To validate tokens securely, I need to fetch the JWKS public keys from the identity provider...</div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span class="flow-tool-name">Created src/auth/refresh.ts</span>
+                            <span class="flow-tool-status done">done</span>
+                        </div>
+                        <div class="flow-tool">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <span class="flow-tool-name">GET https://auth.example.com/.well-known/jwks.json</span>
+                            <span class="flow-tool-status blocked-status">blocked</span>
+                        </div>
+                    </div>
+
+                    <!-- Network block event -->
+                    <div class="flow-network-block">
+                        <div class="flow-network-block-header">
+                            <div class="flow-network-block-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                            </div>
+                            <div class="flow-network-block-title">
+                                <span class="flow-network-block-label">Network request blocked</span>
+                                <span class="flow-network-block-time">just now</span>
+                            </div>
+                        </div>
+                        <div class="flow-network-block-body">
+                            <div class="flow-network-block-message">
+                                The agent attempted to reach <strong>auth.example.com</strong> but the request was denied by the workspace network policy.
+                            </div>
+                            <div class="flow-network-block-details">
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Request</span>
+                                    <span class="flow-network-detail-value"><code>GET https://auth.example.com/.well-known/jwks.json</code></span>
+                                </div>
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Purpose</span>
+                                    <span class="flow-network-detail-value">Fetch JWKS public keys for JWT token verification</span>
+                                </div>
+                                <div class="flow-network-detail-row">
+                                    <span class="flow-network-detail-key">Policy</span>
+                                    <span class="flow-network-detail-value"><span class="flow-network-policy-badge deny">Deny mode</span> — host not in allowed list</span>
+                                </div>
+                            </div>
+                            <div class="flow-network-block-actions">
+                                <button class="flow-network-action-btn primary">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Allow auth.example.com
+                                </button>
+                                <button class="flow-network-action-btn secondary">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Allow for this session only
+                                </button>
+                                <button class="flow-network-action-btn tertiary" onclick="window.location.href='../projects/details.html#network'">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                    Open Network Settings
+                                </button>
+                            </div>
+                            <div class="flow-network-block-reply">
+                                <input type="text" class="flow-network-reply-input" placeholder="Or type a response (e.g., use a local key instead)...">
+                                <button class="flow-network-reply-send">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /task-messages -->
+
+                <!-- Input area -->
+                <div class="task-input-area">
+                    <div class="task-input-wrapper">
+                        <button class="task-input-btn" title="Attach context">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <textarea class="task-input-field" placeholder="Type a follow-up or @ to attach context..." rows="1"></textarea>
+                        <div class="task-input-actions">
+                            <button class="task-input-btn voice" title="Voice input">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                            </button>
+                            <button class="task-input-btn send" title="Send">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="task-input-bottom">
+                        <span class="task-input-hint">Type <kbd>@</kbd> to attach context &middot; <kbd>Enter</kbd> to send</span>
+                        <div class="task-model-selector">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Claude Sonnet 4.6
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /w2-center -->
+
+            <!-- ════════════════════════════════
+                 RIGHT PANEL — Agent Details
+            ════════════════════════════════════ -->
+            <div class="tasks-right-panel" id="rightPanel">
+                <div class="right-panel-header">
+                    <span class="right-panel-title">Agent Details</span>
+                </div>
+                <div class="right-panel-tabs">
+                    <button class="rp-tab active" onclick="switchRpTab('overview',this)">Overview</button>
+                    <button class="rp-tab" onclick="switchRpTab('changes',this)">Changes</button>
+                    <button class="rp-tab" onclick="switchRpTab('context',this)">Context</button>
+                    <button class="rp-tab" onclick="switchRpTab('sandbox',this)">Sandbox</button>
+                </div>
+
+                <!-- Overview -->
+                <div class="rp-tab-content active" id="rpTabOverview">
+                    <div class="rp-section">
+                        <div class="rp-section-title">Session</div>
+                        <div class="rp-cost-stats">
+                            <div class="rp-cost-stat"><div class="rp-cost-stat-label">Requests</div><div class="rp-cost-stat-value">34</div></div>
+                            <div class="rp-cost-stat"><div class="rp-cost-stat-label">Input tokens</div><div class="rp-cost-stat-value">485K</div></div>
+                            <div class="rp-cost-stat"><div class="rp-cost-stat-label">Output tokens</div><div class="rp-cost-stat-value">118K</div></div>
+                            <div class="rp-cost-stat"><div class="rp-cost-stat-label">Duration</div><div class="rp-cost-stat-value">34m</div></div>
+                        </div>
+                    </div>
+                    <div class="rp-section">
+                        <div class="rp-section-title">Project</div>
+                        <a href="../projects/details.html?project=doc-updater" class="rp-project-card">
+                            <div class="rp-project-icon" style="background:linear-gradient(135deg,#4fc3f7,#2a8bbf)">KB</div>
+                            <div class="rp-project-info">
+                                <div class="rp-project-name">Doc updater</div>
+                                <div class="rp-project-path">~/dev/doc-updater</div>
+                            </div>
+                            <svg class="rp-project-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </div>
+                    <div class="rp-section">
+                        <div class="rp-section-title">Agent</div>
+                        <div class="rp-agent-card">
+                            <div class="rp-agent-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)">Cl</div>
+                            <div class="rp-agent-info">
+                                <div class="rp-agent-name">Claude</div>
+                                <div class="rp-agent-model">Claude Sonnet 4.6</div>
+                            </div>
+                            <span class="rp-agent-change">Change</span>
+                        </div>
+                    </div>
+                    <div class="rp-section">
+                        <div class="rp-section-title" style="display:flex;align-items:center;justify-content:space-between;">
+                            Cost <span class="rp-cost-stat-value accent" style="font-size:15px;">$3.23</span>
+                        </div>
+                        <div class="rp-router-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h6M15 12h6"/><path d="M12 3v6M12 15v6"/></svg>
+                            Routed via enterprise-router · :8901
+                        </div>
+                        <div class="rp-router-breakdown">
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#34d399"></span>
+                                <span class="rp-router-tier-name">Local · qwen3-code</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:61%;background:#34d399"></span></span>
+                                <span class="rp-router-tier-pct">61%</span>
+                                <span class="rp-router-tier-cost" style="color:#34d399">$0.00</span>
+                            </div>
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#fca5a5"></span>
+                                <span class="rp-router-tier-name">OpenShift AI · granite</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:28%;background:#fca5a5"></span></span>
+                                <span class="rp-router-tier-pct">28%</span>
+                                <span class="rp-router-tier-cost">$2.00</span>
+                            </div>
+                            <div class="rp-router-tier">
+                                <span class="rp-router-tier-dot" style="background:#93c5fd"></span>
+                                <span class="rp-router-tier-name">Vertex AI · claude-sonnet</span>
+                                <span class="rp-router-tier-bar"><span class="rp-router-tier-fill" style="width:11%;background:#93c5fd"></span></span>
+                                <span class="rp-router-tier-pct">11%</span>
+                                <span class="rp-router-tier-cost">$1.23</span>
+                            </div>
+                        </div>
+                        <div class="rp-savings-callout">
+                            <div class="rp-savings-callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+                            <div>
+                                <div class="rp-savings-headline">$9.55 saved · 75% reduction</div>
+                                <div class="rp-savings-sub">vs running all requests on claude-4.6-sonnet directly</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rp-section">
+                        <div class="rp-section-title">Network Policy</div>
+                        <div class="rp-network-policy">
+                            <div class="rp-network-policy-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                <span class="rp-network-policy-label">1 blocked request</span>
+                                <span class="rp-network-policy-mode">deny mode</span>
+                            </div>
+                            <div class="rp-network-hosts">
+                                <div class="rp-network-host"><div class="rp-network-host-dot allowed"></div><span class="rp-network-host-name">api.github.com</span><span class="rp-network-host-status allowed">allowed</span></div>
+                                <div class="rp-network-host"><div class="rp-network-host-dot allowed"></div><span class="rp-network-host-name">api.anthropic.com</span><span class="rp-network-host-status allowed">allowed</span></div>
+                                <div class="rp-network-host"><div class="rp-network-host-dot blocked"></div><span class="rp-network-host-name">auth.example.com</span><span class="rp-network-host-status blocked">blocked</span></div>
+                            </div>
+                            <a href="../projects/details.html#network" class="rp-network-configure-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                Allow this host →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Changes -->
+                <div class="rp-tab-content" id="rpTabChanges">
+                    <div class="rp-section">
+                        <div class="rp-section-title">Files Changed (3)</div>
+                        <div class="rp-file-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="rp-file-name">src/auth/handler.ts</span><span class="rp-file-badge modified">M</span></div>
+                        <div class="rp-file-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="rp-file-name">src/middleware/auth.ts</span><span class="rp-file-badge modified">M</span></div>
+                        <div class="rp-file-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="rp-file-name">src/auth/refresh.ts</span><span class="rp-file-badge added">A</span></div>
+                    </div>
+                    <div class="rp-section">
+                        <div class="rp-section-title">Git Context</div>
+                        <div class="rp-git-branch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>feat/jwt-auth</div>
+                        <div class="rp-git-commit"><span class="rp-git-hash">a3f82d1</span><span>Initial JWT setup</span></div>
+                        <div class="rp-git-commit"><span class="rp-git-hash">b7e14c9</span><span>Add token refresh handler</span></div>
+                    </div>
+                </div>
+
+                <!-- Context -->
+                <div class="rp-tab-content" id="rpTabContext">
+                    <div class="rp-section">
+                        <div class="rp-section-title">Assets</div>
+                        <div class="rp-asset-category">
+                            <div class="rp-asset-category-header">
+                                <div class="rp-asset-category-icon mcp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+                                <span class="rp-asset-category-label">MCP Servers</span>
+                                <span class="rp-asset-category-count">2</span>
+                            </div>
+                            <div class="rp-asset-list">
+                                <div class="rp-asset-item"><svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="rp-asset-item-name">GitHub MCP</span><span class="rp-asset-item-badge active">active</span></div>
+                                <div class="rp-asset-item"><svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="rp-asset-item-name">Filesystem MCP</span><span class="rp-asset-item-badge active">active</span></div>
+                            </div>
+                        </div>
+                        <div class="rp-asset-category">
+                            <div class="rp-asset-category-header">
+                                <div class="rp-asset-category-icon skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                                <span class="rp-asset-category-label">Skills</span>
+                                <span class="rp-asset-category-count">2</span>
+                            </div>
+                            <div class="rp-asset-list">
+                                <div class="rp-asset-item"><svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="rp-asset-item-name">code-review</span><span class="rp-asset-item-badge active">active</span></div>
+                                <div class="rp-asset-item"><svg viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="rp-asset-item-name">jwt-auth-patterns</span><span class="rp-asset-item-badge active">active</span></div>
+                            </div>
+                        </div>
+                        <div class="rp-assets-footer">
+                            <button class="rp-add-asset"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add asset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sandbox -->
+                <div class="rp-tab-content" id="rpTabSandbox">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1e3358;background:rgba(255,255,255,0.02)">
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <div style="width:28px;height:28px;border-radius:7px;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.2);display:flex;align-items:center;justify-content:center;color:#4fc3f7;flex-shrink:0">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;font-weight:600;color:#e8eef7">sbx-7f3a9c2e</div>
+                                <div style="font-size:10px;color:#6b7280">Podman · rootless</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#34d399">
+                            <div style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:w2pulse 2s infinite"></div>
+                            Live
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#1e3358;border-bottom:1px solid #1e3358">
+                        <div style="background:#080f1a;padding:8px 12px"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span style="color:#6b7280">CPU</span><span style="color:#e8eef7;font-weight:600">34%</span></div><div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden"><div style="width:34%;height:100%;background:#4fc3f7;border-radius:2px"></div></div></div>
+                        <div style="background:#080f1a;padding:8px 12px"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span style="color:#6b7280">Mem</span><span style="color:#e8eef7;font-weight:600">30%</span></div><div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden"><div style="width:30%;height:100%;background:#a78bfa;border-radius:2px"></div></div></div>
+                        <div style="background:#080f1a;padding:8px 12px"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px"><span style="color:#6b7280">I/O</span><span style="color:#e8eef7;font-weight:600">4.2MB/s</span></div><div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden"><div style="width:18%;height:100%;background:#34d399;border-radius:2px"></div></div></div>
+                    </div>
+                    <div class="sbm-subtabs">
+                        <button class="sbm-subtab active" onclick="switchSbmTab('fs',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Files <span class="sbm-subtab-count">24</span></button>
+                        <button class="sbm-subtab" onclick="switchSbmTab('net',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Network <span class="sbm-subtab-count">18</span></button>
+                        <button class="sbm-subtab" onclick="switchSbmTab('svc',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>Services <span class="sbm-subtab-count">5</span></button>
+                    </div>
+                    <div class="sbm-body">
+                        <div id="sbmFs" class="sbm-pane active">
+                            <div class="sbm-stats">
+                                <div class="sbm-stat"><div class="sbm-stat-val green">18</div><div class="sbm-stat-lbl">Reads</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val green">4</div><div class="sbm-stat-lbl">Writes</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val yellow">1</div><div class="sbm-stat-lbl">Warned</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val red">1</div><div class="sbm-stat-lbl">Blocked</div></div>
+                            </div>
+                            <div class="sbm-section-hdr"><span class="sbm-section-title">Activity Log</span><span class="sbm-section-count">24 events</span></div>
+                            <div class="sbm-log">
+                                <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">src/auth/handler.ts</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:32</span></div>
+                                <div class="sbm-log-entry"><span class="sbm-badge write">WRITE</span><span class="sbm-log-detail">src/auth/handler.ts</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:32</span></div>
+                                <div class="sbm-log-entry"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">src/middleware/auth.ts</span><span class="sbm-log-status ok">OK</span><span class="sbm-log-time">14:31</span></div>
+                                <div class="sbm-log-entry"><span class="sbm-badge exec">EXEC</span><span class="sbm-log-detail">npx tsc --noEmit</span><span class="sbm-log-status ok">0</span><span class="sbm-log-time">14:31</span></div>
+                                <div class="sbm-log-entry warned"><span class="sbm-badge read">READ</span><span class="sbm-log-detail">.env.local</span><span class="sbm-log-status warn">Warn</span><span class="sbm-log-time">14:31</span></div>
+                                <div class="sbm-log-entry blocked"><span class="sbm-badge delete">DEL</span><span class="sbm-log-detail">/etc/hosts</span><span class="sbm-log-status err">Deny</span><span class="sbm-log-time">14:30</span></div>
+                            </div>
+                        </div>
+                        <div id="sbmNet" class="sbm-pane">
+                            <div class="sbm-stats">
+                                <div class="sbm-stat"><div class="sbm-stat-val">18</div><div class="sbm-stat-lbl">Requests</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val green">14</div><div class="sbm-stat-lbl">OK</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val yellow">2</div><div class="sbm-stat-lbl">Limited</div></div>
+                                <div class="sbm-stat"><div class="sbm-stat-val red">2</div><div class="sbm-stat-lbl">Blocked</div></div>
+                            </div>
+                            <div class="sbm-section-hdr"><span class="sbm-section-title">Connections</span></div>
+                            <div class="sbm-conns">
+                                <div class="sbm-conn"><div class="sbm-conn-dot active"></div><div class="sbm-conn-text"><div class="sbm-conn-host">api.github.com</div><div class="sbm-conn-proto">HTTPS · 443</div></div></div>
+                                <div class="sbm-conn"><div class="sbm-conn-dot active"></div><div class="sbm-conn-text"><div class="sbm-conn-host">api.anthropic.com</div><div class="sbm-conn-proto">HTTPS · 443</div></div></div>
+                                <div class="sbm-conn"><div class="sbm-conn-dot idle"></div><div class="sbm-conn-text"><div class="sbm-conn-host">auth.example.com</div><div class="sbm-conn-proto">HTTPS · 443 · blocked</div></div></div>
+                            </div>
+                        </div>
+                        <div id="sbmSvc" class="sbm-pane">
+                            <div class="sbm-section-hdr"><span class="sbm-section-title">Running Services</span><span class="sbm-section-count">5</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /rightPanel -->
+
+        </div><!-- /w2-layout -->
+    </div>
+
+    <script>
+        function setTab(tab, btn) {
+            document.querySelectorAll('.w2-tab-btn').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            const grpCompleted = document.getElementById('grpCompleted');
+            const grpNeedsInput = document.getElementById('grpNeedsInput');
+            const grpRunning = document.getElementById('grpRunning');
+            const grpPaused = document.getElementById('grpPaused');
+            if (tab === 'active') {
+                grpNeedsInput.style.display = '';
+                grpRunning.style.display = '';
+                grpPaused.style.display = '';
+                grpCompleted.style.display = 'none';
+            } else if (tab === 'completed') {
+                grpNeedsInput.style.display = 'none';
+                grpRunning.style.display = 'none';
+                grpPaused.style.display = 'none';
+                grpCompleted.style.display = '';
+            } else {
+                grpNeedsInput.style.display = '';
+                grpRunning.style.display = '';
+                grpPaused.style.display = '';
+                grpCompleted.style.display = '';
+            }
+        }
+
+        function selectCard(el, id) {
+            document.querySelectorAll('.w2-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function switchRpTab(tab, btn) {
+            document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.rp-tab-content').forEach(c => c.classList.remove('active'));
+            const map = { overview:'rpTabOverview', changes:'rpTabChanges', context:'rpTabContext', sandbox:'rpTabSandbox' };
+            const el = document.getElementById(map[tab]);
+            if (el) el.classList.add('active');
+        }
+
+        function switchSbmTab(tab, btn) {
+            document.querySelectorAll('.sbm-subtab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.sbm-pane').forEach(p => p.classList.remove('active'));
+            const map = { fs:'sbmFs', net:'sbmNet', svc:'sbmSvc' };
+            const el = document.getElementById(map[tab]);
+            if (el) el.classList.add('active');
+        }
+
+        // ── Left panel resize ──
+        (function() {
+            const handle = document.querySelector('.w2-resize-handle');
+            const panel  = document.getElementById('w2Left');
+            if (!handle || !panel) return;
+            let dragging = false, startX = 0, startW = 0;
+            handle.addEventListener('mousedown', e => {
+                dragging = true;
+                startX = e.clientX;
+                startW = panel.offsetWidth;
+                handle.style.background = '#4fc3f7';
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                const w = Math.max(220, Math.min(520, startW + e.clientX - startX));
+                panel.style.width = w + 'px';
+            });
+            document.addEventListener('mouseup', () => {
+                if (!dragging) return;
+                dragging = false;
+                handle.style.background = '';
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            });
+        })();
+    </script>
+</body>
+</html>

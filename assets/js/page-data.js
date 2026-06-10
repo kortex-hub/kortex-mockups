@@ -60,7 +60,7 @@
             '<div class="project-card-assets">' + assets + '</div>' +
             '<div class="project-card-workspace-row">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' +
-            '<span>' + (p.workspacesCount || 0) + ' workspace' + ((p.workspacesCount || 0) !== 1 ? 's' : '') + '</span>' +
+            '<span>' + (p.workspacesCount || 0) + ' sandbox' + ((p.workspacesCount || 0) !== 1 ? 'es' : '') + '</span>' +
             (p.activeSessionsCount > 0 ? '<span class="project-card-sessions-pill running">' + p.activeSessionsCount + ' running</span>' : '') +
             '<a href="../work/index.html" class="project-card-work-link" onclick="event.stopPropagation()">Open in Work →</a>' +
             '</div>' +
@@ -167,10 +167,20 @@
             actionsCell = '<button type="button" class="vault-configure-btn vault-config-toggle" aria-expanded="false">Configure</button>';
         }
 
+        var syncStatus;
+        if (expired) {
+            syncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#f59e0b;font-weight:500;" title="Credential rejected — please refresh"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Expired</span>';
+        } else if (configured) {
+            syncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#4ade80;font-weight:500;" title="Provider synced with OpenShell"><span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Synced</span>';
+        } else {
+            syncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--kd-text-muted);font-weight:500;" title="Will be synced next time a sandbox uses it"><span style="width:7px;height:7px;border-radius:50%;background:var(--kd-text-muted);opacity:0.5;display:inline-block;"></span> Pending</span>';
+        }
+
         return '<tr class="' + trClass + '" data-provider="' + esc(pid) + '" data-type="' + esc(tone) + '">' +
             '<td><div class="vault-int-cell"><span class="vault-int-icon ' + esc(tone) + '">' + icon + '</span><div class="vault-int-text">' + nameInner + '</div></div></td>' +
             '<td class="vault-connection-cell">' + conn + '</td>' +
             '<td class="vault-secret-cell">' + secretCell + '</td>' +
+            '<td>' + syncStatus + (expired ? ' <button type="button" style="margin-left:8px;font-size:11px;padding:2px 8px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:4px;color:#f59e0b;cursor:pointer;">Refresh</button>' : '') + '</td>' +
             '<td>' + actionsCell + '</td></tr>';
     }
 
@@ -199,10 +209,20 @@
             actionsCell = '<a href="create.html" class="vault-configure-btn">Add secret</a>';
         }
 
+        var gSyncStatus;
+        if (expired) {
+            gSyncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#f59e0b;font-weight:500;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> Expired</span>';
+        } else if (configured) {
+            gSyncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#4ade80;font-weight:500;"><span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;"></span> Synced</span>';
+        } else {
+            gSyncStatus = '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--kd-text-muted);font-weight:500;"><span style="width:7px;height:7px;border-radius:50%;background:var(--kd-text-muted);opacity:0.5;display:inline-block;"></span> Pending</span>';
+        }
+
         return '<tr class="' + trClass + '" data-type="generic">' +
             '<td><div class="vault-int-cell"><span class="vault-int-icon generic">' + KEY_SVG + '</span><div class="vault-int-text">' + nameInner + '</div></div></td>' +
             '<td class="vault-connection-cell">' + conn + '</td>' +
             '<td class="vault-secret-cell">' + secretCell + '</td>' +
+            '<td>' + gSyncStatus + '</td>' +
             '<td>' + actionsCell + '</td></tr>';
     }
 
@@ -233,7 +253,7 @@
 
         var generics = data.genericSecrets || [];
         if (generics.length) {
-            parts.push('<tr class="vault-catalog-section-row"><td colspan="4" class="vault-catalog-section-cell">Generic secrets</td></tr>');
+            parts.push('<tr class="vault-catalog-section-row"><td colspan="5" class="vault-catalog-section-cell">Generic secrets</td></tr>');
             generics.forEach(function (g) { parts.push(renderVaultGenericRow(g)); });
         }
 

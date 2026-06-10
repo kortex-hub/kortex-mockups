@@ -2696,7 +2696,7 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             </div>
                             <div class="pd-nav-info">
-                                <div class="pd-nav-name">Workspaces</div>
+                                <div class="pd-nav-name">Sandboxes</div>
                                 <div class="pd-nav-desc">Sandbox environments</div>
                             </div>
                             <div class="pd-nav-count" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3)">1</div>
@@ -3279,12 +3279,12 @@
                     <div class="pd-section" id="section-workspaces" data-pd-tab="workspaces">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
                             <div>
-                                <h1 class="pd-section-title" style="margin-bottom:4px">Workspaces</h1>
-                                <p style="font-size:13px;color:var(--kd-text-muted);margin:0">Persistent sandbox environments for this project. Each workspace is configured once — filesystem scope, network policy, runtime — and you start multiple agent sessions inside it.</p>
+                                <h1 class="pd-section-title" style="margin-bottom:4px">Sandboxes</h1>
+                                <p style="font-size:13px;color:var(--kd-text-muted);margin:0">Persistent sandbox environments for this project. Each sandbox is configured once — filesystem scope, network policy, runtime — and you start multiple agent sessions inside it.</p>
                             </div>
                             <a href="../sessions/create.html?project=doc-updater" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:var(--kd-accent);border:none;border-radius:9px;color:#0a1628;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;flex-shrink:0">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                New Workspace
+                                New sandbox
                             </a>
                         </div>
 
@@ -3308,7 +3308,7 @@
                                 </div>
                                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
                                     <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25)">2 sessions running</span>
-                                    <a href="../workspaces/index.html" style="padding:7px 14px;border-radius:8px;border:1px solid var(--kd-border);background:transparent;color:var(--kd-text-primary);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:border-color 0.15s">Open →</a>
+                                    <a href="../sandboxes/index.html" style="padding:7px 14px;border-radius:8px;border:1px solid var(--kd-border);background:transparent;color:var(--kd-text-primary);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:border-color 0.15s">Open →</a>
                                 </div>
                             </div>
                             <!-- Sessions inside this workspace -->
@@ -3995,64 +3995,50 @@
 
                     <!-- Network Policy Section -->
                     <div class="pd-section" id="section-network" data-pd-tab="network">
-                        <h1 class="pd-section-title">Network Policy</h1>
-
-                        <div class="pd-secrets-note" style="border-color: rgba(79, 195, 247, 0.15); background: rgba(79, 195, 247, 0.04);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#6dd6ff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            <div class="pd-secrets-note-text">
-                                <strong>Project-scoped network policy.</strong> Controls what external hosts agents can reach when running tasks in this project. Agents operating inside sandboxed workspaces will have their HTTP/HTTPS traffic filtered according to these rules.
-                            </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                            <h1 class="pd-section-title" style="margin: 0;">Network Policy</h1>
+                            <button class="btn btn-secondary" style="font-size: 13px;" onclick="document.getElementById('np-edit-mode').style.display = document.getElementById('np-edit-mode').style.display === 'none' ? 'flex' : 'none'">Edit</button>
                         </div>
 
-                        <!-- Policy Mode -->
-                        <div class="pd-overview-card">
-                            <div class="pd-overview-card-title">Policy Mode</div>
-                            <p class="pd-np-desc">Choose the default behavior for outbound network requests from agent sandboxes.</p>
-                            <div class="pd-np-mode-grid">
-                                <div class="pd-np-mode-card" onclick="selectNetworkMode(this, 'allow')">
-                                    <div class="pd-np-mode-radio"></div>
-                                    <div class="pd-np-mode-content">
-                                        <div class="pd-np-mode-icon allow">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                        </div>
-                                        <div class="pd-np-mode-info">
-                                            <div class="pd-np-mode-name">Allow Mode</div>
-                                            <div class="pd-np-mode-desc">Permit all traffic except explicitly blocked hosts. Best for development environments.</div>
-                                        </div>
+                        <!-- Mode selector -->
+                        <div class="pd-overview-card" style="margin-bottom: 16px;">
+                            <div class="pd-overview-card-title" style="margin-bottom: 10px;">Mode</div>
+                            <div id="np-edit-mode" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--kd-border);">
+                                    <input type="radio" name="np-mode" style="accent-color: var(--kd-accent); margin-top: 2px;" onchange="this.closest('.pd-overview-card').querySelector('.np-mode-current').textContent = 'Allow known services'">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary);">Allow known services <span style="font-size: 11px; color: var(--kd-text-muted); font-weight: 400;">(recommended)</span></div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted);">The agent can reach services covered by workspace credentials.</div>
                                     </div>
-                                </div>
-                                <div class="pd-np-mode-card selected" onclick="selectNetworkMode(this, 'deny')">
-                                    <div class="pd-np-mode-radio"><div class="pd-np-mode-radio-dot"></div></div>
-                                    <div class="pd-np-mode-content">
-                                        <div class="pd-np-mode-icon deny">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                        </div>
-                                        <div class="pd-np-mode-info">
-                                            <div class="pd-np-mode-name">Deny Mode</div>
-                                            <div class="pd-np-mode-desc">Block all traffic except explicitly allowed hosts. Recommended for production or sensitive projects.</div>
-                                        </div>
+                                </label>
+                                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; border-radius: 6px; border: 2px solid var(--kd-accent); background: color-mix(in srgb, var(--kd-accent) 5%, transparent);">
+                                    <input type="radio" name="np-mode" checked style="accent-color: var(--kd-accent); margin-top: 2px;" onchange="this.closest('.pd-overview-card').querySelector('.np-mode-current').textContent = 'Strict — only listed hosts'">
+                                    <div>
+                                        <div style="font-size: 13px; font-weight: 600; color: var(--kd-text-primary);">Strict — only listed hosts</div>
+                                        <div style="font-size: 12px; color: var(--kd-text-muted);">Only hosts you explicitly allow below can be reached.</div>
                                     </div>
-                                </div>
+                                </label>
                             </div>
+                            <div style="font-size: 13px; color: var(--kd-text-secondary);">Current: <strong class="np-mode-current" style="color: var(--kd-text-primary);">Strict — only listed hosts</strong></div>
                         </div>
 
                         <!-- Allowed Hosts -->
-                        <div class="pd-asset-block">
+                        <div class="pd-asset-block" style="margin-bottom: 16px;">
                             <div class="pd-block-header">
                                 <div class="pd-block-title-row">
                                     <div class="pd-block-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                                     </div>
-                                    <h3 class="pd-block-title">Allowed Hosts</h3>
-                                    <span class="pd-block-count">5 hosts</span>
+                                    <h3 class="pd-block-title">Allowed hosts</h3>
+                                    <span class="pd-block-count">4 hosts</span>
                                 </div>
                                 <button class="pd-block-add-btn" onclick="toggleAddHost('allowed')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                    Add Host
+                                    Add host
                                 </button>
                             </div>
                             <div class="pd-np-add-row" id="addAllowedHostRow">
-                                <input type="text" class="pd-np-add-input" placeholder="e.g., api.example.com:443 or *.example.com" id="newAllowedHostInput">
+                                <input type="text" class="pd-np-add-input" placeholder="e.g., api.example.com" id="newAllowedHostInput">
                                 <button class="pd-np-add-btn" onclick="addAllowedHostEntry()">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                                     Add
@@ -4063,95 +4049,79 @@
                                 <div class="pd-np-host-item">
                                     <div class="pd-np-host-dot allowed"></div>
                                     <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">github.com</div>
-                                        <div class="pd-np-host-note">Git operations, API access</div>
+                                        <div class="pd-np-host-name">api.github.com</div>
+                                        <div class="pd-np-host-note">from GitHub credential</div>
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span class="pd-np-host-badge default">synced</span>
                                     <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                                 </div>
                                 <div class="pd-np-host-item">
                                     <div class="pd-np-host-dot allowed"></div>
                                     <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">pkg.go.dev</div>
-                                        <div class="pd-np-host-note">Go package documentation</div>
+                                        <div class="pd-np-host-name">api.anthropic.com</div>
+                                        <div class="pd-np-host-note">from Anthropic credential</div>
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span class="pd-np-host-badge default">synced</span>
                                     <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                                 </div>
                                 <div class="pd-np-host-item">
                                     <div class="pd-np-host-dot allowed"></div>
                                     <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">registry.npmjs.org</div>
-                                        <div class="pd-np-host-note">npm package registry</div>
+                                        <div class="pd-np-host-name">api.example.com</div>
+                                        <div class="pd-np-host-note">manual</div>
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span class="pd-np-host-badge custom">manual</span>
                                     <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                                 </div>
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot allowed"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">proxy.golang.org</div>
-                                        <div class="pd-np-host-note">Go module proxy</div>
-                                    </div>
-                                    <span class="pd-np-host-badge custom">custom</span>
-                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                                </div>
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot allowed"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">sum.golang.org</div>
-                                        <div class="pd-np-host-note">Go checksum database</div>
-                                    </div>
-                                    <span class="pd-np-host-badge custom">custom</span>
-                                    <button class="pd-block-item-remove" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                                <div class="pd-np-host-item" style="opacity: 0.8;">
+                                    <div class="pd-np-host-dot" style="background: transparent; border: 1.5px dashed var(--kd-text-muted);"></div>
+                                    <button type="button" style="background: none; border: none; font-size: 12px; color: var(--kd-accent); cursor: pointer; padding: 0;" onclick="toggleAddHost('allowed')">+ Add host</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Blocked CIDR Ranges -->
+                        <!-- Recent decisions -->
                         <div class="pd-asset-block">
-                            <div class="pd-block-header">
+                            <div class="pd-block-header" style="margin-bottom: 12px;">
                                 <div class="pd-block-title-row">
-                                    <div class="pd-block-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                    <div class="pd-block-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                                     </div>
-                                    <h3 class="pd-block-title">Blocked CIDR Ranges</h3>
-                                    <span class="pd-block-count">4 ranges</span>
+                                    <h3 class="pd-block-title">Recent decisions</h3>
+                                    <span class="pd-block-count">last 24 h</span>
                                 </div>
                             </div>
-                            <div class="pd-np-host-list">
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot blocked"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">10.0.0.0/8</div>
-                                        <div class="pd-np-host-note">Private network (Class A)</div>
+                            <div style="display: flex; flex-direction: column; gap: 0; border: 1px solid var(--kd-border); border-radius: 8px; overflow: hidden;">
+                                <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 10px 14px; align-items: center; border-bottom: 1px solid var(--kd-border);">
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--kd-text-secondary); font-family: monospace;">
+                                        <span style="color: #4ade80; font-weight: 700; font-family: sans-serif;">✓</span>
+                                        api.github.com
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span style="font-size: 11px; color: var(--kd-text-muted);">47 requests · allowed</span>
+                                    <div></div>
                                 </div>
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot blocked"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">172.16.0.0/12</div>
-                                        <div class="pd-np-host-note">Private network (Class B)</div>
+                                <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 10px 14px; align-items: center; background: color-mix(in srgb, #f59e0b 4%, transparent); border-bottom: 1px solid var(--kd-border);">
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--kd-text-secondary); font-family: monospace;">
+                                        <span style="color: #ef4444; font-weight: 700; font-family: sans-serif;">✕</span>
+                                        auth.example.com
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span style="font-size: 11px; color: #ef4444;">blocked</span>
+                                    <button onclick="alert('Opens network policy editor with auth.example.com pre-filled')" style="font-size: 11px; padding: 3px 10px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 4px; color: #f87171; cursor: pointer; white-space: nowrap;">Allow this host</button>
                                 </div>
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot blocked"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">192.168.0.0/16</div>
-                                        <div class="pd-np-host-note">Private network (Class C)</div>
+                                <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 10px 14px; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--kd-text-secondary); font-family: monospace;">
+                                        <span style="color: #4ade80; font-weight: 700; font-family: sans-serif;">✓</span>
+                                        api.anthropic.com
                                     </div>
-                                    <span class="pd-np-host-badge default">default</span>
+                                    <span style="font-size: 11px; color: var(--kd-text-muted);">12 requests · allowed</span>
+                                    <div></div>
                                 </div>
-                                <div class="pd-np-host-item">
-                                    <div class="pd-np-host-dot blocked"></div>
-                                    <div class="pd-np-host-info">
-                                        <div class="pd-np-host-name">169.254.0.0/16</div>
-                                        <div class="pd-np-host-note">Link-local addresses</div>
-                                    </div>
-                                    <span class="pd-np-host-badge default">default</span>
-                                </div>
+                            </div>
+
+                            <!-- Policy revision -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--kd-border);">
+                                <span style="font-size: 12px; color: var(--kd-text-muted);" title="Policy revision #4">Policy updated 6 minutes ago</span>
+                                <a href="#" style="font-size: 12px; color: var(--kd-accent); text-decoration: none;">View history</a>
                             </div>
                         </div>
                     </div>
