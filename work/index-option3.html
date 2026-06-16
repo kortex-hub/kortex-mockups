@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaiden — Work</title>
+    <title>Kaiden — Work (Option 3)</title>
     <script src="../assets/js/kaiden-theme.js"></script>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="../assets/js/sidebar-loader.js"></script>
@@ -69,144 +69,150 @@
         .w2-new-btn:hover { background: rgba(79,195,247,0.18); border-color: rgba(79,195,247,0.45); }
         .w2-new-btn svg { width: 12px; height: 12px; }
 
-        /* Tabs */
-        .w2-tabs {
-            display: flex; gap: 2px; margin-bottom: 10px;
-        }
-        .w2-tab-btn {
-            flex: 1; padding: 5px 0;
-            background: none; border: none;
-            color: #6b7280; font-size: 12px; font-weight: 500;
-            cursor: pointer; border-radius: 6px; transition: all 0.15s;
-        }
-        .w2-tab-btn:hover { color: #9ca3af; background: rgba(255,255,255,0.04); }
-        .w2-tab-btn.active { color: #e8eef7; background: rgba(255,255,255,0.07); font-weight: 600; }
-
-        /* Project filter */
-        .w2-project-filter {
+        /* ── Search / filter bar ── */
+        .w3-search {
             display: flex; align-items: center; gap: 7px;
-            padding: 7px 12px; margin: 8px 14px 12px;
+            padding: 7px 12px; margin: 8px 10px 4px;
             background: rgba(255,255,255,0.03);
             border: 1px solid #1e3358; border-radius: 7px;
-            font-size: 12px; color: #6b7280; cursor: pointer;
+            font-size: 12px; color: #6b7280; cursor: text;
         }
-        .w2-project-filter svg { width: 13px; height: 13px; flex-shrink: 0; }
-        .w2-project-filter span { flex: 1; }
+        .w3-search svg { width: 13px; height: 13px; flex-shrink: 0; }
+        .w3-search input { background: none; border: none; outline: none; flex: 1; color: #d1d5db; font-size: 12px; font-family: inherit; }
+        .w3-search input::placeholder { color: #4b5563; }
 
-        /* Session list scroll area */
-        .w2-list {
-            flex: 1; overflow-y: auto; padding: 4px 10px 16px;
+        /* ── Group ── */
+        .w3-group { margin-top: 6px; }
+        .w3-group + .w3-group { margin-top: 4px; }
+
+        .w3-group-header {
+            display: flex; align-items: center; gap: 7px;
+            padding: 8px 10px 4px;
         }
-        .w2-list::-webkit-scrollbar { width: 4px; }
-        .w2-list::-webkit-scrollbar-track { background: transparent; }
-        .w2-list::-webkit-scrollbar-thumb { background: #1e3358; border-radius: 2px; }
-
-        /* Status group */
-        .w2-group { margin-top: 8px; }
-        .w2-group + .w2-group { margin-top: 16px; }
-
-        .w2-group-header {
-            display: flex; align-items: center; gap: 6px;
-            padding: 4px 4px 8px;
-        }
-        .w2-group-label {
+        .w3-group-label {
             font-size: 10px; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.08em;
+            flex: 1;
         }
-        .w2-group-label.needs-input { color: #f87171; }
-        .w2-group-label.running     { color: #34d399; }
-        .w2-group-label.paused      { color: #fbbf24; }
-        .w2-group-label.completed   { color: #4b5563; }
+        .w3-group-label.needs-input { color: #f87171; }
+        .w3-group-label.in-progress { color: #34d399; }
+        .w3-group-label.idle        { color: #6b7280; }
 
-        .w2-group-count {
+        .w3-unread-count {
             font-size: 10px; font-weight: 700;
-            padding: 1px 6px; border-radius: 10px;
+            min-width: 18px; height: 18px; padding: 0 5px;
+            border-radius: 9px; display: flex; align-items: center; justify-content: center;
         }
-        .w2-group-count.needs-input { background: rgba(248,113,113,0.15); color: #f87171; }
-        .w2-group-count.running     { background: rgba(52,211,153,0.15); color: #34d399; }
-        .w2-group-count.paused      { background: rgba(251,191,36,0.15); color: #fbbf24; }
-        .w2-group-count.completed   { background: rgba(255,255,255,0.06); color: #4b5563; }
+        .w3-unread-count.needs-input { background: rgba(248,113,113,0.2); color: #f87171; }
+        .w3-unread-count.in-progress { background: rgba(52,211,153,0.15); color: #34d399; }
+        .w3-unread-count.idle        { background: rgba(255,255,255,0.06); color: #9ca3af; }
 
-        /* Session card */
-        .w2-card {
+        /* ── Session card ── */
+        .w3-card {
             position: relative;
-            padding: 10px 10px 10px 14px;
-            border-radius: 8px;
-            border: none;
-            border-left: 3px solid transparent;
-            background: rgba(255,255,255,0.02);
-            margin-bottom: 2px;
+            padding: 9px 10px 9px 12px;
+            border-radius: 7px;
+            background: transparent;
+            margin: 1px 4px;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: background 0.12s;
+            border-left: 2px solid transparent;
         }
-        .w2-card:hover { background: rgba(255,255,255,0.04); }
-        .w2-card.active { background: rgba(79,195,247,0.06); border-left-color: rgba(79,195,247,0.6) !important; }
+        .w3-card:hover { background: rgba(255,255,255,0.03); }
+        .w3-card.active {
+            background: rgba(79,195,247,0.06);
+            border-left-color: rgba(79,195,247,0.5);
+        }
 
-        .w2-card.border-red    { border-left-color: #f87171; }
-        .w2-card.border-blue   { border-left-color: #f87171; }
-        .w2-card.border-green  { border-left-color: transparent; }
-        .w2-card.border-yellow { border-left-color: transparent; }
-        .w2-card.border-gray   { border-left-color: transparent; }
+        /* ── Unread indicator ── */
+        .w3-card.unread .w3-title { color: #e8eef7; font-weight: 600; }
+        .w3-card.read   .w3-title { color: #6b7280; font-weight: 400; }
 
-        .w2-card-title {
-            font-size: 13px; font-weight: 600;
-            color: #e8eef7; margin-bottom: 6px;
-            line-height: 1.3;
+        .w3-unread-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            flex-shrink: 0; margin-top: 4px;
         }
-        .w2-card-title.dimmed { color: #6b7280; }
+        .w3-unread-dot.needs-input { background: #f87171; }
+        .w3-unread-dot.in-progress { background: #4fc3f7; }
+        .w3-unread-dot.idle        { background: #9ca3af; }
+        .w3-card.read .w3-unread-dot { opacity: 0; }
 
-        .w2-card-status {
-            display: flex; align-items: center; gap: 6px;
-            margin-bottom: 5px;
+        /* ── Card inner layout ── */
+        .w3-card-top {
+            display: flex; align-items: flex-start; gap: 7px; margin-bottom: 4px;
         }
-        .w2-status-dot {
-            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        .w3-title {
+            font-size: 12px; line-height: 1.4;
+            flex: 1; min-width: 0;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
-        .w2-status-dot.blocked   { background: #f87171; }
-        .w2-status-dot.waiting   { background: #60a5fa; }
-        .w2-status-dot.running   { background: #34d399; animation: w2pulse 2s infinite; }
-        .w2-status-dot.paused    { background: #fbbf24; }
-        .w2-status-dot.completed { background: #374151; }
+
+        /* ── Activity indicator (typing dots) ── */
+        .w3-activity {
+            display: inline-flex; align-items: center; gap: 3px;
+            margin-left: 4px; flex-shrink: 0;
+        }
+        .w3-activity span {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: #34d399;
+            animation: w3typing 1.2s infinite;
+        }
+        .w3-activity span:nth-child(2) { animation-delay: 0.2s; }
+        .w3-activity span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes w3typing {
+            0%,60%,100% { opacity: 0.2; transform: scale(0.8); }
+            30% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ── Card meta row ── */
+        .w3-card-meta {
+            display: flex; align-items: center; gap: 8px;
+            padding-left: 13px;
+        }
+        .w3-status-chip {
+            font-size: 10px; font-weight: 500;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .w3-status-chip.blocked   { color: #fca5a5; }
+        .w3-status-chip.waiting   { color: #93c5fd; }
+        .w3-status-chip.active    { color: #34d399; }
+        .w3-status-chip.idle      { color: #6b7280; }
+
+        .w3-status-dot {
+            width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+        }
+        .w3-status-dot.blocked { background: #f87171; }
+        .w3-status-dot.waiting { background: #60a5fa; }
+        .w3-status-dot.active  { background: #34d399; animation: w2pulse 2s infinite; }
+        .w3-status-dot.idle    { background: #374151; }
+
+        .w3-meta-sep { color: #374151; font-size: 10px; }
+        .w3-project  { font-size: 10px; color: #4b5563; }
+        .w3-branch   { font-size: 10px; color: #374151; font-family: monospace; }
+        .w3-time     { font-size: 10px; color: #374151; margin-left: auto; }
+
+        /* Needs-input action badge */
+        .w3-action-badge {
+            position: absolute; top: 9px; right: 8px;
+            padding: 2px 7px; border-radius: 4px;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+            background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
+            color: #f87171; cursor: pointer; white-space: nowrap;
+        }
+
+        /* Divider between groups */
+        .w3-divider {
+            height: 1px; background: #111f35;
+            margin: 8px 10px;
+        }
 
         @keyframes w2pulse {
             0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(52,211,153,0.4); }
             50% { opacity:0.8; box-shadow:0 0 0 4px rgba(52,211,153,0); }
         }
-
-        .w2-status-text { font-size: 11px; font-weight: 500; }
-        .w2-status-text.blocked   { color: #fca5a5; }
-        .w2-status-text.waiting   { color: #93c5fd; }
-        .w2-status-text.running   { color: #34d399; }
-        .w2-status-text.paused    { color: #fbbf24; }
-        .w2-status-text.completed { color: #6b7280; }
-
-        .w2-card-time { font-size: 11px; color: #4b5563; margin-left: auto; }
-
-        .w2-card-footer {
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-        }
-        .w2-card-project {
-            display: flex; align-items: center; gap: 4px;
-            font-size: 11px; color: #6b7280;
-        }
-        .w2-card-project svg { width: 11px; height: 11px; }
-        .w2-card-branch {
-            display: flex; align-items: center; gap: 4px;
-            font-size: 11px; color: #4b5563; font-family: monospace;
-        }
-        .w2-card-branch svg { width: 11px; height: 11px; }
-
-        /* Action badge on needs-input cards */
-        .w2-action-badge {
-            position: absolute; top: 10px; right: 10px;
-            display: flex; align-items: center; gap: 4px;
-            padding: 3px 8px; border-radius: 5px;
-            font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
-            text-transform: uppercase;
-            background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
-            color: #f87171; cursor: pointer;
-        }
-        .w2-action-badge svg { width: 10px; height: 10px; }
 
         /* Bottom bar */
         .w2-bottom-bar {
@@ -572,180 +578,138 @@
                         <div class="w2-left-title">Work</div>
                         <div style="display:flex;align-items:center;gap:6px;">
                             <a href="index.html" title="Option 1" style="padding:4px 9px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid #1e3358;display:inline-flex;align-items:center;gap:4px;color:#4b5563;text-decoration:none;font-size:11px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor='#4fc3f7';this.style.color='#4fc3f7'" onmouseout="this.style.borderColor='#1e3358';this.style.color='#4b5563'">Option 1</a>
-                            <a href="index-option3.html" title="Option 3" style="padding:4px 9px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid #1e3358;display:inline-flex;align-items:center;gap:4px;color:#4b5563;text-decoration:none;font-size:11px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor='#4fc3f7';this.style.color='#4fc3f7'" onmouseout="this.style.borderColor='#1e3358';this.style.color='#4b5563'">Option 3</a>
+                            <a href="index-option2.html" title="Option 2" style="padding:4px 9px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid #1e3358;display:inline-flex;align-items:center;gap:4px;color:#4b5563;text-decoration:none;font-size:11px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor='#4fc3f7';this.style.color='#4fc3f7'" onmouseout="this.style.borderColor='#1e3358';this.style.color='#4b5563'">Option 2</a>
                             <a href="../sessions/create.html" class="w2-new-btn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                 New
                             </a>
                         </div>
                     </div>
-                    <div class="w2-tabs">
-                        <button class="w2-tab-btn active" onclick="setTab('active',this)">Active</button>
-                        <button class="w2-tab-btn" onclick="setTab('completed',this)">Completed</button>
-                        <button class="w2-tab-btn" onclick="setTab('all',this)">All</button>
-                    </div>
                 </div>
 
-                <div class="w2-project-filter">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    <span>All Projects</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                <!-- Search -->
+                <div class="w3-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" placeholder="Search sessions…">
                 </div>
 
                 <div class="w2-list">
 
-                    <!-- NEEDS YOUR INPUT -->
-                    <div class="w2-group" id="grpNeedsInput">
-                        <div class="w2-group-header">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                            <span class="w2-group-label needs-input">Needs your input</span>
-                            <span class="w2-group-count needs-input">2</span>
+                    <!-- ── NEEDS INPUT ── -->
+                    <div class="w3-group">
+                        <div class="w3-group-header">
+                            <span class="w3-group-label needs-input">Needs input</span>
+                            <span class="w3-unread-count needs-input">2</span>
                         </div>
 
-                        <div class="w2-card border-red active" onclick="selectCard(this, 'refactor-auth')">
-                            <div class="w2-card-title">Refactor auth module to JWT</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot blocked"></span>
-                                <span class="w2-status-text blocked">Blocked — network</span>
+                        <!-- blocked · unread · selected -->
+                        <div class="w3-card unread active" onclick="selectCard(this,'refactor-auth')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot needs-input"></span>
+                                <span class="w3-title">Refactor auth module to JWT</span>
                             </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Doc updater
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    feat/jwt-auth
-                                </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip blocked"><span class="w3-status-dot blocked"></span>Blocked — network</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">Doc updater</span>
+                                <span class="w3-time">6m ago</span>
                             </div>
-                            <div class="w2-action-badge" onclick="event.stopPropagation()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                Action
-                            </div>
+                            <div class="w3-action-badge" onclick="event.stopPropagation()">Respond</div>
                         </div>
 
-                        <div class="w2-card border-blue" onclick="selectCard(this, 'fix-memory-leak')">
-                            <div class="w2-card-title">Fix memory leak in WebSocket handler</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot waiting"></span>
-                                <span class="w2-status-text waiting">Waiting for input</span>
+                        <!-- waiting · unread -->
+                        <div class="w3-card unread" onclick="selectCard(this,'fix-memory-leak')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot needs-input"></span>
+                                <span class="w3-title">Fix memory leak in WebSocket handler</span>
                             </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    API Gateway
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    fix/ws-memory-leak
-                                </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip waiting"><span class="w3-status-dot waiting"></span>Waiting for input</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">API Gateway</span>
+                                <span class="w3-time">45m ago</span>
                             </div>
-                            <div class="w2-action-badge" onclick="event.stopPropagation()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                Action
+                            <div class="w3-action-badge" onclick="event.stopPropagation()">Respond</div>
+                        </div>
+                    </div>
+
+                    <div class="w3-divider"></div>
+
+                    <!-- ── IN PROGRESS ── -->
+                    <div class="w3-group">
+                        <div class="w3-group-header">
+                            <span class="w3-group-label in-progress">In progress</span>
+                            <span class="w3-unread-count in-progress">1</span>
+                        </div>
+
+                        <!-- actively writing · unread (new output since last view) -->
+                        <div class="w3-card unread" onclick="selectCard(this,'dark-mode')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot in-progress"></span>
+                                <span class="w3-title">Add dark mode toggle to settings page</span>
+                                <!-- activity indicator: agent currently writing -->
+                                <span class="w3-activity" title="Agent is writing…">
+                                    <span></span><span></span><span></span>
+                                </span>
+                            </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip active"><span class="w3-status-dot active"></span>Active · 34m</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">Frontend App</span>
+                                <span class="w3-time">now</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- RUNNING -->
-                    <div class="w2-group" id="grpRunning">
-                        <div class="w2-group-header">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#34d399"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                            <span class="w2-group-label running">Running</span>
-                            <span class="w2-group-count running">1</span>
+                    <div class="w3-divider"></div>
+
+                    <!-- ── IDLE ── -->
+                    <div class="w3-group">
+                        <div class="w3-group-header">
+                            <span class="w3-group-label idle">Idle</span>
+                            <!-- 1 unread (openapi-docs finished, not reviewed) -->
+                            <span class="w3-unread-count idle">1</span>
                         </div>
 
-                        <div class="w2-card border-green" onclick="selectCard(this, 'dark-mode')">
-                            <div class="w2-card-title">Add dark mode toggle to settings page</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot running"></span>
-                                <span class="w2-status-text running">Running</span>
-                                <span class="w2-card-time">34m</span>
+                        <!-- finished · unread (result not reviewed yet) -->
+                        <div class="w3-card unread" onclick="selectCard(this,'openapi-docs')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot idle"></span>
+                                <span class="w3-title">Generate OpenAPI docs for REST endpoints</span>
                             </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Frontend App
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    feat/dark-mode
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PAUSED -->
-                    <div class="w2-group" id="grpPaused">
-                        <div class="w2-group-header">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="#fbbf24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
-                            <span class="w2-group-label paused">Paused</span>
-                            <span class="w2-group-count paused">1</span>
-                        </div>
-
-                        <div class="w2-card border-yellow" onclick="selectCard(this, 'openapi-docs')">
-                            <div class="w2-card-title">Generate OpenAPI docs for REST endpoints</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot paused"></span>
-                                <span class="w2-status-text paused">Paused</span>
-                                <span class="w2-card-time">3h</span>
-                            </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Doc updater
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    docs/openapi-spec
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- COMPLETED TODAY -->
-                    <div class="w2-group" id="grpCompleted" style="display:none;">
-                        <div class="w2-group-header">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span class="w2-group-label completed">Completed today</span>
-                            <span class="w2-group-count completed">2</span>
-                        </div>
-
-                        <div class="w2-card border-gray" onclick="selectCard(this, 'update-deps')" style="opacity:0.6;">
-                            <div class="w2-card-title dimmed">Update npm dependencies and fix breaking changes</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot completed"></span>
-                                <span class="w2-status-text completed">Completed</span>
-                                <span class="w2-card-time">2h ago</span>
-                            </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Frontend App
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    chore/update-deps
-                                </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip idle"><span class="w3-status-dot idle"></span>Idle · 3h</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">Doc updater</span>
+                                <span class="w3-time">1h ago</span>
                             </div>
                         </div>
 
-                        <div class="w2-card border-gray" onclick="selectCard(this, 'dockerfile')" style="opacity:0.6;">
-                            <div class="w2-card-title dimmed">Create multi-stage Dockerfile for production</div>
-                            <div class="w2-card-status">
-                                <span class="w2-status-dot completed"></span>
-                                <span class="w2-status-text completed">Completed</span>
-                                <span class="w2-card-time">5h ago</span>
+                        <!-- finished · read (already reviewed) -->
+                        <div class="w3-card read" onclick="selectCard(this,'update-deps')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot idle"></span>
+                                <span class="w3-title">Update npm dependencies and fix breaking changes</span>
                             </div>
-                            <div class="w2-card-footer">
-                                <div class="w2-card-project">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                                    Doc updater
-                                </div>
-                                <div class="w2-card-branch">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                    infra/docker-prod
-                                </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip idle"><span class="w3-status-dot idle"></span>Idle · 2h</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">Frontend App</span>
+                                <span class="w3-time">2h ago</span>
+                            </div>
+                        </div>
+
+                        <!-- finished · read -->
+                        <div class="w3-card read" onclick="selectCard(this,'dockerfile')">
+                            <div class="w3-card-top">
+                                <span class="w3-unread-dot idle"></span>
+                                <span class="w3-title">Create multi-stage Dockerfile for production</span>
+                            </div>
+                            <div class="w3-card-meta">
+                                <span class="w3-status-chip idle"><span class="w3-status-dot idle"></span>Idle · 5h</span>
+                                <span class="w3-meta-sep">·</span>
+                                <span class="w3-project">Doc updater</span>
+                                <span class="w3-time">5h ago</span>
                             </div>
                         </div>
                     </div>
@@ -1227,34 +1191,25 @@
     </div>
 
     <script>
-        function setTab(tab, btn) {
-            document.querySelectorAll('.w2-tab-btn').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            const grpCompleted = document.getElementById('grpCompleted');
-            const grpNeedsInput = document.getElementById('grpNeedsInput');
-            const grpRunning = document.getElementById('grpRunning');
-            const grpPaused = document.getElementById('grpPaused');
-            if (tab === 'active') {
-                grpNeedsInput.style.display = '';
-                grpRunning.style.display = '';
-                grpPaused.style.display = '';
-                grpCompleted.style.display = 'none';
-            } else if (tab === 'completed') {
-                grpNeedsInput.style.display = 'none';
-                grpRunning.style.display = 'none';
-                grpPaused.style.display = 'none';
-                grpCompleted.style.display = '';
-            } else {
-                grpNeedsInput.style.display = '';
-                grpRunning.style.display = '';
-                grpPaused.style.display = '';
-                grpCompleted.style.display = '';
-            }
+        function selectCard(el, id) {
+            // Deselect all, select clicked
+            document.querySelectorAll('.w3-card,.w2-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            // Mark as read when opened
+            el.classList.remove('unread');
+            el.classList.add('read');
+            // Recount unread badges
+            updateUnreadCounts();
         }
 
-        function selectCard(el, id) {
-            document.querySelectorAll('.w2-card').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
+        function updateUnreadCounts() {
+            document.querySelectorAll('.w3-group').forEach(function(grp) {
+                var badge = grp.querySelector('.w3-unread-count');
+                if (!badge) return;
+                var unread = grp.querySelectorAll('.w3-card.unread').length;
+                badge.textContent = unread;
+                badge.style.display = unread === 0 ? 'none' : '';
+            });
         }
 
         function switchRpTab(tab, btn) {
