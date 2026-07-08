@@ -84,7 +84,7 @@
 
         .settings-panel {
             display: none;
-            max-width: 760px;
+            max-width: 960px;
         }
 
         .settings-panel.active {
@@ -556,6 +556,19 @@
         .pref-search-wrap svg { width:14px; height:14px; color:var(--kd-text-muted); flex-shrink:0; }
         .pref-search-wrap input { flex:1; background:none; border:none; outline:none; font-size:13px; color:var(--kd-text-primary); font-family:inherit; }
         .pref-search-wrap input::placeholder { color:var(--kd-text-muted); }
+
+        /* ── Gateway panel helpers ── */
+        .gw-list-item { display:flex; align-items:center; gap:9px; padding:11px 14px; cursor:pointer; border-left:3px solid transparent; transition:all 0.12s; }
+        .gw-list-item:hover { background:color-mix(in srgb,var(--kd-accent) 4%,transparent); }
+        .gw-selected { border-left-color:var(--kd-accent) !important; background:color-mix(in srgb,var(--kd-accent) 8%,transparent) !important; }
+        .gw-status-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+        .gw-tab { background:none; border:none; border-bottom:2px solid transparent; padding:10px 14px; font-size:13px; font-weight:500; color:var(--kd-text-muted); cursor:pointer; transition:all 0.12s; margin-bottom:-1px; font-family:inherit; }
+        .gw-tab:hover { color:var(--kd-text-primary); }
+        .gw-tab-active { color:var(--kd-accent) !important; border-bottom-color:var(--kd-accent) !important; font-weight:600; }
+        .provider-icon.github  { background: linear-gradient(135deg, #24292e 0%, #1a1e22 100%); color: #fff; }
+        .provider-icon.openai  { background: linear-gradient(135deg, #10a37f 0%, #0d7a5f 100%); color: #fff; }
+        .provider-icon.jfrog   { background: linear-gradient(135deg, #2c6fad 0%, #1e4d7b 100%); color: #fff; }
+        .provider-icon.generic { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: #fff; }
     </style>
 </head>
 <body class="settings-page">
@@ -614,6 +627,10 @@
                             <div class="settings-nav-item" onclick="showSection('os-logs')">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                                 Logs
+                            </div>
+                            <div class="settings-nav-item" onclick="showSection('os-gw2')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                                Gateway <span style="font-size:9px;font-weight:700;background:var(--kd-accent);color:#fff;padding:1px 5px;border-radius:5px;vertical-align:middle;margin-left:3px;">V2</span>
                             </div>
                         </div>
 
@@ -844,158 +861,572 @@
                         <!-- OpenShell panel -->
                         <!-- ── OpenShell: Gateway ── -->
                         <div id="panel-os-gateway" class="settings-panel">
-                            <h2 class="settings-panel-title">Gateway</h2>
-                            <p class="settings-panel-subtitle">Each gateway is an independent runtime with its own driver, created once. Select one to view and manage its settings.</p>
+                            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+                                <div>
+                                    <h2 class="settings-panel-title" style="margin-bottom:4px;">Gateway</h2>
+                                    <p class="settings-panel-subtitle" style="margin-bottom:0;">Each gateway is an independent runtime. Select one to view and manage its settings.</p>
+                                </div>
+                                <!-- OS toggle (mockup demo only) -->
+                                <div style="display:flex;align-items:center;background:var(--kd-bg-hover);border:1px solid var(--kd-border);border-radius:7px;overflow:hidden;flex-shrink:0;margin-top:6px;">
+                                    <button id="osToggleMac" onclick="setOSMode(false)" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;cursor:pointer;background:var(--kd-accent);color:#fff;">macOS · Linux</button>
+                                    <button id="osToggleWin" onclick="setOSMode(true)" style="padding:5px 12px;font-size:11px;font-weight:500;border:none;cursor:pointer;background:transparent;color:var(--kd-text-muted);">Windows</button>
+                                </div>
+                            </div>
 
-                            <!-- Master-detail: list left, details right -->
-                            <div class="settings-card" style="overflow:hidden;">
-                                <div style="display:flex;min-height:260px;">
+                            <!-- Master-detail card -->
+                            <div class="settings-card" style="overflow:hidden;margin-top:12px;">
+                                <div style="display:flex;min-height:440px;">
 
                                     <!-- Left: gateway list -->
-                                    <div style="width:200px;flex-shrink:0;border-right:1px solid var(--kd-border);display:flex;flex-direction:column;">
+                                    <div style="width:210px;flex-shrink:0;border-right:1px solid var(--kd-border);display:flex;flex-direction:column;">
                                         <div style="padding:10px 12px;border-bottom:1px solid var(--kd-border);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);display:flex;align-items:center;justify-content:space-between;">
                                             Gateways
-                                            <button class="btn btn-ghost" style="font-size:11px;padding:2px 7px;" onclick="document.getElementById('addGatewayForm').style.display=document.getElementById('addGatewayForm').style.display==='none'?'flex':'none'">+ Add</button>
+                                            <button class="btn btn-ghost" style="font-size:11px;padding:2px 7px;" onclick="toggleAddForm()">+ Add</button>
                                         </div>
                                         <div style="flex:1;overflow-y:auto;">
-
-                                            <!-- local-default -->
-                                            <div id="gwItem-local" onclick="selectGateway('local')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid var(--kd-accent);background:color-mix(in srgb,var(--kd-accent) 8%,transparent);transition:all 0.12s;">
-                                                <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;box-shadow:0 0 0 2px rgba(74,222,128,0.2);"></div>
+                                            <div id="gwItem-local" onclick="selectGateway('local')" class="gw-list-item gw-selected">
+                                                <div class="gw-status-dot" style="background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,0.2);"></div>
                                                 <div style="flex:1;min-width:0;">
                                                     <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">local-default</div>
                                                     <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Podman · local</div>
                                                 </div>
                                                 <span class="status-badge connected" style="font-size:9px;padding:1px 5px;flex-shrink:0;">Active</span>
                                             </div>
-
-                                            <!-- team-shared -->
-                                            <div id="gwItem-team" onclick="selectGateway('team')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid transparent;transition:all 0.12s;" onmouseover="if(!this.classList.contains('gw-selected'))this.style.background='color-mix(in srgb,var(--kd-accent) 4%,transparent)'" onmouseout="if(!this.classList.contains('gw-selected'))this.style.background=''">
-                                                <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;"></div>
+                                            <div id="gwItem-team" onclick="selectGateway('team')" class="gw-list-item">
+                                                <div class="gw-status-dot" style="background:#4ade80;"></div>
                                                 <div style="flex:1;min-width:0;">
                                                     <div style="font-size:13px;font-weight:500;color:var(--kd-text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">team-shared</div>
-                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">MicroVM · remote</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">MicroVM · remote · OIDC</div>
                                                 </div>
                                             </div>
-
-                                            <!-- dev-sandbox -->
-                                            <div id="gwItem-dev" onclick="selectGateway('dev')" style="display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-left:3px solid transparent;transition:all 0.12s;" onmouseover="if(!this.classList.contains('gw-selected'))this.style.background='color-mix(in srgb,var(--kd-accent) 4%,transparent)'" onmouseout="if(!this.classList.contains('gw-selected'))this.style.background=''">
-                                                <div style="width:7px;height:7px;border-radius:50%;background:var(--kd-text-muted);opacity:0.35;flex-shrink:0;"></div>
+                                            <div id="gwItem-dev" onclick="selectGateway('dev')" class="gw-list-item">
+                                                <div class="gw-status-dot" style="background:var(--kd-text-muted);opacity:0.4;"></div>
                                                 <div style="flex:1;min-width:0;">
                                                     <div style="font-size:13px;font-weight:500;color:var(--kd-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">dev-sandbox</div>
-                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Podman · remote</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Podman · remote · mTLS</div>
                                                 </div>
                                             </div>
-
+                                            <div id="gwItem-docker" onclick="selectGateway('docker')" class="gw-list-item">
+                                                <div class="gw-status-dot" style="background:#f87171;opacity:0.7;"></div>
+                                                <div style="flex:1;min-width:0;">
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">local-docker</div>
+                                                    <div style="font-size:10px;color:var(--kd-text-muted);margin-top:1px;">Docker · local</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <!-- Right: gateway detail -->
-                                    <div style="flex:1;min-width:0;overflow-y:auto;">
-                                        <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;">
-                                            <div>
+                                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+                                        <!-- Header: name + action buttons -->
+                                        <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px;">
+                                            <div style="min-width:0;">
                                                 <div style="font-size:14px;font-weight:600;color:var(--kd-text-primary);" id="gwDetailName">local-default</div>
                                                 <div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px;" id="gwDetailMeta">local · Podman · v2.1.0 · Port 17670</div>
                                             </div>
-                                            <div style="display:flex;gap:6px;align-items:center;">
-                                                <button id="gwDetailMakeActive" class="btn btn-primary" style="display:none;font-size:12px;padding:4px 10px;" onclick="alert('Mock: switching active gateway…')">Make active</button>
-                                                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;">Restart</button>
-                                                <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;">Stop</button>
+                                            <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+                                                <button id="gwBtnTest" class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="gwTestConnection()">Test connection</button>
+                                                <button id="gwBtnMakeActive" class="btn btn-secondary" style="display:none;font-size:12px;padding:4px 10px;" onclick="gwMakeActive()">Make active</button>
+                                                <button id="gwBtnRestart" class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="alert('Mock: restarting gateway...')">Restart</button>
+                                                <button id="gwBtnStop" class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="alert('Mock: stopping gateway...')">Stop</button>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;color:#f87171;" onclick="gwShowDelete()">Delete</button>
                                             </div>
                                         </div>
 
-                                        <!-- Status -->
-                                        <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
-                                            <span id="gwDetailDot" class="os-status-dot-green"></span>
-                                            <span id="gwDetailStatus" style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Running</span>
-                                            <span id="gwDetailUptime" style="font-size:12px;color:var(--kd-text-muted);">· Uptime: 2h 14m</span>
-                                        </div>
-
-                                        <!-- Driver -->
-                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
-                                            <div>
-                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Driver</div>
-                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">Set at creation — cannot be changed without recreating.</div>
+                                        <!-- Inline delete confirmation -->
+                                        <div id="gwDeleteConfirm" style="display:none;padding:10px 16px;background:color-mix(in srgb,#f87171 8%,transparent);border-bottom:1px solid color-mix(in srgb,#f87171 20%,transparent);flex-shrink:0;">
+                                            <div style="font-size:13px;color:var(--kd-text-primary);margin-bottom:8px;">Delete <strong id="gwDeleteName">local-default</strong>? This will stop the process and remove the registration. This cannot be undone.</div>
+                                            <div style="display:flex;gap:8px;">
+                                                <button class="btn" style="font-size:12px;padding:4px 12px;background:#f87171;color:#fff;border:none;cursor:pointer;border-radius:6px;" onclick="gwConfirmDelete()">Delete</button>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="gwHideDelete()">Cancel</button>
                                             </div>
-                                            <span id="gwDetailDriver" style="font-size:12px;font-weight:600;color:var(--kd-text-primary);padding:4px 10px;background:color-mix(in srgb,var(--kd-accent) 8%,transparent);border:1px solid var(--kd-border);border-radius:6px;white-space:nowrap;">Podman</span>
                                         </div>
 
-                                        <!-- Endpoint -->
-                                        <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);">
-                                            <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);margin-bottom:6px;">Endpoint</div>
-                                            <input type="text" id="gwDetailEndpoint" value="grpc://localhost:17670" readonly style="width:100%;box-sizing:border-box;padding:6px 10px;font-size:12px;font-family:monospace;background:var(--kd-bg-card);border:1px solid var(--kd-border);border-radius:6px;color:var(--kd-text-muted);outline:none;">
+                                        <!-- Test connection result -->
+                                        <div id="gwConnResult" style="display:none;padding:8px 16px;border-bottom:1px solid var(--kd-border);font-size:12px;flex-shrink:0;"></div>
+
+                                        <!-- Tab bar -->
+                                        <div style="display:flex;padding:0 4px;border-bottom:1px solid var(--kd-border);flex-shrink:0;">
+                                            <button id="gwtab-overview" onclick="switchGwTab('overview')" class="gw-tab gw-tab-active">Overview</button>
+                                            <button id="gwtab-providers" onclick="switchGwTab('providers')" class="gw-tab">Providers</button>
+                                            <button id="gwtab-inference" onclick="switchGwTab('inference')" class="gw-tab">Inference</button>
+                                            <button id="gwtab-advanced" onclick="switchGwTab('advanced')" class="gw-tab">Advanced</button>
+                                            <button id="gwtab-config" onclick="switchGwTab('config')" class="gw-tab">Config</button>
                                         </div>
 
-                                        <!-- Sandboxes -->
-                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
-                                            <div>
-                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Sandboxes</div>
-                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;" id="gwDetailSandboxes">3 running across all projects</div>
+                                        <!-- Tab: Overview -->
+                                        <div id="gwTabContent-overview" style="flex:1;overflow-y:auto;min-height:0;">
+                                            <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                                <span id="gwDetailDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.2);flex-shrink:0;"></span>
+                                                <span id="gwDetailStatus" style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Running</span>
+                                                <span id="gwDetailUptime" style="font-size:12px;color:var(--kd-text-muted);">· Uptime: 2h 14m</span>
                                             </div>
-                                            <a href="../sandboxes/index.html" class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;">View all →</a>
-                                        </div>
-
-                                        <!-- Logs -->
-                                        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
-                                            <div>
-                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Security logs</div>
-                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">OCSF events from sandboxes on this gateway</div>
-                                            </div>
-                                            <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;" onclick="showSection('os-logs')">View logs →</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Add gateway form (slides in below) -->
-                                <div id="addGatewayForm" style="display:none;padding:16px 18px;border-top:1px solid var(--kd-border);background:color-mix(in srgb,var(--kd-accent) 3%,transparent);flex-direction:column;gap:12px;">
-                                    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--kd-text-muted);">Register gateway</div>
-                                    <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;">
-                                        <div>
-                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Name</label>
-                                            <input type="text" class="settings-input" placeholder="e.g. team-shared" style="min-width:0;width:100%;box-sizing:border-box;">
-                                        </div>
-                                        <div>
-                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Endpoint URL</label>
-                                            <input type="text" class="settings-input" placeholder="grpc://gateway.corp.example.com:17670" style="min-width:0;width:100%;box-sizing:border-box;">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="form-row-desc" style="margin-bottom:8px;font-weight:600;">Driver <span style="font-weight:400;color:var(--kd-text-muted);">— fixed at creation</span></div>
-                                        <div style="display:flex;gap:10px;">
-                                            <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-accent);border-radius:7px;flex:1;background:color-mix(in srgb,var(--kd-accent) 5%,transparent);">
-                                                <input type="radio" name="gwDriver" value="podman" checked class="os-radio-input">
+                                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
                                                 <div>
-                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Podman <span class="os-sub-label-accent">(recommended)</span></div>
-                                                    <div class="form-row-desc">Container-based — faster startup, lower overhead</div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Driver</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">Set at creation — cannot be changed without recreating.</div>
+                                                </div>
+                                                <span id="gwDetailDriver" style="font-size:12px;font-weight:600;color:var(--kd-text-primary);padding:4px 10px;background:color-mix(in srgb,var(--kd-accent) 8%,transparent);border:1px solid var(--kd-border);border-radius:6px;white-space:nowrap;">Podman</span>
+                                            </div>
+                                            <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);margin-bottom:6px;">Endpoint</div>
+                                                <input type="text" id="gwDetailEndpoint" value="grpc://localhost:17670" readonly style="width:100%;box-sizing:border-box;padding:6px 10px;font-size:12px;font-family:monospace;background:var(--kd-bg-card);border:1px solid var(--kd-border);border-radius:6px;color:var(--kd-text-muted);outline:none;">
+                                            </div>
+                                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Sandboxes</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;" id="gwDetailSandboxes">3 running across all projects</div>
+                                                </div>
+                                                <a href="../sandboxes/index.html" class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;">View all →</a>
+                                            </div>
+                                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Providers</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">Credential stores attached to this gateway</div>
+                                                </div>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;" id="gwProvidersSummary" onclick="switchGwTab('providers')">2 attached · Manage →</button>
+                                            </div>
+                                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--kd-border);">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Inference routes</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">LLM provider endpoints available to sandboxes</div>
+                                                </div>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;" id="gwInferenceSummary" onclick="switchGwTab('inference')">2 configured · Manage →</button>
+                                            </div>
+                                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Security logs</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">OCSF events from sandboxes on this gateway</div>
+                                                </div>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;white-space:nowrap;" onclick="showSection('os-logs')">View logs →</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab: Providers -->
+                                        <div id="gwTabContent-providers" style="display:none;flex:1;overflow-y:auto;min-height:0;">
+                                            <div id="gwProviderList" style="padding:8px 0;"></div>
+                                            <div id="gwAttachPicker" style="display:none;margin:0 16px 12px;border:1px solid var(--kd-border);border-radius:8px;overflow:hidden;">
+                                                <div style="padding:10px 14px;border-bottom:1px solid var(--kd-border);font-size:11px;font-weight:700;color:var(--kd-text-muted);text-transform:uppercase;letter-spacing:0.05em;">Attach provider from vault</div>
+                                                <div style="max-height:160px;overflow-y:auto;">
+                                                    <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--kd-border);">
+                                                        <input type="radio" name="attachProvider" value="jfrog" class="os-radio-input">
+                                                        <div class="provider-icon jfrog" style="width:24px;height:24px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">J</div>
+                                                        <div><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">jfrog-registry</div><div style="font-size:11px;color:var(--kd-text-muted);">jfrog · api_key</div></div>
+                                                    </label>
+                                                    <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;">
+                                                        <input type="radio" name="attachProvider" value="custom" class="os-radio-input">
+                                                        <div class="provider-icon generic" style="width:24px;height:24px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">C</div>
+                                                        <div><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">custom-api</div><div style="font-size:11px;color:var(--kd-text-muted);">generic · bearer token</div></div>
+                                                    </label>
+                                                </div>
+                                                <div style="padding:10px 14px;border-top:1px solid var(--kd-border);display:flex;gap:8px;">
+                                                    <button class="btn btn-primary" style="font-size:12px;padding:4px 12px;" onclick="alert('Mock: provider attached');document.getElementById('gwAttachPicker').style.display='none'">Attach</button>
+                                                    <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="document.getElementById('gwAttachPicker').style.display='none'">Cancel</button>
+                                                </div>
+                                            </div>
+                                            <div style="padding:0 16px 12px;display:flex;align-items:center;gap:12px;">
+                                                <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;" onclick="gwToggleAttachPicker()">+ Attach provider</button>
+                                                <span style="font-size:12px;color:var(--kd-text-muted);">To create a new provider, go to <a href="#" onclick="showSection('secret-vault');return false;" style="color:var(--kd-accent);text-decoration:none;">Secret Vault →</a></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab: Inference -->
+                                        <div id="gwTabContent-inference" style="display:none;flex:1;overflow-y:auto;min-height:0;">
+                                            <div style="padding:12px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Inference routes</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:2px;">LLM provider endpoints this gateway exposes to sandboxes. The gateway proxies requests and injects credentials automatically — agents call a stable local URL and never see raw API keys.</div>
+                                                </div>
+                                                <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;flex-shrink:0;" onclick="gwToggleAddRoute()">+ Add route</button>
+                                            </div>
+                                            <div id="gwRouteList" style="padding:8px 0;"></div>
+                                            <!-- Add route inline form -->
+                                            <div id="gwAddRoutePicker" style="display:none;margin:0 16px 12px;border:1px solid var(--kd-border);border-radius:8px;overflow:hidden;">
+                                                <div style="padding:10px 14px;border-bottom:1px solid var(--kd-border);font-size:11px;font-weight:700;color:var(--kd-text-muted);text-transform:uppercase;letter-spacing:0.05em;">Add inference route</div>
+                                                <div style="padding:14px;">
+                                                    <div style="display:flex;gap:8px;margin-bottom:12px;">
+                                                        <label style="flex:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid var(--kd-accent);border-radius:7px;background:color-mix(in srgb,var(--kd-accent) 5%,transparent);">
+                                                            <input type="radio" name="gwRouteProvider" value="anthropic" checked class="os-radio-input">
+                                                            <div><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Anthropic</div><div class="form-row-desc">api.anthropic.com</div></div>
+                                                        </label>
+                                                        <label style="flex:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid var(--kd-border);border-radius:7px;">
+                                                            <input type="radio" name="gwRouteProvider" value="openai" class="os-radio-input">
+                                                            <div><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">OpenAI</div><div class="form-row-desc">api.openai.com</div></div>
+                                                        </label>
+                                                        <label style="flex:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid var(--kd-border);border-radius:7px;">
+                                                            <input type="radio" name="gwRouteProvider" value="custom" class="os-radio-input">
+                                                            <div><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Custom</div><div class="form-row-desc">OpenAI-compatible</div></div>
+                                                        </label>
+                                                    </div>
+                                                    <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:10px;">
+                                                        <div>
+                                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Route name</label>
+                                                            <input type="text" class="settings-input" placeholder="e.g. anthropic-main" style="width:100%;box-sizing:border-box;">
+                                                        </div>
+                                                        <div>
+                                                            <label class="form-row-desc" style="display:block;margin-bottom:4px;">Endpoint URL</label>
+                                                            <input type="text" class="settings-input" value="https://api.anthropic.com" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:11px;">
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom:10px;">
+                                                        <label class="form-row-desc" style="display:block;margin-bottom:4px;">Credential reference</label>
+                                                        <select class="settings-input" style="width:100%;">
+                                                            <option>anthropic (ANTHROPIC_API_KEY)</option>
+                                                            <option>openai (OPENAI_API_KEY)</option>
+                                                            <option>custom-api (bearer token)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="form-row-desc" style="display:block;margin-bottom:4px;">Allowed models <span style="font-weight:400;">(comma-separated, leave blank to allow all)</span></label>
+                                                        <input type="text" class="settings-input" placeholder="claude-opus-4-8, claude-sonnet-5" style="width:100%;box-sizing:border-box;">
+                                                    </div>
+                                                </div>
+                                                <div style="padding:10px 14px;border-top:1px solid var(--kd-border);display:flex;gap:8px;">
+                                                    <button class="btn btn-primary" style="font-size:12px;padding:4px 12px;" onclick="alert('Mock: inference route added');document.getElementById('gwAddRoutePicker').style.display='none'">Add route</button>
+                                                    <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="document.getElementById('gwAddRoutePicker').style.display='none'">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab: Advanced -->
+                                        <div id="gwTabContent-advanced" style="display:none;flex:1;overflow-y:auto;min-height:0;">
+                                            <div style="border-bottom:1px solid var(--kd-border);">
+                                                <div style="padding:12px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Driver Configuration — <span id="gwAdvancedDriverLabel">Podman</span></div>
+                                                <div id="gwDriverFields" style="padding:0 16px 8px;"></div>
+                                                <div style="padding:0 16px 12px;font-size:11px;color:var(--kd-text-muted);">Some changes require recreating the gateway to take effect.</div>
+                                            </div>
+                                            <!-- Supervisor section -->
+                                            <div style="border-bottom:1px solid var(--kd-border);">
+                                                <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Supervisor</div>
+
+                                                <!-- Image -->
+                                                <div style="padding:8px 16px 12px;border-bottom:1px solid var(--kd-border);">
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);margin-bottom:4px;">Supervisor image</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-bottom:10px;">The supervisor process runs inside every sandbox on this gateway and enforces security policies. It connects back to the gateway via an outbound gRPC stream — no inbound port is opened in the sandbox.</div>
+                                                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                                        <code id="gwSupImage" style="font-size:11px;padding:5px 10px;background:var(--kd-bg-hover);border:1px solid var(--kd-border);border-radius:6px;color:var(--kd-text-secondary);font-family:monospace;">ghcr.io/nvidia/openshell/supervisor:0.0.71</code>
+                                                        <button class="btn btn-ghost" style="font-size:11px;padding:3px 9px;" onclick="alert('Mock: update supervisor image')">Update...</button>
+                                                        <button class="btn btn-ghost" style="font-size:11px;padding:3px 9px;" onclick="alert('Mock: pin to specific digest')">Pin digest</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Security enforcement -->
+                                                <div style="padding:10px 16px 4px;">
+                                                    <div style="font-size:12px;font-weight:600;color:var(--kd-text-secondary);margin-bottom:4px;">Security enforcement</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-bottom:10px;">These policies are applied by the supervisor to all sandboxes on this gateway. Disabling any layer reduces isolation — only do so temporarily for debugging.</div>
+                                                </div>
+
+                                                <!-- Landlock -->
+                                                <div class="form-row" style="padding-top:8px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Filesystem isolation <span style="font-size:10px;font-weight:400;color:var(--kd-text-muted);margin-left:4px;">Landlock</span></div>
+                                                        <div class="form-row-desc">Restricts sandbox filesystem access to declared paths only. Strict mode denies all unlisted paths; permissive mode logs violations instead.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:8px;">
+                                                        <select class="settings-input" style="min-width:0;width:110px;font-size:12px;">
+                                                            <option selected>strict</option>
+                                                            <option>permissive</option>
+                                                        </select>
+                                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- seccomp -->
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Process isolation <span style="font-size:10px;font-weight:400;color:var(--kd-text-muted);margin-left:4px;">seccomp</span></div>
+                                                        <div class="form-row-desc">Filters syscalls available to sandbox processes using the default seccomp profile. Reduces the kernel attack surface.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Network proxy / OPA -->
+                                                <div class="form-row" style="border-bottom:none;padding-bottom:12px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Network policy proxy <span style="font-size:10px;font-weight:400;color:var(--kd-text-muted);margin-left:4px;">OPA</span></div>
+                                                        <div class="form-row-desc">Intercepts outbound HTTP/HTTPS traffic from sandbox processes. In enforce mode, requests that do not match an attached provider's allow-list are blocked and credentials are injected for matching hosts. In audit mode, violations are logged but not blocked.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:8px;">
+                                                        <select class="settings-input" style="min-width:0;width:90px;font-size:12px;">
+                                                            <option selected>enforce</option>
+                                                            <option>audit</option>
+                                                        </select>
+                                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Session & Defaults section -->
+                                            <div style="border-bottom:1px solid var(--kd-border);">
+                                                <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Session &amp; Defaults</div>
+
+                                                <!-- SSH session TTL -->
+                                                <div class="form-row" style="padding-top:8px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">SSH session TTL</div>
+                                                        <div class="form-row-desc">Inactive SSH sessions are closed after this many seconds. Active sessions are unaffected. Applies to all sandboxes on this gateway.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:6px;">
+                                                        <input type="number" class="settings-input" value="3600" style="min-width:0;width:80px;text-align:right;">
+                                                        <span style="font-size:12px;color:var(--kd-text-muted);">s</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Service forwarding -->
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Service forwarding</div>
+                                                        <div class="form-row-desc">Allows sandboxes to expose services running on loopback to the host browser via the supervisor relay. Required for previewing web UIs, Jupyter notebooks, or any local service an agent starts inside the sandbox.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <div class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Log level -->
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Log level</div>
+                                                        <div class="form-row-desc">Verbosity of gateway and supervisor logs. Use debug only when diagnosing issues — it produces significant output.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <select class="settings-input" style="min-width:0;width:100px;font-size:12px;">
+                                                            <option selected>info</option>
+                                                            <option>debug</option>
+                                                            <option>warn</option>
+                                                            <option>error</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Max concurrent sandboxes -->
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Max concurrent sandboxes</div>
+                                                        <div class="form-row-desc">Hard limit on simultaneously running sandboxes across all agents on this gateway. Set to 0 for unlimited.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <input type="number" class="settings-input" value="0" style="min-width:0;width:80px;text-align:right;">
+                                                    </div>
+                                                </div>
+                                                <!-- Default CPU limit -->
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Default CPU limit</div>
+                                                        <div class="form-row-desc">CPU cores allocated per sandbox when the session request does not specify a limit. Applies across all drivers.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:6px;">
+                                                        <input type="number" class="settings-input" value="2" style="min-width:0;width:70px;text-align:right;">
+                                                        <span style="font-size:12px;color:var(--kd-text-muted);">cores</span>
+                                                    </div>
+                                                </div>
+                                                <!-- Default memory limit -->
+                                                <div class="form-row" style="border-bottom:none;padding-bottom:12px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Default memory limit</div>
+                                                        <div class="form-row-desc">Memory in MiB allocated per sandbox when the session request does not specify a limit.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:6px;">
+                                                        <input type="number" class="settings-input" value="2048" style="min-width:0;width:80px;text-align:right;">
+                                                        <span style="font-size:12px;color:var(--kd-text-muted);">MiB</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Auth & Token Issuance section -->
+                                            <div style="border-bottom:1px solid var(--kd-border);">
+                                                <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Auth &amp; Token Issuance</div>
+                                                <div style="padding:0 16px 8px;font-size:12px;color:var(--kd-text-muted);">The gateway issues short-lived JWTs for session auth, signed with an Ed25519 key pair managed by Kaiden.</div>
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Token TTL</div>
+                                                        <div class="form-row-desc">Lifetime of issued JWT tokens. Shorter values reduce exposure; longer values reduce re-auth frequency.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:6px;">
+                                                        <input type="number" class="settings-input" id="gwJwtTtl" value="3600" style="min-width:0;width:80px;text-align:right;">
+                                                        <span style="font-size:12px;color:var(--kd-text-muted);">s</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Signing key</div>
+                                                        <div class="form-row-desc">Ed25519 key pair used to sign gateway tokens. Rotating invalidates all active sessions.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:8px;">
+                                                        <code id="gwJwtKid" style="font-size:11px;padding:3px 8px;background:var(--kd-bg-hover);border:1px solid var(--kd-border);border-radius:5px;color:var(--kd-text-muted);font-family:monospace;">kid:a3f8c2d1</code>
+                                                        <button class="btn btn-ghost" style="font-size:11px;padding:3px 9px;" onclick="alert('Mock: key rotation initiated — active sessions will be invalidated')">Rotate</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row" style="border-bottom:none;padding-bottom:12px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Key path</div>
+                                                        <div class="form-row-desc">On-disk path to the PEM private key. For remote gateways, configure directly on the server.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <input type="text" class="settings-input" id="gwJwtKeyPath" value="~/.local/share/kaiden/gateway/jwt/signing.pem" readonly style="min-width:0;width:240px;font-family:monospace;font-size:11px;color:var(--kd-text-muted);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Observability section -->
+                                            <div style="border-bottom:1px solid var(--kd-border);">
+                                                <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Observability</div>
+                                                <div class="form-row">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Metrics endpoint</div>
+                                                        <div class="form-row-desc">Exposes Prometheus-compatible metrics at /metrics. Useful for Grafana, Datadog, or any compatible scraper.</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:8px;">
+                                                        <input type="number" class="settings-input" id="gwMetricsPort" value="9091" style="min-width:0;width:70px;text-align:right;">
+                                                        <div id="gwMetricsToggle" class="settings-toggle active" onclick="toggleSetting(this)"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row" style="border-bottom:none;padding-bottom:12px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Health check port</div>
+                                                        <div class="form-row-desc">Port for /healthz and /readyz HTTP endpoints, used by container orchestrators and load balancers.</div>
+                                                    </div>
+                                                    <div class="form-row-control">
+                                                        <input type="number" class="settings-input" id="gwHealthPort" value="8080" style="min-width:0;width:70px;text-align:right;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- OPA Policies section -->
+                                            <div>
+                                                <div style="padding:12px 16px 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">OPA Policies</div>
+                                                <div style="padding:0 16px 8px;font-size:12px;color:var(--kd-text-muted);">Network allow-list rules enforced by the supervisor proxy inside each sandbox. Sandboxes can only reach hosts explicitly permitted here.</div>
+                                                <div class="form-row" style="border-bottom:none;padding-bottom:12px;">
+                                                    <div class="form-row-info">
+                                                        <div class="form-row-label">Allow-list</div>
+                                                        <div class="form-row-desc" id="gwPolicyDesc">12 rules · 3 domain allow-entries · 2 prefix matchers</div>
+                                                    </div>
+                                                    <div class="form-row-control" style="gap:8px;">
+                                                        <button class="btn btn-secondary" style="font-size:12px;padding:4px 12px;" onclick="alert('Mock: policy editor opens here')">Edit policy</button>
+                                                        <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="alert('Mock: downloads policy.rego')">Export .rego</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab: Config -->
+                                        <div id="gwTabContent-config" style="display:none;flex:1;min-height:0;display:flex;flex-direction:column;">
+                                            <div style="padding:10px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Gateway config (TOML)</div>
+                                                    <div style="font-size:12px;color:var(--kd-text-muted);margin-top:1px;">Edit directly — changes are applied only when you click Apply Config.</div>
+                                                </div>
+                                                <button id="gwCopyTomlBtn" class="btn btn-ghost" style="font-size:11px;padding:3px 9px;flex-shrink:0;" onclick="gwCopyToml()">Copy</button>
+                                            </div>
+                                            <textarea id="gwRawToml" class="settings-textarea" spellcheck="false" oninput="gwOnTomlInput()" style="flex:1;min-height:0;margin:12px 16px;font-family:monospace;font-size:11px;line-height:1.6;resize:none;box-sizing:border-box;border-radius:6px;"></textarea>
+                                            <div style="padding:10px 16px;border-top:1px solid var(--kd-border);display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;">
+                                                <button id="gwRevertTomlBtn" class="btn btn-ghost" style="font-size:12px;padding:4px 10px;display:none;" onclick="gwRevertToml()">Revert</button>
+                                                <button id="gwApplyTomlBtn" class="btn btn-primary" style="font-size:12px;padding:4px 14px;opacity:0.38;pointer-events:none;" disabled onclick="gwApplyToml()">Apply Config</button>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end right detail -->
+                                </div><!-- end flex row -->
+
+                                <!-- Add gateway form -->
+                                <div id="addGatewayForm" style="display:none;border-top:1px solid var(--kd-border);background:color-mix(in srgb,var(--kd-accent) 3%,transparent);">
+                                    <div style="padding:14px 18px 0;">
+                                        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--kd-text-muted);margin-bottom:12px;">Add gateway</div>
+                                        <div style="display:flex;gap:10px;margin-bottom:14px;">
+                                            <label id="gwTypeLocalCard" style="flex:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-accent);border-radius:7px;background:color-mix(in srgb,var(--kd-accent) 5%,transparent);">
+                                                <input type="radio" name="gwAddType" value="local" checked class="os-radio-input" onchange="gwUpdateAddForm()">
+                                                <div>
+                                                    <div style="font-size:13px;font-weight:600;color:var(--kd-text-primary);">Local <span class="os-sub-label-accent">(recommended)</span></div>
+                                                    <div class="form-row-desc">Managed by Kaiden on this machine</div>
                                                 </div>
                                             </label>
-                                            <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;flex:1;">
-                                                <input type="radio" name="gwDriver" value="microvm" class="os-radio-input">
+                                            <label id="gwTypeRemoteCard" style="flex:1;display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;">
+                                                <input type="radio" name="gwAddType" value="remote" class="os-radio-input" onchange="gwUpdateAddForm()">
                                                 <div>
-                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">MicroVM</div>
-                                                    <div class="form-row-desc">VM-based — hardware-level isolation, slower start</div>
+                                                    <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Remote</div>
+                                                    <div class="form-row-desc">Connect to an existing external gateway</div>
                                                 </div>
                                             </label>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="form-row-desc" style="margin-bottom:6px;font-weight:600;">Auth</div>
-                                        <div style="display:flex;align-items:center;gap:16px;">
-                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="local" class="os-radio-input"> Local</label>
-                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="remote" checked class="os-radio-input"> Remote</label>
-                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="oidc" class="os-radio-input"> Remote · OIDC</label>
-                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwType" value="mtls" class="os-radio-input"> Remote · mTLS</label>
+                                    <!-- Local fields -->
+                                    <div id="gwAddLocal" style="padding:0 18px 14px;">
+                                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                                            <div>
+                                                <label class="form-row-desc" style="display:block;margin-bottom:4px;">Name</label>
+                                                <input type="text" class="settings-input" placeholder="e.g. local-gpu" style="width:100%;box-sizing:border-box;">
+                                            </div>
+                                            <div>
+                                                <label class="form-row-desc" style="display:block;margin-bottom:4px;">Port</label>
+                                                <input type="number" class="settings-input" value="17670" style="width:100%;box-sizing:border-box;">
+                                            </div>
+                                        </div>
+                                        <div id="gwAddDriverSection">
+                                            <div class="form-row-desc" style="margin-bottom:8px;font-weight:600;">Driver <span style="font-weight:400;color:var(--kd-text-muted);">— fixed at creation</span></div>
+                                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-accent);border-radius:7px;flex:1;min-width:120px;background:color-mix(in srgb,var(--kd-accent) 5%,transparent);">
+                                                    <input type="radio" name="gwAddDriver" value="podman" checked class="os-radio-input">
+                                                    <div>
+                                                        <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Podman <span class="os-sub-label-accent">(recommended)</span></div>
+                                                        <div class="form-row-desc">Container-based, faster startup</div>
+                                                    </div>
+                                                </label>
+                                                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;flex:1;min-width:120px;">
+                                                    <input type="radio" name="gwAddDriver" value="docker" class="os-radio-input">
+                                                    <div>
+                                                        <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Docker</div>
+                                                        <div class="form-row-desc">Docker daemon required</div>
+                                                    </div>
+                                                </label>
+                                                <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;flex:1;min-width:120px;">
+                                                    <input type="radio" name="gwAddDriver" value="microvm" class="os-radio-input">
+                                                    <div>
+                                                        <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">MicroVM</div>
+                                                        <div class="form-row-desc">VM-level isolation</div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div id="gwAddWindowsNote" style="display:none;margin-top:8px;padding:10px 14px;border:1px solid var(--kd-border);border-radius:7px;background:color-mix(in srgb,var(--kd-accent) 3%,transparent);">
+                                            <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Podman (container-managed)</div>
+                                            <div class="form-row-desc">On Windows, the gateway runs as a Podman container managed by Kaiden. No driver selection needed.</div>
                                         </div>
                                     </div>
-                                    <div style="display:flex;gap:8px;">
+                                    <!-- Remote fields -->
+                                    <div id="gwAddRemote" style="display:none;padding:0 18px 14px;">
+                                        <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:12px;">
+                                            <div>
+                                                <label class="form-row-desc" style="display:block;margin-bottom:4px;">Name</label>
+                                                <input type="text" class="settings-input" placeholder="e.g. team-shared" style="width:100%;box-sizing:border-box;">
+                                            </div>
+                                            <div>
+                                                <label class="form-row-desc" style="display:block;margin-bottom:4px;">Endpoint URL</label>
+                                                <input type="text" class="settings-input" placeholder="grpc://gateway.corp.example.com:17670" style="width:100%;box-sizing:border-box;font-family:monospace;font-size:12px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-row-desc" style="margin-bottom:8px;font-weight:600;">Auth</div>
+                                        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;">
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwRemoteAuth" value="none" checked class="os-radio-input" onchange="gwUpdateAuthFields()"> None</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwRemoteAuth" value="oidc" class="os-radio-input" onchange="gwUpdateAuthFields()"> OIDC</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwRemoteAuth" value="mtls" class="os-radio-input" onchange="gwUpdateAuthFields()"> mTLS</label>
+                                            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--kd-text-secondary);"><input type="radio" name="gwRemoteAuth" value="cf-jwt" class="os-radio-input" onchange="gwUpdateAuthFields()"> Cloudflare JWT</label>
+                                        </div>
+                                        <div id="gwAuthFields"></div>
+                                        <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
+                                            <button class="btn btn-secondary" style="font-size:12px;padding:4px 10px;" onclick="gwTestConnectionForm()">Test connection</button>
+                                            <span id="gwFormConnResult" style="font-size:12px;"></span>
+                                        </div>
+                                    </div>
+                                    <div style="padding:0 18px 14px;display:flex;gap:8px;">
                                         <button class="btn btn-primary" onclick="alert('Mock: gateway registered')">Register</button>
-                                        <button class="btn btn-ghost" onclick="document.getElementById('addGatewayForm').style.display='none'">Cancel</button>
+                                        <button class="btn btn-ghost" onclick="toggleAddForm()">Cancel</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- end settings-card -->
 
-                            <!-- Startup (local gateways only) -->
-                            <div class="settings-card">
+                            <!-- Startup: macOS / Linux -->
+                            <div class="settings-card" id="gwStartupLocal">
                                 <div class="settings-card-header">Startup <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--kd-text-muted);margin-left:4px;">— local gateways only</span></div>
                                 <div class="form-row">
                                     <div class="form-row-info">
@@ -1017,12 +1448,332 @@
                                 </div>
                             </div>
 
+                            <!-- Startup: Windows managed container -->
+                            <div class="settings-card" id="gwStartupWindows" style="display:none;">
+                                <div class="settings-card-header">Startup</div>
+                                <div class="form-row" style="border-bottom:none;">
+                                    <div class="form-row-info">
+                                        <div class="form-row-label">Gateway container</div>
+                                        <div class="form-row-desc">On Windows, the gateway runs as a managed Podman container. Startup is handled automatically by Kaiden — no configuration needed.</div>
+                                    </div>
+                                    <div class="form-row-control">
+                                        <span class="status-badge connected" style="font-size:11px;padding:3px 9px;">Running</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="settings-save-bar">
                                 <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
                                 <button class="settings-save-btn" onclick="saveSettings()">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                                     Save Settings
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- ── Gateway V2 ── -->
+                        <div id="panel-os-gw2" class="settings-panel">
+                            <!-- Header -->
+                            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+                                <div>
+                                    <h2 class="settings-panel-title" style="margin-bottom:4px;">Gateway</h2>
+                                    <p class="settings-panel-subtitle" style="margin-bottom:0;">The runtime that provisions sandboxes, enforces policy, and routes inference traffic.</p>
+                                </div>
+                                <!-- Demo mode toggle -->
+                                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:6px;">
+                                    <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);">Demo:</span>
+                                    <div style="display:flex;background:var(--kd-bg-hover);border:1px solid var(--kd-border);border-radius:7px;overflow:hidden;">
+                                        <button id="gw2DemoA" onclick="setGw2Mode('single')" style="padding:5px 11px;font-size:11px;font-weight:600;border:none;cursor:pointer;background:var(--kd-accent);color:#fff;">Single</button>
+                                        <button id="gw2DemoB" onclick="setGw2Mode('multi')" style="padding:5px 11px;font-size:11px;font-weight:500;border:none;cursor:pointer;background:transparent;color:var(--kd-text-muted);">Multi</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ── MODE A: Single gateway ── -->
+                            <div id="gw2ModeA">
+                                <div class="settings-card" style="overflow:hidden;margin-top:12px;">
+                                    <!-- Status header -->
+                                    <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--kd-border);flex-wrap:wrap;gap:8px;">
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                            <span id="gw2ActiveDot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#4ade80;flex-shrink:0;"></span>
+                                            <div>
+                                                <span id="gw2ActiveName" style="font-size:14px;font-weight:600;color:var(--kd-text-primary);">local-default</span>
+                                                <span id="gw2ActiveTypeBadge" style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px;background:rgba(99,102,241,0.12);color:var(--kd-accent);margin-left:8px;">Managed</span>
+                                            </div>
+                                            <div id="gw2ActiveMeta" style="font-size:12px;color:var(--kd-text-muted);">Managed · Podman · v2.1.0 · grpc://localhost:17670</div>
+                                        </div>
+                                        <div style="display:flex;gap:6px;align-items:center;">
+                                            <div style="position:relative;display:inline-block;">
+                                                <button class="btn btn-ghost" style="font-size:12px;" onclick="gw2TestConn()">Test</button>
+                                                <span id="gw2TestResult" style="display:none;font-size:11px;margin-left:8px;font-weight:600;"></span>
+                                            </div>
+                                            <button id="gw2BtnRestart" class="btn btn-secondary" style="font-size:12px;" onclick="alert('Mock: restarting gateway')">Restart</button>
+                                            <button id="gw2BtnStop" class="btn btn-ghost" style="font-size:12px;color:#f87171;" onclick="alert('Mock: stopping gateway')">Stop</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tab bar -->
+                                    <div style="display:flex;padding:0 4px;border-bottom:1px solid var(--kd-border);flex-shrink:0;">
+                                        <button id="gw2tab-overview" onclick="switchGw2Tab('overview')" class="gw-tab gw-tab-active">Overview</button>
+                                        <button id="gw2tab-inference" onclick="switchGw2Tab('inference')" class="gw-tab">Inference</button>
+                                        <button id="gw2tab-advanced" onclick="switchGw2Tab('advanced')" class="gw-tab">Advanced</button>
+                                        <button id="gw2tab-config" onclick="switchGw2Tab('config')" class="gw-tab">Config</button>
+                                    </div>
+
+                                    <!-- Referenced notice -->
+                                    <div id="gw2RefNotice" style="display:none;padding:8px 16px;background:rgba(107,114,128,0.07);border-bottom:1px solid var(--kd-border);font-size:12px;color:var(--kd-text-muted);">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                        Referenced gateway — configuration is managed externally and cannot be edited here.
+                                    </div>
+
+                                    <!-- Overview tab -->
+                                    <div id="gw2TabContent-overview" style="padding:0;">
+                                        <div class="form-row" style="border-bottom:1px solid var(--kd-border);">
+                                            <div class="form-row-info">
+                                                <div class="form-row-label">Driver</div>
+                                                <div class="form-row-desc">Set at creation — cannot be changed without recreating the gateway.</div>
+                                            </div>
+                                            <div class="form-row-control">
+                                                <span id="gw2DriverPill" class="status-badge connected" style="font-size:11px;padding:3px 10px;background:rgba(99,102,241,0.1);color:var(--kd-accent);border-color:transparent;">Podman</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="border-bottom:1px solid var(--kd-border);">
+                                            <div class="form-row-info">
+                                                <div class="form-row-label">Endpoint</div>
+                                                <div class="form-row-desc">gRPC address used by Kaiden to communicate with this gateway.</div>
+                                            </div>
+                                            <div class="form-row-control">
+                                                <code id="gw2Endpoint" style="font-family:monospace;font-size:12px;color:var(--kd-text-primary);background:var(--kd-bg-hover);padding:3px 8px;border-radius:5px;border:1px solid var(--kd-border);">grpc://localhost:17670</code>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="border-bottom:1px solid var(--kd-border);">
+                                            <div class="form-row-info">
+                                                <div class="form-row-label">Sandboxes</div>
+                                                <div class="form-row-desc">Active sandboxes running on this gateway.</div>
+                                            </div>
+                                            <div class="form-row-control" style="display:flex;align-items:center;gap:8px;">
+                                                <span id="gw2Sandboxes" style="font-size:13px;color:var(--kd-text-primary);">3 running across all projects</span>
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:3px 8px;white-space:nowrap;" onclick="showSection('os-sandboxes')">View all →</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="border-bottom:1px solid var(--kd-border);">
+                                            <div class="form-row-info">
+                                                <div class="form-row-label">Inference routes</div>
+                                                <div class="form-row-desc">LLM routing rules for sandboxes on this gateway.</div>
+                                            </div>
+                                            <div class="form-row-control">
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:3px 8px;white-space:nowrap;" onclick="switchGw2Tab('inference')"><span id="gw2RouteSummary">2 configured · Manage →</span></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-row" style="border-bottom:none;">
+                                            <div class="form-row-info">
+                                                <div class="form-row-label">Security logs</div>
+                                                <div class="form-row-desc">Sandbox egress events, OPA decisions, token activity.</div>
+                                            </div>
+                                            <div class="form-row-control">
+                                                <button class="btn btn-ghost" style="font-size:12px;padding:3px 8px;white-space:nowrap;" onclick="showSection('os-logs')">View logs →</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Inference tab -->
+                                    <div id="gw2TabContent-inference" style="display:none;">
+                                        <div style="padding:10px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;">
+                                            <div>
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Inference routes</div>
+                                                <div style="font-size:12px;color:var(--kd-text-muted);">Sandboxes call <code style="font-family:monospace;font-size:11px;">http://inference.local/…</code> — the supervisor proxies to the configured provider.</div>
+                                            </div>
+                                            <button class="btn btn-secondary" style="font-size:12px;flex-shrink:0;" onclick="gw2ToggleAddRoute()">+ Add route</button>
+                                        </div>
+                                        <div id="gw2RouteList"></div>
+                                        <!-- Add route picker -->
+                                        <div id="gw2AddRoutePicker" style="display:none;padding:14px 16px;border-top:1px solid var(--kd-border);background:var(--kd-bg-hover);">
+                                            <div style="font-size:12px;font-weight:600;color:var(--kd-text-primary);margin-bottom:10px;">New inference route</div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Provider</label>
+                                                    <select class="settings-input" style="width:100%;font-size:12px;">
+                                                        <option>Anthropic</option><option>OpenAI</option><option>Custom (OpenAI-compatible)</option>
+                                                    </select></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Route name</label>
+                                                    <input type="text" class="settings-input" placeholder="e.g. anthropic-main" style="width:100%;box-sizing:border-box;font-size:12px;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Endpoint URL</label>
+                                                    <input type="text" class="settings-input" value="https://api.anthropic.com" style="width:100%;box-sizing:border-box;font-size:12px;font-family:monospace;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Credential reference</label>
+                                                    <select class="settings-input" style="width:100%;font-size:12px;"><option>anthropic</option><option>openai</option><option>github</option></select></div>
+                                            </div>
+                                            <div style="margin-bottom:10px;"><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Allowed models (blank = all)</label>
+                                                <input type="text" class="settings-input" placeholder="claude-opus-4-8, claude-sonnet-5" style="width:100%;box-sizing:border-box;font-size:12px;"></div>
+                                            <div style="display:flex;gap:8px;">
+                                                <button class="btn btn-primary" style="font-size:12px;" onclick="alert('Mock: route added');gw2ToggleAddRoute()">Add route</button>
+                                                <button class="btn btn-ghost" style="font-size:12px;" onclick="gw2ToggleAddRoute()">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Advanced tab -->
+                                    <div id="gw2TabContent-advanced" style="display:none;padding:0;overflow-y:auto;max-height:420px;">
+                                        <!-- Driver config -->
+                                        <div style="padding:10px 16px 6px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">Driver — Podman</div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Socket path</label>
+                                                    <input type="text" class="settings-input" value="/run/podman/podman.sock" style="width:100%;box-sizing:border-box;font-size:12px;font-family:monospace;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Network name</label>
+                                                    <input type="text" class="settings-input" value="openshell" style="width:100%;box-sizing:border-box;font-size:12px;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Stop timeout (s)</label>
+                                                    <input type="number" class="settings-input" value="10" style="width:80px;font-size:12px;"></div>
+                                            </div>
+                                            <div style="font-size:11px;color:var(--kd-text-muted);margin-top:8px;padding-bottom:4px;">Some changes require recreating the gateway to take effect.</div>
+                                        </div>
+                                        <!-- Supervisor -->
+                                        <div style="padding:10px 16px 6px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">Supervisor</div>
+                                            <div class="form-row" style="padding:0;border-bottom:none;margin-bottom:8px;">
+                                                <div class="form-row-info" style="flex:1;">
+                                                    <div class="form-row-label" style="font-size:12px;">Image</div>
+                                                    <code style="font-size:11px;font-family:monospace;color:var(--kd-text-muted);">ghcr.io/nvidia/openshell/supervisor:0.0.71</code>
+                                                </div>
+                                                <div class="form-row-control"><button class="btn btn-ghost" style="font-size:11px;padding:3px 8px;">Update</button></div>
+                                            </div>
+                                            <div style="display:flex;flex-direction:column;gap:6px;">
+                                                <div style="display:flex;align-items:center;justify-content:space-between;">
+                                                    <span style="font-size:12px;color:var(--kd-text-primary);">Landlock (filesystem isolation)</span>
+                                                    <div class="settings-toggle active" onclick="this.classList.toggle('active')" style="margin:0;"></div>
+                                                </div>
+                                                <div style="display:flex;align-items:center;justify-content:space-between;">
+                                                    <span style="font-size:12px;color:var(--kd-text-primary);">seccomp syscall filter</span>
+                                                    <div class="settings-toggle active" onclick="this.classList.toggle('active')" style="margin:0;"></div>
+                                                </div>
+                                                <div style="display:flex;align-items:center;justify-content:space-between;">
+                                                    <span style="font-size:12px;color:var(--kd-text-primary);">OPA network proxy</span>
+                                                    <div class="settings-toggle active" onclick="this.classList.toggle('active')" style="margin:0;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Session & Defaults -->
+                                        <div style="padding:10px 16px 6px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">Session &amp; Defaults</div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">SSH session TTL (s)</label>
+                                                    <input type="number" class="settings-input" value="3600" style="width:90px;font-size:12px;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Max concurrent sandboxes</label>
+                                                    <input type="number" class="settings-input" value="0" style="width:90px;font-size:12px;" title="0 = unlimited"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Default CPU limit (cores)</label>
+                                                    <input type="number" class="settings-input" value="2" style="width:90px;font-size:12px;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Default memory limit (MiB)</label>
+                                                    <input type="number" class="settings-input" value="2048" style="width:90px;font-size:12px;"></div>
+                                            </div>
+                                            <div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between;">
+                                                <span style="font-size:12px;color:var(--kd-text-primary);">Service forwarding (sandbox→host)</span>
+                                                <div class="settings-toggle active" onclick="this.classList.toggle('active')" style="margin:0;"></div>
+                                            </div>
+                                        </div>
+                                        <!-- Auth & JWT -->
+                                        <div style="padding:10px 16px 6px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">Auth &amp; Token Issuance</div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Token TTL (s)</label>
+                                                    <input id="gw2JwtTtl" type="number" class="settings-input" value="3600" style="width:90px;font-size:12px;"></div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Signing key ID</label>
+                                                    <div style="display:flex;align-items:center;gap:6px;">
+                                                        <code id="gw2JwtKid" style="font-size:11px;font-family:monospace;color:var(--kd-text-primary);background:var(--kd-bg-hover);padding:3px 7px;border-radius:4px;border:1px solid var(--kd-border);">kid:a3f8c2d1</code>
+                                                        <button class="btn btn-ghost" style="font-size:11px;padding:3px 8px;" onclick="alert('Mock: rotate key — invalidates all active sessions')">Rotate</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Observability -->
+                                        <div style="padding:10px 16px 6px;border-bottom:1px solid var(--kd-border);">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">Observability</div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Metrics port (Prometheus)</label>
+                                                    <div style="display:flex;align-items:center;gap:8px;">
+                                                        <input id="gw2MetricsPort" type="number" class="settings-input" value="9091" style="width:80px;font-size:12px;">
+                                                        <div id="gw2MetricsToggle" class="settings-toggle active" onclick="this.classList.toggle('active')" style="margin:0;"></div>
+                                                    </div>
+                                                </div>
+                                                <div><label style="font-size:11px;color:var(--kd-text-muted);display:block;margin-bottom:3px;">Health check port</label>
+                                                    <input id="gw2HealthPort" type="number" class="settings-input" value="8080" style="width:80px;font-size:12px;"></div>
+                                            </div>
+                                        </div>
+                                        <!-- OPA Policies -->
+                                        <div style="padding:10px 16px 10px;">
+                                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--kd-text-muted);margin-bottom:8px;">OPA Policies</div>
+                                            <div style="font-size:12px;color:var(--kd-text-muted);margin-bottom:8px;">Network allow-list enforced by the supervisor proxy inside each sandbox. 3 domain rules · 12 prefix matchers.</div>
+                                            <div style="display:flex;gap:8px;">
+                                                <button class="btn btn-secondary" style="font-size:12px;" onclick="alert('Mock: open policy editor')">Edit policy</button>
+                                                <button class="btn btn-ghost" style="font-size:12px;" onclick="alert('Mock: export .rego')">Export .rego</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Config tab -->
+                                    <div id="gw2TabContent-config" style="display:none;flex-direction:column;min-height:320px;">
+                                        <div style="padding:10px 16px;border-bottom:1px solid var(--kd-border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                                            <div>
+                                                <div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">Gateway config (TOML)</div>
+                                                <div style="font-size:12px;color:var(--kd-text-muted);margin-top:1px;">Edit directly — changes apply only when you click Apply Config.</div>
+                                            </div>
+                                            <button id="gw2CopyTomlBtn" class="btn btn-ghost" style="font-size:11px;padding:3px 9px;flex-shrink:0;" onclick="gw2CopyToml()">Copy</button>
+                                        </div>
+                                        <textarea id="gw2RawToml" class="settings-textarea" spellcheck="false" oninput="gw2OnTomlInput()" style="flex:1;min-height:220px;margin:12px 16px;font-family:monospace;font-size:11px;line-height:1.6;resize:none;box-sizing:border-box;border-radius:6px;"></textarea>
+                                        <div style="padding:10px 16px;border-top:1px solid var(--kd-border);display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0;">
+                                            <button id="gw2RevertTomlBtn" class="btn btn-ghost" style="font-size:12px;padding:4px 10px;display:none;" onclick="gw2RevertToml()">Revert</button>
+                                            <button id="gw2ApplyTomlBtn" class="btn btn-primary" style="font-size:12px;padding:4px 14px;opacity:0.38;pointer-events:none;" disabled onclick="gw2ApplyToml()">Apply Config</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Add another gateway nudge -->
+                                <div style="margin-top:14px;padding:14px 20px;border-radius:8px;border:1px dashed var(--kd-border);display:flex;align-items:center;justify-content:space-between;">
+                                    <div style="font-size:13px;color:var(--kd-text-muted);">All sandboxes run on <strong style="color:var(--kd-text-primary);">local-default</strong>.</div>
+                                    <button class="btn btn-secondary" style="font-size:12px;" onclick="setGw2Mode('multi')">+ Add another gateway</button>
+                                </div>
+                            </div>
+
+                            <!-- ── MODE B: Multi gateway ── -->
+                            <div id="gw2ModeB" style="display:none;">
+                                <!-- Active gateway label -->
+                                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--kd-text-muted);margin:12px 0 6px;">Active gateway</div>
+                                <div class="settings-card" style="overflow:hidden;">
+                                    <!-- Active gateway status header (same IDs as Mode A — shared DOM) -->
+                                    <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--kd-border);flex-wrap:wrap;gap:8px;">
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#4ade80;flex-shrink:0;"></span>
+                                            <div>
+                                                <span style="font-size:14px;font-weight:600;color:var(--kd-text-primary);">local-default</span>
+                                                <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px;background:rgba(99,102,241,0.12);color:var(--kd-accent);margin-left:8px;">Managed</span>
+                                            </div>
+                                            <div style="font-size:12px;color:var(--kd-text-muted);">Podman · v2.1.0 · grpc://localhost:17670</div>
+                                        </div>
+                                        <div style="display:flex;gap:6px;align-items:center;">
+                                            <button class="btn btn-ghost" style="font-size:12px;" onclick="alert('Mock: gateway reachable · 12ms')">Test</button>
+                                            <button class="btn btn-secondary" style="font-size:12px;" onclick="alert('Mock: restarting')">Restart</button>
+                                            <button class="btn btn-ghost" style="font-size:12px;color:#f87171;" onclick="alert('Mock: stopping')">Stop</button>
+                                        </div>
+                                    </div>
+                                    <!-- Tabs (Mode B shares same tab content as Mode A via IDs) -->
+                                    <div style="display:flex;padding:0 4px;border-bottom:1px solid var(--kd-border);flex-shrink:0;">
+                                        <button onclick="switchGw2Tab('overview')" class="gw-tab gw-tab-active" style="pointer-events:none;opacity:0.7;">Overview</button>
+                                        <button onclick="switchGw2Tab('inference')" class="gw-tab" style="pointer-events:none;opacity:0.7;">Inference</button>
+                                        <button onclick="switchGw2Tab('advanced')" class="gw-tab" style="pointer-events:none;opacity:0.7;">Advanced</button>
+                                        <button onclick="switchGw2Tab('config')" class="gw-tab" style="pointer-events:none;opacity:0.7;">Config</button>
+                                    </div>
+                                    <div style="padding:10px 16px;font-size:12px;color:var(--kd-text-muted);font-style:italic;">Switch to Single mode to interact with tabs — in the real UI, active gateway tabs are always interactive.</div>
+                                </div>
+
+                                <!-- Other gateways -->
+                                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--kd-text-muted);margin:16px 0 6px;">Other gateways</div>
+                                <div class="settings-card" style="overflow:hidden;">
+                                    <div id="gw2OtherList"></div>
+                                </div>
+
+                                <!-- Add buttons -->
+                                <div style="margin-top:12px;display:flex;gap:8px;">
+                                    <button class="btn btn-secondary" style="font-size:12px;" onclick="alert('Mock: create local gateway flow')">+ Create local gateway</button>
+                                    <button class="btn btn-ghost" style="font-size:12px;" onclick="alert('Mock: register existing gateway flow')">+ Register existing</button>
+                                    <button class="btn btn-ghost" style="font-size:12px;margin-left:auto;color:var(--kd-text-muted);" onclick="setGw2Mode('single')">← Back to single view</button>
+                                </div>
                             </div>
                         </div>
 
@@ -2118,82 +2869,430 @@
                 var prefParent = document.querySelector('.pref-parent');
                 if (prefParent) prefParent.classList.add('active');
             }
+            // Initialize Gateway V2 panel on first show
+            if (section === 'os-gw2') {
+                gw2LoadActive();
+                gw2RenderOtherList();
+            }
         }
 
         function toggleSetting(element) {
             element.classList.toggle('active');
         }
 
-        // Gateway data per gateway
+        // Gateway panel state
+        var IS_WINDOWS = false;
+        var GW_ACTIVE_ID = 'local';
+        var GW_SELECTED_ID = 'local';
+        var GW_IDS = ['local', 'team', 'dev', 'docker'];
+
+        var GW_PROVIDERS_META = {
+            github:    { label: 'github',    icon: 'G', cls: 'github',  creds: 'GITHUB_TOKEN, GH_TOKEN' },
+            anthropic: { label: 'anthropic', icon: 'A', cls: 'claude',  creds: 'ANTHROPIC_API_KEY' },
+            openai:    { label: 'openai',    icon: 'O', cls: 'openai',  creds: 'OPENAI_API_KEY' },
+            jfrog:     { label: 'jfrog',     icon: 'J', cls: 'jfrog',   creds: 'JFROG_API_KEY' }
+        };
+
         var GW_DATA = {
             'local': {
-                name: 'local-default',
-                driver: 'Podman',
+                name: 'local-default', driver: 'Podman', scope: 'local',
                 endpoint: 'grpc://localhost:17670',
-                meta: 'local · v2.1.0 · Port 17670',
-                status: 'Running',
-                uptime: 'Uptime: 2h 14m',
+                meta: 'local · Podman · v2.1.0 · Port 17670',
+                status: 'Running', uptime: 'Uptime: 2h 14m',
                 sandboxes: '3 running across all projects',
-                isActive: true,
-                isRunning: true
+                isActive: true, isRunning: true, isLocal: true,
+                providers: ['github', 'anthropic'],
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.71',
+                routes: [
+                    { name: 'anthropic-main', provider: 'anthropic', endpoint: 'https://api.anthropic.com', credRef: 'anthropic', models: ['claude-opus-4-8', 'claude-sonnet-5', 'claude-haiku-4-5'], ok: true },
+                    { name: 'openai-backup', provider: 'openai', endpoint: 'https://api.openai.com', credRef: 'openai', models: ['gpt-4o', 'gpt-4o-mini'], ok: true }
+                ],
+                jwtKid: 'kid:a3f8c2d1', jwtTtl: 3600, jwtKeyPath: '~/.local/share/kaiden/gateway/jwt/signing.pem',
+                metricsEnabled: true, metricsPort: 9091, healthPort: 8080,
+                toml: '[openshell]\nversion = 1\n\n[openshell.drivers.podman]\n\n[openshell.gateway.auth]\nallow_unauthenticated_users = true\n\n[openshell.gateway.gateway_jwt]\nsigning_key_path = "~/.local/share/kaiden/gateway/jwt/signing.pem"\npublic_key_path = "~/.local/share/kaiden/gateway/jwt/public.pem"\nkid_path = "~/.local/share/kaiden/gateway/jwt/kid"\nttl_secs = 3600\n\n[[openshell.inference.routes]]\nname = "anthropic-main"\nendpoint = "https://api.anthropic.com"\ncredential_ref = "anthropic"\nmodels = ["claude-opus-4-8", "claude-sonnet-5"]\n\n[[openshell.inference.routes]]\nname = "openai-backup"\nendpoint = "https://api.openai.com"\ncredential_ref = "openai"\nmodels = ["gpt-4o", "gpt-4o-mini"]'
             },
             'team': {
-                name: 'team-shared',
-                driver: 'MicroVM',
+                name: 'team-shared', driver: 'MicroVM', scope: 'remote',
                 endpoint: 'grpc://gateway.corp.example.com:17670',
-                meta: 'remote · OIDC auth · v2.0.5',
-                status: 'Connected',
-                uptime: 'Uptime: 4d 11h',
+                meta: 'remote · MicroVM · OIDC · v2.0.5',
+                status: 'Connected', uptime: 'Uptime: 4d 11h',
                 sandboxes: '0 running (not active gateway)',
-                isActive: false,
-                isRunning: true
+                isActive: false, isRunning: true, isLocal: false,
+                providers: ['github', 'openai', 'jfrog'],
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.65',
+                routes: [
+                    { name: 'anthropic-enterprise', provider: 'anthropic', endpoint: 'https://api.anthropic.com', credRef: 'anthropic-enterprise', models: ['claude-opus-4-8', 'claude-sonnet-5'], ok: true },
+                    { name: 'openshift-ai', provider: 'custom', endpoint: 'https://openshift-ai.corp.example.com/v1', credRef: 'openshift-ai-key', models: ['granite-13b', 'llama3-70b'], ok: true }
+                ],
+                jwtKid: 'kid:f92e1b3a', jwtTtl: 7200, jwtKeyPath: '/etc/openshell/jwt/signing.pem',
+                metricsEnabled: true, metricsPort: 9091, healthPort: 8080,
+                toml: '[openshell]\nversion = 1\n\n[openshell.drivers.vm]\nstate_dir = "/var/lib/openshell/vms"\n\n[openshell.gateway.oidc]\nissuer = "https://sso.corp.example.com/realms/platform"\nclient_id = "openshell-gateway"\n\n[openshell.gateway.tls]\ncert_path = "/etc/openshell/tls/server.crt"\nkey_path = "/etc/openshell/tls/server.key"\n\n[[openshell.inference.routes]]\nname = "anthropic-enterprise"\nendpoint = "https://api.anthropic.com"\ncredential_ref = "anthropic-enterprise"\n\n[[openshell.inference.routes]]\nname = "openshift-ai"\nendpoint = "https://openshift-ai.corp.example.com/v1"\ncredential_ref = "openshift-ai-key"'
             },
             'dev': {
-                name: 'dev-sandbox',
-                driver: 'Podman',
+                name: 'dev-sandbox', driver: 'Podman', scope: 'remote',
                 endpoint: 'grpc://dev.corp.example.com:17670',
-                meta: 'remote · mTLS auth',
-                status: 'Disconnected',
-                uptime: 'Last seen: 2 days ago',
+                meta: 'remote · Podman · mTLS',
+                status: 'Disconnected', uptime: 'Last seen: 2 days ago',
                 sandboxes: '—',
-                isActive: false,
-                isRunning: false
+                isActive: false, isRunning: false, isLocal: false,
+                providers: [],
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.71',
+                routes: [],
+                jwtKid: 'kid:c74a9d2e', jwtTtl: 3600, jwtKeyPath: '/etc/openshell/jwt/signing.pem',
+                metricsEnabled: false, metricsPort: 9091, healthPort: 8080,
+                toml: '[openshell]\nversion = 1\n\n[openshell.drivers.podman]\n\n[openshell.gateway.tls]\ncert_path = "/etc/openshell/tls/server.crt"\nkey_path = "/etc/openshell/tls/server.key"\nclient_ca_path = "/etc/openshell/tls/ca.crt"'
+            },
+            'docker': {
+                name: 'local-docker', driver: 'Docker', scope: 'local',
+                endpoint: 'grpc://localhost:17671',
+                meta: 'local · Docker · Port 17671',
+                status: 'Stopped', uptime: 'Never started',
+                sandboxes: '—',
+                isActive: false, isRunning: false, isLocal: true,
+                providers: ['anthropic'],
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.71',
+                routes: [
+                    { name: 'anthropic-main', provider: 'anthropic', endpoint: 'https://api.anthropic.com', credRef: 'anthropic', models: [], ok: true }
+                ],
+                jwtKid: 'kid:b15e7f3c', jwtTtl: 3600, jwtKeyPath: '~/.local/share/kaiden/gateway-docker/jwt/signing.pem',
+                metricsEnabled: false, metricsPort: 9091, healthPort: 8081,
+                toml: '[openshell]\nversion = 1\n\n[openshell.drivers.docker]\nnetwork_name = "openshell"\n\n[openshell.gateway.auth]\nallow_unauthenticated_users = true\n\n[openshell.gateway.gateway_jwt]\nsigning_key_path = "~/.local/share/kaiden/gateway-docker/jwt/signing.pem"\npublic_key_path = "~/.local/share/kaiden/gateway-docker/jwt/public.pem"\nkid_path = "~/.local/share/kaiden/gateway-docker/jwt/kid"\nttl_secs = 3600\n\n[[openshell.inference.routes]]\nname = "anthropic-main"\nendpoint = "https://api.anthropic.com"\ncredential_ref = "anthropic"'
             }
         };
 
         function selectGateway(id) {
             var gw = GW_DATA[id];
             if (!gw) return;
+            GW_SELECTED_ID = id;
+            document.getElementById('gwDeleteConfirm').style.display = 'none';
+            document.getElementById('gwConnResult').style.display = 'none';
 
-            // Update list item styles
-            ['local', 'team', 'dev'].forEach(function(key) {
+            GW_IDS.forEach(function(key) {
                 var item = document.getElementById('gwItem-' + key);
                 if (!item) return;
-                if (key === id) {
-                    item.style.borderLeftColor = 'var(--kd-accent)';
-                    item.style.background = 'color-mix(in srgb,var(--kd-accent) 8%,transparent)';
-                    item.querySelector('[style*="font-size:13px"]').style.color = 'var(--kd-text-primary)';
-                    item.querySelector('[style*="font-size:13px"]').style.fontWeight = '600';
-                } else {
-                    item.style.borderLeftColor = 'transparent';
-                    item.style.background = '';
-                }
+                if (key === id) { item.classList.add('gw-selected'); }
+                else { item.classList.remove('gw-selected'); }
             });
 
-            // Update detail panel
-            document.getElementById('gwDetailName').textContent = GW_DATA[id].name || id;
+            document.getElementById('gwDetailName').textContent = gw.name;
             document.getElementById('gwDetailMeta').textContent = gw.meta;
-            document.getElementById('gwDetailEndpoint').value = gw.endpoint;
-            document.getElementById('gwDetailDriver').textContent = gw.driver;
+            document.getElementById('gwBtnMakeActive').style.display = gw.isActive ? 'none' : '';
+            document.getElementById('gwBtnRestart').style.display = gw.isLocal ? '' : 'none';
+            document.getElementById('gwBtnStop').style.display = gw.isLocal ? '' : 'none';
+            document.getElementById('gwDeleteName').textContent = gw.name;
+
             document.getElementById('gwDetailStatus').textContent = gw.status;
             document.getElementById('gwDetailUptime').textContent = '· ' + gw.uptime;
+            document.getElementById('gwDetailDriver').textContent = gw.driver;
+            document.getElementById('gwDetailEndpoint').value = gw.endpoint;
             document.getElementById('gwDetailSandboxes').textContent = gw.sandboxes;
-
             var dot = document.getElementById('gwDetailDot');
-            dot.style.background = gw.isRunning ? '#4ade80' : 'var(--kd-text-muted)';
+            dot.style.background = gw.isRunning ? '#4ade80' : (gw.status === 'Stopped' ? '#f87171' : 'var(--kd-text-muted)');
             dot.style.boxShadow = gw.isRunning ? '0 0 0 3px rgba(74,222,128,0.2)' : 'none';
+            var pCount = gw.providers.length;
+            document.getElementById('gwProvidersSummary').textContent = pCount ? pCount + ' attached · Manage →' : 'None attached · Manage →';
 
-            document.getElementById('gwDetailMakeActive').style.display = gw.isActive ? 'none' : '';
+            var rCount = gw.routes ? gw.routes.length : 0;
+            document.getElementById('gwInferenceSummary').textContent = rCount ? rCount + ' configured · Manage →' : 'None configured · Manage →';
+
+            document.getElementById('gwAdvancedDriverLabel').textContent = gw.driver;
+            gwTomlOriginal = gw.toml;
+            document.getElementById('gwRawToml').value = gw.toml;
+            gwSetTomlDirty(false);
+            document.getElementById('gwSupImage').textContent = gw.supImage || 'ghcr.io/nvidia/openshell/supervisor:0.0.71';
+
+            document.getElementById('gwJwtKid').textContent = gw.jwtKid || 'kid:—';
+            document.getElementById('gwJwtTtl').value = gw.jwtTtl || 3600;
+            document.getElementById('gwJwtKeyPath').value = gw.jwtKeyPath || '';
+            document.getElementById('gwMetricsPort').value = gw.metricsPort || 9091;
+            document.getElementById('gwHealthPort').value = gw.healthPort || 8080;
+            var mt = document.getElementById('gwMetricsToggle');
+            if (mt) { gw.metricsEnabled ? mt.classList.add('active') : mt.classList.remove('active'); }
+
+            gwRenderDriverFields(gw.driver);
+            gwRenderProviders(gw.providers);
+            gwRenderInferenceRoutes(gw.routes || []);
+            switchGwTab('overview');
+
+            var startupLocal = document.getElementById('gwStartupLocal');
+            var startupWin = document.getElementById('gwStartupWindows');
+            if (IS_WINDOWS) {
+                startupLocal.style.display = 'none';
+                startupWin.style.display = '';
+            } else if (gw.isLocal) {
+                startupLocal.style.display = '';
+                startupWin.style.display = 'none';
+            } else {
+                startupLocal.style.display = 'none';
+                startupWin.style.display = 'none';
+            }
+        }
+
+        function switchGwTab(tab) {
+            ['overview', 'providers', 'inference', 'advanced', 'config'].forEach(function(t) {
+                var btn = document.getElementById('gwtab-' + t);
+                var content = document.getElementById('gwTabContent-' + t);
+                if (btn) { t === tab ? btn.classList.add('gw-tab-active') : btn.classList.remove('gw-tab-active'); }
+                if (content) { content.style.display = t === tab ? (t === 'config' ? 'flex' : '') : 'none'; }
+            });
+        }
+
+        function gwRenderInferenceRoutes(routes) {
+            var el = document.getElementById('gwRouteList');
+            if (!el) return;
+            if (!routes || !routes.length) {
+                el.innerHTML = '<div style="padding:32px 16px;text-align:center;"><div style="font-size:13px;color:var(--kd-text-muted);margin-bottom:4px;">No inference routes configured</div><div style="font-size:12px;color:var(--kd-text-muted);">Add a route to let sandboxes reach LLM APIs through this gateway.</div></div>';
+                return;
+            }
+            var pMeta = { anthropic: { i:'A', c:'claude' }, openai: { i:'O', c:'openai' }, custom: { i:'C', c:'generic' } };
+            el.innerHTML = routes.map(function(r) {
+                var p = pMeta[r.provider] || pMeta.custom;
+                var modelStr = r.models && r.models.length ? r.models.slice(0,2).join(', ') + (r.models.length > 2 ? ' +' + (r.models.length-2) + ' more' : '') : 'all models';
+                var dotColor = r.ok ? '#4ade80' : '#f87171';
+                return '<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--kd-border);">' +
+                    '<div class="provider-icon ' + p.c + '" style="width:28px;height:28px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">' + p.i + '</div>' +
+                    '<div style="flex:1;min-width:0;">' +
+                        '<div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">' + r.name + '</div>' +
+                        '<div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px;display:flex;gap:5px;flex-wrap:wrap;">' +
+                            '<code style="font-size:10px;">' + r.endpoint + '</code>' +
+                            '<span>·</span><span>' + modelStr + '</span>' +
+                            '<span>·</span><span>cred: ' + r.credRef + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+                        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:' + dotColor + ';"></span>' +
+                        '<button class="btn btn-ghost" style="font-size:11px;padding:2px 8px;" onclick="alert(\'Mock: testing route ' + r.name + '\')">Test</button>' +
+                        '<button class="btn btn-ghost" style="font-size:11px;padding:2px 8px;color:#f87171;" onclick="alert(\'Mock: remove route ' + r.name + '\')">Remove</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function gwToggleAddRoute() {
+            var el = document.getElementById('gwAddRoutePicker');
+            if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+        }
+
+        function gwRenderProviders(providerIds) {
+            var list = document.getElementById('gwProviderList');
+            if (!providerIds || !providerIds.length) {
+                list.innerHTML = '<div style="padding:40px 16px;text-align:center;color:var(--kd-text-muted);">' +
+                    '<div style="font-size:32px;margin-bottom:12px;opacity:0.2;">&#9675;</div>' +
+                    '<div style="font-size:13px;font-weight:500;color:var(--kd-text-secondary);margin-bottom:6px;">No providers attached</div>' +
+                    '<div style="font-size:12px;line-height:1.5;">Add credentials from Secret Vault to let sandboxes on this gateway access external services.</div>' +
+                    '</div>';
+                return;
+            }
+            var html = '';
+            providerIds.forEach(function(pid) {
+                var p = GW_PROVIDERS_META[pid] || { label: pid, icon: pid[0].toUpperCase(), cls: 'generic', creds: '' };
+                html += '<div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--kd-border);">' +
+                    '<div class="provider-icon ' + p.cls + '" style="width:32px;height:32px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">' + p.icon + '</div>' +
+                    '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">' + p.label + '</div>' +
+                    '<div style="font-size:11px;color:var(--kd-text-muted);margin-top:1px;">' + p.creds + '</div></div>' +
+                    '<button class="btn btn-ghost" style="font-size:12px;padding:3px 9px;color:var(--kd-text-muted);" ' +
+                    'onmouseover="this.style.color=\'#f87171\'" onmouseout="this.style.color=\'var(--kd-text-muted)\'" ' +
+                    'onclick="alert(\'Mock: provider detached\')">Detach</button>' +
+                    '</div>';
+            });
+            list.innerHTML = html;
+        }
+
+        function gwRenderDriverFields(driver) {
+            var container = document.getElementById('gwDriverFields');
+            var fields = [];
+            if (driver === 'Podman') {
+                fields = [
+                    { label: 'Socket path', value: '/run/podman/podman.sock', type: 'text', mono: true },
+                    { label: 'Network name', value: 'openshell', type: 'text', mono: false },
+                    { label: 'Stop timeout (s)', value: '10', type: 'number', mono: false }
+                ];
+            } else if (driver === 'Docker') {
+                fields = [
+                    { label: 'Network name', value: 'openshell', type: 'text', mono: false },
+                    { label: 'Sandbox namespace', value: 'kaiden', type: 'text', mono: false }
+                ];
+            } else if (driver === 'MicroVM') {
+                fields = [
+                    { label: 'vCPUs', value: '2', type: 'number', mono: false },
+                    { label: 'Memory (MiB)', value: '2048', type: 'number', mono: false },
+                    { label: 'State directory', value: '/var/lib/openshell/vms', type: 'text', mono: true }
+                ];
+            } else {
+                fields = [
+                    { label: 'Namespace', value: 'openshell', type: 'text', mono: false },
+                    { label: 'gRPC endpoint', value: '', type: 'text', mono: true }
+                ];
+            }
+            container.innerHTML = fields.map(function(f) {
+                var w = f.mono ? '240px' : '180px';
+                var s = f.mono ? 'min-width:0;width:' + w + ';font-family:monospace;font-size:11px;' : 'min-width:0;width:' + w + ';';
+                var ctrl = '<input type="' + f.type + '" class="settings-input" value="' + f.value + '" style="' + s + '">';
+                return '<div class="form-row" style="border-bottom:1px solid var(--kd-border);">' +
+                    '<div class="form-row-info"><div class="form-row-label">' + f.label + '</div></div>' +
+                    '<div class="form-row-control">' + ctrl + '</div></div>';
+            }).join('');
+        }
+
+        function gwTestConnection() {
+            var res = document.getElementById('gwConnResult');
+            var gw = GW_DATA[GW_SELECTED_ID];
+            res.style.display = '';
+            res.textContent = 'Testing…';
+            res.style.color = 'var(--kd-text-muted)';
+            setTimeout(function() {
+                if (gw && gw.isRunning) {
+                    res.textContent = '✓ Reachable · 12 ms';
+                    res.style.color = '#4ade80';
+                } else {
+                    res.textContent = '✗ Unreachable — connection refused';
+                    res.style.color = '#f87171';
+                }
+            }, 900);
+        }
+
+        function gwTestConnectionForm() {
+            var res = document.getElementById('gwFormConnResult');
+            res.textContent = 'Testing…';
+            res.style.color = 'var(--kd-text-muted)';
+            setTimeout(function() {
+                res.textContent = '✗ Unreachable — enter a valid endpoint first';
+                res.style.color = '#f87171';
+            }, 800);
+        }
+
+        function gwMakeActive() {
+            GW_IDS.forEach(function(key) {
+                if (GW_DATA[key]) GW_DATA[key].isActive = false;
+                var badge = document.querySelector('#gwItem-' + key + ' .status-badge');
+                if (badge) badge.remove();
+            });
+            if (GW_DATA[GW_SELECTED_ID]) {
+                GW_DATA[GW_SELECTED_ID].isActive = true;
+                var item = document.getElementById('gwItem-' + GW_SELECTED_ID);
+                if (item) {
+                    var badge = document.createElement('span');
+                    badge.className = 'status-badge connected';
+                    badge.style.cssText = 'font-size:9px;padding:1px 5px;flex-shrink:0;';
+                    badge.textContent = 'Active';
+                    item.appendChild(badge);
+                }
+            }
+            GW_ACTIVE_ID = GW_SELECTED_ID;
+            document.getElementById('gwBtnMakeActive').style.display = 'none';
+        }
+
+        function gwShowDelete() {
+            var gw = GW_DATA[GW_SELECTED_ID];
+            document.getElementById('gwDeleteName').textContent = gw ? gw.name : GW_SELECTED_ID;
+            document.getElementById('gwDeleteConfirm').style.display = '';
+        }
+
+        function gwHideDelete() {
+            document.getElementById('gwDeleteConfirm').style.display = 'none';
+        }
+
+        function gwConfirmDelete() {
+            var gw = GW_DATA[GW_SELECTED_ID];
+            alert('Mock: gateway "' + (gw ? gw.name : GW_SELECTED_ID) + '" deleted');
+            gwHideDelete();
+        }
+
+        var gwTomlOriginal = '';
+
+        function gwSetTomlDirty(dirty) {
+            var applyBtn = document.getElementById('gwApplyTomlBtn');
+            var revertBtn = document.getElementById('gwRevertTomlBtn');
+            if (applyBtn) {
+                applyBtn.disabled = !dirty;
+                applyBtn.style.opacity = dirty ? '1' : '0.38';
+                applyBtn.style.pointerEvents = dirty ? '' : 'none';
+            }
+            if (revertBtn) revertBtn.style.display = dirty ? '' : 'none';
+        }
+
+        function gwOnTomlInput() {
+            var val = document.getElementById('gwRawToml').value;
+            gwSetTomlDirty(val !== gwTomlOriginal);
+        }
+
+        function gwRevertToml() {
+            document.getElementById('gwRawToml').value = gwTomlOriginal;
+            gwSetTomlDirty(false);
+        }
+
+        function gwApplyToml() {
+            var val = document.getElementById('gwRawToml').value;
+            gwTomlOriginal = val;
+            GW_DATA[GW_SELECTED_ID].toml = val;
+            gwSetTomlDirty(false);
+            var btn = document.getElementById('gwApplyTomlBtn');
+            if (btn) { var orig = btn.textContent; btn.textContent = 'Saved!'; setTimeout(function() { btn.textContent = orig; }, 1500); }
+        }
+
+        function gwCopyToml() {
+            var toml = document.getElementById('gwRawToml').value;
+            var btn = document.getElementById('gwCopyTomlBtn');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(toml).then(function() {
+                    if (btn) { var orig = btn.textContent; btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = orig; }, 1500); }
+                });
+            }
+        }
+
+        function gwUpdateAddForm() {
+            var sel = document.querySelector('input[name="gwAddType"]:checked');
+            var isLocal = !sel || sel.value === 'local';
+            document.getElementById('gwAddLocal').style.display = isLocal ? '' : 'none';
+            document.getElementById('gwAddRemote').style.display = isLocal ? 'none' : '';
+            var lc = document.getElementById('gwTypeLocalCard');
+            var rc = document.getElementById('gwTypeRemoteCard');
+            lc.style.border = isLocal ? '1px solid var(--kd-accent)' : '1px solid var(--kd-border)';
+            lc.style.background = isLocal ? 'color-mix(in srgb,var(--kd-accent) 5%,transparent)' : '';
+            rc.style.border = isLocal ? '1px solid var(--kd-border)' : '1px solid var(--kd-accent)';
+            rc.style.background = isLocal ? '' : 'color-mix(in srgb,var(--kd-accent) 5%,transparent)';
+            if (IS_WINDOWS && isLocal) {
+                document.getElementById('gwAddDriverSection').style.display = 'none';
+                document.getElementById('gwAddWindowsNote').style.display = '';
+            } else if (isLocal) {
+                document.getElementById('gwAddDriverSection').style.display = '';
+                document.getElementById('gwAddWindowsNote').style.display = 'none';
+            }
+        }
+
+        function gwUpdateAuthFields() {
+            var sel = document.querySelector('input[name="gwRemoteAuth"]:checked');
+            var val = sel ? sel.value : 'none';
+            var fields = document.getElementById('gwAuthFields');
+            if (val === 'oidc') {
+                fields.innerHTML = '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;"><div style="flex:1;"><label class="form-row-desc" style="display:block;margin-bottom:4px;">OIDC Issuer</label><input type="text" class="settings-input" placeholder="https://sso.example.com/realms/platform" style="width:100%;box-sizing:border-box;"></div></div><div style="margin-top:8px;"><button class="btn btn-primary" style="font-size:12px;padding:4px 12px;" onclick="alert(\'Mock: browser opens for OIDC login\')">Login via OIDC →</button></div>';
+            } else if (val === 'mtls') {
+                fields.innerHTML = '<label class="form-row-desc" style="display:block;margin-bottom:4px;">Certificate bundle (.crt + .key)</label><label class="btn btn-secondary" style="font-size:12px;padding:4px 10px;cursor:pointer;display:inline-block;">Choose file... <input type="file" accept=".crt,.key,.pem,.p12" style="display:none;"></label>';
+            } else if (val === 'cf-jwt') {
+                fields.innerHTML = '<label class="form-row-desc" style="display:block;margin-bottom:4px;">Cloudflare Team Domain</label><input type="text" class="settings-input" placeholder="yourteam.cloudflareaccess.com" style="width:100%;box-sizing:border-box;">';
+            } else {
+                fields.innerHTML = '';
+            }
+        }
+
+        function toggleAddForm() {
+            var form = document.getElementById('addGatewayForm');
+            form.style.display = form.style.display === 'none' ? '' : 'none';
+        }
+
+        function gwToggleAttachPicker() {
+            var picker = document.getElementById('gwAttachPicker');
+            picker.style.display = picker.style.display === 'none' ? '' : 'none';
+        }
+
+        function setOSMode(isWin) {
+            IS_WINDOWS = isWin;
+            document.getElementById('osToggleMac').style.background = isWin ? 'transparent' : 'var(--kd-accent)';
+            document.getElementById('osToggleMac').style.color = isWin ? 'var(--kd-text-muted)' : '#fff';
+            document.getElementById('osToggleWin').style.background = isWin ? 'var(--kd-accent)' : 'transparent';
+            document.getElementById('osToggleWin').style.color = isWin ? '#fff' : 'var(--kd-text-muted)';
+            selectGateway(GW_SELECTED_ID);
+            gwUpdateAddForm();
         }
 
         function togglePwd(id) {
@@ -2305,6 +3404,220 @@
             }
             if (typeof loadSidebar === 'function') loadSidebar('settings');
         }
+
+        // ── Gateway V2 ──────────────────────────────────────────────────────────
+        var GW2_MODE = 'single';
+        var GW2_ACTIVE_ID = 'local';
+        var gw2TomlOriginal = '';
+
+        var GW2_DATA = {
+            'local': {
+                name: 'local-default', type: 'managed', driver: 'Podman', scope: 'local',
+                endpoint: 'grpc://localhost:17670', version: 'v2.1.0',
+                status: 'Running', statusColor: '#4ade80', isRunning: true, isLocal: true,
+                sandboxes: '3 running across all projects',
+                routes: [
+                    { name: 'anthropic-main', provider: 'anthropic', endpoint: 'https://api.anthropic.com', credRef: 'anthropic', models: ['claude-opus-4-8', 'claude-sonnet-5', 'claude-haiku-4-5'], ok: true },
+                    { name: 'openai-backup', provider: 'openai', endpoint: 'https://api.openai.com', credRef: 'openai', models: ['gpt-4o', 'gpt-4o-mini'], ok: true }
+                ],
+                jwtKid: 'kid:a3f8c2d1', jwtTtl: 3600, jwtKeyPath: '~/.local/share/kaiden/gateway/jwt/signing.pem',
+                metricsEnabled: true, metricsPort: 9091, healthPort: 8080,
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.71',
+                toml: '[openshell]\nversion = 1\n\n[gateway]\ndriver = "podman"\nendpoint = "grpc://localhost:17670"\n\n[supervisor]\nimage = "ghcr.io/nvidia/openshell/supervisor:0.0.71"\nlandlock = true\nseccomp = true\n\n[auth]\nsigning_key_path = "~/.local/share/kaiden/gateway/jwt/signing.pem"\nkid_path = "~/.local/share/kaiden/gateway/jwt/kid"\nttl_secs = 3600\n\n[metrics]\nenabled = true\nport = 9091\n\n[health]\nport = 8080'
+            },
+            'team': {
+                name: 'team-shared', type: 'referenced', driver: 'MicroVM', scope: 'remote',
+                endpoint: 'grpc://gateway.team.internal:17670', version: 'v2.0.8',
+                status: 'Connected', statusColor: '#4ade80', isRunning: false, isLocal: false,
+                sandboxes: '7 running across all projects',
+                routes: [
+                    { name: 'anthropic-enterprise', provider: 'anthropic', endpoint: 'https://api.anthropic.com', credRef: 'anthropic-ent', models: ['claude-opus-4-8'], ok: true }
+                ],
+                jwtKid: 'kid:f92e1b3a', jwtTtl: 7200, jwtKeyPath: '/etc/kaiden/jwt/signing.pem',
+                metricsEnabled: true, metricsPort: 9091, healthPort: 8080,
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.68',
+                toml: '# Configuration managed externally — read-only\n[openshell]\nversion = 1\n\n[gateway]\ndriver = "microvm"\nendpoint = "grpc://gateway.team.internal:17670"\n\n[auth]\ntype = "oidc"\nissuer = "https://sso.redhat.com/realms/platform"'
+            },
+            'dev': {
+                name: 'dev-remote', type: 'referenced', driver: 'Podman', scope: 'remote',
+                endpoint: 'grpc://dev.example.com:17670', version: 'v2.0.5',
+                status: 'Disconnected', statusColor: '#6b7280', isRunning: false, isLocal: false,
+                sandboxes: '0 running', routes: [],
+                jwtKid: '—', jwtTtl: 3600, jwtKeyPath: '—',
+                metricsEnabled: false, metricsPort: 9091, healthPort: 8080,
+                supImage: 'ghcr.io/nvidia/openshell/supervisor:0.0.65',
+                toml: ''
+            }
+        };
+
+        function setGw2Mode(mode) {
+            GW2_MODE = mode;
+            document.getElementById('gw2ModeA').style.display = mode === 'single' ? '' : 'none';
+            document.getElementById('gw2ModeB').style.display = mode === 'multi' ? '' : 'none';
+            var btnA = document.getElementById('gw2DemoA');
+            var btnB = document.getElementById('gw2DemoB');
+            if (btnA) { btnA.style.background = mode === 'single' ? 'var(--kd-accent)' : 'transparent'; btnA.style.color = mode === 'single' ? '#fff' : 'var(--kd-text-muted)'; }
+            if (btnB) { btnB.style.background = mode === 'multi' ? 'var(--kd-accent)' : 'transparent'; btnB.style.color = mode === 'multi' ? '#fff' : 'var(--kd-text-muted)'; }
+        }
+
+        function switchGw2Tab(tab) {
+            ['overview','inference','advanced','config'].forEach(function(t) {
+                var btn = document.getElementById('gw2tab-' + t);
+                var content = document.getElementById('gw2TabContent-' + t);
+                if (btn) { t === tab ? btn.classList.add('gw-tab-active') : btn.classList.remove('gw-tab-active'); }
+                if (content) { content.style.display = t === tab ? (t === 'config' ? 'flex' : '') : 'none'; }
+            });
+        }
+
+        function gw2LoadActive() {
+            var gw = GW2_DATA[GW2_ACTIVE_ID];
+            if (!gw) return;
+            // status header
+            document.getElementById('gw2ActiveDot').style.background = gw.statusColor;
+            document.getElementById('gw2ActiveName').textContent = gw.name;
+            document.getElementById('gw2ActiveMeta').textContent = (gw.type === 'managed' ? 'Managed' : 'Referenced') + ' · ' + gw.driver + ' · ' + gw.version + ' · ' + gw.endpoint;
+            var typeBadge = document.getElementById('gw2ActiveTypeBadge');
+            if (typeBadge) {
+                typeBadge.textContent = gw.type === 'managed' ? 'Managed' : 'Referenced';
+                typeBadge.style.background = gw.type === 'managed' ? 'rgba(99,102,241,0.12)' : 'rgba(107,114,128,0.12)';
+                typeBadge.style.color = gw.type === 'managed' ? 'var(--kd-accent)' : 'var(--kd-text-muted)';
+            }
+            // action buttons
+            var isManaged = gw.type === 'managed';
+            var restartBtn = document.getElementById('gw2BtnRestart');
+            var stopBtn = document.getElementById('gw2BtnStop');
+            if (restartBtn) restartBtn.style.display = isManaged ? '' : 'none';
+            if (stopBtn) stopBtn.style.display = isManaged ? '' : 'none';
+            // overview tab
+            document.getElementById('gw2DriverPill').textContent = gw.driver;
+            document.getElementById('gw2Endpoint').textContent = gw.endpoint;
+            document.getElementById('gw2Sandboxes').textContent = gw.sandboxes;
+            var rCount = gw.routes ? gw.routes.length : 0;
+            document.getElementById('gw2RouteSummary').textContent = rCount ? rCount + ' configured · Manage →' : 'None · Manage →';
+            // inference tab
+            gw2RenderRoutes(gw.routes || []);
+            // advanced tab
+            document.getElementById('gw2JwtKid').textContent = gw.jwtKid || 'kid:—';
+            document.getElementById('gw2JwtTtl').value = gw.jwtTtl || 3600;
+            document.getElementById('gw2MetricsPort').value = gw.metricsPort || 9091;
+            document.getElementById('gw2HealthPort').value = gw.healthPort || 8080;
+            var mt = document.getElementById('gw2MetricsToggle');
+            if (mt) { gw.metricsEnabled ? mt.classList.add('active') : mt.classList.remove('active'); }
+            // config tab
+            gw2TomlOriginal = gw.toml || '';
+            var ta = document.getElementById('gw2RawToml');
+            if (ta) { ta.value = gw2TomlOriginal; ta.readOnly = gw.type === 'referenced'; ta.style.opacity = gw.type === 'referenced' ? '0.6' : '1'; }
+            gw2SetTomlDirty(false);
+            // referenced notice
+            var refNotice = document.getElementById('gw2RefNotice');
+            if (refNotice) refNotice.style.display = gw.type === 'referenced' ? '' : 'none';
+            switchGw2Tab('overview');
+        }
+
+        function gw2RenderRoutes(routes) {
+            var el = document.getElementById('gw2RouteList');
+            if (!el) return;
+            if (!routes || !routes.length) {
+                el.innerHTML = '<div style="padding:32px 16px;text-align:center;"><div style="font-size:13px;color:var(--kd-text-muted);margin-bottom:4px;">No inference routes configured</div><div style="font-size:12px;color:var(--kd-text-muted);">Add a route to let sandboxes reach LLM APIs through this gateway.</div></div>';
+                return;
+            }
+            var pMeta = { anthropic: { i:'A', c:'claude' }, openai: { i:'O', c:'openai' }, custom: { i:'C', c:'generic' } };
+            el.innerHTML = routes.map(function(r) {
+                var p = pMeta[r.provider] || pMeta.custom;
+                var modelStr = r.models && r.models.length ? r.models.slice(0,2).join(', ') + (r.models.length > 2 ? ' +' + (r.models.length-2) + ' more' : '') : 'all models';
+                var dotColor = r.ok ? '#4ade80' : '#f87171';
+                return '<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--kd-border);">' +
+                    '<div class="provider-icon ' + p.c + '" style="width:28px;height:28px;font-size:12px;font-weight:700;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + p.i + '</div>' +
+                    '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">' + r.name + '</div>' +
+                    '<div style="font-size:11px;color:var(--kd-text-muted);font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + r.endpoint + '</div>' +
+                    '<div style="font-size:11px;color:var(--kd-text-muted);margin-top:1px;">via <em>' + r.credRef + '</em> · ' + modelStr + '</div></div>' +
+                    '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+                    '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:' + dotColor + ';"></span>' +
+                    '<button class="btn btn-ghost" style="font-size:11px;padding:3px 8px;" onclick="alert(\'Mock: testing route \' + \'' + r.name + '\')">Test</button>' +
+                    '<button class="btn btn-ghost" style="font-size:11px;padding:3px 8px;color:#f87171;">Remove</button></div></div>';
+            }).join('');
+        }
+
+        function gw2SetTomlDirty(dirty) {
+            var applyBtn = document.getElementById('gw2ApplyTomlBtn');
+            var revertBtn = document.getElementById('gw2RevertTomlBtn');
+            if (applyBtn) { applyBtn.disabled = !dirty; applyBtn.style.opacity = dirty ? '1' : '0.38'; applyBtn.style.pointerEvents = dirty ? '' : 'none'; }
+            if (revertBtn) revertBtn.style.display = dirty ? '' : 'none';
+        }
+
+        function gw2OnTomlInput() {
+            var val = document.getElementById('gw2RawToml').value;
+            gw2SetTomlDirty(val !== gw2TomlOriginal);
+        }
+
+        function gw2RevertToml() {
+            document.getElementById('gw2RawToml').value = gw2TomlOriginal;
+            gw2SetTomlDirty(false);
+        }
+
+        function gw2ApplyToml() {
+            var val = document.getElementById('gw2RawToml').value;
+            gw2TomlOriginal = val;
+            GW2_DATA[GW2_ACTIVE_ID].toml = val;
+            gw2SetTomlDirty(false);
+            var btn = document.getElementById('gw2ApplyTomlBtn');
+            if (btn) { var orig = btn.textContent; btn.textContent = 'Saved!'; setTimeout(function() { btn.textContent = orig; }, 1500); }
+        }
+
+        function gw2CopyToml() {
+            var val = document.getElementById('gw2RawToml').value;
+            if (navigator.clipboard) { navigator.clipboard.writeText(val); }
+            var btn = document.getElementById('gw2CopyTomlBtn');
+            if (btn) { var orig = btn.textContent; btn.textContent = 'Copied!'; setTimeout(function() { btn.textContent = orig; }, 1500); }
+        }
+
+        function gw2TestConn() {
+            var el = document.getElementById('gw2TestResult');
+            if (!el) return;
+            el.style.display = '';
+            el.textContent = 'Testing…';
+            el.style.color = 'var(--kd-text-muted)';
+            setTimeout(function() {
+                el.textContent = '● Reachable · 12ms';
+                el.style.color = '#4ade80';
+                setTimeout(function() { el.style.display = 'none'; }, 3000);
+            }, 700);
+        }
+
+        function gw2MakeActive(id) {
+            GW2_ACTIVE_ID = id;
+            gw2LoadActive();
+            gw2RenderOtherList();
+        }
+
+        function gw2RenderOtherList() {
+            var el = document.getElementById('gw2OtherList');
+            if (!el) return;
+            var others = Object.keys(GW2_DATA).filter(function(id) { return id !== GW2_ACTIVE_ID; });
+            if (!others.length) { el.innerHTML = '<div style="padding:20px 16px;text-align:center;font-size:12px;color:var(--kd-text-muted);">No other gateways registered.</div>'; return; }
+            el.innerHTML = others.map(function(id) {
+                var g = GW2_DATA[id];
+                var dotCol = g.status === 'Connected' || g.status === 'Running' ? '#4ade80' : g.status === 'Disconnected' ? '#6b7280' : '#f87171';
+                var isRef = g.type === 'referenced';
+                return '<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--kd-border);">' +
+                    '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + dotCol + ';flex-shrink:0;"></span>' +
+                    '<div style="flex:1;min-width:0;">' +
+                        '<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:13px;font-weight:500;color:var(--kd-text-primary);">' + g.name + '</span>' +
+                        '<span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:5px;background:' + (isRef ? 'rgba(107,114,128,0.12)' : 'rgba(99,102,241,0.12)') + ';color:' + (isRef ? 'var(--kd-text-muted)' : 'var(--kd-accent)') + ';">' + (isRef ? 'Referenced' : 'Managed') + '</span></div>' +
+                        '<div style="font-size:11px;color:var(--kd-text-muted);">' + g.driver + ' · ' + g.scope + ' · ' + g.status + '</div>' +
+                    '</div>' +
+                    '<div style="display:flex;gap:6px;flex-shrink:0;">' +
+                        '<button class="btn btn-secondary" style="font-size:11px;padding:3px 10px;" onclick="gw2MakeActive(\'' + id + '\')">Make active</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function gw2ToggleAddRoute() {
+            var el = document.getElementById('gw2AddRoutePicker');
+            if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+        }
+        // ── End Gateway V2 ───────────────────────────────────────────────────────
 
         // Load saved settings on page load
         document.addEventListener('DOMContentLoaded', function() {
