@@ -557,6 +557,22 @@
         .pref-search-wrap input { flex:1; background:none; border:none; outline:none; font-size:13px; color:var(--kd-text-primary); font-family:inherit; }
         .pref-search-wrap input::placeholder { color:var(--kd-text-muted); }
 
+        /* ── Resources panel two-column layout ── */
+        .res-provider-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+        .res-provider-row { display: flex; min-height: 76px; border: 1px solid var(--kd-border); border-radius: 8px; overflow: hidden; }
+        .res-provider-left { width: 220px; flex-shrink: 0; padding: 14px 16px; border-right: 1px solid var(--kd-border); display: flex; flex-direction: column; gap: 10px; }
+        .res-provider-left-header { display: flex; align-items: center; gap: 10px; }
+        .res-provider-name { font-size: 13px; font-weight: 600; color: var(--kd-text-primary); }
+        .res-provider-right { flex: 1; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+        .res-connection-item { display: flex; align-items: flex-start; gap: 10px; }
+        .res-connection-name { font-size: 13px; font-weight: 500; color: var(--kd-text-primary); }
+        .res-connection-tags { font-size: 11px; color: var(--kd-text-muted); margin-top: 2px; }
+        .res-delete-btn { margin-left: auto; flex-shrink: 0; background: none; border: none; cursor: pointer; color: var(--kd-text-muted); padding: 2px 4px; border-radius: 4px; display: flex; align-items: center; }
+        .res-delete-btn:hover { color: #f87171; }
+        .res-provider-desc { font-size: 12px; color: var(--kd-text-muted); line-height: 1.5; margin: 0; }
+        .res-create-btn { font-size: 12px !important; padding: 5px 12px !important; align-self: flex-start; }
+        .provider-icon.vertex { background: linear-gradient(135deg, #4285f4 0%, #1565c0 100%); color: #fff; }
+
         /* ── Gateway panel helpers ── */
         .gw-list-item { display:flex; align-items:center; gap:9px; padding:11px 14px; cursor:pointer; border-left:3px solid transparent; transition:all 0.12s; }
         .gw-list-item:hover { background:color-mix(in srgb,var(--kd-accent) 4%,transparent); }
@@ -587,150 +603,72 @@
 
                     <!-- Left Nav -->
                     <nav class="settings-nav">
-                        <div class="settings-nav-group">
-                            <div class="settings-nav-label">Connections</div>
-                            <div class="settings-nav-item active" onclick="showSection('resources')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                                </svg>
-                                Resources
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('proxy')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="2" width="20" height="8" rx="2"/>
-                                    <rect x="2" y="14" width="20" height="8" rx="2"/>
-                                    <line x1="6" y1="6" x2="6.01" y2="6"/>
-                                    <line x1="6" y1="18" x2="6.01" y2="18"/>
-                                </svg>
-                                Proxy
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('cli-tools')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="4 17 10 11 4 5"/>
-                                    <line x1="12" y1="19" x2="20" y2="19"/>
-                                </svg>
-                                CLI Tools
-                            </div>
+                        <div class="settings-nav-item active" onclick="showSection('resources')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            </svg>
+                            Resources
                         </div>
-
-                        <div class="settings-nav-group">
-                            <div class="settings-nav-label">OpenShell</div>
-                            <div class="settings-nav-item" onclick="showSection('os-gateway')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                Gateway
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('os-sandboxes')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                                Sandboxes
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('os-logs')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                                Logs
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('os-gw2')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                                Gateway <span style="font-size:9px;font-weight:700;background:var(--kd-accent);color:#fff;padding:1px 5px;border-radius:5px;vertical-align:middle;margin-left:3px;">V2</span>
-                            </div>
+                        <div class="settings-nav-item" onclick="showSection('proxy')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2"/>
+                                <rect x="2" y="14" width="20" height="8" rx="2"/>
+                                <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                <line x1="6" y1="18" x2="6.01" y2="18"/>
+                            </svg>
+                            Proxy
                         </div>
-
-                        <div class="settings-nav-group">
-                            <div class="settings-nav-label">Preferences</div>
-                            <div class="settings-nav-item pref-parent" onclick="togglePrefSection(this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="3"/>
-                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                                </svg>
-                                Preferences
-                                <svg class="pref-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"/>
-                                </svg>
-                            </div>
-                            <div class="pref-children" id="prefChildren">
-                                <div class="settings-nav-child" data-pref="agent-workspace" onclick="showPref('agent-workspace')">Agent Workspace</div>
-                                <div class="settings-nav-child" data-pref="appearance" onclick="showPref('appearance')">Appearance</div>
-                                <div class="settings-nav-child" data-pref="chat" onclick="showPref('chat')">Chat</div>
-                                <div class="settings-nav-child" data-pref="editor" onclick="showPref('editor')">Editor</div>
-                                <div class="settings-nav-child" data-pref="exit-on-close" onclick="showPref('exit-on-close')">Exit On Close</div>
-                                <div class="settings-nav-child" data-pref="extension-kdn" onclick="showPref('extension-kdn')">Extension: kdn</div>
-                                <div class="settings-nav-child" data-pref="extensions" onclick="showPref('extensions')">Extensions</div>
-                                <div class="settings-nav-child" data-pref="feedback-dialog" onclick="showPref('feedback-dialog')">Feedback dialog</div>
-                                <div class="settings-nav-child" data-pref="kubernetes" onclick="showPref('kubernetes')">Kubernetes</div>
-                                <div class="settings-nav-child" data-pref="minimize-on-login" onclick="showPref('minimize-on-login')">Minimize on login</div>
-                                <div class="settings-nav-child" data-pref="onboarding" onclick="showPref('onboarding')">Onboarding</div>
-                                <div class="settings-nav-child" data-pref="start-on-login" onclick="showPref('start-on-login')">Start on login</div>
-                                <div class="settings-nav-child" data-pref="tasks" onclick="showPref('tasks')">Tasks</div>
-                                <div class="settings-nav-child" data-pref="telemetry" onclick="showPref('telemetry')">Telemetry</div>
-                                <div class="settings-nav-child" data-pref="terminal" onclick="showPref('terminal')">Terminal</div>
-                                <div class="settings-nav-child" data-pref="update" onclick="showPref('update')">Update</div>
-                                <div class="settings-nav-child" data-pref="user-confirmation" onclick="showPref('user-confirmation')">User Confirmation</div>
-                                <div class="settings-nav-child" data-pref="window" onclick="showPref('window')">Window</div>
-                            </div>
+                        <div class="settings-nav-item" onclick="showSection('cli-tools')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
+                            CLI Tools
                         </div>
-
-                        <div class="settings-nav-group">
-                            <div class="settings-nav-label">Extensions</div>
-                            <div class="settings-nav-item" onclick="showSection('ext-claude')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                </svg>
-                                Claude
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-openai')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                </svg>
-                                OpenAI-compatible
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-openshift')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                                </svg>
-                                OpenShift AI
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-gemini')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                </svg>
-                                Gemini
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-mistral')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>
-                                </svg>
-                                Mistral
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-vertex-ai')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                                </svg>
-                                Vertex AI
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-milvus')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                                </svg>
-                                Milvus
-                            </div>
-                            <div class="settings-nav-item" onclick="showSection('ext-docling')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                                </svg>
-                                Docling
-                            </div>
+                        <div class="settings-nav-item pref-parent os-parent" onclick="toggleOSSection(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            OpenShell
+                            <svg class="pref-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
                         </div>
-
-                        <div class="settings-nav-group">
-                            <div class="settings-nav-label">Advanced</div>
-                            <div class="settings-nav-item" onclick="showSection('experimental')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0h10M9 14l-2 7m12-7l2 7"/>
-                                </svg>
-                                Experimental
-                            </div>
+                        <div class="pref-children" id="osChildren">
+                            <div class="settings-nav-child" data-os="os-gw-current" onclick="showSection('os-gw-current')">Gateway Current</div>
+                            <div class="settings-nav-child" data-os="os-gateway" onclick="showSection('os-gateway')">Gateway</div>
+                            <div class="settings-nav-child" data-os="os-gw2" onclick="showSection('os-gw2')">Gateway V2</div>
+                            <div class="settings-nav-child" data-os="os-sandboxes" onclick="showSection('os-sandboxes')">Sandboxes</div>
+                            <div class="settings-nav-child" data-os="os-logs" onclick="showSection('os-logs')">Logs</div>
+                        </div>
+                        <div class="settings-nav-item pref-parent" onclick="togglePrefSection(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            </svg>
+                            Preferences
+                            <svg class="pref-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="pref-children" id="prefChildren">
+                            <div class="settings-nav-child" data-pref="agent-workspace" onclick="showPref('agent-workspace')">Agent Workspace</div>
+                            <div class="settings-nav-child" data-pref="appearance" onclick="showPref('appearance')">Appearance</div>
+                            <div class="settings-nav-child" data-pref="chat" onclick="showPref('chat')">Chat</div>
+                            <div class="settings-nav-child" data-pref="editor" onclick="showPref('editor')">Editor</div>
+                            <div class="settings-nav-child" data-pref="exit-on-close" onclick="showPref('exit-on-close')">Exit On Close</div>
+                            <div class="settings-nav-child" data-pref="extension-kdn" onclick="showPref('extension-kdn')">Extension: kdn</div>
+                            <div class="settings-nav-child" data-pref="extensions" onclick="showPref('extensions')">Extensions</div>
+                            <div class="settings-nav-child" data-pref="feedback-dialog" onclick="showPref('feedback-dialog')">Feedback dialog</div>
+                            <div class="settings-nav-child" data-pref="kubernetes" onclick="showPref('kubernetes')">Kubernetes</div>
+                            <div class="settings-nav-child" data-pref="minimize-on-login" onclick="showPref('minimize-on-login')">Minimize on login</div>
+                            <div class="settings-nav-child" data-pref="onboarding" onclick="showPref('onboarding')">Onboarding</div>
+                            <div class="settings-nav-child" data-pref="start-on-login" onclick="showPref('start-on-login')">Start on login</div>
+                            <div class="settings-nav-child" data-pref="tasks" onclick="showPref('tasks')">Tasks</div>
+                            <div class="settings-nav-child" data-pref="telemetry" onclick="showPref('telemetry')">Telemetry</div>
+                            <div class="settings-nav-child" data-pref="terminal" onclick="showPref('terminal')">Terminal</div>
+                            <div class="settings-nav-child" data-pref="update" onclick="showPref('update')">Update</div>
+                            <div class="settings-nav-child" data-pref="user-confirmation" onclick="showPref('user-confirmation')">User Confirmation</div>
+                            <div class="settings-nav-child" data-pref="window" onclick="showPref('window')">Window</div>
                         </div>
                     </nav>
 
@@ -740,125 +678,118 @@
                         <!-- Resources panel -->
                         <div id="panel-resources" class="settings-panel active">
                             <h2 class="settings-panel-title">Resources</h2>
-                            <p class="settings-panel-subtitle">AI provider connections</p>
+                            <p class="settings-panel-subtitle">Additional provider information is available under <a href="#" onclick="return false;" style="color:var(--kd-accent);text-decoration:none;">Extensions</a></p>
 
-                            <!-- AI Providers -->
-                            <div class="settings-card">
-                                <div class="settings-card-header">AI Providers</div>
+                            <div class="res-provider-list">
 
-                                <!-- Claude -->
-                                <div class="provider-tile">
-                                    <div class="provider-icon claude">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                            <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                            <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                        </svg>
-                                    </div>
-                                    <div class="provider-info">
-                                        <div class="provider-name">
-                                            Claude
-                                            <span class="status-badge connected">Connected</span>
+                                <!-- Vertex AI -->
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon vertex">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                            </div>
+                                            <span class="res-provider-name">Vertex AI</span>
                                         </div>
-                                        <div class="provider-detail">Anthropic · api.anthropic.com</div>
-                                        <div class="provider-meta">API key configured &middot; Last verified 2 min ago</div>
+                                        <button class="btn btn-primary res-create-btn">Create new ...</button>
                                     </div>
-                                    <div class="provider-actions">
-                                        <button class="btn btn-secondary" onclick="showSection('ext-claude')">Edit</button>
+                                    <div class="res-provider-right">
+                                        <div class="res-connection-item">
+                                            <div style="flex:1;min-width:0;">
+                                                <div class="res-connection-name">itpc-gcp-product-all-claude</div>
+                                                <div class="res-connection-tags">(global) &nbsp;(Inference)</div>
+                                            </div>
+                                            <button class="res-delete-btn">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                            </button>
+                                        </div>
                                     </div>
+                                </div>
+
+                                <!-- RamaLama -->
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon ramalama">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                                            </div>
+                                            <span class="res-provider-name">RamaLama</span>
+                                        </div>
+                                    </div>
+                                    <div class="res-provider-right"></div>
                                 </div>
 
                                 <!-- OpenShift AI -->
-                                <div class="provider-tile">
-                                    <div class="provider-icon openshift">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="provider-info">
-                                        <div class="provider-name">
-                                            OpenShift AI
-                                            <span class="status-badge not-connected">Not configured</span>
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon openshift">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                            </div>
+                                            <span class="res-provider-name">OpenShift AI</span>
                                         </div>
-                                        <div class="provider-detail">Red Hat · No cluster URL set</div>
-                                        <div class="provider-meta">Token not configured</div>
                                     </div>
-                                    <div class="provider-actions">
-                                        <button class="btn btn-secondary" onclick="showSection('ext-openshift')">Configure</button>
+                                    <div class="res-provider-right">
+                                        <p class="res-provider-desc">Provides OpenShift AI integration. Connects Kaiden to models running on OpenShift AI.</p>
+                                        <button class="btn btn-primary res-create-btn">Create new ...</button>
                                     </div>
+                                </div>
+
+                                <!-- OpenAI -->
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon openai">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                            </div>
+                                            <span class="res-provider-name">OpenAI</span>
+                                        </div>
+                                        <button class="btn btn-primary res-create-btn">Create new ...</button>
+                                    </div>
+                                    <div class="res-provider-right"></div>
                                 </div>
 
                                 <!-- Ollama -->
-                                <div class="provider-tile">
-                                    <div class="provider-icon ollama">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
-                                            <circle cx="7.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
-                                            <circle cx="16.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
-                                        </svg>
-                                    </div>
-                                    <div class="provider-info">
-                                        <div class="provider-name">
-                                            Ollama
-                                            <span class="status-badge error">Not running</span>
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon ollama">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/><circle cx="7.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="16.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                                            </div>
+                                            <span class="res-provider-name">Ollama</span>
                                         </div>
-                                        <div class="provider-detail">Local · localhost:11434</div>
-                                        <div class="provider-meta">Start Ollama to enable local model inference</div>
                                     </div>
-                                    <div class="provider-actions">
-                                        <button class="btn btn-ghost">Connect</button>
-                                    </div>
+                                    <div class="res-provider-right"></div>
                                 </div>
 
-                                <!-- Ramalama -->
-                                <div class="provider-tile">
-                                    <div class="provider-icon ramalama">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                                        </svg>
-                                    </div>
-                                    <div class="provider-info">
-                                        <div class="provider-name">
-                                            Ramalama
-                                            <span class="status-badge not-connected">Not running</span>
-                                        </div>
-                                        <div class="provider-detail">Local · localhost:8080</div>
-                                        <div class="provider-meta">Red Hat local model runner</div>
-                                    </div>
-                                    <div class="provider-actions">
-                                        <button class="btn btn-ghost">Connect</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- OpenShell runtime summary tile -->
-                            <div class="settings-card">
-                                <div class="settings-card-header">Sandbox Runtime</div>
-                                <div class="provider-tile" style="cursor: pointer;" onclick="showSection('os-gateway')">
-                                    <div class="provider-icon podman">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="provider-info">
-                                        <div class="provider-name">
-                                            OpenShell
-                                            <span class="status-badge connected">Running</span>
-                                        </div>
-                                        <div class="provider-detail">local-default · Podman · v2.1.0 · Uptime 2h 14m</div>
-                                        <div class="provider-meta">3 active sandboxes · 3 gateways registered</div>
-                                    </div>
-                                    <div class="provider-actions">
-                                        <button class="btn btn-secondary" onclick="event.stopPropagation(); showSection('os-gateway')">Settings →</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
                         <!-- OpenShell panel -->
+                        <!-- ── OpenShell: Gateway Current ── -->
+                        <div id="panel-os-gw-current" class="settings-panel">
+                            <h2 class="settings-panel-title">Gateways</h2>
+                            <p class="settings-panel-subtitle">The runtime that provisions sandboxes, enforces policy, and routes inference traffic.</p>
+
+                            <div style="margin-top:24px;">
+                                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--kd-text-muted);margin-bottom:12px;">Active Gateway</div>
+
+                                <div style="border:1px solid var(--kd-border);border-radius:8px;overflow:hidden;margin-bottom:16px;">
+                                    <div style="display:flex;align-items:center;gap:10px;padding:13px 16px;">
+                                        <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,0.2);flex-shrink:0;display:inline-block;"></span>
+                                        <span style="font-size:13px;font-weight:600;color:var(--kd-text-primary);">local-gateway</span>
+                                        <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:9px;background:rgba(107,114,128,0.15);color:var(--kd-text-secondary);">Referenced</span>
+                                        <span style="font-size:12px;color:var(--kd-text-muted);">local &middot; http://127.0.0.1:17675 &middot; Connected</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-secondary" style="font-size:13px;padding:7px 14px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;margin-top:-1px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Create local gateway
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- ── OpenShell: Gateway ── -->
                         <div id="panel-os-gateway" class="settings-panel">
                             <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
@@ -2040,42 +1971,46 @@
                             <h2 class="settings-panel-title">CLI Tools</h2>
                             <p class="settings-panel-subtitle">Registered CLI binaries used by Kaiden. Override paths if binaries are installed in non-standard locations.</p>
 
-                            <div class="settings-card">
-                                <div class="settings-card-header">Registered Binaries</div>
+                            <div class="res-provider-list">
 
-                                <div class="cli-tool-row">
-                                    <div class="cli-tool-name">
-                                        <div class="cli-tool-label">kdn</div>
-                                        <div class="cli-tool-version">v0.9.2 installed</div>
+                                <!-- kdn -->
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon generic">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                                            </div>
+                                            <div>
+                                                <div class="res-provider-name">kdn</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px;">v0.9.2 installed</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="cli-tool-path">
-                                        <input type="text" id="kdnPath" value="/usr/local/bin/kdn" placeholder="/usr/local/bin/kdn">
-                                    </div>
-                                    <div style="flex-shrink:0;">
-                                        <button class="btn btn-ghost">Update</button>
+                                    <div class="res-provider-right" style="flex-direction:row;align-items:center;gap:8px;">
+                                        <input type="text" id="kdnPath" class="settings-input" value="/usr/local/bin/kdn" placeholder="/usr/local/bin/kdn" style="flex:1;">
+                                        <button class="btn btn-ghost" style="flex-shrink:0;">Update</button>
                                     </div>
                                 </div>
 
-                                <div class="cli-tool-row">
-                                    <div class="cli-tool-name">
-                                        <div class="cli-tool-label">OpenShell</div>
-                                        <div class="cli-tool-version">v2.1.0 installed</div>
+                                <!-- OpenShell -->
+                                <div class="res-provider-row">
+                                    <div class="res-provider-left">
+                                        <div class="res-provider-left-header">
+                                            <div class="provider-icon generic">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                                            </div>
+                                            <div>
+                                                <div class="res-provider-name">OpenShell</div>
+                                                <div style="font-size:11px;color:var(--kd-text-muted);margin-top:2px;">v2.1.0 installed</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="cli-tool-path">
-                                        <input type="text" id="openshellPath" value="/usr/local/bin/openshell" placeholder="/usr/local/bin/openshell">
-                                    </div>
-                                    <div style="flex-shrink:0;">
-                                        <button class="btn btn-ghost">Update</button>
+                                    <div class="res-provider-right" style="flex-direction:row;align-items:center;gap:8px;">
+                                        <input type="text" id="openshellPath" class="settings-input" value="/usr/local/bin/openshell" placeholder="/usr/local/bin/openshell" style="flex:1;">
+                                        <button class="btn btn-ghost" style="flex-shrink:0;">Update</button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="settings-save-bar">
-                                <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
-                                <button class="settings-save-btn" onclick="saveSettings()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Save Settings
-                                </button>
                             </div>
                         </div>
 
@@ -2794,6 +2729,14 @@
     <script src="../assets/js/page-data.js"></script>
     <script>
         // ── Preferences panel functions ──
+        function toggleOSSection(el) {
+            el.classList.toggle('open');
+            document.getElementById('osChildren').classList.toggle('open');
+            if (el.classList.contains('open')) {
+                showSection('os-gw-current');
+            }
+        }
+
         function togglePrefSection(el) {
             el.classList.toggle('open');
             document.getElementById('prefChildren').classList.toggle('open');
@@ -2866,8 +2809,17 @@
             });
             // If showing preferences, mark the pref-parent as active
             if (section === 'preferences') {
-                var prefParent = document.querySelector('.pref-parent');
+                var prefParent = document.querySelector('.pref-parent:not(.os-parent)');
                 if (prefParent) prefParent.classList.add('active');
+            }
+            // If showing an OpenShell section, mark os-parent as active and highlight child
+            var osSections = ['os-gw-current', 'os-gateway', 'os-gw2', 'os-sandboxes', 'os-logs'];
+            if (osSections.indexOf(section) !== -1) {
+                var osParent = document.querySelector('.os-parent');
+                if (osParent) osParent.classList.add('active');
+                document.querySelectorAll('.settings-nav-child[data-os]').forEach(function(c) { c.classList.remove('active'); });
+                var osChild = document.querySelector('.settings-nav-child[data-os="' + section + '"]');
+                if (osChild) osChild.classList.add('active');
             }
             // Initialize Gateway V2 panel on first show
             if (section === 'os-gw2') {
