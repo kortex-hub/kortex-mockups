@@ -60,36 +60,11 @@ function buildSidebarHTML() {
         <span>Agent Feed</span>
     </a>
 
-    <a href="${R}/coding-agent/index.html" class="nav-item" data-section="coding-agent">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="4 17 10 11 4 5"/>
-            <line x1="12" y1="19" x2="20" y2="19"/>
-        </svg>
-        <span>Coding agents</span>
-    </a>
-
     <a href="${R}/projects/index.html" class="nav-item" data-section="projects">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Projects</span>
-    </a>
-
-    <a href="${R}/models/index.html" class="nav-item" data-section="models">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-        </svg>
-        <span>Models</span>
-    </a>
-
-    <a href="${R}/services/index.html" class="nav-item" data-section="services">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        <span>Secret Vault</span>
     </a>
 
     <a href="${R}/knowledges/index.html" class="nav-item" data-section="knowledges">
@@ -101,20 +76,6 @@ function buildSidebarHTML() {
             <polyline points="10,9 9,9 8,9"/>
         </svg>
         <span>Knowledges</span>
-    </a>
-
-    <a href="${R}/mcp/index.html" class="nav-item" data-section="mcp" id="mcp-nav-item">
-        <svg class="nav-item-icon--mcp" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M13.85 0a4.16 4.16 0 0 0-2.95 1.217L1.456 10.66a.835.835 0 0 0 0 1.18.835.835 0 0 0 1.18 0l9.442-9.442a2.49 2.49 0 0 1 3.541 0 2.49 2.49 0 0 1 0 3.541L8.59 12.97l-.1.1a.835.835 0 0 0 0 1.18.835.835 0 0 0 1.18 0l.1-.098 7.03-7.034a2.49 2.49 0 0 1 3.542 0l.049.05a2.49 2.49 0 0 1 0 3.54l-8.54 8.54a1.96 1.96 0 0 0 0 2.755l1.753 1.753a.835.835 0 0 0 1.18 0 .835.835 0 0 0 0-1.18l-1.753-1.753a.266.266 0 0 1 0-.394l8.54-8.54a4.185 4.185 0 0 0 0-5.9l-.05-.05a4.16 4.16 0 0 0-2.95-1.218c-.2 0-.401.02-.6.048a4.17 4.17 0 0 0-1.17-3.552A4.16 4.16 0 0 0 13.85 0m0 3.333a.84.84 0 0 0-.59.245L6.275 10.56a4.186 4.186 0 0 0 0 5.902 4.186 4.186 0 0 0 5.902 0L19.16 9.48a.835.835 0 0 0 0-1.18.835.835 0 0 0-1.18 0l-6.985 6.984a2.49 2.49 0 0 1-3.54 0 2.49 2.49 0 0 1 0-3.54l6.983-6.985a.835.835 0 0 0 0-1.18.84.84 0 0 0-.59-.245"/>
-        </svg>
-        <span>MCP</span>
-    </a>
-
-    <a href="${R}/skills/index.html" class="nav-item" data-section="skills" id="skills-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-        </svg>
-        <span>Skills</span>
     </a>
 
     <a href="${R}/extensions/index.html" class="nav-item" data-section="extensions">
@@ -337,6 +298,8 @@ window.restartOpenshellGateway = function() {
 
 // Load sidebar component
 function loadSidebar(activeSection) {
+    if (new URLSearchParams(window.location.search).get('nosidebar')) return;
+
     const sidebarContainer = document.getElementById('sidebar-container');
     if (!sidebarContainer) {
         console.error('Sidebar container not found');
